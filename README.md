@@ -1,6 +1,6 @@
 # secure machine learning
 
-## 1. adversarial example
+## 1. Evasion Attack
 I tested the experiment described in the below paper.
 
 https://arxiv.org/abs/1708.06131
@@ -41,6 +41,32 @@ The usage of my code is really simple.
 
             # x0 is the intial ponint ("7")
             xm, log = attacker.attack(x0)
+
+
+## Poisoning Attack
+
+Second, I implemented a "poisoning attack" against SVM with a linear kernel.
+The data set is the same as section 1, and I referred to the following paper.
+https://arxiv.org/abs/1206.6389
+
+You can see that adding only one poisoned image dramatically decreases the accuracy of SVM.
+
+![](img/poison_loss.png)
+![](img/poison_example.png)
+
+The usage of my code is as follows.
+
+        example
+
+            attacker = Poison_attack_sklearn(clf,
+                                            X_train_, y_train_,
+                                            t=0.5)
+
+            xc_attacked, log = attacker.attack(xc, 1,
+                                            X_valid, y_valid_,
+                                            num_iterations=200)
+
+
 
 
 
