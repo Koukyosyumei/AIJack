@@ -43,7 +43,7 @@ The usage of my code is really simple.
             xm, log = attacker.attack(x0)
 
 
-## Poisoning Attack
+## 2. Poisoning Attack
 
 Second, I implemented a "poisoning attack" against SVM with a linear kernel.
 The data set is the same as section 1, and I referred to the following paper.
