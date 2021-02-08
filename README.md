@@ -1,6 +1,28 @@
 # secure machine learning
 
-## 1. Evasion Attack
+## 1. membership inference
+
+I created a notebook that demonstrates the membership inference based on the following paper
+
+https://arxiv.org/abs/1610.05820
+
+The bellow table shows the result of experiment, where I use SVM as target model, shadow model,
+and attack model on MNIST.
+
+        c = 0
+        overall f1 score is  0.706983441324694
+                      precision    recall  f1-score   support
+
+                   0       0.20      0.92      0.33       111
+                   1       0.98      0.55      0.71       889
+
+            accuracy                           0.59      1000
+           macro avg       0.59      0.74      0.52      1000
+        weighted avg       0.90      0.59      0.67      1000
+
+
+
+## 2. Evasion Attack
 I tested the experiment described in the below paper.
 
 https://arxiv.org/abs/1708.06131
@@ -43,7 +65,7 @@ The usage of my code is really simple.
             xm, log = attacker.attack(x0)
 
 
-## 2. Poisoning Attack
+## 3. Poisoning Attack
 
 Second, I implemented a "poisoning attack" against SVM with a linear kernel.
 The data set is the same as section 1, and I referred to the following paper.
