@@ -2,23 +2,21 @@
 
 ## 1. membership inference
 
-I created a notebook that demonstrates the membership inference based on the following paper
+I implemented the membership inference for pytorch and scikit-learn.
+
+        example
+                sm = ShadowModel([Net(), Net(),Net(), Net(), Net()], 400, shadow_transform=transform)
+                result = sm.fit_transform(X_test, y_test, num_itr=10)
+
+                models = [SVC() for i in range(len(result.keys()))]
+                am = AttackerModel(models)
+                am.fit(result)
+
+My implementation is mainly based on this paper.
 
 https://arxiv.org/abs/1610.05820
 
-The bellow table shows the result of experiment, where I use SVM as target model, shadow model,
-and attack model on MNIST.
 
-        c = 0
-        overall f1 score is  0.706983441324694
-                      precision    recall  f1-score   support
-
-                   0       0.20      0.92      0.33       111
-                   1       0.98      0.55      0.71       889
-
-            accuracy                           0.59      1000
-           macro avg       0.59      0.74      0.52      1000
-        weighted avg       0.90      0.59      0.67      1000
 
 
 
