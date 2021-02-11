@@ -6,7 +6,17 @@ from torch.utils.data.dataset import Dataset
 
 
 class DataSet(Dataset):
+    """
+    This class allows you to convert numpy.array to torch.Dataset
+    """
+
     def __init__(self, x, y, transform=None):
+        """
+        Attriutes
+            x (np.array) :
+            y (np.array) :
+            transform (torch.transform)
+        """
         self.x = x
         self.y = y
         self.transform = transform
@@ -31,7 +41,14 @@ class ShadowModel:
                  shadow_transform=None,
                  seed=42,
                  ):
+        """
+        Attriutes
+            models : torch models for shadow
+            shadow_dataset_suze (int) : size of dataset for shadow models
+            shadow_transfomrm (torch.transform) : transform
+            seed (int) : random seed
 
+        """
         self.models = models
         self.shadow_dataset_size = shadow_dataset_size
         self.num_models = len(models)
@@ -46,6 +63,15 @@ class ShadowModel:
         self._prng = np.random.RandomState(self.seed)
 
     def fit_transform(self, X, y, num_itr=100):
+        """
+        Args:
+            X (np.array)
+            y (np.array)
+            num_itr (int)
+        Return:
+            result_dict (dict) : key is each class
+                                 value is (shadow_data, shadow_label)
+        """
         self._fit(X, y, num_itr=num_itr)
         shadow_in_data, shadow_out_data,\
             in_original_labels, out_original_labels = self._transform()
@@ -66,6 +92,13 @@ class ShadowModel:
         return result_dict
 
     def _fit(self, X, y, num_itr=100):
+        """
+        Args:
+            X
+            y
+            num_itr
+
+        """
 
         indices = np.arange(X.shape[0])
 
@@ -118,6 +151,8 @@ class ShadowModel:
             self.models[model_idx] = model
 
     def _transform(self):
+        """
+        """
 
         shadow_in_data = []
         shadow_out_data = []
@@ -171,6 +206,12 @@ class ShadowModel:
 
 class AttackerModel:
     def __init__(self, models):
+        """
+        Attriutes:
+            _init_models
+            models
+
+        """
         self._init_models = models
         self.models = {}
 
@@ -192,3 +233,60 @@ class AttackerModel:
             in_out_pred[idx] = self.models[label].predict(y_pred_prob[idx])
 
         return in_out_pred
+
+    def predict_proba(self, y_pred_prob, y_labels):
+        y_pred_prob = np.array(y_pred_prob)
+        y_labels = np.array(y_labels)
+        unique_labels = np.unique(y_labels)
+        in_out_pred = np.zeros_like(y_labels).astype(float)
+        for label in unique_labels:
+            idx = np.where(y_labels == label)
+            in_out_pred[idx] =\
+                self.models[label].predict_proba(y_pred_prob[idx])[:, 1]
+
+        return in_out_pred
+
+
+class Membership_Inference:
+    def __init__(self,
+                 shadow_models,
+                 attack_models,
+                 shadow_data_size,
+                 shadow_transform):
+        """
+        Attributes:
+            shadow_models
+            attack_models
+            shadow_data_size
+            shadow_trnasform
+
+        Methods:
+            shadow
+            attack
+            predict
+            predict_proba
+        """
+        self.shadow_models = shadow_models
+        self.attack_models = attack_models
+        self.shadow_data_size = shadow_data_size
+        self.shadow_trasform = shadow_transform
+
+        self.sm = None
+        self.shadow_result = None
+        self.am = None
+
+    def shadow(self, X, y, num_itr):
+        self.sm = ShadowModel(self.shadow_models,
+                              self.shadow_data_size,
+                              shadow_transform=self.shadow_trasform)
+        self.shadow_result = self.sm.fit_transform(X, y, num_itr=num_itr)
+
+    def attack(self):
+        self.am = AttackerModel(self.attack_models)
+        self.am.fit(self.shadow_result)
+
+    def predict(self, pred, label):
+        return self.am.predict(pred, label)
+
+    def predict_proba(self, pred, label):
+        return self.am.predict_proba(pred, label)

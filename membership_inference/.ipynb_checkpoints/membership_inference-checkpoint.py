@@ -192,3 +192,15 @@ class AttackerModel:
             in_out_pred[idx] = self.models[label].predict(y_pred_prob[idx])
 
         return in_out_pred
+
+    def predict_proba(self, y_pred_prob, y_labels):
+        y_pred_prob = np.array(y_pred_prob)
+        y_labels = np.array(y_labels)
+        unique_labels = np.unique(y_labels)
+        in_out_pred = np.zeros_like(y_labels).astype(float)
+        for label in unique_labels:
+            idx = np.where(y_labels == label)
+            in_out_pred[idx] =\
+                self.models[label].predict_proba(y_pred_prob[idx])[:, 1]
+
+        return in_out_pred

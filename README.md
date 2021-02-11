@@ -17,10 +17,25 @@ My implementation is mainly based on this paper.
 https://arxiv.org/abs/1610.05820
 
 
+## 2. model inversion
+
+The following paper suggest the methods to exract the training data from the output of the model.
+
+https://dl.acm.org/doi/pdf/10.1145/2810103.2813677
+
+I implemented this method for pytorch model and test it on AT&T Database of Faces described in the paper.
+The usage of my implementation is as follows.
+
+        example
+                mi = Model_inversion(torch_model, input_shape)
+                x_result, log = mi.attack(target_label, step_size, number_of_iterations)
+
+You can see some results on AT&T dataset.
+
+![](img/model_inversion.png)
 
 
-
-## 2. Evasion Attack
+## 3. Evasion Attack
 I tested the experiment described in the below paper.
 
 https://arxiv.org/abs/1708.06131
@@ -63,7 +78,7 @@ The usage of my code is really simple.
             xm, log = attacker.attack(x0)
 
 
-## 3. Poisoning Attack
+## 4. Poisoning Attack
 
 Second, I implemented a "poisoning attack" against SVM with a linear kernel.
 The data set is the same as section 1, and I referred to the following paper.
