@@ -3,18 +3,39 @@
 ## 1. membership inference
 
 I implemented the membership inference for pytorch and scikit-learn.
-
-        example
-                sm = ShadowModel([Net(), Net(),Net(), Net(), Net()], 400, shadow_transform=transform)
-                result = sm.fit_transform(X_test, y_test, num_itr=10)
-
-                models = [SVC() for i in range(len(result.keys()))]
-                am = AttackerModel(models)
-                am.fit(result)
-
 My implementation is mainly based on this paper.
 
 https://arxiv.org/abs/1610.05820
+
+        example
+
+                shadow_models = [Net().to(device),
+                                 Net().to(device),
+                                 Net().to(device),
+                                 Net().to(device),
+                                 Net().to(device)]
+                shadow_data_size = 2000
+                shadow_transform = transform
+
+                num_label = 10
+                attack_models = [SVC(probability=True) for i in range(num_label)]
+
+                mi = Membership_Inference(shadow_models, attack_models,
+                                        shadow_data_size, shadow_transform)
+                # train shadow models
+                mi.shadow(X_test, y_test, num_itr=20)
+                # train attack model
+                mi.attack()
+
+                # preds is the prediction from target (victim) model
+                # label is the true label of the data
+                pred_in_or_not = mi.predict_proba(preds, label)
+
+I tested my implementation on CIFAR10 and got similar results described in the paper. I sampled 2000 data as training data for the target model, 2000 data as validation data for the target model, and 4000 data for the shadow model. The overall auc of attack model, which predict whether or not the specific data was used for the training of target model, is 0.850.
+The figure shows the performance of the target model and attack model. As the paper says, you can see that
+overfitting can be the main factor for the success of membership inference.
+
+![](img/membership_inference_overfitting.png)
 
 
 ## 2. model inversion

@@ -5,6 +5,12 @@ import torch.optim as optim
 from torch.utils.data.dataset import Dataset
 
 
+def try_gpu(e):
+    if torch.cuda.is_available():
+        return e.cuda()
+    return e
+
+
 class DataSet(Dataset):
     """
     This class allows you to convert numpy.array to torch.Dataset
@@ -134,6 +140,8 @@ class ShadowModel:
                 running_loss = 0.0
                 for i, data in enumerate(trainloader, 0):
                     inputs, labels = data
+                    inputs = try_gpu(inputs)
+                    labels = try_gpu(labels)
                     optimizer.zero_grad()
                     outputs = model(inputs)
 
@@ -170,6 +178,8 @@ class ShadowModel:
             with torch.no_grad():
                 for data in trainloader:
                     inputs, labels = data
+                    inputs = try_gpu(inputs)
+                    labels = try_gpu(labels)
                     outputs = model(inputs)
                     train_preds.append(outputs)
                     train_label.append(labels)
@@ -184,6 +194,8 @@ class ShadowModel:
             with torch.no_grad():
                 for data in testloader:
                     inputs, labels = data
+                    inputs = try_gpu(inputs)
+                    labels = try_gpu(labels)
                     outputs = model(inputs)
                     test_preds.append(outputs)
                     test_label.append(labels)
@@ -218,14 +230,14 @@ class AttackerModel:
     def fit(self, shadow_result):
         for model_idx, (label, (X, y)) in enumerate(shadow_result.items()):
             model = self._init_models[model_idx]
-            X = np.array(X)
-            y = np.array(y)
+            X = np.array(X.cpu())
+            y = np.array(y.cpu())
             model.fit(X, y)
             self.models[label] = model
 
     def predict(self, y_pred_prob, y_labels):
-        y_pred_prob = np.array(y_pred_prob)
-        y_labels = np.array(y_labels)
+        y_pred_prob = np.array(y_pred_prob.cpu())
+        y_labels = np.array(y_labels.cpu())
         unique_labels = np.unique(y_labels)
         in_out_pred = np.zeros_like(y_labels)
         for label in unique_labels:
@@ -235,8 +247,8 @@ class AttackerModel:
         return in_out_pred
 
     def predict_proba(self, y_pred_prob, y_labels):
-        y_pred_prob = np.array(y_pred_prob)
-        y_labels = np.array(y_labels)
+        y_pred_prob = np.array(y_pred_prob.cpu())
+        y_labels = np.array(y_labels.cpu())
         unique_labels = np.unique(y_labels)
         in_out_pred = np.zeros_like(y_labels).astype(float)
         for label in unique_labels:
