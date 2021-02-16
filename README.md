@@ -1,6 +1,15 @@
 # secure machine learning
 
-## 1. membership inference
+## Defense
+
+### 1. DPSGD
+
+https://arxiv.org/abs/1607.00133
+
+
+## Offense
+
+### 1. membership inference
 
 I implemented the membership inference for pytorch and scikit-learn.
 My implementation is mainly based on this paper.
@@ -38,7 +47,9 @@ overfitting can be the main factor for the success of membership inference.
 ![](img/membership_inference_overfitting.png)
 
 
-## 2. model inversion
+
+
+### 2. model inversion
 
 The following paper suggest the methods to exract the training data from the output of the model.
 
@@ -56,7 +67,8 @@ You can see some results on AT&T dataset.
 ![](img/model_inversion.png)
 
 
-## 3. Evasion Attack
+
+### 3. Evasion Attack
 I tested the experiment described in the below paper.
 
 https://arxiv.org/abs/1708.06131
@@ -99,7 +111,7 @@ The usage of my code is really simple.
             xm, log = attacker.attack(x0)
 
 
-## 4. Poisoning Attack
+### 4. Poisoning Attack
 
 Second, I implemented a "poisoning attack" against SVM with a linear kernel.
 The data set is the same as section 1, and I referred to the following paper.
