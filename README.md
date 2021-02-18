@@ -6,6 +6,12 @@
 
 https://arxiv.org/abs/1607.00133
 
+        example
+                optimizer = DPSGD(torch_model.parameters(), lr=0.01, sigma=0.3, c=0.15)
+
+### 2. purification
+
+coming soon!
 
 ## Offense
 
@@ -45,8 +51,6 @@ The figure shows the performance of the target model and attack model. x axis re
 overfitting can be the main factor for the success of membership inference.
 
 ![](img/membership_inference_overfitting.png)
-
-
 
 
 ### 2. model inversion
@@ -133,11 +137,3 @@ The usage of my code is as follows.
             xc_attacked, log = attacker.attack(xc, 1,
                                             X_valid, y_valid_,
                                             num_iterations=200)
-
-
-
-
-
-
-
-
