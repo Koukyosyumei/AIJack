@@ -2,16 +2,14 @@ import numpy as np
 import sklearn
 import copy
 
-# reference https://arxiv.org/abs/1708.06131
-
 
 class Evasion_attack_sklearn:
     def __init__(self, clf, X_minus_1,
                  dmax, max_iter,
                  gamma, lam, t, h,
                  distance="L1", kde_type="L1"):
-        """
-        create an adversarial example against sklearn objects
+        """create an adversarial example against sklearn objects
+           reference https://arxiv.org/abs/1708.06131
 
         Attributes:
             clf (sklearn) : sklearn classifier
@@ -54,12 +52,15 @@ class Evasion_attack_sklearn:
             raise ValueError(f"distance type {distance} is not defined")
 
     def _detect_type_of_classifier(self):
-        """
-        set proper attributes based on the type of classifier
+        """set proper attributes based on the type of classifier
 
         Args:
+
         Returns:
             return True (bool) if there is no error
+
+        Raises:
+            ValueError : if target classifier is not supported
         """
 
         target_type = type(self.clf)
@@ -98,7 +99,8 @@ class Evasion_attack_sklearn:
         return True
 
     def _get_delta_p(self, xm):
-        """
+        """culculate deviation of the estimated density p(xm−1 |yc = −1)
+
         Args:
             xm (np.array) : an adversarial example
 
@@ -114,13 +116,17 @@ class Evasion_attack_sklearn:
             return delta_p
 
     def _get_grad_f(self, xm, norm="l1"):
-        """
+        """culculate deviation of objective function F
+
         Args:
             xm (np.array) : an adversarial example
             norm (str) : type of distance for normalization
 
         Returns:
             delta_f (np.array) : deviation of F
+
+        Raises:
+            ValueError : if the type of norm is not supported
         """
         delta_f = self.delta_g(xm) - self.lam * self._get_delta_p(xm)
         if norm == "l1":
@@ -133,7 +139,8 @@ class Evasion_attack_sklearn:
         return delta_f
 
     def attack(self, x0):
-        """
+        """try evasion attack
+
         Args:
             x0 (np.array) : initial data point
 

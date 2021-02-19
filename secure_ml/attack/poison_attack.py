@@ -3,18 +3,28 @@ import sklearn
 import copy
 from tqdm import tqdm
 
-# https://arxiv.org/abs/1206.6389
-
 
 class Poison_attack_sklearn:
     def __init__(self,
                  clf,
                  X_train, y_train,
                  t=0.5):
-        """
+        """implementation of poison attack for sklearn classifier
+           reference https://arxiv.org/abs/1206.6389
+
         Args:
-            clf : sklean classifier
-            t : step size
+            clf: sklean classifier
+            X_train:
+            y_train:
+            t: step size
+
+        Attributes:
+            clf: sklean classifier
+            X_train:
+            y_train:
+            t: step size
+            kernel
+            delta_kernel
         """
         self.clf = clf
         self.X_train = X_train

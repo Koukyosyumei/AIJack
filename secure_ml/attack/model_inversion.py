@@ -3,6 +3,17 @@ import torch
 
 class Model_inversion:
     def __init__(self, torch_model, input_shape):
+        """implementation of model inversion attack
+           reference https://dl.acm.org/doi/pdf/10.1145/2810103.2813677
+
+        Args:
+            model
+            input_shape
+
+        Attributes:
+            model
+            input_shape
+        """
         self.model = torch_model
         self.input_shape = input_shape
 
