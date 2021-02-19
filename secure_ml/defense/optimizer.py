@@ -3,6 +3,15 @@ from torch.optim import Optimizer
 
 
 class DPSGD(Optimizer):
+    """implementation of DPSGD
+       reference https://arxiv.org/abs/1607.00133
+
+    Args:
+        params:
+        lr:
+        sigma:
+        c:
+    """
 
     def __init__(self, params, lr=0.05, sigma=0.1, c=0.1):
         if lr < 0.0:
@@ -29,6 +38,9 @@ class DPSGD(Optimizer):
         Arguments:
             closure (callable, optional): A closure that reevaluates the model
                 and returns the loss.
+
+        Returns:
+            loss
         """
         loss = None
         if closure is not None:

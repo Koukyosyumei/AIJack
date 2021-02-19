@@ -37,6 +37,11 @@ class Poison_attack_sklearn:
         _ = self._detect_type_of_classifier()
 
     def _detect_type_of_classifier(self):
+        """detect the type of classifier and prepare proper settings
+
+        Returns:
+            return true if no error occurs
+        """
         target_type = type(self.clf)
 
         if target_type == sklearn.svm._classes.SVC:
@@ -54,13 +59,38 @@ class Poison_attack_sklearn:
         return True
 
     def _delta_q(self, xi, xc, yi, yc):
+        """culculate deviation of q
+
+        Args:
+            xi:
+            xc:
+            yi:
+            yc:
+
+        Returns:
+            dq:
+        """
         d = xi.shape[1]
         yy = np.array([(yi * yc)] * d).T
-        return yy * (self.delta_kernel(xi, xc))
+        dq = yy * (self.delta_kernel(xi, xc))
+        return dq
 
     def attack(self, xc, yc,
                X_valid, y_valid,
                num_iterations=200):
+        """create an adversarial example for poison attack
+
+        Args:
+            xc:
+            yc:
+            x_valid:
+            y_valid:
+            num_iteration: (default = 200)
+
+        Returns:
+            xc:
+            log:
+        """
         # flip the class label
         yc *= -1
         log = []
