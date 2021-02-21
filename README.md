@@ -99,7 +99,7 @@ I created an adversarial example which seems "7" for human, but svm can't correc
 
 The usage of my code is really simple.
 
-        example
+        example on MNIST
 
             # datasets which contains only "3"
             X_minus_1 = X_train[np.where(y_train == "3")]

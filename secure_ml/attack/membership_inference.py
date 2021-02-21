@@ -7,7 +7,7 @@ from secure_ml.utils import try_gpu, DataSet
 
 class ShadowModel:
     """Train shadow models for membership inference
-        reference https://arxiv.org/abs/1610.05820
+       reference https://arxiv.org/abs/1610.05820
 
     Args:
         models : torch models for shadow
@@ -117,6 +117,7 @@ class ShadowModel:
             self.testloaders.append(testloader)
 
             # training
+            # TODO : allow users to use specified loss function and optimizer
             criterion = nn.CrossEntropyLoss()
             optimizer = optim.SGD(model.parameters(), lr=0.001, momentum=0.9)
 
