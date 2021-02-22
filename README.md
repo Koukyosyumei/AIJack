@@ -4,12 +4,19 @@
 
 ### 1. DPSGD
 
-https://arxiv.org/abs/1607.00133
+DPSGD is a kind of optimization algorythms which gurantee differential privacy.
+
+*M. Abadi, A. Chu, I. Goodfellow, B. McMahan, I. Mironov, K. Talwar, and L. Zhang. Deep learning with differential privacy. In 23rd ACM Conference on Computer and Communications Security(ACM CCS), pp. 308–318, 2016, https://arxiv.org/abs/1607.00133*
 
         example
                 optimizer = DPSGD(torch_model.parameters(), lr=0.01, sigma=0.3, c=0.15)
 
 ### 2. purification
+
+Purification is a defense algorythm against membership inference and model inversion attacks.
+It may be able to work for other types of attacks. The intuition behind Purificaiton is that
+applying autoencoder with prediction made by ml algorythms can decrease the deviation of predicted value which
+is one of the biggest causes of vulnerability of machine learning.
 
 results of label 4
 
@@ -24,7 +31,7 @@ results of label 4
 ![](img/without_purification.png)
 ![](img/with_purification.png)
 
-https://arxiv.org/abs/2005.03915
+*Z. Yang, B. Shao, B. Xuan, E. Chang, F. Zhang, Defending Model Inversion and Membership Inference Attacks via Prediction Purification, 2020, https://arxiv.org/abs/2005.03915*
 
 ## Offense
 
@@ -33,7 +40,7 @@ https://arxiv.org/abs/2005.03915
 I implemented the membership inference for pytorch and scikit-learn.
 My implementation is mainly based on this paper.
 
-https://arxiv.org/abs/1610.05820
+ *R. Shokri, M. Stronati, C. Song, V. Shmatikov. Membership inference attacks against machine learning models. 2017 IEEE Symposium on Security and Privacy (SP). IEEE, 2017. https://arxiv.org/abs/1610.05820*
 
         example
 
@@ -68,10 +75,7 @@ overfitting can be the main factor for the success of membership inference.
 
 ### 2. model inversion
 
-The following paper suggest the methods to exract the training data from the output of the model.
-
-https://dl.acm.org/doi/pdf/10.1145/2810103.2813677
-
+Model inversion is the methods to exract the training data from the output of the model.
 I implemented this method for pytorch model and test it on AT&T Database of Faces described in the paper.
 The usage of my implementation is as follows.
 
@@ -83,15 +87,10 @@ You can see some results on AT&T dataset.
 
 ![](img/model_inversion.png)
 
-
+*M. Fredrikson, S. Jha, and T. Ristenpart. Model inversion attacks that exploit confidence information and basic countermeasures. In Proceedings of the 22nd ACM SIGSAC Conference on Computer and Communications Security. ACM, 2015. https://dl.acm.org/doi/pdf/10.1145/2810103.2813677*
 
 ### 3. Evasion Attack
-I tested the experiment described in the below paper.
 
-https://arxiv.org/abs/1708.06131
-
-Although the author created adversarial examples against SVM with linear kernel,\
-I also implemented the attacker against RBF and poly kernel.
 The target model is SVM with the RBF kernel which is trained for binary classification
 between "3" and "7" of mnist.
 The performance of the model is as follows.
@@ -127,13 +126,12 @@ The usage of my code is really simple.
             # x0 is the intial ponint ("7")
             xm, log = attacker.attack(x0)
 
+*Biggio, B., Corona, I., Maiorca, D., Nelson, B., Šrndić, N., Laskov, P., Giacinto, G., Roli, F., 2013. Evasion Attacks against Machine Learning at Test Time. In ECML-PKDD 2013. https://arxiv.org/abs/1708.06131*
 
 ### 4. Poisoning Attack
 
 Second, I implemented a "poisoning attack" against SVM with a linear kernel.
 The data set is the same as section 1, and I referred to the following paper.
-https://arxiv.org/abs/1206.6389
-
 You can see that adding only one poisoned image dramatically decreases the accuracy of SVM.
 
 ![](img/poison_loss.png)
@@ -150,3 +148,5 @@ The usage of my code is as follows.
             xc_attacked, log = attacker.attack(xc, 1,
                                             X_valid, y_valid_,
                                             num_iterations=200)
+
+*Biggio, B., Nelson, B. and Laskov, P., 2012. Poisoning attacks against support vector machines. In ICML 2012. https://arxiv.org/abs/1206.6389*
