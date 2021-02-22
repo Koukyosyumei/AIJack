@@ -39,8 +39,8 @@ class Evasion_attack_sklearn:
             distance (str): type of distance such as L2 or L1
             kde_type (str): type of kernel density estimator
             n_minus_1 (int): number of rows of X_minus_1
-            delta_g (func): deviation of he discriminant function of a surrogate
-                             classifier f learnt on D
+            delta_g (func): deviation of he discriminant function of a
+                            surrogate classifier f learnt on D
 
         Usage:
             # datasets which contains only "3"
@@ -50,7 +50,8 @@ class Evasion_attack_sklearn:
             attacker = Attack_sklearn(clf = clf, X_minus_1 = X_minus_1,
                                       dmax =  (5000 / 255) * 2.5,
                                       max_iter = 300,
-                                      gamma = 1 / (X_train.shape[1] * np.var(X_train)),
+                                      gamma = 1 / (X_train.shape[1] *
+                                                   np.var(X_train)),
                                       lam = 10, t = 0.5, h = 10)
 
             # x0 is the intial ponint ("7")
