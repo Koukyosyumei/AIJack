@@ -7,10 +7,10 @@ class DPSGD(Optimizer):
        reference https://arxiv.org/abs/1607.00133
 
     Args:
-        params:
-        lr:
-        sigma:
-        c:
+        params: parameters of the model
+        lr: learning rate
+        sigma: noise scale
+        c: grandient norm bound C
     """
 
     def __init__(self, params, lr=0.05, sigma=0.1, c=0.1):

@@ -45,15 +45,24 @@ def PurifierLoss(prediction,
     """basic loss function for purification
        reference https://arxiv.org/abs/2005.03915
 
+       train purifier G against target model F to minimize the
+       following objective function
+
+            L(G) = E[R(G(F(x)), F(x)) + λC(G(F(x), argmax F(x)))]
+
+       R is a reconstruction loss function
+       C is a cross entropy loss function
+       λ controls the balance of the two loss functions
+
     Args:
-        prediction:
-        pred_purified:
-        lam:
-        purifier_criterion:
-        accuracy_criterion:
+        prediction: predicted value of target model
+        pred_purified: purified predicted value of target model
+        lam: controls the balance of the following two functions
+        purifier_criterion: loss function to reshapre confidense score
+        accuracy_criterion: loss function to preserve the accuracy (C)
 
     Return:
-        loss_purifier: weighted average of two loss function
+        loss_purifier: weighted average of the two loss function
     """
 
     loss_1 = purifier_criterion(pred_purified, prediction)

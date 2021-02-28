@@ -83,8 +83,6 @@ class Evasion_attack_sklearn:
     def _detect_type_of_classifier(self):
         """set proper attributes based on the type of classifier
 
-        Args:
-
         Returns:
             return True (bool) if there is no error
 
@@ -137,6 +135,7 @@ class Evasion_attack_sklearn:
             delta_p (np.array) : deviation of p
 
         """
+
         if self.kde_type == "L1":
             a = (-1 / (self.n_minus_1 * self.h))
             b = np.exp(-(np.sum(np.abs(xm - self.X_minus_1), axis=1)
@@ -157,6 +156,7 @@ class Evasion_attack_sklearn:
         Raises:
             ValueError : if the type of norm is not supported
         """
+
         delta_f = self.delta_g(xm) - self.lam * self._get_delta_p(xm)
         if norm == "l1":
             delta_f /= (np.sum(np.abs(delta_f)) + 1e-5)

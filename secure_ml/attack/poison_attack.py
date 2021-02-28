@@ -14,8 +14,8 @@ class Poison_attack_sklearn:
 
         Args:
             clf: sklean classifier
-            X_train:
-            y_train:
+            X_train: training data for clf
+            y_train: training label for clf
             t: step size
 
         Attributes:
@@ -60,6 +60,9 @@ class Poison_attack_sklearn:
 
     def _delta_q(self, xi, xc, yi, yc):
         """culculate deviation of q
+           Q = yy.T * K denotes the label - annotated version of K,
+           and α denotes the SVM’s dual variables corresponding
+           to each training point.
 
         Args:
             xi:
@@ -81,15 +84,15 @@ class Poison_attack_sklearn:
         """create an adversarial example for poison attack
 
         Args:
-            xc:
-            yc:
-            x_valid:
-            y_valid:
+            xc: initial attack point
+            yc: true label of initial attack point
+            x_valid: validation data for target clf
+            y_valid: validation label for target clf
             num_iteration: (default = 200)
 
         Returns:
-            xc:
-            log:
+            xc: created adversarial example
+            log: log of score of target clf under attack
         """
         # flip the class label
         yc *= -1
@@ -140,10 +143,18 @@ class Poison_attack_sklearn:
             delta_Qsc = self._delta_q(xs, xc.reshape, ys, yc)
             delta_Qkc = self._delta_q(X_valid, xc.reshape(1, -1), y_valid, yc)
 
+            # α denotes the SVM’s dual variables corresponding to each
+            # training point
             alpha = clf_.decision_function([xc])
+
+            # the desired gradient used for optimizing our attack:
             delta_L = np.sum(((Mk.dot(delta_Qsc) + delta_Qkc) * alpha),
                              axis=0)
+
+            # u is a norm-1 vector representing the attack direction,
             u = delta_L / np.sqrt(np.sum((delta_L ** 2)))
+
+            # the attack point
             xc += self.t * u
 
         # print(f"initial score is {log[0]}")
