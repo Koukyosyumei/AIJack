@@ -1,7 +1,14 @@
+import os
 from setuptools import setup
 
-install_requires = [
-]
+
+def read_requirements():
+    """Parse requirements from requirements.txt."""
+    reqs_path = os.path.join('.', 'requirements.txt')
+    with open(reqs_path, 'r') as f:
+        requirements = [line.rstrip() for line in f]
+    return requirements
+
 
 packages = [
     'secure_ml',
@@ -16,7 +23,11 @@ console_scripts = [
 setup(
     name='secure_ml',
     version='0.0.0',
+    description='package to implemet secure machine learning algorythm',
+    author='Hideaki Takahashi',
+    author_email='koukyosyumei@hotmail.com',
+    install_requires=read_requirements(),
+    url="https://github.com/Koukyosyumei/secure_ml",
     packages=packages,
-    install_requires=install_requires,
     entry_points={'console_scripts': console_scripts},
 )
