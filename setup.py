@@ -26,6 +26,7 @@ setup(
     description='package to implemet secure machine learning algorythm',
     author='Hideaki Takahashi',
     author_email='koukyosyumei@hotmail.com',
+    license="MIT",
     install_requires=read_requirements(),
     url="https://github.com/Koukyosyumei/secure_ml",
     packages=packages,
