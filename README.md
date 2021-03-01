@@ -1,5 +1,9 @@
 # secure machine learning
 
+## Install
+
+pip install git+https://github.com/Koukyosyumei/secure_ml
+
 ## Defense
 
 ### 1. DPSGD
