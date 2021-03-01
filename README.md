@@ -101,7 +101,7 @@ You can test poison_attack for sklearn classifer with secure_ml (currently oly s
 *Biggio, B., Nelson, B. and Laskov, P., 2012. Poisoning attacks against support vector machines. In ICML 2012. https://arxiv.org/abs/1206.6389*
 
 
-### Example notebooks
+## Example notebooks
 
 | algorythms           | link                                                                        |
 | -------------------- | --------------------------------------------------------------------------- |
