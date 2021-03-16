@@ -86,11 +86,14 @@ class FSHA:
     def addNoise(x, alpha):
         pass
 
-    def train(self, epochs=10, verbose=2, log=False):
+    def train(self, epochs=10, verbose=2, save_log=False):
         """
         Args:
-            epochs:
-            verbose:
+            epochs (int): num of iteration
+            verbose (int): log interval
+            save_log (bool):
+
+        Returns:
             log
         """
 
@@ -113,7 +116,7 @@ class FSHA:
                     = self.train_step(x_private, x_public,
                                       label_private, label_public)
 
-                if log:
+                if save_log:
                     log["f_loss"].append(f_loss)
                     log["tilde_f_loss"].append(tilde_f_loss)
                     log["D_loss"].append(D_loss)
@@ -238,10 +241,11 @@ class FSHA:
     def attack(self, x_private):
         """
         Args:
-            x_private
+            x_private (torch.Tensor): client's dataset
 
         Returns:
-            tilde_x_private, control
+            tilde_x_private (torch.Tensor): self.decoder(self.f(x_private))
+            control (torch.Tensor): self.decoder(self.tilde_f(x_private))
         """
         with torch.no_grad():
             # smashed data sent from the client:
