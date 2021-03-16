@@ -9,7 +9,7 @@ class ShadowModel:
     """Train shadow models for membership inference
        reference https://arxiv.org/abs/1610.05820
 
-    Args:
+    Args
         models : torch models for shadow
         shadow_dataset_suze (int) : size of dataset for shadow models
         shadow_transfomrm (torch.transform) : transform
