@@ -191,7 +191,7 @@ class FSHA:
         if self.wgan:
             loss_discr_true = torch.mean(adv_public_logits)
             loss_discr_fake = -torch.mean(adv_private_logits)
-            D_loss = loss_discr_true + loss_discr_fake
+            vanila_D_loss = loss_discr_true + loss_discr_fake
         else:
             loss_discr_true = torch.nn.BCEWithLogitsLoss()(
                 torch.ones_like(adv_public_logits), adv_public_logits)
