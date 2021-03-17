@@ -239,7 +239,7 @@ class FSHA:
         return d_regularizer
 
     def attack(self, x_private):
-        """
+        """attack splitNN
         Args:
             x_private (torch.Tensor): client's dataset
 
