@@ -116,22 +116,23 @@ class FSHA:
                     = self.train_step(x_private, x_public,
                                       label_private, label_public)
 
-                if save_log:
-                    log["f_loss"].append(f_loss)
-                    log["tilde_f_loss"].append(tilde_f_loss)
-                    log["D_loss"].append(D_loss)
-                    log["loss_c_verification"].append(loss_c_verification)
+                epoch_f_loss += f_loss / len_dataloader
+                epoch_tilde_f_loss += tilde_f_loss / len_dataloader
+                epoch_D_loss += D_loss / len_dataloader
+                epoch_loss_c_verification +=\
+                    loss_c_verification / len_dataloader
 
-                epoch_f_loss += f_loss
-                epoch_tilde_f_loss += tilde_f_loss
-                epoch_D_loss = D_loss
-                epoch_loss_c_verification = loss_c_verification
+            if save_log:
+                log["f_loss"].append(epoch_f_loss)
+                log["tilde_f_loss"].append(epoch_tilde_f_loss)
+                log["D_loss"].append(epoch_D_loss)
+                log["loss_c_verification"].append(epoch_loss_c_verification)
 
             if epoch % verbose == 0:
-                print(f"f_loss:{epoch_f_loss/len_dataloader} " +
-                      f"tilde_f_loss:{epoch_tilde_f_loss/len_dataloader} " +
-                      f"D_loss:{epoch_D_loss/len_dataloader} " +
-                      f"loss_c:{epoch_loss_c_verification/len_dataloader}")
+                print(f"f_loss:{epoch_f_loss} " +
+                      f"tilde_f_loss:{epoch_tilde_f_loss} " +
+                      f"D_loss:{epoch_D_loss} " +
+                      f"loss_c:{epoch_loss_c_verification}")
 
         return log
 
@@ -197,10 +198,10 @@ class FSHA:
             loss_discr_fake = torch.nn.BCEWithLogitsLoss()(
                 torch.zeros_like(adv_private_logits), adv_private_logits)
             # discriminator's loss
-            D_loss = (loss_discr_true + loss_discr_fake) / 2
+            vanila_D_loss = (loss_discr_true + loss_discr_fake) / 2
 
-        D_loss = D_loss + self.w*self.gradient_penalty(z_private,
-                                                       z_public)
+        D_loss = vanila_D_loss + self.w*self.gradient_penalty(z_private,
+                                                              z_public)
         D_loss.backward()
         self.optimizer2.step()
 
@@ -209,7 +210,7 @@ class FSHA:
         rec_x_private = self.decoder(z_private)
         loss_c_verification = self.distance_data(x_private, rec_x_private)
 
-        return f_loss, tilde_f_loss, D_loss, loss_c_verification
+        return f_loss, tilde_f_loss, vanila_D_loss, loss_c_verification
 
     def gradient_penalty(self, x, x_gen):
         """
