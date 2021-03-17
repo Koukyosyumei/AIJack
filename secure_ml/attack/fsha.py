@@ -7,8 +7,8 @@ class FSHA:
                  attacker_dataloader,
                  f, tilde_f, D, decoder,
                  optimizers,
-                 wgan,
-                 gradient_penalty,
+                 wgan=True,
+                 gradient_penalty=100,
                  distance_data_loss=torch.nn.MSELoss(),
                  distance_data=torch.nn.MSELoss(),
                  ):
@@ -55,7 +55,6 @@ class FSHA:
 
         self.client_dataloader = client_dataloader
         self.attacker_dataloader = attacker_dataloader
-        self.size_dataloader = len(client_dataloader)
 
         self.f = f
         self.tilde_f = tilde_f
@@ -102,6 +101,7 @@ class FSHA:
                "D_loss": [],
                "loss_c_verification": []}
 
+        len_dataloader = len(self.client_dataloader)
         for epoch in range(epochs):
 
             epoch_f_loss = 0
@@ -128,14 +128,10 @@ class FSHA:
                 epoch_loss_c_verification = loss_c_verification
 
             if epoch % verbose == 0:
-                print(f"f_loss:\
-                     {epoch_f_loss/self.size_dataloader} " +
-                      f"tilde_f_loss:\
-                           {epoch_tilde_f_loss/self.size_dataloader} " +
-                      f"D_loss:\
-                           {epoch_D_loss/self.size_dataloader} " +
-                      f"loss_c_verification:\
-                           {epoch_loss_c_verification/self.size_dataloader} ")
+                print(f"f_loss:{epoch_f_loss/len_dataloader} " +
+                      f"tilde_f_loss:{epoch_tilde_f_loss/len_dataloader} " +
+                      f"D_loss:{epoch_D_loss/len_dataloader} " +
+                      f"loss_c:{epoch_loss_c_verification/len_dataloader}")
 
         return log
 
