@@ -1,2 +1,4 @@
 example/*/data
 example/*/openml
+__pycache__/
+.ipynb_checkpoints/
