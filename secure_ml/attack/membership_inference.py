@@ -353,7 +353,13 @@ class Membership_Inference(BaseAttacker):
         self.am.fit(self.shadow_result)
 
     def attack(self, x, y, proba=False):
-        """Attack victim model"""
+        """Attack victim model
+
+        Args:
+            x: target datasets which the attacker wants to classify
+            y: target labels which the attacker wants to classify
+            proba: the format of the output
+        """
         prediction_of_taregt_model = self.target_model(x)
         if proba:
             return self.predit_proba(prediction_of_taregt_model, y)
