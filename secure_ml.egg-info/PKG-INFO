@@ -1,10 +1,10 @@
 Metadata-Version: 1.0
 Name: secure-ml
 Version: 0.0.0
-Summary: UNKNOWN
-Home-page: UNKNOWN
-Author: UNKNOWN
-Author-email: UNKNOWN
-License: UNKNOWN
+Summary: package to implemet secure machine learning algorythm
+Home-page: https://github.com/Koukyosyumei/secure_ml
+Author: Hideaki Takahashi
+Author-email: koukyosyumei@hotmail.com
+License: MIT
 Description: UNKNOWN
 Platform: UNKNOWN

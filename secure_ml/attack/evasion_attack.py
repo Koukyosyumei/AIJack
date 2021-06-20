@@ -1,10 +1,13 @@
-import numpy as np
-import sklearn
 import copy
 
+import numpy as np
+import sklearn
 
-class Evasion_attack_sklearn:
-    def __init__(self, clf, X_minus_1,
+from ..attack.base_attack import BaseAttacker
+
+
+class Evasion_attack_sklearn(BaseAttacker):
+    def __init__(self, target_model, X_minus_1,
                  dmax, max_iter,
                  gamma, lam, t, h,
                  distance="L1", kde_type="L1"):
@@ -12,7 +15,7 @@ class Evasion_attack_sklearn:
            reference https://arxiv.org/abs/1708.06131
 
         Args:
-            clf (sklearn): sklearn classifier
+            target_model (sklearn): sklearn classifier
             X_minus_1 (numpy.array): datasets that contains
                                     only the class you want to misclasssify
             dmax (float): max distance between the adversarial example
@@ -26,7 +29,7 @@ class Evasion_attack_sklearn:
             kde_type (str): type of kernel density estimator
 
         Attributes:
-            clf (sklearn): sklearn classifier
+            target_model (sklearn): sklearn classifier
             X_minus_1 (numpy.array): datasets that contains
                                     only the class you want to misclasssify
             dmax (float): max distance between the adversarial example
@@ -42,12 +45,16 @@ class Evasion_attack_sklearn:
             delta_g (func): deviation of he discriminant function of a
                             surrogate classifier f learnt on D
 
+        Raises:
+            ValueError: if given distance is not supported.
+
         Usage:
             # datasets which contains only "3"
             X_minus_1 = X_train[np.where(y_train == "3")]
 
             # Attack_sklearn automatically detect the type of the classifier
-            attacker = Attack_sklearn(clf = clf, X_minus_1 = X_minus_1,
+            attacker = Attack_sklearn(target_model = target_model,
+                                      X_minus_1 = X_minus_1,
                                       dmax =  (5000 / 255) * 2.5,
                                       max_iter = 300,
                                       gamma = 1 / (X_train.shape[1] *
@@ -57,8 +64,8 @@ class Evasion_attack_sklearn:
             # x0 is the intial ponint ("7")
             xm, log = attacker.attack(x0)
         """
+        super().__init__(target_model)
 
-        self.clf = clf
         self.X_minus_1 = X_minus_1
         self.dmax = dmax
         self.max_iter = max_iter
@@ -90,34 +97,37 @@ class Evasion_attack_sklearn:
             ValueError : if target classifier is not supported
         """
 
-        target_type = type(self.clf)
+        target_type = type(self.target_model)
 
         if target_type == sklearn.svm._classes.SVC:
-            params = self.clf.get_params()
+            params = self.target_model.get_params()
             kernel_type = params["kernel"]
             if kernel_type == "rbf":
-                def kernel(xm): return np.exp(-self.gamma *
-                                              ((xm - self.clf.support_vectors_)
-                                               ** 2))
+                def kernel(xm): return np.exp(
+                    -self.gamma *
+                    ((xm -
+                      self.target_model.support_vectors_)
+                     ** 2))
 
                 def delta_kernel(xm): return (-2 * self.gamma)\
                     * kernel(xm)\
-                    * (xm - self.clf.support_vectors_)
+                    * (xm - self.target_model.support_vectors_)
 
             elif kernel_type == "linear":
-                def delta_kernel(xm): return self.clf.support_vectors_
+                def delta_kernel(xm): return self.target_model.support_vectors_
 
             elif kernel_type == "poly":
                 p = params["degree"]
-                c = self.clf.intercept_
+                c = self.target_model.intercept_
 
                 def delta_kernel(xm): return p *\
-                    (((xm * self.clf.support_vectors_) + c) ** (p - 1))\
-                    * self.clf.support_vectors_
+                    (((xm * self.target_model.support_vectors_)
+                      + c) ** (p - 1))\
+                    * self.target_model.support_vectors_
             else:
                 raise ValueError(f"kernel type {kernel_type} is not supported")
 
-            self.delta_g = lambda xm: self.clf.dual_coef_.dot(
+            self.delta_g = lambda xm: self.target_model.dual_coef_.dot(
                 delta_kernel(xm))
 
         else:
@@ -188,6 +198,7 @@ class Evasion_attack_sklearn:
             if d > self.dmax:
                 xm = x0 + ((xm - x0) / d) * self.dmax
 
-            g_list.append(self.clf.decision_function(xm.reshape(1, -1)))
+            g_list.append(
+                self.target_model.decision_function(xm.reshape(1, -1)))
 
         return xm, g_list
