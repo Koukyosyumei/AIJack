@@ -3,20 +3,20 @@ import math
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
+from torch.nn.functional import pad
 from torch.nn.modules.utils import _pair
 from torch.nn.parameter import Parameter
-from torch.nn.functional import pad
 from torch.utils.data.dataset import Dataset
 
 
 def try_gpu(e):
-    """send given tensor to gpu if it is available
+    """Send given tensor to gpu if it is available
 
     Args:
-        e (torch.Tensor)
+        e: (torch.Tensor)
 
     Returns:
-        e (torch.Tensor)
+        e: (torch.Tensor)
     """
     if torch.cuda.is_available():
         return e.cuda()
