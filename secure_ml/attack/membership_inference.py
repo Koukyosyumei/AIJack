@@ -2,7 +2,9 @@ import numpy as np
 import torch
 import torch.nn as nn
 import torch.optim as optim
-from secure_ml.utils import try_gpu, DataSet
+from secure_ml.utils import DataSet, try_gpu
+
+from ..attack.base_attack import BaseAttacker
 
 
 class ShadowModel:
@@ -58,7 +60,7 @@ class ShadowModel:
             y (np.array): target label
             num_itr (int): number of iteration for training
 
-        Return:
+        Returns:
             result_dict (dict) : key is each class
                                  value is (shadow_data, shadow_label)
         """
@@ -224,7 +226,7 @@ class AttackerModel:
            reference https://arxiv.org/abs/1610.05820
 
         Args:
-            models
+            models: models of attacker
 
         Attriutes:
             _init_models
@@ -294,20 +296,23 @@ class AttackerModel:
         return in_out_pred
 
 
-class Membership_Inference:
+class Membership_Inference(BaseAttacker):
     def __init__(self,
+                 target_model,
                  shadow_models,
                  attack_models,
                  shadow_data_size,
                  shadow_transform):
-        """implementation of membership inference
+        """Implementation of membership inference
            reference https://arxiv.org/abs/1610.05820
 
         Args:
-            shadow_models
-            attack_models
-            shadow_data_size
-            shadow_transform
+            target_model: the model of the victim
+            shadow_models: shadow model for attack
+            attack_models: attacker model for attack
+            shadow_data_size: the size of datasets for
+                              training the shadow models
+            shadow_transform: the transformation function for shadow datasets
 
         Attributes:
             shadow_models
@@ -318,6 +323,7 @@ class Membership_Inference:
             shadow_result
             am
         """
+        super().__init__(target_model)
         self.shadow_models = shadow_models
         self.attack_models = attack_models
         self.shadow_data_size = shadow_data_size
@@ -327,7 +333,7 @@ class Membership_Inference:
         self.shadow_result = None
         self.am = None
 
-    def shadow(self, X, y, num_itr):
+    def train_shadow(self, X, y, num_itr):
         """train shadow models
 
         Args:
@@ -340,14 +346,22 @@ class Membership_Inference:
                               shadow_transform=self.shadow_trasform)
         self.shadow_result = self.sm.fit_transform(X, y, num_itr=num_itr)
 
-    def attack(self):
-        """train attack models
+    def train_attacker(self):
+        """Train attacker models
         """
         self.am = AttackerModel(self.attack_models)
         self.am.fit(self.shadow_result)
 
+    def attack(self, x, y, proba=False):
+        """Attack victim model"""
+        prediction_of_taregt_model = self.target_model(x)
+        if proba:
+            return self.predit_proba(prediction_of_taregt_model, y)
+        else:
+            return self.predit(prediction_of_taregt_model, y)
+
     def predict(self, pred, label):
-        """predict whether the given prediction came from training data or not
+        """Predict whether the given prediction came from training data or not
 
         Args:
             pred (torch.Tensor): predicted probabilities on the data

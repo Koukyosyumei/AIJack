@@ -1,32 +1,36 @@
+import copy
+
 import numpy as np
 import sklearn
-import copy
 from tqdm import tqdm
 
+from ..attack.base_attack import BaseAttacker
 
-class Poison_attack_sklearn:
+
+class Poison_attack_sklearn(BaseAttacker):
     def __init__(self,
-                 clf,
+                 target_model,
                  X_train, y_train,
                  t=0.5):
         """implementation of poison attack for sklearn classifier
            reference https://arxiv.org/abs/1206.6389
 
         Args:
-            clf: sklean classifier
-            X_train: training data for clf
-            y_train: training label for clf
+            target_model: sklean classifier
+            X_train: training data for target_model
+            y_train: training label for target_model
             t: step size
 
         Attributes:
-            clf: sklean classifier
+            target_model: sklean classifier
             X_train:
             y_train:
             t: step size
             kernel
             delta_kernel
         """
-        self.clf = clf
+        super().__init__(target_model)
+
         self.X_train = X_train
         self.y_train = y_train
         self.t = t
@@ -41,11 +45,14 @@ class Poison_attack_sklearn:
 
         Returns:
             return true if no error occurs
+
+        Raises:
+            ValueError: if given kernel type is not supported.
         """
-        target_type = type(self.clf)
+        target_type = type(self.target_model)
 
         if target_type == sklearn.svm._classes.SVC:
-            params = self.clf.get_params()
+            params = self.target_model.get_params()
             kernel_type = params["kernel"]
             if kernel_type == "linear":
                 self.kernel = lambda xa, xb: xa.dot(xb.T)
@@ -59,16 +66,17 @@ class Poison_attack_sklearn:
         return True
 
     def _delta_q(self, xi, xc, yi, yc):
-        """culculate deviation of q
+        """Culculate deviation of q
            Q = yy.T * K denotes the label - annotated version of K,
            and α denotes the SVM’s dual variables corresponding
            to each training point.
 
         Args:
-            xi:
-            xc:
-            yi:
-            yc:
+            xi: intermidiate results of the generation of adversarial example
+            xc: initial attack point
+            yi: the labels of intermidiate results of the generation
+                of adversarial example
+            yc: true label of initial attack point
 
         Returns:
             dq:
@@ -81,18 +89,18 @@ class Poison_attack_sklearn:
     def attack(self, xc, yc,
                X_valid, y_valid,
                num_iterations=200):
-        """create an adversarial example for poison attack
+        """Create an adversarial example for poison attack
 
         Args:
             xc: initial attack point
             yc: true label of initial attack point
-            x_valid: validation data for target clf
-            y_valid: validation label for target clf
-            num_iteration: (default = 200)
+            X_valid: validation data for target_model
+            y_valid: validation label for target_model
+            num_iterations: (default = 200)
 
         Returns:
             xc: created adversarial example
-            log: log of score of target clf under attack
+            log: log of score of target_model under attack
         """
         # flip the class label
         yc *= -1
@@ -106,18 +114,18 @@ class Poison_attack_sklearn:
 
         for i in tqdm(range(num_iterations)):
 
-            clf_ = copy.copy(self.clf)
-            clf_.__init__()
-            clf_.set_params(**self.clf.get_params())
-            # clf_ = sklearn.svm.SVC(kernel="linear", C=1)
+            target_model_ = copy.copy(self.target_model)
+            target_model_.__init__()
+            target_model_.set_params(**self.target_model.get_params())
+            # target_model_ = sklearn.svm.SVC(kernel="linear", C=1)
 
             # add poinsoned data
-            clf_.fit(np.concatenate([X_train_poisoned,
-                                     xc.reshape(1, -1)]),
-                     np.concatenate([y_train_poisoned,
-                                     [yc]]))
+            target_model_.fit(np.concatenate([X_train_poisoned,
+                                              xc.reshape(1, -1)]),
+                              np.concatenate([y_train_poisoned,
+                                              [yc]]))
 
-            score_temp = clf_.score(X_valid, y_valid)
+            score_temp = target_model_.score(X_valid, y_valid)
             log.append(score_temp)
             # if score_temp < best_score:
             #    best_score = score_temp
@@ -125,9 +133,9 @@ class Poison_attack_sklearn:
             #    best_itr = i
 
             # ------------------------ #
-            xs = clf_.support_vectors_
+            xs = target_model_.support_vectors_
             ys = np.concatenate([y_train_poisoned,
-                                 [yc]])[clf_.support_]
+                                 [yc]])[target_model_.support_]
 
             Qks = y_valid.reshape(-1, 1).dot(ys.reshape(-1,
                                                         1).T)\
@@ -145,7 +153,7 @@ class Poison_attack_sklearn:
 
             # α denotes the SVM’s dual variables corresponding to each
             # training point
-            alpha = clf_.decision_function([xc])
+            alpha = target_model_.decision_function([xc])
 
             # the desired gradient used for optimizing our attack:
             delta_L = np.sum(((Mk.dot(delta_Qsc) + delta_Qkc) * alpha),
