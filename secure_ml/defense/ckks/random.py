@@ -1,4 +1,5 @@
 import numpy as np
+from numpy.polynomial import Polynomial
 
 
 def gen_binary_poly(size):
@@ -10,7 +11,7 @@ def gen_binary_poly(size):
         array of coefficients with the coeff[i] being
         the coeff of x ^ i.
     """
-    return np.random.randint(0, 2, size, dtype=np.int64)
+    return Polynomial(np.random.randint(0, 2, size, dtype=np.int64))
 
 
 def gen_uniform_poly(size, modulus):
@@ -22,7 +23,7 @@ def gen_uniform_poly(size, modulus):
         array of coefficients with the coeff[i] being
         the coeff of x ^ i.
     """
-    return np.random.randint(0, modulus, size, dtype=np.int64)
+    return Polynomial(np.random.randint(0, modulus, size, dtype=np.int64))
 
 
 def gen_normal_poly(size):
@@ -35,4 +36,4 @@ def gen_normal_poly(size):
         array of coefficients with the coeff[i] being
         the coeff of x ^ i.
     """
-    return np.int64(np.random.normal(0, 2, size=size))
+    return Polynomial(np.int64(np.random.normal(0, 2, size=size)))
