@@ -1,10 +1,11 @@
 import numpy as np
 from numpy.polynomial import Polynomial
 
+from .plaintext import CKKSPlaintext
 from .utils import coordinate_wise_random_rounding
 
 
-class CKKS:
+class CKKSEncoder:
     """Basic CKKS encoder to encode complex vectors into polynomials."""
 
     def __init__(self, M: int, scale: float):
@@ -85,7 +86,7 @@ class CKKS:
         y = np.matmul(self.sigma_R_basis.T, rounded_coordinates)
         return y
 
-    def encode(self, z: np.array) -> Polynomial:
+    def encode(self, z: np.array) -> CKKSPlaintext:
         """Encodes a vector by expanding it first to H,
         scale it, project it on the lattice of sigma(R), and performs
         sigma inverse.
@@ -97,13 +98,13 @@ class CKKS:
 
         # We round it afterwards due to numerical imprecision
         coef = np.round(np.real(p.coef)).astype(int)
-        p = Polynomial(coef)
-        return p
+        pt = CKKSPlaintext(Polynomial(coef), self.N, self.scale)
+        return pt
 
-    def decode(self, p: Polynomial) -> np.array:
+    def decode(self, pt: CKKSPlaintext) -> np.array:
         """Decodes a polynomial by removing the scale,
         evaluating on the roots, and project it on C^(N/2)"""
-        rescaled_p = p / self.scale
+        rescaled_p = pt.p / self.scale
         z = self.sigma(rescaled_p)
         pi_z = self.pi(z)
         return pi_z
