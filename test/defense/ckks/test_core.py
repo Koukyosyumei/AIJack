@@ -48,3 +48,44 @@ def test_encoder():
     p_mult = p1 * p2
     np.testing.assert_array_almost_equal(z1 + z2, encoder.decode(p_add), decimal=6)
     np.testing.assert_array_almost_equal(z1 * z2, encoder.decode(p_mult), decimal=4)
+
+
+def test_encrypter():
+    import numpy as np
+    from secure_ml.defense import CKKSEncoder, CKKSEncrypter
+
+    M = 8
+    scale = 1 << 23
+    encoder = CKKSEncoder(M, scale)
+
+    N = M // 2
+
+    q = 2 ** 25
+    alice = CKKSEncrypter(encoder, q)
+    bob = CKKSEncrypter(encoder, q)
+    pk, _ = alice.keygen(N)
+    bob.set_pk(pk)
+
+    z1 = np.array(
+        [
+            1 + 2j,
+            1 - 1j,
+        ]
+    )
+    c1 = bob.encrypt(z1)
+    z2 = np.array(
+        [
+            2 + 3j,
+            3 - 1j,
+        ]
+    )
+    c2 = bob.encrypt(z2)
+
+    np.testing.assert_array_almost_equal(z1, alice.decrypt(c1), decimal=4)
+    np.testing.assert_array_almost_equal(z2, alice.decrypt(c2), decimal=4)
+    np.testing.assert_array_almost_equal(z1 + z2, alice.decrypt(c1 + c2), decimal=4)
+    # np.testing.assert_array_almost_equal(z1 * z1, alice.decrypt(c1 * p1), decimal=4)
+
+
+if __name__ == "__main__":
+    test_encrypter()
