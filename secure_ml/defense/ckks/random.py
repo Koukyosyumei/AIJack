@@ -26,7 +26,7 @@ def gen_uniform_poly(size, modulus):
     return Polynomial(np.random.randint(0, modulus, size, dtype=np.int64))
 
 
-def gen_normal_poly(size):
+def gen_normal_poly(size, mean=0, std=2):
     """Generates a polynomial with coeffecients in a normal distribution
     of mean 0 and a standard deviation of 2, then discretize it.
     Args:
@@ -36,4 +36,4 @@ def gen_normal_poly(size):
         array of coefficients with the coeff[i] being
         the coeff of x ^ i.
     """
-    return Polynomial(np.int64(np.random.normal(0, 2, size=size)))
+    return Polynomial(np.int64(np.random.normal(mean, std, size=size)))
