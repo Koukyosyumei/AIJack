@@ -55,12 +55,12 @@ def test_encrypter():
     from secure_ml.defense import CKKSEncoder, CKKSEncrypter
 
     M = 8
-    scale = 1 << 23
+    scale = 1 << 20
     encoder = CKKSEncoder(M, scale)
 
     N = M // 2
 
-    q = 2 ** 25
+    q = 2 ** 26
     alice = CKKSEncrypter(encoder, q)
     bob = CKKSEncrypter(encoder, q)
     pk, _ = alice.keygen(N)
@@ -79,12 +79,13 @@ def test_encrypter():
             3 - 1j,
         ]
     )
+    p2 = encoder.encode(z2)
     c2 = bob.encrypt(z2)
 
     np.testing.assert_array_almost_equal(z1, alice.decrypt(c1), decimal=4)
     np.testing.assert_array_almost_equal(z2, alice.decrypt(c2), decimal=4)
     np.testing.assert_array_almost_equal(z1 + z2, alice.decrypt(c1 + c2), decimal=4)
-    # np.testing.assert_array_almost_equal(z1 * z1, alice.decrypt(c1 * p1), decimal=4)
+    # np.testing.assert_array_almost_equal(z1 * z2, alice.decrypt(c1 * p2), decimal=4)
 
 
 if __name__ == "__main__":
