@@ -37,7 +37,7 @@ class CKKSEncrypter:
         """
         self.sk = gen_binary_poly(size)
         a = gen_uniform_poly(size, self.q)
-        e = gen_normal_poly(size)
+        e = gen_normal_poly(size, std=1)
         b = (
             polydiv_coef(polydiv_coef(-a * self.sk, self.q) % self.poly_mod - e, self.q)
             % self.poly_mod
