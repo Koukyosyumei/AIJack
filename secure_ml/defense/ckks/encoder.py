@@ -6,12 +6,22 @@ from .utils import coordinate_wise_random_rounding
 
 
 class CKKSEncoder:
-    """Basic CKKS encoder to encode complex vectors into polynomials."""
+    """Basic CKKS encoder to encode complex vectors into polynomials.
+    This class is mainly based on https://blog.openmined.org/ckks-explained-part-1-simple-encoding-and-decoding/
+    """
 
     def __init__(self, M: int, scale: float):
         """Initialization of the encoder for M a power of 2.
 
-        xi, which is an M-th root of unity will, be used as a basis for our computations.
+        Args:
+            M:
+            scale:
+
+        Attributed:
+            xi: M-th root of unity used as a basis
+            N:
+            A:
+            sigma_R_basis
         """
         self.M = M
         self.scale = scale

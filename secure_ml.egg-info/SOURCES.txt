@@ -13,12 +13,6 @@ example/membership_inference/.ipynb_checkpoints/CIFAR10-checkpoint.ipynb
 example/membership_inference/.ipynb_checkpoints/membership_inference-checkpoint.py
 example/membership_inference/.ipynb_checkpoints/svm-checkpoint.ipynb
 example/membership_inference/__pycache__/membership_inference.cpython-38.pyc
-example/membership_inference/notebook/.ipynb_checkpoints/mnist-checkpoint.ipynb
-example/membership_inference/notebook/old/mnist.ipynb
-example/membership_inference/notebook/old/svm.ipynb
-example/model_inversion/example.ipynb
-example/model_inversion/model_inversion.png
-example/model_inversion/.ipynb_checkpoints/example-checkpoint.ipynb
 example/model_inversion/.ipynb_checkpoints/model_inversion-checkpoint.py
 example/model_inversion/__pycache__/model_inversion.cpython-38.pyc
 img/membership_inference_overfitting.png
