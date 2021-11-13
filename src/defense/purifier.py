@@ -4,8 +4,8 @@ import torch.nn.functional as F
 
 
 class Purifier_Cifar10(nn.Module):
-    """ autoencoder for purification on Cifar10
-        reference https://arxiv.org/abs/2005.03915
+    """autoencoder for purification on Cifar10
+    reference https://arxiv.org/abs/2005.03915
     """
 
     def __init__(self):
@@ -37,11 +37,13 @@ class Purifier_Cifar10(nn.Module):
         return x
 
 
-def PurifierLoss(prediction,
-                 pred_purified,
-                 lam=0.2,
-                 purifier_criterion=nn.MSELoss(),
-                 accuracy_criterion=nn.CrossEntropyLoss()):
+def PurifierLoss(
+    prediction,
+    pred_purified,
+    lam=0.2,
+    purifier_criterion=nn.MSELoss(),
+    accuracy_criterion=nn.CrossEntropyLoss(),
+):
     """basic loss function for purification
        reference https://arxiv.org/abs/2005.03915
 
@@ -66,8 +68,7 @@ def PurifierLoss(prediction,
     """
 
     loss_1 = purifier_criterion(pred_purified, prediction)
-    loss_2 = accuracy_criterion(pred_purified,
-                                torch.argmax(prediction, axis=1))
+    loss_2 = accuracy_criterion(pred_purified, torch.argmax(prediction, axis=1))
     loss_purifier = loss_1 + lam * loss_2
 
     return loss_purifier

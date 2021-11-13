@@ -52,22 +52,22 @@ class DPSGD(Optimizer):
             noise_scale = group["sigma"]
             c = group["c"]
 
-            for p in group['params']:
+            for p in group["params"]:
                 if p.grad is None:
                     continue
                 # compute gradient
                 d_p = p.grad
                 # clip gradient
                 # torch.clone(d_p).detach()
-                clip_grad = torch.clone(d_p).detach(
-                ).square().sum().sqrt().div(c).clamp(max=1)
+                clip_grad = (
+                    torch.clone(d_p).detach().square().sum().sqrt().div(c).clamp(max=1)
+                )
                 d_p.div_(clip_grad)
                 # add noise
                 std = noise_scale * c
-                noise = torch.normal(torch.zeros_like(
-                    d_p), torch.zeros_like(d_p) + std)
+                noise = torch.normal(torch.zeros_like(d_p), torch.zeros_like(d_p) + std)
                 d_p.add_(noise)
                 # descent
-                p.add_(d_p, alpha=-1*group['lr'])
+                p.add_(d_p, alpha=-1 * group["lr"])
 
         return loss

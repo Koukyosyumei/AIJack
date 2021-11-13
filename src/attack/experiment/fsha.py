@@ -2,16 +2,20 @@ import torch
 
 
 class FSHA:
-    def __init__(self,
-                 client_dataloader,
-                 attacker_dataloader,
-                 f, tilde_f, D, decoder,
-                 optimizers,
-                 wgan=True,
-                 gradient_penalty=100,
-                 distance_data_loss=torch.nn.MSELoss(),
-                 distance_data=torch.nn.MSELoss(),
-                 ):
+    def __init__(
+        self,
+        client_dataloader,
+        attacker_dataloader,
+        f,
+        tilde_f,
+        D,
+        decoder,
+        optimizers,
+        wgan=True,
+        gradient_penalty=100,
+        distance_data_loss=torch.nn.MSELoss(),
+        distance_data=torch.nn.MSELoss(),
+    ):
         """
         Args
             client_dataloader: dataloader of client's private dataset
@@ -73,9 +77,10 @@ class FSHA:
 
         assert len(optimizers) == 3, "length of optimizers must be three."
         self.optimizer0 = optimizers[0](self.f.parameters(), lr=0.00001)
-        self.optimizer1 = optimizers[1](list(self.tilde_f.parameters()) +
-                                        list(self.decoder.parameters()),
-                                        lr=0.00001)
+        self.optimizer1 = optimizers[1](
+            list(self.tilde_f.parameters()) + list(self.decoder.parameters()),
+            lr=0.00001,
+        )
         self.optimizer2 = optimizers[2](self.D.parameters(), lr=0.00001)
 
         self.distance_data_loss = distance_data_loss
@@ -96,10 +101,12 @@ class FSHA:
             log
         """
 
-        log = {"f_loss": [],
-               "tilde_f_loss": [],
-               "D_loss": [],
-               "loss_c_verification": []}
+        log = {
+            "f_loss": [],
+            "tilde_f_loss": [],
+            "D_loss": [],
+            "loss_c_verification": [],
+        }
 
         len_dataloader = len(self.client_dataloader)
         for epoch in range(epochs):
@@ -109,18 +116,17 @@ class FSHA:
             epoch_D_loss = 0
             epoch_loss_c_verification = 0
 
-            for (x_private, label_private), (x_public, label_public) in\
-                    zip(self.client_dataloader, self.attacker_dataloader):
-                f_loss, tilde_f_loss,\
-                    D_loss, loss_c_verification\
-                    = self.train_step(x_private, x_public,
-                                      label_private, label_public)
+            for (x_private, label_private), (x_public, label_public) in zip(
+                self.client_dataloader, self.attacker_dataloader
+            ):
+                f_loss, tilde_f_loss, D_loss, loss_c_verification = self.train_step(
+                    x_private, x_public, label_private, label_public
+                )
 
                 epoch_f_loss += f_loss / len_dataloader
                 epoch_tilde_f_loss += tilde_f_loss / len_dataloader
                 epoch_D_loss += D_loss / len_dataloader
-                epoch_loss_c_verification +=\
-                    loss_c_verification / len_dataloader
+                epoch_loss_c_verification += loss_c_verification / len_dataloader
 
             if save_log:
                 log["f_loss"].append(epoch_f_loss)
@@ -129,10 +135,12 @@ class FSHA:
                 log["loss_c_verification"].append(epoch_loss_c_verification)
 
             if epoch % verbose == 0:
-                print(f"f_loss:{epoch_f_loss} " +
-                      f"tilde_f_loss:{epoch_tilde_f_loss} " +
-                      f"D_loss:{epoch_D_loss} " +
-                      f"loss_c:{epoch_loss_c_verification}")
+                print(
+                    f"f_loss:{epoch_f_loss} "
+                    + f"tilde_f_loss:{epoch_tilde_f_loss} "
+                    + f"D_loss:{epoch_D_loss} "
+                    + f"loss_c:{epoch_loss_c_verification}"
+                )
 
         return log
 
@@ -166,7 +174,8 @@ class FSHA:
             f_loss = torch.mean(adv_private_logits)
         else:
             f_loss = torch.nn.BCEWithLogitsLoss()(
-                torch.ones_like(adv_private_logits), adv_private_logits)
+                torch.ones_like(adv_private_logits), adv_private_logits
+            )
         f_loss.backward()
         self.optimizer0.step()
 
@@ -194,14 +203,15 @@ class FSHA:
             vanila_D_loss = loss_discr_true + loss_discr_fake
         else:
             loss_discr_true = torch.nn.BCEWithLogitsLoss()(
-                torch.ones_like(adv_public_logits), adv_public_logits)
+                torch.ones_like(adv_public_logits), adv_public_logits
+            )
             loss_discr_fake = torch.nn.BCEWithLogitsLoss()(
-                torch.zeros_like(adv_private_logits), adv_private_logits)
+                torch.zeros_like(adv_private_logits), adv_private_logits
+            )
             # discriminator's loss
             vanila_D_loss = (loss_discr_true + loss_discr_fake) / 2
 
-        D_loss = vanila_D_loss + self.w*self.gradient_penalty(z_private,
-                                                              z_public)
+        D_loss = vanila_D_loss + self.w * self.gradient_penalty(z_private, z_public)
         D_loss.backward()
         self.optimizer2.step()
 
@@ -224,14 +234,15 @@ class FSHA:
         epsilon = torch.randn(x.shape[0], 1, 1, 1)
         x_hat = epsilon * x + (1 - epsilon) * x_gen
         d_hat = self.D(x_hat)
-        gradients = torch.autograd.grad(outputs=d_hat,
-                                        grad_outputs=torch.ones(d_hat.size()),
-                                        inputs=x_hat,
-                                        # create_graph=True,
-                                        retain_graph=True
-                                        )[0]
+        gradients = torch.autograd.grad(
+            outputs=d_hat,
+            grad_outputs=torch.ones(d_hat.size()),
+            inputs=x_hat,
+            # create_graph=True,
+            retain_graph=True,
+        )[0]
         ddx = torch.sqrt(torch.mean(gradients.pow(2), dim=(1, 2)))
-        d_regularizer = torch.mean((ddx-1).pow(2))
+        d_regularizer = torch.mean((ddx - 1).pow(2))
 
         return d_regularizer
 
