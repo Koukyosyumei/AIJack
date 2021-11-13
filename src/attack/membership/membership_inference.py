@@ -4,7 +4,7 @@ import torch.nn as nn
 import torch.optim as optim
 from secure_ml.utils import DataSet, try_gpu
 
-from ..attack.base_attack import BaseAttacker
+from ..base_attack import BaseAttacker
 
 
 class ShadowModel:
@@ -28,11 +28,13 @@ class ShadowModel:
 
     """
 
-    def __init__(self, models,
-                 shadow_dataset_size,
-                 shadow_transform=None,
-                 seed=42,
-                 ):
+    def __init__(
+        self,
+        models,
+        shadow_dataset_size,
+        shadow_transform=None,
+        seed=42,
+    ):
 
         self.models = models
         self.shadow_dataset_size = shadow_dataset_size
@@ -47,8 +49,7 @@ class ShadowModel:
         self._reset_random_state()
 
     def _reset_random_state(self):
-        """initialize random state
-        """
+        """initialize random state"""
         self._prng = np.random.RandomState(self.seed)
 
     def fit_transform(self, X, y, num_itr=100):
@@ -65,8 +66,12 @@ class ShadowModel:
                                  value is (shadow_data, shadow_label)
         """
         self._fit(X, y, num_itr=num_itr)
-        shadow_in_data, shadow_out_data,\
-            in_original_labels, out_original_labels = self._transform()
+        (
+            shadow_in_data,
+            shadow_out_data,
+            in_original_labels,
+            out_original_labels,
+        ) = self._transform()
 
         shadow_in_label = torch.ones_like(in_original_labels)
         shadow_out_label = torch.zeros_like(out_original_labels)
@@ -79,7 +84,9 @@ class ShadowModel:
         for label in unique_labels:
             local_idx = torch.where(original_labels == label)
             result_dict[label.item()] = (
-                shadow_data[local_idx], shadow_label[local_idx])
+                shadow_data[local_idx],
+                shadow_label[local_idx],
+            )
 
         return result_dict
 
@@ -102,18 +109,19 @@ class ShadowModel:
             )
 
             train_indices = shadow_indices[: self.shadow_dataset_size]
-            test_indices = shadow_indices[self.shadow_dataset_size:]
+            test_indices = shadow_indices[self.shadow_dataset_size :]
 
             X_train, y_train = X[train_indices], y[train_indices]
             X_test, y_test = X[test_indices], y[test_indices]
 
-            trainset = DataSet(
-                X_train, y_train, transform=self.shadow_transform)
+            trainset = DataSet(X_train, y_train, transform=self.shadow_transform)
             trainloader = torch.utils.data.DataLoader(
-                trainset, batch_size=4, shuffle=True, num_workers=2)
+                trainset, batch_size=4, shuffle=True, num_workers=2
+            )
             testset = DataSet(X_test, y_test, transform=self.shadow_transform)
             testloader = torch.utils.data.DataLoader(
-                testset, batch_size=4, shuffle=True, num_workers=2)
+                testset, batch_size=4, shuffle=True, num_workers=2
+            )
 
             self.trainloaders.append(trainloader)
             self.testloaders.append(testloader)
@@ -138,10 +146,12 @@ class ShadowModel:
 
                     running_loss += loss.item()
                     if i % 2000 == 1999:
-                        print('[%d, %5d] loss: %.3f' %
-                              (epoch + 1, i + 1, running_loss / 2000))
+                        print(
+                            "[%d, %5d] loss: %.3f"
+                            % (epoch + 1, i + 1, running_loss / 2000)
+                        )
                         running_loss = 0.0
-            print('Finished Training')
+            print("Finished Training")
 
             self.models[model_idx] = model
 
@@ -213,8 +223,7 @@ class ShadowModel:
         in_original_labels = torch.cat(in_original_labels)
         out_original_labels = torch.cat(out_original_labels)
 
-        return shadow_in_data, shadow_out_data,\
-            in_original_labels, out_original_labels
+        return shadow_in_data, shadow_out_data, in_original_labels, out_original_labels
 
     def get_score(self):
         pass
@@ -290,19 +299,20 @@ class AttackerModel:
         in_out_pred = np.zeros_like(y_labels).astype(float)
         for label in unique_labels:
             idx = np.where(y_labels == label)
-            in_out_pred[idx] =\
-                self.models[label].predict_proba(y_pred_prob[idx])[:, 1]
+            in_out_pred[idx] = self.models[label].predict_proba(y_pred_prob[idx])[:, 1]
 
         return in_out_pred
 
 
 class Membership_Inference(BaseAttacker):
-    def __init__(self,
-                 target_model,
-                 shadow_models,
-                 attack_models,
-                 shadow_data_size,
-                 shadow_transform):
+    def __init__(
+        self,
+        target_model,
+        shadow_models,
+        attack_models,
+        shadow_data_size,
+        shadow_transform,
+    ):
         """Implementation of membership inference
            reference https://arxiv.org/abs/1610.05820
 
@@ -341,14 +351,15 @@ class Membership_Inference(BaseAttacker):
             y (np.array): training label for shadow models
             num_itr (int): number of iteration for training
         """
-        self.sm = ShadowModel(self.shadow_models,
-                              self.shadow_data_size,
-                              shadow_transform=self.shadow_trasform)
+        self.sm = ShadowModel(
+            self.shadow_models,
+            self.shadow_data_size,
+            shadow_transform=self.shadow_trasform,
+        )
         self.shadow_result = self.sm.fit_transform(X, y, num_itr=num_itr)
 
     def train_attacker(self):
-        """Train attacker models
-        """
+        """Train attacker models"""
         self.am = AttackerModel(self.attack_models)
         self.am.fit(self.shadow_result)
 

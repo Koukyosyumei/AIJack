@@ -3,14 +3,23 @@ import copy
 import numpy as np
 import sklearn
 
-from ..attack.base_attack import BaseAttacker
+from ..base_attack import BaseAttacker
 
 
 class Evasion_attack_sklearn(BaseAttacker):
-    def __init__(self, target_model, X_minus_1,
-                 dmax, max_iter,
-                 gamma, lam, t, h,
-                 distance="L1", kde_type="L1"):
+    def __init__(
+        self,
+        target_model,
+        X_minus_1,
+        dmax,
+        max_iter,
+        gamma,
+        lam,
+        t,
+        h,
+        distance="L1",
+        kde_type="L1",
+    ):
         """create an adversarial example against sklearn objects
            reference https://arxiv.org/abs/1708.06131
 
@@ -103,32 +112,39 @@ class Evasion_attack_sklearn(BaseAttacker):
             params = self.target_model.get_params()
             kernel_type = params["kernel"]
             if kernel_type == "rbf":
-                def kernel(xm): return np.exp(
-                    -self.gamma *
-                    ((xm -
-                      self.target_model.support_vectors_)
-                     ** 2))
 
-                def delta_kernel(xm): return (-2 * self.gamma)\
-                    * kernel(xm)\
-                    * (xm - self.target_model.support_vectors_)
+                def kernel(xm):
+                    return np.exp(
+                        -self.gamma * ((xm - self.target_model.support_vectors_) ** 2)
+                    )
+
+                def delta_kernel(xm):
+                    return (
+                        (-2 * self.gamma)
+                        * kernel(xm)
+                        * (xm - self.target_model.support_vectors_)
+                    )
 
             elif kernel_type == "linear":
-                def delta_kernel(xm): return self.target_model.support_vectors_
+
+                def delta_kernel(xm):
+                    return self.target_model.support_vectors_
 
             elif kernel_type == "poly":
                 p = params["degree"]
                 c = self.target_model.intercept_
 
-                def delta_kernel(xm): return p *\
-                    (((xm * self.target_model.support_vectors_)
-                      + c) ** (p - 1))\
-                    * self.target_model.support_vectors_
+                def delta_kernel(xm):
+                    return (
+                        p
+                        * (((xm * self.target_model.support_vectors_) + c) ** (p - 1))
+                        * self.target_model.support_vectors_
+                    )
+
             else:
                 raise ValueError(f"kernel type {kernel_type} is not supported")
 
-            self.delta_g = lambda xm: self.target_model.dual_coef_.dot(
-                delta_kernel(xm))
+            self.delta_g = lambda xm: self.target_model.dual_coef_.dot(delta_kernel(xm))
 
         else:
             raise ValueError(f"target type {target_type} is not supported")
@@ -147,9 +163,10 @@ class Evasion_attack_sklearn(BaseAttacker):
         """
 
         if self.kde_type == "L1":
-            a = (-1 / (self.n_minus_1 * self.h))
-            b = np.exp(-(np.sum(np.abs(xm - self.X_minus_1), axis=1)
-                         ) / self.h).dot(xm - self.X_minus_1)
+            a = -1 / (self.n_minus_1 * self.h)
+            b = np.exp(-(np.sum(np.abs(xm - self.X_minus_1), axis=1)) / self.h).dot(
+                xm - self.X_minus_1
+            )
             delta_p = a * b
             return delta_p
 
@@ -169,9 +186,9 @@ class Evasion_attack_sklearn(BaseAttacker):
 
         delta_f = self.delta_g(xm) - self.lam * self._get_delta_p(xm)
         if norm == "l1":
-            delta_f /= (np.sum(np.abs(delta_f)) + 1e-5)
+            delta_f /= np.sum(np.abs(delta_f)) + 1e-5
         elif norm == "l2":
-            delta_f /= (np.sqrt(np.sum(delta_f**2, axis=0)) + 1e-5)
+            delta_f /= np.sqrt(np.sum(delta_f ** 2, axis=0)) + 1e-5
         else:
             raise ValueError(f"norm type {norm} is not defined")
 
@@ -198,7 +215,6 @@ class Evasion_attack_sklearn(BaseAttacker):
             if d > self.dmax:
                 xm = x0 + ((xm - x0) / d) * self.dmax
 
-            g_list.append(
-                self.target_model.decision_function(xm.reshape(1, -1)))
+            g_list.append(self.target_model.decision_function(xm.reshape(1, -1)))
 
         return xm, g_list

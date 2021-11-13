@@ -4,14 +4,11 @@ import numpy as np
 import sklearn
 from tqdm import tqdm
 
-from ..attack.base_attack import BaseAttacker
+from ..base_attack import BaseAttacker
 
 
 class Poison_attack_sklearn(BaseAttacker):
-    def __init__(self,
-                 target_model,
-                 X_train, y_train,
-                 t=0.5):
+    def __init__(self, target_model, X_train, y_train, t=0.5):
         """implementation of poison attack for sklearn classifier
            reference https://arxiv.org/abs/1206.6389
 
@@ -56,7 +53,7 @@ class Poison_attack_sklearn(BaseAttacker):
             kernel_type = params["kernel"]
             if kernel_type == "linear":
                 self.kernel = lambda xa, xb: xa.dot(xb.T)
-                self.delta_kernel = lambda xi, xc:  self.t * xi
+                self.delta_kernel = lambda xi, xc: self.t * xi
             else:
                 raise ValueError(f"kernel type {kernel_type} is not supported")
 
@@ -86,9 +83,7 @@ class Poison_attack_sklearn(BaseAttacker):
         dq = yy * (self.delta_kernel(xi, xc))
         return dq
 
-    def attack(self, xc, yc,
-               X_valid, y_valid,
-               num_iterations=200):
+    def attack(self, xc, yc, X_valid, y_valid, num_iterations=200):
         """Create an adversarial example for poison attack
 
         Args:
@@ -120,10 +115,10 @@ class Poison_attack_sklearn(BaseAttacker):
             # target_model_ = sklearn.svm.SVC(kernel="linear", C=1)
 
             # add poinsoned data
-            target_model_.fit(np.concatenate([X_train_poisoned,
-                                              xc.reshape(1, -1)]),
-                              np.concatenate([y_train_poisoned,
-                                              [yc]]))
+            target_model_.fit(
+                np.concatenate([X_train_poisoned, xc.reshape(1, -1)]),
+                np.concatenate([y_train_poisoned, [yc]]),
+            )
 
             score_temp = target_model_.score(X_valid, y_valid)
             log.append(score_temp)
@@ -134,19 +129,18 @@ class Poison_attack_sklearn(BaseAttacker):
 
             # ------------------------ #
             xs = target_model_.support_vectors_
-            ys = np.concatenate([y_train_poisoned,
-                                 [yc]])[target_model_.support_]
+            ys = np.concatenate([y_train_poisoned, [yc]])[target_model_.support_]
 
-            Qks = y_valid.reshape(-1, 1).dot(ys.reshape(-1,
-                                                        1).T)\
-                * self.kernel(X_valid, xs)
+            Qks = y_valid.reshape(-1, 1).dot(ys.reshape(-1, 1).T) * self.kernel(
+                X_valid, xs
+            )
             Qss_inv = np.linalg.inv(self.kernel(xs, xs))
             v = Qss_inv.dot(ys)
             zeta = ys.T.dot(v)
-            Mk = (-1/zeta) *\
-                ((Qks)
-                 .dot(zeta * Qss_inv - v.dot(v.T))
-                 + y_valid.reshape(-1, 1).dot(v.reshape(1, -1)))
+            Mk = (-1 / zeta) * (
+                (Qks).dot(zeta * Qss_inv - v.dot(v.T))
+                + y_valid.reshape(-1, 1).dot(v.reshape(1, -1))
+            )
 
             delta_Qsc = self._delta_q(xs, xc.reshape, ys, yc)
             delta_Qkc = self._delta_q(X_valid, xc.reshape(1, -1), y_valid, yc)
@@ -156,8 +150,7 @@ class Poison_attack_sklearn(BaseAttacker):
             alpha = target_model_.decision_function([xc])
 
             # the desired gradient used for optimizing our attack:
-            delta_L = np.sum(((Mk.dot(delta_Qsc) + delta_Qkc) * alpha),
-                             axis=0)
+            delta_L = np.sum(((Mk.dot(delta_Qsc) + delta_Qkc) * alpha), axis=0)
 
             # u is a norm-1 vector representing the attack direction,
             u = delta_L / np.sqrt(np.sum((delta_L ** 2)))

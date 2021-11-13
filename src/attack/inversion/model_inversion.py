@@ -1,6 +1,6 @@
 import torch
 
-from ..attack.base_attack import BaseAttacker
+from ..base_attack import BaseAttacker
 
 
 class Model_inversion(BaseAttacker):
@@ -19,8 +19,7 @@ class Model_inversion(BaseAttacker):
         super().__init__(target_model)
         self.input_shape = input_shape
 
-    def attack(self, target_label,
-               lam, num_itr, process_func=lambda x: x):
+    def attack(self, target_label, lam, num_itr, process_func=lambda x: x):
         """Execute the model inversion attack on the target model.
 
         Args:
@@ -43,5 +42,5 @@ class Model_inversion(BaseAttacker):
                 x -= lam * grad
             log.append(c.item())
 
-        x_numpy = x.to('cpu').detach().numpy().copy()
+        x_numpy = x.to("cpu").detach().numpy().copy()
         return x_numpy, log
