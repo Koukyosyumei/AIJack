@@ -1,1 +1,1 @@
-from model_inversion import Model_inversion
+from .mi_face import MI_FACE

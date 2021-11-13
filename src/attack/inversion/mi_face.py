@@ -3,7 +3,7 @@ import torch
 from ..base_attack import BaseAttacker
 
 
-class Model_inversion(BaseAttacker):
+class MI_FACE(BaseAttacker):
     def __init__(self, target_model, input_shape):
         """implementation of model inversion attack
            reference https://dl.acm.org/doi/pdf/10.1145/2810103.2813677
