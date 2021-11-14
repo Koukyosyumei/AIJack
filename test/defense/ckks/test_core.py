@@ -1,5 +1,6 @@
 def test_sigma():
     import numpy as np
+
     from secure_ml.defense import CKKSEncoder
 
     M = 8
@@ -23,6 +24,7 @@ def test_sigma():
 
 def test_encoder():
     import numpy as np
+
     from secure_ml.defense import CKKSEncoder
 
     M = 8
@@ -52,6 +54,7 @@ def test_encoder():
 
 def test_encrypter():
     import numpy as np
+
     from secure_ml.defense import CKKSEncoder, CKKSEncrypter
 
     M = 8
