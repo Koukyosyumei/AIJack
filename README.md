@@ -1,4 +1,4 @@
-# secure_ml
+# secureml
 
 This package allows you to experiment with various algorithms to attack and defense machine learning models.
 
