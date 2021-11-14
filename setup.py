@@ -14,7 +14,7 @@ def read_requirements():
 console_scripts = []
 
 setup(
-    name="secure_ml",
+    name="secureml",
     version="0.0.0",
     description="package to implemet secure machine learning algorythm",
     author="Hideaki Takahashi",
