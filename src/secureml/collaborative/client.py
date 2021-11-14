@@ -3,6 +3,7 @@ import torch
 
 class Client(torch.nn.Module):
     def __init__(self, model, user_id=0):
+        super().__init__()
         self.model = model
         self.user_id = user_id
 
@@ -11,7 +12,7 @@ class Client(torch.nn.Module):
         return output
 
     def upload(self):
-        return self.model.cpu().state_dict()
+        return self.model.state_dict()
 
     def download(self, model_parameters):
         self.model.load_state_dict(model_parameters)
