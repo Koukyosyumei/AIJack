@@ -10,11 +10,11 @@ class Client(torch.nn.Module):
         output = self.model(x)
         return output
 
-    def upload(self, x):
-        return self.forward(x)
+    def upload(self):
+        return self.model.cpu().state_dict()
 
-    def download(self, x):
-        pass
+    def download(self, model_parameters):
+        self.model.load_state_dict(model_parameters)
 
     def train(self):
         self.model.train()
