@@ -56,7 +56,7 @@ class GAN_Attack_Client(Client):
                 running_error += loss_generator.item()
 
             if i % log_interval == 0:
-                print(f"epoch {i}: generator loss is {running_error/data_size}")
+                print(f"updating generator - epoch {i}: generator loss is {running_error/data_size}")
 
     def download(self, model_parameters):
         self.model.load_state_dict(model_parameters)
