@@ -1,5 +1,7 @@
 example/*/data
 example/*/openml
+example/*/*.png
+example/*/*.jpg
 papers/*
 
 # Byte-compiled / optimized / DLL files
