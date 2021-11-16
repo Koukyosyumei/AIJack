@@ -4,11 +4,12 @@ import torch.nn as nn
 import torch.optim as optim
 import torchvision
 import torchvision.transforms as transforms
+from matplotlib import pyplot as plt
+from sklearn.metrics import accuracy_score
+
 from aijack.attack import GAN_Attack_Client
 from aijack.collaborative import Client, Server
 from aijack.utils import DataSet
-from matplotlib import pyplot as plt
-from sklearn.metrics import accuracy_score
 
 # Number of channels in the training images. For color images this is 3
 nc = 1

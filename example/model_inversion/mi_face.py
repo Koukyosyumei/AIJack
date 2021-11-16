@@ -5,10 +5,11 @@ import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
 import torchvision.transforms as transforms
-from aijack.attack import MI_FACE
-from aijack.utils import DataSet
 from matplotlib import pyplot as plt
 from sklearn.metrics import accuracy_score
+
+from aijack.attack import MI_FACE
+from aijack.utils import DataSet
 
 # INPUT PATHS:
 BASE = "data/"
