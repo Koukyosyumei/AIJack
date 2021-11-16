@@ -7,7 +7,7 @@ import torchvision.transforms as transforms
 from matplotlib import pyplot as plt
 from sklearn.metrics import accuracy_score
 
-from aijack.attack import GAN_Attack_Client
+from aijack.attack import GAN_Attack
 from aijack.collaborative import Client, Server
 from aijack.utils import DataSet
 
@@ -121,7 +121,7 @@ def main():
     criterion = nn.CrossEntropyLoss()
     client_num = 2
     adversary_client_id = 1
-    target_label = 0
+    target_label = 3
 
     net_1 = Net()
     client_1 = Client(net_1, user_id=0)
@@ -131,21 +131,7 @@ def main():
     )
 
     net_2 = Net()
-    generator = Generator(nz, nc, ngf)
-    generator.to(device)
-    optimizer_g = optim.SGD(
-        generator.parameters(), lr=0.05, weight_decay=1e-7, momentum=0.0
-    )
-    client_2 = GAN_Attack_Client(
-        net_2,
-        target_label,
-        generator,
-        optimizer_g,
-        criterion,
-        user_id=1,
-        nz=nz,
-        device=device,
-    )
+    client_2 = Client(net_2, user_id=1)
     client_2.to(device)
     optimizer_2 = optim.SGD(
         client_2.parameters(), lr=0.02, weight_decay=1e-7, momentum=0.9
@@ -153,6 +139,21 @@ def main():
 
     clients = [client_1, client_2]
     optimizers = [optimizer_1, optimizer_2]
+
+    generator = Generator(nz, nc, ngf)
+    generator.to(device)
+    optimizer_g = optim.SGD(
+        generator.parameters(), lr=0.05, weight_decay=1e-7, momentum=0.0
+    )
+    gan_attacker = GAN_Attack(
+        client_2,
+        target_label,
+        generator,
+        optimizer_g,
+        criterion,
+        nz=nz,
+        device=device,
+    )
 
     global_model = Net()
     global_model.to(device)
@@ -168,16 +169,16 @@ def main():
             optimizer = optimizers[client_idx]
 
             running_loss = 0.0
-            for i, data in enumerate(trainloader, 0):
+            for _, data in enumerate(trainloader, 0):
                 # get the inputs; data is a list of [inputs, labels]
                 inputs, labels = data
                 inputs = inputs.to(device)
                 labels = labels.to(device)
 
-                if epoch != 0:
-                    fake_image = client_2.attack(fake_batch_size)
-                    inputs = torch.concat([inputs, fake_image])
-                    labels = torch.concat(
+                if epoch != 0 and client_idx == adversary_client_id:
+                    fake_image = gan_attacker.attack(fake_batch_size)
+                    inputs = torch.cat([inputs, fake_image])
+                    labels = torch.cat(
                         [
                             labels,
                             torch.tensor([fake_label] * fake_batch_size, device=device),
@@ -200,11 +201,11 @@ def main():
                 running_loss / dataset_nums[client_idx],
             )
 
-            if client_idx == adversary_client_id:
-                client.update_generator(trainloader, epoch=5)
-
         server.update()
         server.distribtue()
+
+        gan_attacker.update_discriminator()
+        gan_attacker.update_generator(batch_size=64, epoch=1000, log_interval=100)
 
         in_preds = []
         in_label = []
@@ -224,7 +225,7 @@ def main():
             ),
         )
 
-        reconstructed_image = client_2.attack(1).cpu().numpy().reshape(28, 28)
+        reconstructed_image = gan_attacker.attack(1).cpu().numpy().reshape(28, 28)
         print(
             "reconstrunction error is ",
             np.sqrt(
