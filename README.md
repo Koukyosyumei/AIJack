@@ -1,7 +1,7 @@
 <h1 align="center">
 
   <br>
-  <img src="logo/logo.png" alt="AIJack" width="200"></a>
+  <img src="logo/logo_with_text.png" alt="AIJack" width="200"></a>
   <br>
   Reveal the vulnerabilities of AI
   <br>
