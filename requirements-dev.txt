@@ -1,0 +1,6 @@
+black
+black[jupyter]
+flake8
+pytest
+isort
+pre-commit

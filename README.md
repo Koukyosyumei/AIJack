@@ -3,7 +3,7 @@
   <br>
   <img src="logo/logo_with_text.png" alt="AIJack" width="200"></a>
   <br>
-  Reveal the vulnerabilities of AI
+  Try to hijack AI!
   <br>
 
 </h1>
