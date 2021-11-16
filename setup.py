@@ -14,14 +14,14 @@ def read_requirements():
 console_scripts = []
 
 setup(
-    name="secureml",
+    name="aijack",
     version="0.0.0",
-    description="package to implemet secure machine learning algorythm",
+    description="package to implemet attack and defense method for machine learning",
     author="Hideaki Takahashi",
     author_email="koukyosyumei@hotmail.com",
     license="MIT",
     install_requires=read_requirements(),
-    url="https://github.com/Koukyosyumei/secure_ml",
+    url="https://github.com/Koukyosyumei/AIJack",
     package_dir={"": "src"},
     packages=find_packages(where="src"),
     entry_points={"console_scripts": console_scripts},

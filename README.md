@@ -1,14 +1,14 @@
 <h1 align="center">
 
   <br>
-  <img src="logo/logo.png" alt="secureml" width="200"></a>
+  <img src="logo/logo.png" alt="AIJack" width="200"></a>
   <br>
   Reveal the vulnerabilities of AI
   <br>
 
 </h1>
 
-# secureml
+# AIJack
 
 This package implements papers about AI security such as Model Inversion, Poisoning Attack, Evasion Attack, Differential Privacy, and Homomorphic Encryption. We try to offer the same API for every paper to compare and combine different algorithms easily.
 
@@ -17,7 +17,7 @@ If you have any requests such as papers that you would like to see implemented, 
 ## Install
 
 ```
-pip install git+https://github.com/Koukyosyumei/secure_ml
+pip install git+https://github.com/Koukyosyumei/AIJack
 ```
 
 ## Example

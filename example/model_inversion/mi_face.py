@@ -5,9 +5,9 @@ import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
 import torchvision.transforms as transforms
+from aijack.attack import MI_FACE
+from aijack.utils import DataSet
 from matplotlib import pyplot as plt
-from secureml.attack import MI_FACE
-from secureml.utils import DataSet
 from sklearn.metrics import accuracy_score
 
 # INPUT PATHS:

@@ -4,11 +4,10 @@ import torch.nn as nn
 import torch.optim as optim
 import torchvision
 import torchvision.transforms as transforms
+from aijack.attack import GAN_Attack_Client
+from aijack.collaborative import Client, Server
+from aijack.utils import DataSet
 from matplotlib import pyplot as plt
-# !pip install git+https://github.com/Koukyosyumei/secure_ml
-from secureml.attack import GAN_Attack_Client
-from secureml.collaborative import Client, Server
-from secureml.utils import DataSet
 from sklearn.metrics import accuracy_score
 
 # Number of channels in the training images. For color images this is 3
@@ -241,5 +240,6 @@ def main():
         plt.imshow(reconstructed_image * 0.5 + 0.5, vmin=-1, vmax=1)
         plt.savefig(f"{epoch}.png")
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     main()
