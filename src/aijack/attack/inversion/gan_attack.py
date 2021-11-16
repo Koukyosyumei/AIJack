@@ -2,19 +2,18 @@ import copy
 
 import torch
 
-from ...collaborative import Client
+from ..base_attack import BaseAttacker
 
 
-class GAN_Attack_Client(Client):
+class GAN_Attack(BaseAttacker):
     def __init__(
         self,
-        model,
+        client,
         target_label,
         generator,
         generator_optimizer,
         generator_criterion,
         nz=100,
-        user_id=0,
         device="cpu",
     ):
         """Implementation of model inversion attack
@@ -30,7 +29,8 @@ class GAN_Attack_Client(Client):
             user_id (int): user id
             device (string): device type (cpu or cuda)
         """
-        super().__init__(model, user_id=user_id)
+        super().__init__(target_model=None)
+        self.client = client
         self.target_label = target_label
         self.generator = generator
         self.generator_optimizer = generator_optimizer
@@ -38,7 +38,7 @@ class GAN_Attack_Client(Client):
         self.nz = nz
         self.device = device
 
-        self.discriminator = copy.deepcopy(model)
+        self.discriminator = copy.deepcopy(self.client.model)
         self.discriminator.to(self.device)
 
         self.noise = torch.randn(1, self.nz, 1, 1, device=self.device)
@@ -75,13 +75,12 @@ class GAN_Attack_Client(Client):
                     f"updating generator - epoch {i}: generator loss is {running_error/batch_size}"
                 )
 
-    def download(self, model_parameters):
-        """Download the parameters from the server
+    def update_discriminator(self, model_parameters):
+        """Update the discriminator
 
         Args:
             model_parameters: global parameters sent by the server
         """
-        self.model.load_state_dict(model_parameters)
         self.discriminator.load_state_dict(model_parameters)
 
     def attack(self, n):
