@@ -75,13 +75,9 @@ class GAN_Attack(BaseAttacker):
                     f"updating generator - epoch {i}: generator loss is {running_error/batch_size}"
                 )
 
-    def update_discriminator(self, model_parameters):
-        """Update the discriminator
-
-        Args:
-            model_parameters: global parameters sent by the server
-        """
-        self.discriminator.load_state_dict(model_parameters)
+    def update_discriminator(self):
+        """Update the discriminator"""
+        self.discriminator.load_state_dict(self.client.model.state_dict())
 
     def attack(self, n):
         """Generate fake images
