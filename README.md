@@ -1,35 +1,43 @@
 # secureml
 
-This package allows you to experiment with various algorithms to attack and defense machine learning models.
+This package implements papers about AI security such as Model Inversion, Poisoning Attack, Evasion Attack, Differential Privacy, and Homomorphic Encryption. We try to offer the same API for every paper to compare and combine different algorithms easily.
+
+If you have any requests such as papers that you would like to see implemented, please raise an issue!
 
 ## Install
 
 pip install git+https://github.com/Koukyosyumei/secure_ml
 
-## Supported Algorithms
+## Example
 
-The detailed explanations are available at the [example/README.md](example/README.md).
+We are trying to provide all algorithms with the same API as much as possible.
 
-### Attack
+```
+# Model Inversion
+mi = MI_FACE(torch_model, input_shape)
+reconstructed_image, _ = mi.attack(target_label, learning_rate, num_iteration)
+```
 
-1. Membership Inference
-2. Model Inversion
-3. Evasion Attack
-4. Poisoning Attack
+```
+# Evasion Attack
+attacker = Evasion_attack_sklearn(target_model = sklearn_classifier)
+generated_adversary_image, _ = attacker.attack(initial_image)
+```
 
-### Defense
+```
+# Poisoning Attack
+attacker = Poison_attack_sklearn(clf, X_train_, y_train_)
+generated_adversary_image, _ = attacker.attack(initial_image, 1, X_valid, y_valid_)
+```
 
-1. DPSDG
-2. Purification (WIP)
+## Supported Papers
 
-## Example notebooks
-
-| algorithms                         | example                                                                     | reference                                                            |
-| ---------------------------------- | --------------------------------------------------------------------------- | -------------------------------------------------------------------- |
-| DPSDG                              | Coming Soon!                                                                | [original paper](https://arxiv.org/abs/1607.00133)                   |
-| Purification                       | Coming Soon!                                                                | [original paper](https://arxiv.org/abs/2005.03915)                   |
-| membership inference               | [notebook](example/membership_inference/membership_inference_CIFAR10.ipynb) | [original paper](https://arxiv.org/abs/1610.05820)                   |
-| MI_FACE (model inversion)          | [script](example/model_inversion/mi_face.py)                                | [original paper](https://dl.acm.org/doi/pdf/10.1145/2810103.2813677) |
-| GAN-Based Attack (model inversion) | [script](example/model_inversion/gan_attack.py)                             | [original paper](https://arxiv.org/abs/1702.07464)                   |
-| evasion attack                     | [notebook](example/adversarial_example/example_evasion_attack_svm.ipynb)    | [original paper](https://arxiv.org/abs/1708.06131)                   |
-| poisoning attack                   | [notebook](example/adversarial_example/example_poison_attack.ipynb)         | [original paper](https://arxiv.org/abs/1206.6389)                    |
+| Paper                                                                                                                                                                                                                                       | Type    | example                                                                     |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- | --------------------------------------------------------------------------- |
+| Abadi, Martin, et al. "Deep learning with differential privacy." Proceedings of the 2016 ACM SIGSAC conference on computer and communications security. 2016.                                                                               | Defense | Coming Soon!                                                                |
+| Yang, Ziqi, et al. "Defending model inversion and membership inference attacks via prediction purification." arXiv preprint arXiv:2005.03915 (2020).                                                                                        | Defense | Coming Soon!                                                                |
+| Shokri, Reza, et al. "Membership inference attacks against machine learning models." 2017 IEEE Symposium on Security and Privacy (SP). IEEE, 2017.                                                                                          | Attack  | [notebook](example/membership_inference/membership_inference_CIFAR10.ipynb) |  |
+| Fredrikson, Matt, Somesh Jha, and Thomas Ristenpart. "Model inversion attacks that exploit confidence information and basic countermeasures." Proceedings of the 22nd ACM SIGSAC conference on computer and communications security. 2015.  | Attack  | [script](example/model_inversion/mi_face.py)                                |
+| Hitaj, Briland, Giuseppe Ateniese, and Fernando Perez-Cruz. "Deep models under the GAN: information leakage from collaborative deep learning." Proceedings of the 2017 ACM SIGSAC Conference on Computer and Communications Security. 2017. | Attack  | [script](example/model_inversion/gan_attack.py)                             |
+| Biggio, Battista, et al. "Evasion attacks against machine learning at test time." Joint European conference on machine learning and knowledge discovery in databases. Springer, Berlin, Heidelberg, 2013. attack                            | Attack  | [notebook](example/adversarial_example/example_evasion_attack_svm.ipynb)    |
+| Biggio, Battista, Blaine Nelson, and Pavel Laskov. "Poisoning attacks against support vector machines." arXiv preprint arXiv:1206.6389 (2012).                                                                                              | Attack  | [notebook](example/adversarial_example/example_poison_attack.ipynb)         |
