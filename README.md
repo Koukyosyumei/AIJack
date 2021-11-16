@@ -14,20 +14,20 @@ We are trying to provide all algorithms with the same API as much as possible.
 
 ```
 # Model Inversion
-mi = MI_FACE(torch_model, input_shape)
-reconstructed_image, _ = mi.attack(target_label, learning_rate, num_iteration)
+attacker = MI_FACE(torch_model, ...)
+reconstructed_image, _ = attacker.attack(target_label, learning_rate, num_iteration)
 ```
 
 ```
 # Evasion Attack
-attacker = Evasion_attack_sklearn(target_model = sklearn_classifier)
-generated_adversary_image, _ = attacker.attack(initial_image)
+attacker = Evasion_attack_sklearn(sklearn_classifier, ...)
+generated_adversary_image, _ = attacker.attack(initial_image, ...)
 ```
 
 ```
 # Poisoning Attack
-attacker = Poison_attack_sklearn(clf, X_train_, y_train_)
-generated_adversary_image, _ = attacker.attack(initial_image, 1, X_valid, y_valid_)
+attacker = Poison_attack_sklearn(sklearn_classifier, ...)
+generated_adversary_image, _ = attacker.attack(initial_image, ...)
 ```
 
 ## Supported Papers
