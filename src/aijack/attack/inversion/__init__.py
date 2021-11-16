@@ -1,2 +1,2 @@
-from .gan_attack import GAN_Attack_Client
-from .mi_face import MI_FACE
+from .gan_attack import GAN_Attack  # noqa: F401
+from .mi_face import MI_FACE  # noqa: F401
