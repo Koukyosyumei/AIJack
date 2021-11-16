@@ -162,7 +162,7 @@ def main():
     fake_batch_size = batch_size
     fake_label = 10
 
-    for epoch in range(10):
+    for epoch in range(5):
         for client_idx in range(client_num):
             client = clients[client_idx]
             trainloader = trainloaders[client_idx]
