@@ -26,6 +26,9 @@ If you have any requests such as papers that you would like to see implemented, 
   - [Contents](#contents)
   - [Install](#install)
   - [Example](#example)
+    - [Evasion Attack](#evasion-attack)
+    - [Model Inversion](#model-inversion)
+    - [Poisoning Attack](#poisoning-attack)
   - [Supported Papers](#supported-papers)
 
 ## Install
@@ -38,20 +41,21 @@ pip install git+https://github.com/Koukyosyumei/AIJack
 
 We are trying to provide all algorithms with the same API as much as possible.
 
+### Evasion Attack
 ```
-# Model Inversion
-attacker = MI_FACE(torch_model, ...)
-reconstructed_image, _ = attacker.attack(target_label, learning_rate, num_iteration)
-```
-
-```
-# Evasion Attack
 attacker = Evasion_attack_sklearn(sklearn_classifier, ...)
 generated_adversary_image, _ = attacker.attack(initial_image, ...)
 ```
 
+### Model Inversion
+
 ```
-# Poisoning Attack
+attacker = MI_FACE(torch_model, ...)
+reconstructed_image, _ = attacker.attack(target_label, learning_rate, num_iteration)
+```
+
+### Poisoning Attack
+```
 attacker = Poison_attack_sklearn(sklearn_classifier, ...)
 generated_adversary_image, _ = attacker.attack(initial_image, ...)
 ```
