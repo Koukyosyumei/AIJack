@@ -14,6 +14,12 @@
 
 </h1>
 
+<div align="center">
+<img src="https://badgen.net/github/watchers/Koukyosyumei/AIjack">
+<img src="https://badgen.net/github/stars/Koukyosyumei/AIjack?color=green">
+<img src="https://badgen.net/github/forks/Koukyosyumei/AIjack">
+</div>
+
 # AIJack
 
 This package implements papers about AI security such as Model Inversion, Poisoning Attack, Evasion Attack, Differential Privacy, and Homomorphic Encryption. We try to offer the same API for every paper to compare and combine different algorithms easily.
