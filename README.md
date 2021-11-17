@@ -1,3 +1,9 @@
+<!--
+  Title: AIJack
+  Description: Awesome framework for attack against machine learning and deep learning.
+  Author: Hideaki Takahashi
+  -->
+
 <h1 align="center">
 
   <br>
@@ -13,6 +19,14 @@
 This package implements papers about AI security such as Model Inversion, Poisoning Attack, Evasion Attack, Differential Privacy, and Homomorphic Encryption. We try to offer the same API for every paper to compare and combine different algorithms easily.
 
 If you have any requests such as papers that you would like to see implemented, please raise an issue!
+
+## Contents
+
+- [AIJack](#aijack)
+  - [Contents](#contents)
+  - [Install](#install)
+  - [Example](#example)
+  - [Supported Papers](#supported-papers)
 
 ## Install
 
