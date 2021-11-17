@@ -1,6 +1,6 @@
 <!--
   Title: AIJack
-  Description: Awesome framework for attack against machine learning and deep learning.
+  Description: AIJack is a fantastic framework to demonstrate security risks of machine learning and deep learning, such as model inversion attack, poisoning attack, and membership inference attack.
   Author: Hideaki Takahashi
   -->
 
