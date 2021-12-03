@@ -1,21 +1,11 @@
 import numpy as np
-import torch
+
+from ..core import BaseServer
 
 
-def transform_list_to_tensor(model_params_list):
-    for k in model_params_list.keys():
-        model_params_list[k] = torch.from_numpy(
-            np.asarray(model_params_list[k])
-        ).float()
-    return model_params_list
-
-
-class Server:
-    def __init__(self, clients, global_model, servre_id=0):
-        self.clients = clients
-        self.servre_id = servre_id
-        self.num_clients = len(clients)
-        self.global_model = global_model
+class FedAvgServer(BaseServer):
+    def __init__(self, clients, global_model, server_id=0):
+        super().__init__(clients, global_model, server_id=server_id)
 
     def update(self, weight=None):
         if weight is None:
@@ -33,8 +23,8 @@ class Server:
                 else:
                     averaged_params[k] += local_model_params[k] * w
 
-        self.global_model.load_state_dict(averaged_params)
+        self.server_model.load_state_dict(averaged_params)
 
     def distribtue(self):
         for client in self.clients:
-            client.download(self.global_model.state_dict())
+            client.download(self.server_model.state_dict())
