@@ -2,6 +2,7 @@ example/*/data
 example/*/openml
 example/*/*.png
 example/*/*.jpg
+example/*/MNIST
 papers/*
 
 # Byte-compiled / optimized / DLL files
