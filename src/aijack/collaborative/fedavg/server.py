@@ -23,8 +23,8 @@ class FedAvgServer(BaseServer):
                 else:
                     averaged_params[k] += local_model_params[k] * w
 
-        self.global_model.load_state_dict(averaged_params)
+        self.server_model.load_state_dict(averaged_params)
 
     def distribtue(self):
         for client in self.clients:
-            client.download(self.global_model.state_dict())
+            client.download(self.server_model.state_dict())
