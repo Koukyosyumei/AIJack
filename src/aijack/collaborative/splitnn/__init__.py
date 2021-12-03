@@ -1,2 +1,2 @@
 from .client import SplitNNClient  # noqa: F401
-from .server import splitNNServer  # noqa: F401
+from .flow import SplitNN  # noqa: F401
