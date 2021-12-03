@@ -8,7 +8,7 @@ from matplotlib import pyplot as plt
 from sklearn.metrics import accuracy_score
 
 from aijack.attack import GAN_Attack
-from aijack.collaborative import Client, Server
+from aijack.collaborative import FedAvgClient, FedAvgServer
 from aijack.utils import DataSet
 
 # Number of channels in the training images. For color images this is 3
@@ -124,14 +124,14 @@ def main():
     target_label = 3
 
     net_1 = Net()
-    client_1 = Client(net_1, user_id=0)
+    client_1 = FedAvgClient(net_1, user_id=0)
     client_1.to(device)
     optimizer_1 = optim.SGD(
         client_1.parameters(), lr=0.02, weight_decay=1e-7, momentum=0.9
     )
 
     net_2 = Net()
-    client_2 = Client(net_2, user_id=1)
+    client_2 = FedAvgClient(net_2, user_id=1)
     client_2.to(device)
     optimizer_2 = optim.SGD(
         client_2.parameters(), lr=0.02, weight_decay=1e-7, momentum=0.9
@@ -157,7 +157,7 @@ def main():
 
     global_model = Net()
     global_model.to(device)
-    server = Server(clients, global_model)
+    server = FedAvgServer(clients, global_model)
 
     fake_batch_size = batch_size
     fake_label = 10
@@ -213,7 +213,7 @@ def main():
             for data in global_trainloader:
                 inputs, labels = data
                 inputs = inputs.to(device)
-                outputs = server.global_model(inputs)
+                outputs = server.server_model(inputs)
                 in_preds.append(outputs)
                 in_label.append(labels)
             in_preds = torch.cat(in_preds)
