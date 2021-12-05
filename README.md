@@ -31,10 +31,9 @@ If you have any requests such as papers that you would like to see implemented, 
 - [AIJack](#aijack)
   - [Contents](#contents)
   - [Install](#install)
-  - [Example](#example)
-    - [Evasion Attack](#evasion-attack)
-    - [Model Inversion](#model-inversion)
-    - [Poisoning Attack](#poisoning-attack)
+  - [Collaborative Learning](#collaborative-learning)
+  - [Attack](#attack)
+  - [Defense](#defense)
   - [Supported Papers](#supported-papers)
 
 ## Install
@@ -43,28 +42,66 @@ If you have any requests such as papers that you would like to see implemented, 
 pip install git+https://github.com/Koukyosyumei/AIJack
 ```
 
-## Example
+## Collaborative Learning
 
-We are trying to provide all algorithms with the same API as much as possible.
+AIJack allows you to easily experiment collaborative learning such as federated learning and split learning. All you have to do is add a few lines of code to the regular pytorch code.
 
-### Evasion Attack
-```
-attacker = Evasion_attack_sklearn(sklearn_classifier, ...)
-generated_adversary_image, _ = attacker.attack(initial_image, ...)
-```
-
-### Model Inversion
+- federated learning
 
 ```
-attacker = MI_FACE(torch_model, ...)
-reconstructed_image, _ = attacker.attack(target_label, learning_rate, num_iteration)
+clients = [TorchModule(), TorcnModule()]
+global_model = TorchModule()
+server = FedAvgServer(clients, global_model)
+
+for _ in range(epoch):
+
+  for client in clients:
+    normal pytorch training.
+
+  server.update()
+  server.distribtue()
 ```
 
-### Poisoning Attack
+- split learning
+
 ```
-attacker = Poison_attack_sklearn(sklearn_classifier, ...)
-generated_adversary_image, _ = attacker.attack(initial_image, ...)
+client_1 = SplitNNClient(first_model, user_id=0)
+client_2 = SplitNNClient(second_model, user_id=1)
+clients = [client_1, client_2]
+splitnn = SplitNN(clients)
+
+for _ in range(epoch):
+  for x, y in dataloader:
+
+    for opt in optimizers:
+      opt.zero_grad()
+
+    pred = splitnn(x)
+    loss = criterion(y, pred)
+    loss.backwad()
+    splitnn.backward()
+
+    for opt in optimizers:
+      opt.step()
 ```
+
+## Attack
+
+AIJack currently supports model inversion, membership inference attack and label leakage attack with pytorch and evasion attack and poisoning attack with sklearn.
+
+- [evasion attack](example/adversarial_example/example_evasion_attack_svm.ipynb)
+- [poisoning attack](example/adversarial_example/example_poison_attack.ipynb)
+- [model inversion attack with simple pytorch model](example/model_inversion/mi_face.py)
+- [model inversion attack with split learning](example/model_inversion/generator_attack.py)
+- [model inversion attack with federated learning](example/model_inversion/gan_attack.py)
+- [membership inference attack](example/membership_inference/membership_inference_CIFAR10.ipynb)
+- [label leakage attack with split learning](example/label_leakage/label_leakage.py)
+
+## Defense
+
+AIJack plans to support various defense methods such as differential privacy and Homomorphic Encryption.
+
+- [POC of Homomorphic Encryption](test/defense/ckks/test_core.py)
 
 ## Supported Papers
 
