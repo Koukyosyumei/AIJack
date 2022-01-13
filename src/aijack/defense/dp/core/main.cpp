@@ -6,6 +6,7 @@
 #include <vector>
 
 #include "rdp.cpp"
+#include "search.cpp"
 
 #define STRINGIFY(x) #x
 #define MACRO_STRINGIFY(x) STRINGIFY(x)
@@ -32,6 +33,18 @@ PYBIND11_MODULE(aijack_dp_core, m)
     m.def("culc_upperbound_of_rdp_with_Sampled_Gaussian_Mechanism",
           &culc_upperbound_of_rdp_with_Sampled_Gaussian_Mechanism,
           R"pbdoc(culc_upperbound_of_rdp_with_Sampled_Gaussian_Mechanism)pbdoc");
+
+    m.def("_ternary_search",
+          &_ternary_search, R"pbdoc(_ternary_search)pbdoc");
+
+    m.def("_ternary_search_int",
+          &_ternary_search_int, R"pbdoc(_ternary_search_int)pbdoc");
+
+    m.def("_greedy_search",
+          &_greedy_search, R"pbdoc(_greedy_search)pbdoc");
+
+    m.def("_greedy_search_double",
+          &_greedy_search_double, R"pbdoc(_greedy_search)pbdoc");
 
 #ifdef VERSION_INFO
     m.attr("__version__") = MACRO_STRINGIFY(VERSION_INFO);
