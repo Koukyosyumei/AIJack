@@ -16,8 +16,8 @@ def read_requirements():
 __version__ = "0.0.0"
 ext_modules = [
     Pybind11Extension(
-        "dp_core",
-        ["src/aijack/defense/dp/main.cpp"],
+        "aijack_dp_core",
+        ["src/aijack/defense/dp/core/main.cpp"],
         # Example: passing in the version to the compiled code
         define_macros=[("VERSION_INFO", __version__)],
     ),

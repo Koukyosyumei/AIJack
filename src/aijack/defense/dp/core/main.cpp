@@ -13,7 +13,7 @@
 using namespace std;
 namespace py = pybind11;
 
-PYBIND11_MODULE(dp_core, m)
+PYBIND11_MODULE(aijack_dp_core, m)
 {
     m.doc() = R"pbdoc(
         core of diferential_privacy
