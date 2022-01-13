@@ -3,22 +3,21 @@
 #include <pybind11/functional.h>
 #include <numbers>
 #include <cmath>
-#include <iostream>
 #include <vector>
 #include <limits>
 
 using namespace std;
 namespace py = pybind11;
 
-long double binom(long double n, long double k)
+double binom(double n, double k)
 {
     return 1 / ((n + 1) * std::beta(n - k + 1, k + 1));
 }
 
-long double _log_add(long double logx, long double logy)
+double _log_add(double logx, double logy)
 {
-    long double a = min(logx, logy);
-    long double b = max(logx, logy);
+    double a = min(logx, logy);
+    double b = max(logx, logy);
 
     if (std::isinf(-1 * a))
     {
@@ -27,7 +26,7 @@ long double _log_add(long double logx, long double logy)
     return std::log(1 + std::exp(a - b)) + b;
 }
 
-long double _log_sub(long double logx, long double logy)
+double _log_sub(double logx, double logy)
 {
     if (std::isinf(-1 * logy))
     {
@@ -35,14 +34,14 @@ long double _log_sub(long double logx, long double logy)
     }
     if (logx == logy)
     {
-        return -1 * std::numeric_limits<long double>::infinity();
+        return -1 * std::numeric_limits<double>::infinity();
     }
     return std::log(std::exp((logx - logy) - 1)) + logy;
 }
 
-long double _log_erfc(long double x)
+double _log_erfc(double x)
 {
-    long double r = std::erfc(x);
+    double r = std::erfc(x);
     if (r == 0.)
     {
         return std::log(std::numbers::pi) / 2 -
@@ -58,10 +57,10 @@ long double _log_erfc(long double x)
     }
 }
 
-long double logsumexp(const std::vector<long double> &arr, const std::vector<int> &signs)
+double logsumexp(const std::vector<double> &arr, const std::vector<int> &signs)
 {
-    long double maxVal = arr[0];
-    long double sum = 0;
+    double maxVal = arr[0];
+    double sum = 0;
     size_t arr_size = arr.size();
     for (size_t i = 1; i < arr_size; i++)
     {
