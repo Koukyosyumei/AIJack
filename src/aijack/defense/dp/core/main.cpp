@@ -19,9 +19,11 @@ PYBIND11_MODULE(aijack_dp_core, m)
         core of diferential_privacy
     )pbdoc";
 
-    m.def("eps_gaussian", &eps_gaussian, R"pbdoc(
-        eps_gaussian
-    )pbdoc");
+    m.def("eps_gaussian",
+          &eps_gaussian, R"pbdoc(eps_gaussian)pbdoc");
+
+    m.def("eps_laplace",
+          &eps_laplace, R"pbdoc(eps_laplace)pbdoc");
 
     m.def("culc_tightupperbound_lowerbound_of_rdp_with_theorem6and8_of_zhu_2019",
           &culc_tightupperbound_lowerbound_of_rdp_with_theorem6and8_of_zhu_2019,
