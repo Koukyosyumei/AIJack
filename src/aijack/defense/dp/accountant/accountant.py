@@ -1,28 +1,32 @@
 import numpy as np
 
 from aijack_dp_core import (
+    _greedy_search,
+    _greedy_search_double,
+    _ternary_search,
+    _ternary_search_int,
     culc_tightupperbound_lowerbound_of_rdp_with_theorem6and8_of_zhu_2019,
     culc_upperbound_of_rdp_with_Sampled_Gaussian_Mechanism,
     eps_gaussian,
     eps_laplace,
 )
 
-from .search import (
-    _bisection_search,
-    _greedy_search,
-    _ternary_search,
-    _ternary_search_int,
-)
-
 
 class BaseMomentAccountant:
     def __init__(
-        self, search="ternary", order_min=2, order_max=64, precision=0.5, orders=None
+        self,
+        search="ternary",
+        order_min=2,
+        order_max=64,
+        precision=0.5,
+        orders=[],
+        max_iterations=10000,
     ):
         self.order_min = order_min
         self.order_max = order_max
         self.orders = orders
         self.precision = precision
+        self.max_iterations = max_iterations
 
         self.steps_info = []
         self._culc_bound_of_rdp = None
@@ -31,10 +35,10 @@ class BaseMomentAccountant:
             self.search = _ternary_search
         elif search == "ternary_int":
             self.search = _ternary_search_int
-        elif search == "bisection":
-            self.search = _bisection_search
         elif search == "greedy":
             self.search = _greedy_search
+        elif search == "greedy_double":
+            self.search = _greedy_search_double
 
     def _culc_upperbound_of_rdp_onestep(self, alpha, noise_params, sampling_rate):
         if sampling_rate == 0:
@@ -63,40 +67,40 @@ class BaseMomentAccountant:
     def get_noise_multiplier(
         self,
         noise_multiplier_key,
-        noise_multiplier_min,
-        noise_multiplier_max,
-        eps_max,
-        delta,
+        target_epsilon,
+        target_delta,
         sampling_rate,
         num_iterations,
+        noise_multiplier_min=0,
+        noise_multiplier_max=10,
         noise_multiplier_precision=0.01,
     ):
         eps = float("inf")
-        while eps > eps_max:
+        while eps > target_epsilon:
             noise_multiplier_max = 2 * noise_multiplier_max
-            self.steps = [
+            self.steps_info = [
                 (
                     {noise_multiplier_key: noise_multiplier_max},
                     sampling_rate,
                     int(num_iterations / sampling_rate),
                 )
             ]
-            eps = self.get_epsilon(delta)
+            eps = self.get_epsilon(target_delta)
 
         while (
             noise_multiplier_max - noise_multiplier_min
         ) > noise_multiplier_precision:
             noise_multiplier = (noise_multiplier_max + noise_multiplier_min) / 2
-            self.steps = [
+            self.steps_info = [
                 (
                     {noise_multiplier_key: noise_multiplier},
                     sampling_rate,
                     int(num_iterations / sampling_rate),
                 )
             ]
-            eps = self.get_epsilon(delta)
+            eps = self.get_epsilon(target_delta)
 
-            if eps < eps_max:
+            if eps < target_epsilon:
                 noise_multiplier_max = noise_multiplier
             else:
                 noise_multiplier_min = noise_multiplier
@@ -111,6 +115,7 @@ class BaseMomentAccountant:
             self.order_max,
             self.orders,
             self.precision,
+            self.max_iterations,
         )
 
         min_delta = np.exp(
@@ -144,6 +149,7 @@ class BaseMomentAccountant:
             self.order_max,
             self.orders,
             self.precision,
+            self.max_iterations,
         )
 
         min_epsilon = estimate_eps(optimal_lam)
@@ -159,9 +165,10 @@ class GeneralMomentAccountant(BaseMomentAccountant):
         order_min=2,
         order_max=64,
         precision=0.5,
-        orders=None,
+        orders=[],
         noise_type="Gaussian",
         bound_type="rdp_upperbound_closedformula",
+        max_iterations=10000,
     ):
         super().__init__(
             search=search,
@@ -169,6 +176,7 @@ class GeneralMomentAccountant(BaseMomentAccountant):
             order_max=order_max,
             precision=precision,
             orders=orders,
+            max_iterations=max_iterations,
         )
         self.name = name
         self._set_noise_type(noise_type)
