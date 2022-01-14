@@ -45,7 +45,7 @@ PYBIND11_MODULE(aijack_dp_core, m)
             &_greedy_search, R"pbdoc(_greedy_search)pbdoc");
 
       m.def("_greedy_search_frac",
-            &_greedy_search_frac, R"pbdoc(_greedy_search)pbdoc");
+            &_greedy_search_frac, R"pbdoc(_greey_search_frac)pbdoc");
 
 #ifdef VERSION_INFO
       m.attr("__version__") = MACRO_STRINGIFY(VERSION_INFO);
