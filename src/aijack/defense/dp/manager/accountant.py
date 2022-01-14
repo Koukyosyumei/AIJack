@@ -44,15 +44,25 @@ class BaseMomentAccountant:
         elif search == "greedy_frac":
             self.search = _greedy_search_frac
 
+        self._cache = {}
+
     def _culc_upperbound_of_rdp_onestep(self, alpha, noise_params, sampling_rate):
-        if sampling_rate == 0:
-            return 0
-        elif sampling_rate == 1:
-            return self.eps_func(alpha, noise_params)
+        key = hash(
+            f"{alpha}_{list(noise_params.keys())[0]}_{list(noise_params.values())[0]}_{sampling_rate}"
+        )
+        if key not in self._cache:
+            if sampling_rate == 0:
+                result = 0
+            elif sampling_rate == 1:
+                result = self.eps_func(alpha, noise_params)
+            else:
+                result = self._culc_bound_of_rdp(
+                    alpha, noise_params, sampling_rate, self.eps_func
+                )
+            self._cache[key] = result
+            return result
         else:
-            return self._culc_bound_of_rdp(
-                alpha, noise_params, sampling_rate, self.eps_func
-            )
+            return self._cache[key]
 
     def _culc_upperbound_of_rdp(self, lam, steps_info):
         rdp = 0.0
