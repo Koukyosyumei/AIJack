@@ -1,3 +1,4 @@
+#pragma once
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
 #include <pybind11/functional.h>
@@ -116,19 +117,6 @@ double culc_upperbound_of_rdp_with_Sampled_Gaussian_Mechanism_frac(double alpha,
         {
             break;
         }
-
-        /*
-        cout << "coef is " << coef << endl;
-        cout << "log_coef is " << log_coef << endl;
-        cout << "log_t0 is " << log_t0 << endl;
-        cout << "log_t1 is " << log_t1 << endl;
-        cout << "log_e0 is " << log_e0 << endl;
-        cout << "log_e1 is " << log_e1 << endl;
-        cout << "log_s0 is " << log_s0 << endl;
-        cout << "log_s1 is " << log_s1 << endl;
-        cout << "log_a0 is " << log_a0 << endl;
-        cout << "log_a1 is " << log_a1 << endl;
-        */
     }
 
     return _log_add(log_a0, log_a1) / (alpha - 1);
