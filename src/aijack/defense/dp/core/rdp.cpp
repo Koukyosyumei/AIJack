@@ -61,10 +61,11 @@ double culc_upperbound_of_rdp_with_Sampled_Gaussian_Mechanism_int(int alpha,
     return log_a / (alpha - 1);
 }
 
-double culc_upperbound_of_rdp_with_Sampled_Gaussian_Mechanism_double(double alpha,
-                                                                     py::dict params,
-                                                                     double sampling_rate)
+double culc_upperbound_of_rdp_with_Sampled_Gaussian_Mechanism_frac(double alpha,
+                                                                   py::dict params,
+                                                                   double sampling_rate)
 {
+
     double sigma = params["sigma"].cast<double>();
     double inv_double_sigma_square = 1 / (2 * (sigma * sigma));
     double log_sampling_rate = std::log(sampling_rate);
@@ -81,6 +82,12 @@ double culc_upperbound_of_rdp_with_Sampled_Gaussian_Mechanism_double(double alph
     while (true)
     {
         coef = binom(alpha, i);
+
+        if (std::isnan(coef))
+        {
+            return std::nan("");
+        }
+
         log_coef = std::log(std::abs(coef));
         j = alpha - i;
 
@@ -109,6 +116,19 @@ double culc_upperbound_of_rdp_with_Sampled_Gaussian_Mechanism_double(double alph
         {
             break;
         }
+
+        /*
+        cout << "coef is " << coef << endl;
+        cout << "log_coef is " << log_coef << endl;
+        cout << "log_t0 is " << log_t0 << endl;
+        cout << "log_t1 is " << log_t1 << endl;
+        cout << "log_e0 is " << log_e0 << endl;
+        cout << "log_e1 is " << log_e1 << endl;
+        cout << "log_s0 is " << log_s0 << endl;
+        cout << "log_s1 is " << log_s1 << endl;
+        cout << "log_a0 is " << log_a0 << endl;
+        cout << "log_a1 is " << log_a1 << endl;
+        */
     }
 
     return _log_add(log_a0, log_a1) / (alpha - 1);
@@ -126,7 +146,7 @@ double culc_upperbound_of_rdp_with_Sampled_Gaussian_Mechanism(double alpha,
     }
     else
     {
-        return culc_upperbound_of_rdp_with_Sampled_Gaussian_Mechanism_double(
+        return culc_upperbound_of_rdp_with_Sampled_Gaussian_Mechanism_frac(
             alpha, params, sampling_rate);
     }
 }
