@@ -45,7 +45,7 @@ double eps_laplace(double alpha, py::dict params)
 double eps_randresp(double alpha, py::dict params)
 {
     double inf = std::numeric_limits<double>::infinity();
-    double p = params["p"].case<double>();
+    double p = params["p"].cast<double>();
     if (p == 1 || p == 0)
     {
         return inf;
