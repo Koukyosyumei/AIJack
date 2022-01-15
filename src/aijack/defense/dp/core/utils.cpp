@@ -2,7 +2,6 @@
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
 #include <pybind11/functional.h>
-#include <numbers>
 #include <cmath>
 #include <vector>
 #include <limits>
@@ -11,12 +10,7 @@
 using namespace std;
 namespace py = pybind11;
 
-/*
-double binom(double n, double k)
-{
-    return 1 / ((n + 1) * std::beta(n - k + 1, k + 1));
-}
-*/
+constexpr double pi = 3.14159265358979323846;
 
 double binom(double n, double k)
 {
@@ -66,7 +60,7 @@ double binom(double n, double k)
     else if (k > 1e8 * std::fabs(n))
     {
         num = std::tgamma(1 + n) / std::fabs(k) + std::tgamma(1 + n) * n / (2 * (k * k));
-        num /= std::numbers::pi * pow(std::fabs(k), n);
+        num /= pi * pow(std::fabs(k), n);
         if (k > 0)
         {
             kx = std::floor(k);
@@ -87,7 +81,7 @@ double binom(double n, double k)
                 dk = k;
                 sgn = 1;
             }
-            return num * std::sin((dk - n) * std::numbers::pi) * sgn;
+            return num * std::sin((dk - n) * pi) * sgn;
         }
         else
         {
@@ -98,7 +92,7 @@ double binom(double n, double k)
             }
             else
             {
-                return num * std::sin(k * std::numbers::pi);
+                return num * std::sin(k * pi);
             }
         }
     }
@@ -146,7 +140,7 @@ double _log_erfc(double x)
     double r = std::erfc(x);
     if (r == 0.)
     {
-        return -1 * std::log(std::numbers::pi) / 2 -
+        return -1 * std::log(pi) / 2 -
                std::log(x) - pow(x, 2) -
                (0.5 * pow(x, -2)) +
                0.625 * pow(x, -4) -
