@@ -48,7 +48,7 @@ AIJack allows you to easily experiment collaborative learning such as federated 
 
 - federated learning
 
-```
+```python
 clients = [TorchModule(), TorcnModule()]
 global_model = TorchModule()
 server = FedAvgServer(clients, global_model)
@@ -64,7 +64,7 @@ for _ in range(epoch):
 
 - split learning
 
-```
+```python
 client_1 = SplitNNClient(first_model, user_id=0)
 client_2 = SplitNNClient(second_model, user_id=1)
 clients = [client_1, client_2]
@@ -104,7 +104,7 @@ AIJack plans to support various defense methods such as differential privacy and
 - [Differential Privacy](example/model_inversion/mi_face_differential_privacy.py)
 
 Moment Accountant
-```
+```python
 ga = GeneralMomentAccountant(noise_type="Gaussian",
                              search="greedy",
                              precision=0.001,
@@ -115,7 +115,7 @@ ga.get_epsilon(delta)
 ```
 
 DPSGD
-```
+```python
 privacy_manager = PrivacyManager(
         accountant,
         optim.SGD,
