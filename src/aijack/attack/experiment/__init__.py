@@ -1,2 +1,2 @@
-from .fsha import FSHA
-from .fsha_mnist import Decoder, Discriminator, Pilot, Resnet
+from .fsha import FSHA  # noqa: F401
+from .fsha_mnist import Decoder, Discriminator, Pilot, Resnet  # noqa: F401
