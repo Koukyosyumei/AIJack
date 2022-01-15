@@ -99,15 +99,59 @@ AIJack currently supports model inversion, membership inference attack and label
 
 ## Defense
 
-AIJack plans to support various defense methods such as differential privacy and Homomorphic Encryption.
+AIJack plans to support various defense methods such as differential privacy and Homomorphic Encryption. Our Differential Privacy implementation is faster compared to the other popular libraries.
+
+- [Differential Privacy](example/model_inversion/mi_face_differential_privacy.py)
+
+Moment Accountant
+```
+ga = GeneralMomentAccountant(noise_type="Gaussian",
+                             search="greedy",
+                             precision=0.001,
+                             orders=list(range(2, 64)),
+                             bound_type="rdp_tight_upperbound")
+ga.add_step_info({"sigma":noise_multiplier}, sampling_rate, iterations)
+ga.get_epsilon(delta)
+```
+
+DPSGD
+```
+privacy_manager = PrivacyManager(
+        accountant,
+        optim.SGD,
+        l2_norm_clip=l2_norm_clip,
+        dataset=trainset,
+        lot_size=lot_size,
+        batch_size=batch_size,
+        iterations=iterations,
+    )
+
+dpoptimizer_cls, lot_loader, batch_loader = privacy_manager.privatize(
+        noise_multiplier=sigma
+    )
+
+for data in lot_loader(trainset):
+    X_lot, y_lot = data
+    optimizer.zero_grad()
+    for X_batch, y_batch in batch_loader(TensorDataset(X_lot, y_lot)):
+        optimizer.zero_grad_keep_accum_grads()
+        pred = net(X_batch)
+        loss = criterion(pred, y_batch.to(torch.int64))
+        loss.backward()
+        optimizer.update_accum_grads()
+    optimizer.step()
+```
 
 - [POC of Homomorphic Encryption](test/defense/ckks/test_core.py)
+
+
+
 
 ## Supported Papers
 
 | Paper                                                                                                                                                                                                                                       | Type    | example                                                                     |
 | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- | --------------------------------------------------------------------------- |
-| Abadi, Martin, et al. "Deep learning with differential privacy." Proceedings of the 2016 ACM SIGSAC conference on computer and communications security. 2016.                                                                               | Defense | Coming Soon!                                                                |
+| Abadi, Martin, et al. "Deep learning with differential privacy." Proceedings of the 2016 ACM SIGSAC conference on computer and communications security. 2016.                                                                               | Defense | [script](example/model_inversion/mi_face_differential_privacy.py)           |
 | Yang, Ziqi, et al. "Defending model inversion and membership inference attacks via prediction purification." arXiv preprint arXiv:2005.03915 (2020).                                                                                        | Defense | Coming Soon!                                                                |
 | Shokri, Reza, et al. "Membership inference attacks against machine learning models." 2017 IEEE Symposium on Security and Privacy (SP). IEEE, 2017.                                                                                          | Attack  | [notebook](example/membership_inference/membership_inference_CIFAR10.ipynb) |  |
 | Fredrikson, Matt, Somesh Jha, and Thomas Ristenpart. "Model inversion attacks that exploit confidence information and basic countermeasures." Proceedings of the 22nd ACM SIGSAC conference on computer and communications security. 2015.  | Attack  | [script](example/model_inversion/mi_face.py)                                |
