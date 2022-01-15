@@ -2,13 +2,17 @@ import numpy as np
 
 from aijack_dp_core import (
     _greedy_search,
-    _greedy_search_double,
+    _greedy_search_frac,
     _ternary_search,
     _ternary_search_int,
     culc_tightupperbound_lowerbound_of_rdp_with_theorem6and8_of_zhu_2019,
     culc_upperbound_of_rdp_with_Sampled_Gaussian_Mechanism,
     eps_gaussian,
     eps_laplace,
+)
+
+from .rdp import (
+    culc_upperbound_of_rdp_with_Sampled_Gaussian_Mechanism as culc_upperbound_of_rdp_with_Sampled_Gaussian_Mechanism_py,
 )
 
 
@@ -37,22 +41,32 @@ class BaseMomentAccountant:
             self.search = _ternary_search_int
         elif search == "greedy":
             self.search = _greedy_search
-        elif search == "greedy_double":
-            self.search = _greedy_search_double
+        elif search == "greedy_frac":
+            self.search = _greedy_search_frac
+
+        self._cache = {}
 
     def _culc_upperbound_of_rdp_onestep(self, alpha, noise_params, sampling_rate):
-        if sampling_rate == 0:
-            return 0
-        elif sampling_rate == 1:
-            return self.eps_func(alpha, noise_params)
+        key = hash(
+            f"{alpha}_{list(noise_params.keys())[0]}_{list(noise_params.values())[0]}_{sampling_rate}"
+        )
+        if key not in self._cache:
+            if sampling_rate == 0:
+                result = 0
+            elif sampling_rate == 1:
+                result = self.eps_func(alpha, noise_params)
+            else:
+                result = self._culc_bound_of_rdp(
+                    alpha, noise_params, sampling_rate, self.eps_func
+                )
+            self._cache[key] = result
+            return result
         else:
-            return self._culc_bound_of_rdp(
-                alpha, noise_params, sampling_rate, self.eps_func
-            )
+            return self._cache[key]
 
     def _culc_upperbound_of_rdp(self, lam, steps_info):
         rdp = 0.0
-        for (noise_params, sampling_rate, num_steps) in steps_info:
+        for noise_params, sampling_rate, num_steps in steps_info:
             rdp += num_steps * self._culc_upperbound_of_rdp_onestep(
                 lam, noise_params, sampling_rate
             )
@@ -63,6 +77,17 @@ class BaseMomentAccountant:
 
     def add_step_info(self, noise_params, sampling_rate, num_steps):
         self.steps_info.append((noise_params, sampling_rate, num_steps))
+
+    def step(self, noise_params, sampling_rate, num_steps):
+        def _step(f):
+            def _wrapper(*args, **keywords):
+                result = f(*args, **keywords)
+                self.add_step_info(self, noise_params, sampling_rate, num_steps)
+                return result
+
+            return _wrapper
+
+        return _step
 
     def get_noise_multiplier(
         self,
@@ -160,8 +185,8 @@ class BaseMomentAccountant:
 class GeneralMomentAccountant(BaseMomentAccountant):
     def __init__(
         self,
-        name="",
-        search="bisection",
+        name="SGM",
+        search="ternary",
         order_min=2,
         order_max=64,
         precision=0.5,
@@ -190,6 +215,10 @@ class GeneralMomentAccountant(BaseMomentAccountant):
 
     def _set_upperbound_func(self, bound_type):
         if bound_type == "rdp_upperbound_closedformula":
+            self._culc_bound_of_rdp = (
+                culc_upperbound_of_rdp_with_Sampled_Gaussian_Mechanism_py
+            )
+        elif bound_type == "rdp_upperbound_closedformula_cpp":
             self._culc_bound_of_rdp = (
                 culc_upperbound_of_rdp_with_Sampled_Gaussian_Mechanism
             )

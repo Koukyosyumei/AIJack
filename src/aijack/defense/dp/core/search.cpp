@@ -1,9 +1,13 @@
+#pragma once
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
 #include <pybind11/functional.h>
 #include <vector>
 #include <cmath>
 #include <numeric>
+
+using namespace std;
+namespace py = pybind11;
 
 double _ternary_search(const std::function<double(double)> &f,
                        double left, double right,
@@ -30,7 +34,6 @@ double _ternary_search(const std::function<double(double)> &f,
         {
             left = left_third;
         }
-
         i++;
     }
     return (left + right) / 2;
@@ -71,7 +74,7 @@ int _greedy_search(const std::function<double(int)> &f,
     int optim_lam = left;
     if (orders.size() == 0)
     {
-        orders.resize(right - left + 1);
+        orders = std::vector<int>(right - left + 1);
         std::iota(orders.begin(), orders.end(), 0);
     }
 
@@ -88,10 +91,10 @@ int _greedy_search(const std::function<double(int)> &f,
     return optim_lam;
 }
 
-double _greedy_search_double(const std::function<double(double)> &f,
-                             double left, double right,
-                             std::vector<double> orders,
-                             double precision, int max_iteration = 10000)
+double _greedy_search_frac(const std::function<double(double)> &f,
+                           double left, double right,
+                           std::vector<double> orders,
+                           double precision, int max_iteration = 10000)
 {
     double min_val = std::numeric_limits<double>::infinity();
     double optim_lam = left;

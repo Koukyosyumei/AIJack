@@ -1,3 +1,4 @@
+#pragma once
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
 #include <pybind11/functional.h>
@@ -61,10 +62,11 @@ double culc_upperbound_of_rdp_with_Sampled_Gaussian_Mechanism_int(int alpha,
     return log_a / (alpha - 1);
 }
 
-double culc_upperbound_of_rdp_with_Sampled_Gaussian_Mechanism_double(double alpha,
-                                                                     py::dict params,
-                                                                     double sampling_rate)
+double culc_upperbound_of_rdp_with_Sampled_Gaussian_Mechanism_frac(double alpha,
+                                                                   py::dict params,
+                                                                   double sampling_rate)
 {
+
     double sigma = params["sigma"].cast<double>();
     double inv_double_sigma_square = 1 / (2 * (sigma * sigma));
     double log_sampling_rate = std::log(sampling_rate);
@@ -81,6 +83,15 @@ double culc_upperbound_of_rdp_with_Sampled_Gaussian_Mechanism_double(double alph
     while (true)
     {
         coef = binom(alpha, i);
+
+        if (std::isnan(coef))
+        {
+            auto warnings = py::module::import("warnings");
+            warnings.attr("warn")(
+                "Culculation of RDP did not converge. Please consider using `rdp_upperbound_closedformula` or `rdp_tight_upperbound`");
+            return std::nan("");
+        }
+
         log_coef = std::log(std::abs(coef));
         j = alpha - i;
 
@@ -126,7 +137,7 @@ double culc_upperbound_of_rdp_with_Sampled_Gaussian_Mechanism(double alpha,
     }
     else
     {
-        return culc_upperbound_of_rdp_with_Sampled_Gaussian_Mechanism_double(
+        return culc_upperbound_of_rdp_with_Sampled_Gaussian_Mechanism_frac(
             alpha, params, sampling_rate);
     }
 }

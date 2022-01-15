@@ -1,1 +1,1 @@
-from .accountant import GeneralMomentAccountant  # noqa: F401
+from .manager import GeneralMomentAccountant, PrivacyManager  # noqa: F401
