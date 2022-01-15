@@ -66,6 +66,7 @@ def train():
         order_min=72,
         max_iterations=1000,
         bound_type="rdp_upperbound_closedformula",
+        backend="python",
     )
 
     privacy_manager = PrivacyManager(

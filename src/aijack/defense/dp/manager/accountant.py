@@ -160,14 +160,6 @@ class BaseMomentAccountant:
                 + np.log((order - 1) / order)
             )
 
-        """
-
-        def estimate_eps(order):
-            return log_inv_delta / (order - 1) + self._culc_upperbound_of_rdp(
-                order - 1, self.steps_info
-            )
-        """
-
         optimal_lam = self.search(
             estimate_eps,
             self.order_min,
@@ -194,6 +186,7 @@ class GeneralMomentAccountant(BaseMomentAccountant):
         noise_type="Gaussian",
         bound_type="rdp_upperbound_closedformula",
         max_iterations=10000,
+        backend="cpp",
     ):
         super().__init__(
             search=search,
@@ -205,7 +198,7 @@ class GeneralMomentAccountant(BaseMomentAccountant):
         )
         self.name = name
         self._set_noise_type(noise_type)
-        self._set_upperbound_func(bound_type)
+        self._set_upperbound_func(backend, bound_type)
 
     def _set_noise_type(self, noise_type):
         if noise_type == "Gaussian":
@@ -213,16 +206,16 @@ class GeneralMomentAccountant(BaseMomentAccountant):
         elif noise_type == "Laplace":
             self.eps_func = eps_laplace
 
-    def _set_upperbound_func(self, bound_type):
-        if bound_type == "rdp_upperbound_closedformula":
-            self._culc_bound_of_rdp = (
-                culc_upperbound_of_rdp_with_Sampled_Gaussian_Mechanism_py
-            )
-        elif bound_type == "rdp_upperbound_closedformula_cpp":
+    def _set_upperbound_func(self, backend, bound_type):
+        if backend == "cpp" and bound_type == "rdp_upperbound_closedformula":
             self._culc_bound_of_rdp = (
                 culc_upperbound_of_rdp_with_Sampled_Gaussian_Mechanism
             )
-        elif bound_type == "rdp_tight_upperbound":
+        elif backend == "python" and bound_type == "rdp_upperbound_closedformula":
+            self._culc_bound_of_rdp = (
+                culc_upperbound_of_rdp_with_Sampled_Gaussian_Mechanism_py
+            )
+        elif backend == "cpp" and bound_type == "rdp_tight_upperbound":
             self._culc_bound_of_rdp = (
                 culc_tightupperbound_lowerbound_of_rdp_with_theorem6and8_of_zhu_2019
             )

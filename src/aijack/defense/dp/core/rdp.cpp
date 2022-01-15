@@ -42,6 +42,32 @@ double eps_laplace(double alpha, py::dict params)
     }
 }
 
+double eps_randresp(double alpha, py::dict params)
+{
+    double inf = std::numeric_limits<double>::infinity();
+    double p = params["p"].case<double>();
+    if (p == 1 || p == 0)
+    {
+        return inf;
+    }
+    if (alpha <= 1)
+    {
+        return (2 * p - 1) * std::log(p / (1 - p));
+    }
+    else if (alpha == inf)
+    {
+        std::abs(std::log(1.0 * p / (1 - p)));
+    }
+
+    std::vector<double> terms(2);
+    std::vector<int> signs(2);
+    terms[0] = alpha * std::log(p) + (1 - alpha) * std::log(1 - p);
+    signs[0] = 1;
+    terms[1] = alpha * std::log(1 - p) + (1 - alpha) * p;
+    signs[1] = 1;
+    return (1 / (alpha - 1)) * logsumexp(terms, signs);
+}
+
 double culc_upperbound_of_rdp_with_Sampled_Gaussian_Mechanism_int(int alpha,
                                                                   py::dict params,
                                                                   double sampling_rate)
