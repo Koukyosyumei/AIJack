@@ -14,6 +14,7 @@ def test_rdp_tight_upperbound():
         orders=list(range(2, 73)),
         max_iterations=100,
         bound_type="rdp_tight_upperbound",
+        backend="cpp",
     )
 
     accountant.reset_step_info()
@@ -54,6 +55,7 @@ def test_rdp_upperbound_closedformula():
         order_min=72,
         max_iterations=100,
         bound_type="rdp_upperbound_closedformula",
+        backend="python",
     )
 
     accountant.reset_step_info()
