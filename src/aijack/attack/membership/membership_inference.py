@@ -3,7 +3,7 @@ import torch
 import torch.nn as nn
 import torch.optim as optim
 
-from ...utils import DataSet, try_gpu
+from ...utils import NumpyDataset, try_gpu
 from ..base_attack import BaseAttacker
 
 
@@ -114,11 +114,11 @@ class ShadowModel:
             X_train, y_train = X[train_indices], y[train_indices]
             X_test, y_test = X[test_indices], y[test_indices]
 
-            trainset = DataSet(X_train, y_train, transform=self.shadow_transform)
+            trainset = NumpyDataset(X_train, y_train, transform=self.shadow_transform)
             trainloader = torch.utils.data.DataLoader(
                 trainset, batch_size=4, shuffle=True, num_workers=2
             )
-            testset = DataSet(X_test, y_test, transform=self.shadow_transform)
+            testset = NumpyDataset(X_test, y_test, transform=self.shadow_transform)
             testloader = torch.utils.data.DataLoader(
                 testset, batch_size=4, shuffle=True, num_workers=2
             )

@@ -9,7 +9,7 @@ from matplotlib import pyplot as plt
 from sklearn.metrics import accuracy_score
 
 from aijack.attack import MI_FACE
-from aijack.utils import DataSet
+from aijack.utils import NumpyDataset
 
 # INPUT PATHS:
 BASE = "data/"
@@ -44,7 +44,7 @@ def main():
     transform = transforms.Compose(
         [transforms.ToTensor(), transforms.Normalize((0.5,), (0.5,))]
     )
-    trainset = DataSet(X, y, transform=transform)
+    trainset = NumpyDataset(X, y, transform=transform)
     trainloader = torch.utils.data.DataLoader(
         trainset, batch_size=4, shuffle=True, num_workers=2
     )

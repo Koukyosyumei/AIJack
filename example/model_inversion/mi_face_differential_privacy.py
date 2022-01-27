@@ -11,7 +11,7 @@ from torch.utils.data import TensorDataset
 
 from aijack.attack import MI_FACE
 from aijack.defense import GeneralMomentAccountant, PrivacyManager
-from aijack.utils import DataSet
+from aijack.utils import NumpyDataset
 
 # INPUT PATHS:
 BASE = "data/"
@@ -52,7 +52,7 @@ def prepare_dataset():
     transform = transforms.Compose(
         [transforms.ToTensor(), transforms.Normalize((0.5,), (0.5,))]
     )
-    trainset = DataSet(X, y, transform=transform)
+    trainset = NumpyDataset(X, y, transform=transform)
     return trainset
 
 

@@ -1,1 +1,1 @@
-from .utils import Conv2d, ConvTranspose2d, DataSet, try_gpu  # noqa: F401
+from .utils import Conv2d, ConvTranspose2d, NumpyDataset, try_gpu  # noqa: F401

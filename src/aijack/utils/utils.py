@@ -23,7 +23,7 @@ def try_gpu(e):
     return e
 
 
-class DataSet(Dataset):
+class NumpyDataset(Dataset):
     """This class allows you to convert numpy.array to torch.Dataset
 
     Args:

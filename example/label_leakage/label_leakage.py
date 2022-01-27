@@ -9,7 +9,7 @@ from sklearn.preprocessing import StandardScaler
 
 from aijack.attack import SplitNNNormAttack
 from aijack.collaborative import SplitNN, SplitNNClient
-from aijack.utils import DataSet
+from aijack.utils import NumpyDataset
 
 config = {"batch_size": 128}
 
@@ -96,13 +96,15 @@ def main():
     print("Validation features shape:", val_features.shape)
     print("Test features shape:", test_features.shape)
 
-    train_dataset = DataSet(
+    train_dataset = NumpyDataset(
         train_features, train_labels.astype(np.float64).reshape(-1, 1)
     )
     train_loader = torch.utils.data.DataLoader(
         train_dataset, batch_size=config["batch_size"], shuffle=True
     )
-    test_dataset = DataSet(test_features, test_labels.astype(np.float64).reshape(-1, 1))
+    test_dataset = NumpyDataset(
+        test_features, test_labels.astype(np.float64).reshape(-1, 1)
+    )
     test_loader = torch.utils.data.DataLoader(
         test_dataset, batch_size=config["batch_size"], shuffle=True
     )
