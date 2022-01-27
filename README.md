@@ -22,18 +22,21 @@
 
 # AIJack
 
-This package implements papers about AI security such as Model Inversion, Poisoning Attack, Evasion Attack, Differential Privacy, and Homomorphic Encryption. We try to offer the same API for every paper to compare and combine different algorithms easily.
-
-If you have any requests such as papers that you would like to see implemented, please raise an issue!
+This package implements algorithms for AI security such as Model Inversion, Poisoning Attack, Evasion Attack, Differential Privacy, and Homomorphic Encryption. If you have any requests, such as papers that you would like to see implemented, please raise an issue!
 
 ## Contents
 
 - [AIJack](#aijack)
   - [Contents](#contents)
   - [Install](#install)
-  - [Collaborative Learning](#collaborative-learning)
-  - [Attack](#attack)
-  - [Defense](#defense)
+  - [Supported Techniques](#supported-techniques)
+    - [Collaborative Learning](#collaborative-learning)
+    - [Attack](#attack)
+    - [Defense](#defense)
+  - [Usage](#usage)
+    - [Collaborative Learning](#collaborative-learning-1)
+    - [Attack](#attack-1)
+    - [Defense](#defense-1)
   - [Supported Papers](#supported-papers)
 
 ## Install
@@ -42,11 +45,33 @@ If you have any requests such as papers that you would like to see implemented, 
 pip install git+https://github.com/Koukyosyumei/AIJack
 ```
 
-## Collaborative Learning
+## Supported Techniques
 
-AIJack allows you to easily experiment collaborative learning such as federated learning and split learning. All you have to do is add a few lines of code to the regular pytorch code.
+### Collaborative Learning
 
-- federated learning
+- [Federated Learning](example/collaborative_learning/README.md)
+- [Split Learning](example/collaborative_learning/README.md)
+
+### Attack
+
+- [evasion attack](example/adversarial_example/example_evasion_attack_svm.ipynb)
+- [poisoning attack](example/adversarial_example/example_poison_attack.ipynb)
+- [model inversion attack with simple pytorch model](example/model_inversion/mi_face.py)
+- [model inversion attack with split learning](example/model_inversion/generator_attack.py)
+- [model inversion attack with federated learning](example/model_inversion/gan_attack.py)
+- [membership inference attack](example/membership_inference/membership_inference_CIFAR10.ipynb)
+- [label leakage attack with split learning](example/label_leakage/label_leakage.py)
+
+### Defense
+
+- [Differential Privacy](example/differential_privacy/README.md)
+- [POC of Homomorphic Encryption](test/defense/ckks/test_core.py)
+
+## Usage
+
+### Collaborative Learning
+
+<details><summary>Federated Learning</summary><div>
 
 ```python
 clients = [TorchModule(), TorcnModule()]
@@ -61,8 +86,9 @@ for _ in range(epoch):
   server.update()
   server.distribtue()
 ```
+</div></details>
 
-- split learning
+<details><summary>Split Learning</summary><div>
 
 ```python
 client_1 = SplitNNClient(first_model, user_id=0)
@@ -84,27 +110,43 @@ for _ in range(epoch):
     for opt in optimizers:
       opt.step()
 ```
+</div></details>
 
-## Attack
+### Attack
 
-AIJack currently supports model inversion, membership inference attack and label leakage attack with pytorch and evasion attack and poisoning attack with sklearn.
+<details><summary>Evasion Attack</summary><div>
 
-- [evasion attack](example/adversarial_example/example_evasion_attack_svm.ipynb)
-- [poisoning attack](example/adversarial_example/example_poison_attack.ipynb)
-- [model inversion attack with simple pytorch model](example/model_inversion/mi_face.py)
-- [model inversion attack with split learning](example/model_inversion/generator_attack.py)
-- [model inversion attack with federated learning](example/model_inversion/gan_attack.py)
-- [membership inference attack](example/membership_inference/membership_inference_CIFAR10.ipynb)
-- [label leakage attack with split learning](example/label_leakage/label_leakage.py)
-
-## Defense
-
-AIJack plans to support various defense methods such as differential privacy and Homomorphic Encryption. Our Differential Privacy implementation is faster compared to the other popular libraries.
-
-- [Differential Privacy](example/model_inversion/mi_face_differential_privacy.py)
-
-Moment Accountant
 ```python
+attacker = Evasion_attack_sklearn(
+    target_model=clf,
+    X_minus_1=attackers_dataset,
+    dmax=(5000 / 255) * 2.5,
+    max_iter=300,
+    gamma=1 / (X_train.shape[1] * np.var(X_train)),
+    lam=10,
+    t=0.5,
+    h=10,
+)
+
+result, log = attacker.attack(initial_datapoint)
+```
+
+</div></details>
+
+<details><summary>Poisonning Attack</summary><div>
+
+```python
+attacker = Poison_attack_sklearn(clf, X_train_, y_train_, t=0.5)
+xc_attacked, log = attacker.attack(xc, 1, X_valid, y_valid_, num_iterations=200)
+```
+
+</div></details>
+
+### Defense
+
+<details><summary>Moment Accountant</summary><div>
+
+```Python
 ga = GeneralMomentAccountant(noise_type="Gaussian",
                              search="greedy",
                              precision=0.001,
@@ -114,8 +156,11 @@ ga.add_step_info({"sigma":noise_multiplier}, sampling_rate, iterations)
 ga.get_epsilon(delta)
 ```
 
-DPSGD
-```python
+</div></details>
+
+<details><summary>DPSGD</summary><div>
+
+```Python
 privacy_manager = PrivacyManager(
         accountant,
         optim.SGD,
@@ -142,10 +187,7 @@ for data in lot_loader(trainset):
     optimizer.step()
 ```
 
-- [POC of Homomorphic Encryption](test/defense/ckks/test_core.py)
-
-
-
+</div></details>
 
 ## Supported Papers
 
