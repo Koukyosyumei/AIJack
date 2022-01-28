@@ -5,8 +5,9 @@ from ..core import BaseServer
 
 
 class FedAvgServer(BaseServer):
-    def __init__(self, clients, global_model, server_id=0):
+    def __init__(self, clients, global_model, server_id=0, lr=0.1):
         super().__init__(clients, global_model, server_id=server_id)
+        self.lr = lr
         self.distribtue()
 
     def action(self, gradients=True):
@@ -20,20 +21,20 @@ class FedAvgServer(BaseServer):
         if weight is None:
             weight = np.ones(self.num_clients) / self.num_clients
 
-        uploaded_gradients = [c.upload_gradients() for c in self.clients]
+        self.uploaded_gradients = [c.upload_gradients() for c in self.clients]
         aggregated_gradients = [
             torch.zeros_like(params) for params in self.server_model.parameters()
         ]
         len_gradients = len(aggregated_gradients)
 
-        for gradients in uploaded_gradients:
+        for gradients in self.uploaded_gradients:
             for gradient_id in range(len_gradients):
                 aggregated_gradients[gradient_id] += (1 / self.num_clients) * gradients[
                     gradient_id
                 ]
 
         for params, grads in zip(self.server_model.parameters(), aggregated_gradients):
-            params.data += grads
+            params.data -= self.lr * grads
 
     def update_from_parameters(self, weight=None):
         if weight is None:

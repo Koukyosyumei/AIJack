@@ -4,8 +4,9 @@ from ..core import BaseClient
 
 
 class FedAvgClient(BaseClient):
-    def __init__(self, model, user_id=0):
+    def __init__(self, model, user_id=0, lr=0.1):
         super().__init__(model, user_id=user_id)
+        self.lr = lr
 
         self.prev_parameters = []
         for param in self.model.parameters():
@@ -17,7 +18,7 @@ class FedAvgClient(BaseClient):
     def upload_gradients(self):
         gradients = []
         for param, prev_param in zip(self.model.parameters(), self.prev_parameters):
-            gradients.append(param - prev_param)
+            gradients.append((prev_param - param) / self.lr)
         return gradients
 
     def download(self, model_parameters):
