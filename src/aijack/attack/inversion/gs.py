@@ -2,10 +2,31 @@ import copy
 
 import torch
 
+from ...utils import total_variation
 from .dlg import DLG_Attack
 
 
 class GS_Attack(DLG_Attack):
+    def __init__(
+        self,
+        target_model,
+        x_shape,
+        y_shape,
+        criterion,
+        log_interval=10,
+        seed=0,
+        alpha=0,
+    ):
+        super().__init__(
+            target_model,
+            x_shape,
+            y_shape,
+            criterion,
+            log_interval=log_interval,
+            seed=seed,
+        )
+        self.alpha = alpha
+
     def attack(
         self, client_gradients, iteration=100, optimizer=torch.optim.LBFGS, **kwargs
     ):
@@ -17,7 +38,6 @@ class GS_Attack(DLG_Attack):
         best_fake_label = None
         best_distance = float("inf")
 
-        pnorm = [0, 0]
         for i in range(iteration):
 
             def closure():
@@ -30,11 +50,14 @@ class GS_Attack(DLG_Attack):
                 )
 
                 distance = 0
+                pnorm_0 = 0
+                pnorm_1 = 0
                 for f_g, c_g in zip(fake_gradients, client_gradients):
-                    pnorm[0] = pnorm[0] + f_g.pow(2).sum()
-                    pnorm[1] = pnorm[1] + c_g.pow(2).sum()
-                    distance = distance - (f_g * c_g).sum()
-                distance = 1 + distance / pnorm[0].sqrt() / pnorm[1].sqrt()
+                    pnorm_0 = pnorm_0 + f_g.pow(2).sum()
+                    pnorm_1 = pnorm_1 + c_g.pow(2).sum()
+                    distance = distance + (f_g * c_g).sum()
+                distance = 1 - distance / pnorm_0.sqrt() / pnorm_1.sqrt()
+                distance += self.alpha * total_variation(fake_x)
 
                 distance.backward(retain_graph=True)
                 return distance
