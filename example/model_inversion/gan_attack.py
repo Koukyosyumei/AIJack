@@ -9,7 +9,7 @@ from sklearn.metrics import accuracy_score
 
 from aijack.attack import GAN_Attack
 from aijack.collaborative import FedAvgClient, FedAvgServer
-from aijack.utils import DataSet
+from aijack.utils import NumpyDataset
 
 # Number of channels in the training images. For color images this is 3
 nc = 1
@@ -92,7 +92,7 @@ def prepare_dataloaders():
     idx_1 = np.where(y < 5)[0]
     idx_2 = np.where(y >= 5)[0]
 
-    global_trainset = DataSet(
+    global_trainset = NumpyDataset(
         at_t_dataset_test.data.numpy(),
         at_t_dataset_test.targets.numpy(),
         transform=transform,
@@ -100,11 +100,11 @@ def prepare_dataloaders():
     global_trainloader = torch.utils.data.DataLoader(
         global_trainset, batch_size=batch_size, shuffle=True, num_workers=2
     )
-    trainset_1 = DataSet(X[idx_1], y[idx_1], transform=transform)
+    trainset_1 = NumpyDataset(X[idx_1], y[idx_1], transform=transform)
     trainloader_1 = torch.utils.data.DataLoader(
         trainset_1, batch_size=batch_size, shuffle=True, num_workers=2
     )
-    trainset_2 = DataSet(X[idx_2], y[idx_2], transform=transform)
+    trainset_2 = NumpyDataset(X[idx_2], y[idx_2], transform=transform)
     trainloader_2 = torch.utils.data.DataLoader(
         trainset_2, batch_size=batch_size, shuffle=True, num_workers=2
     )

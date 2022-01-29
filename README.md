@@ -56,9 +56,11 @@ pip install git+https://github.com/Koukyosyumei/AIJack
 
 - [evasion attack](example/adversarial_example/example_evasion_attack_svm.ipynb)
 - [poisoning attack](example/adversarial_example/example_poison_attack.ipynb)
-- [model inversion attack with simple pytorch model](example/model_inversion/mi_face.py)
-- [model inversion attack with split learning](example/model_inversion/generator_attack.py)
-- [model inversion attack with federated learning](example/model_inversion/gan_attack.py)
+- [model inversion attack (simple pytorch model)](example/model_inversion/mi_face.py)
+- [model inversion attack (split learning)](example/model_inversion/generator_attack.py)
+- [model inversion attack (federated learning)](example/model_inversion/gan_attack.py)
+- [model inversion attack (DLG attack)](example/model_inversion/dlg_gs.py)
+- [model inversion attack (GS attack)](example/model_inversion/dlg_gs.py)
 - [membership inference attack](example/membership_inference/membership_inference_CIFAR10.ipynb)
 - [label leakage attack with split learning](example/label_leakage/label_leakage.py)
 
@@ -201,3 +203,5 @@ for data in lot_loader(trainset):
 | Biggio, Battista, et al. "Evasion attacks against machine learning at test time." Joint European conference on machine learning and knowledge discovery in databases. Springer, Berlin, Heidelberg, 2013. attack                            | Attack  | [notebook](example/adversarial_example/example_evasion_attack_svm.ipynb)    |
 | Biggio, Battista, Blaine Nelson, and Pavel Laskov. "Poisoning attacks against support vector machines." arXiv preprint arXiv:1206.6389 (2012).                                                                                              | Attack  | [notebook](example/adversarial_example/example_poison_attack.ipynb)         |
 | Li, Oscar, et al. "Label leakage and protection in two-party split learning." arXiv preprint arXiv:2102.08504 (2021).                                                                                                                       | Attack  | [script](example/label_leakage/label_leakage.py)                            |
+| Geiping, Jonas, et al. "Inverting Gradients--How easy is it to break privacy in federated learning?." arXiv preprint arXiv:2003.14053 (2020).                                                                                               | Attack  | [script](example/model_inversion/dlg_gs.py)                                 |
+| Zhu, Ligeng, and Song Han. "Deep leakage from gradients." Federated learning. Springer, Cham, 2020. 17-31.                                                                                                                                  | Attack  | [script](example/model_invresion/../model_inversion/dlg_gs.py)              |
