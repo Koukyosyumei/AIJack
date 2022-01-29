@@ -19,28 +19,28 @@ class SetoriaFedAvgClient(FedAvgClient):
         self.outputs = {}
 
         def get_input(name):
-            def hook(net, x, output):
-                if not x.requires_grad:
+            def hook(model, x, output):
+                if not x[0].requires_grad:
                     raise ValueError("x.requires_grad should be True")
-                self.inputs[name] = x
+                self.inputs[name] = x[0]
 
             return hook
 
         def get_output(name):
-            def hook(net, x, output):
+            def hook(model, x, output):
                 self.outputs[name] = output
 
             return hook
 
-        getattr(self.net, self.input_layer).register_forward_hook(
+        getattr(self.model, self.input_layer).register_forward_hook(
             get_input(self.input_layer)
         )
-        getattr(self.net, self.perturbed_layer).register_forward_hook(
+        getattr(self.model, self.perturbed_layer).register_forward_hook(
             get_output(self.perturbed_layer)
         )
 
     def action_before_lossbackward(self):
-        input_data = self.inputs[self.input_layer][0]
+        input_data = self.inputs[self.input_layer]
         feature = self.outputs[self.perturbed_layer]
 
         mask = torch.zeros_like(feature)
@@ -57,7 +57,7 @@ class SetoriaFedAvgClient(FedAvgClient):
                 dfri_dx.view(dfri_dx.shape[0], -1), dim=1
             )
 
-            self.net.zero_grad()
+            self.model.zero_grad()
             input_data.grad.data.zero_()
             mask[:, i] = 0
 
@@ -73,6 +73,8 @@ class SetoriaFedAvgClient(FedAvgClient):
         )
         dl_dw = {
             layer_name: params.grad
-            for layer_name, params in zip(self.net.state_dict(), self.net.parameters())
+            for layer_name, params in zip(
+                self.model.state_dict(), self.model.parameters()
+            )
         }
         dl_dw[target_layer_name][self.topk_idxs, :] = 0
