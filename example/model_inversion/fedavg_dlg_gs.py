@@ -12,6 +12,7 @@ from sklearn.metrics import accuracy_score
 
 from aijack.attack import DLG_Attack, GS_Attack
 from aijack.collaborative import FedAvgClient, FedAvgServer
+from aijack.defense import SetoriaFedAvgClient
 from aijack.utils import NumpyDataset
 
 lr = 0.01
@@ -21,6 +22,7 @@ test_batch_size = 16
 client_num = 2
 local_data_num = 1
 local_label_num = 1
+setoria = False
 
 
 class Net(nn.Module):
@@ -111,9 +113,17 @@ def main():
     )
 
     criterion = nn.CrossEntropyLoss()
-    clients = [
-        FedAvgClient(Net(), user_id=i, lr=lr).to(device) for i in range(client_num)
-    ]
+
+    if not setoria:
+        clients = [
+            FedAvgClient(Net(), user_id=i, lr=lr).to(device) for i in range(client_num)
+        ]
+    else:
+        clients = [
+            SetoriaFedAvgClient(Net(), "conv", "lin", user_id=i, lr=lr).to(device)
+            for i in range(client_num)
+        ]
+
     optimizers = [optim.SGD(client.parameters(), lr=lr) for client in clients]
 
     global_model = Net()
@@ -130,6 +140,7 @@ def main():
             for _, data in enumerate(trainloader, 0):
                 inputs, labels = data
                 inputs = inputs.to(device)
+                inputs.requires_grad = True
                 labels = labels.to(device)
 
                 optimizer.zero_grad()
@@ -137,7 +148,14 @@ def main():
 
                 outputs = client(inputs)
                 loss = criterion(outputs, labels.to(torch.int64))
-                loss.backward()
+
+                if not setoria:
+                    loss.backward()
+                else:
+                    client.action_before_lossbackward()
+                    loss.backward()
+                    client.action_after_lossbackward("lin.0.weight")
+
                 optimizer.step()
 
                 running_loss += loss.item()
