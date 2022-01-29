@@ -45,10 +45,10 @@ def test_encoder():
         ]
     )
     p2 = encoder.encode(z2)
-    np.testing.assert_array_almost_equal(z1, encoder.decode(p1), decimal=6)
+    np.testing.assert_array_almost_equal(z1, encoder.decode(p1), decimal=4)
     p_add = p1 + p2
     p_mult = p1 * p2
-    np.testing.assert_array_almost_equal(z1 + z2, encoder.decode(p_add), decimal=6)
+    np.testing.assert_array_almost_equal(z1 + z2, encoder.decode(p_add), decimal=4)
     np.testing.assert_array_almost_equal(z1 * z2, encoder.decode(p_mult), decimal=4)
 
 
