@@ -8,6 +8,11 @@ class DataRepExtractor:
         self.m = m
         self.bias = bias
 
+        # dl_dw = torch.autograd.grad(loss, net.parameters(), retain_graph=True)
+        # dl_dw = [g.detach() for g in dl_dw]
+        # extractor = DataRepExtractor(net, num_fc_layers, m, bias)
+        # datarep = extractor.extract_datarep(dl_dw)
+
     def get_dldw(self, loss):
         dldw = torch.autograd.grad(loss, self.net.parameters(), retain_graph=True)
         dldw = [g.detach() for g in dldw]
