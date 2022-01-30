@@ -12,7 +12,7 @@ repos:
     hooks:
       - id: flake8
   - repo: https://github.com/psf/black
-    rev: 21.10b0
+    rev: 22.1.0
     hooks:
       - id: black
         include_trailing_comma: true
