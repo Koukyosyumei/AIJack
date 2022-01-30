@@ -67,6 +67,7 @@ pip install git+https://github.com/Koukyosyumei/AIJack
 ### Defense
 
 - [Differential Privacy](example/differential_privacy/README.md)
+- [Soteria](example/model_inversion/fedavg_dlg_gs.py)
 - [POC of Homomorphic Encryption](test/defense/ckks/test_core.py)
 
 ## Usage
@@ -191,6 +192,20 @@ for data in lot_loader(trainset):
 
 </div></details>
 
+<details><summary>Soteria</summary><div>
+
+```Python
+client = SetoriaFedAvgClient(Net(), "conv", "lin", user_id=i, lr=lr)
+
+normal fedavg training
+
+client.action_before_lossbackward()
+loss.backward()
+client.action_after_lossbackward("lin.0.weight")
+```
+
+</div></details>
+
 ## Supported Papers
 
 | Paper                                                                                                                                                                                                                                       | Type    | example                                                                     |
@@ -205,3 +220,4 @@ for data in lot_loader(trainset):
 | Li, Oscar, et al. "Label leakage and protection in two-party split learning." arXiv preprint arXiv:2102.08504 (2021).                                                                                                                       | Attack  | [script](example/label_leakage/label_leakage.py)                            |
 | Geiping, Jonas, et al. "Inverting Gradients--How easy is it to break privacy in federated learning?." arXiv preprint arXiv:2003.14053 (2020).                                                                                               | Attack  | [script](example/model_inversion/dlg_gs.py)                                 |
 | Zhu, Ligeng, and Song Han. "Deep leakage from gradients." Federated learning. Springer, Cham, 2020. 17-31.                                                                                                                                  | Attack  | [script](example/model_invresion/../model_inversion/dlg_gs.py)              |
+| Sun, Jingwei, et al. "Soteria: Provable Defense Against Privacy Leakage in Federated Learning From Representation Perspective." Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition. 2021.                    | Defense | [script](example/model_inversion/fedavg_dlg_gs.py)                          |
