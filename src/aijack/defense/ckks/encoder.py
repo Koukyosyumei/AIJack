@@ -38,7 +38,7 @@ class CKKSEncoder:
             np.array: a vandermonde matrix (N^N)
         """
         roots = np.array([self.xi ** (2 * i + 1) for i in range(self.N)])
-        matrix = np.array([roots ** j for j in range(self.N)])
+        matrix = np.array([roots**j for j in range(self.N)])
         return matrix.T
 
     def sigma_inverse(self, z: np.array) -> Polynomial:

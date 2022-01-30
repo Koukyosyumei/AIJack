@@ -25,19 +25,16 @@ def test_rdp_tight_upperbound():
     sampling_rate = 0.04
     target_epsilon = 8
     num_iterations = 90
-    assert (
-        accountant.get_noise_multiplier(
-            "sigma",
-            target_epsilon,
-            target_delta,
-            sampling_rate,
-            num_iterations,
-            noise_multiplier_min=0,
-            noise_multiplier_max=10,
-            noise_multiplier_precision=0.0001,
-        )
-        == pytest.approx(1.425307617, 0.01)
-    )
+    assert accountant.get_noise_multiplier(
+        "sigma",
+        target_epsilon,
+        target_delta,
+        sampling_rate,
+        num_iterations,
+        noise_multiplier_min=0,
+        noise_multiplier_max=10,
+        noise_multiplier_precision=0.0001,
+    ) == pytest.approx(1.425307617, 0.01)
 
 
 def test_rdp_upperbound_closedformula():
@@ -66,16 +63,13 @@ def test_rdp_upperbound_closedformula():
     sampling_rate = 0.04
     target_epsilon = 8
     num_iterations = 90
-    assert (
-        accountant.get_noise_multiplier(
-            "sigma",
-            target_epsilon,
-            target_delta,
-            sampling_rate,
-            num_iterations,
-            noise_multiplier_min=0,
-            noise_multiplier_max=10,
-            noise_multiplier_precision=0.0001,
-        )
-        == pytest.approx(1.425307617, 0.01)
-    )
+    assert accountant.get_noise_multiplier(
+        "sigma",
+        target_epsilon,
+        target_delta,
+        sampling_rate,
+        num_iterations,
+        noise_multiplier_min=0,
+        noise_multiplier_max=10,
+        noise_multiplier_precision=0.0001,
+    ) == pytest.approx(1.425307617, 0.01)

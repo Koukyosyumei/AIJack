@@ -63,7 +63,7 @@ def test_encrypter():
 
     N = M // 2
 
-    q = 2 ** 26
+    q = 2**26
     alice = CKKSEncrypter(encoder, q)
     bob = CKKSEncrypter(encoder, q)
     pk, _ = alice.keygen(N)
