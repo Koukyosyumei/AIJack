@@ -153,7 +153,7 @@ class Poison_attack_sklearn(BaseAttacker):
             delta_L = np.sum(((Mk.dot(delta_Qsc) + delta_Qkc) * alpha), axis=0)
 
             # u is a norm-1 vector representing the attack direction,
-            u = delta_L / np.sqrt(np.sum((delta_L ** 2)))
+            u = delta_L / np.sqrt(np.sum((delta_L**2)))
 
             # the attack point
             xc += self.t * u

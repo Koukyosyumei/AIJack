@@ -188,7 +188,7 @@ class Evasion_attack_sklearn(BaseAttacker):
         if norm == "l1":
             delta_f /= np.sum(np.abs(delta_f)) + 1e-5
         elif norm == "l2":
-            delta_f /= np.sqrt(np.sum(delta_f ** 2, axis=0)) + 1e-5
+            delta_f /= np.sqrt(np.sum(delta_f**2, axis=0)) + 1e-5
         else:
             raise ValueError(f"norm type {norm} is not defined")
 

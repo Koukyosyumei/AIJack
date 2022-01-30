@@ -32,7 +32,7 @@ def _log_sub(logx, logy):
 def _log_erfc(x):
     """Compute log(erfc(x)) with high accuracy for large x."""
     try:
-        return math.log(2) + special.log_ndtr(-x * 2 ** 0.5)
+        return math.log(2) + special.log_ndtr(-x * 2**0.5)
     except NameError:
         # If log_ndtr is not available, approximate as follows:
         r = special.erfc(x)
@@ -44,11 +44,11 @@ def _log_erfc(x):
             return (
                 -math.log(math.pi) / 2
                 - math.log(x)
-                - x ** 2
-                - 0.5 * x ** -2
-                + 0.625 * x ** -4
-                - 37.0 / 24.0 * x ** -6
-                + 353.0 / 64.0 * x ** -8
+                - x**2
+                - 0.5 * x**-2
+                + 0.625 * x**-4
+                - 37.0 / 24.0 * x**-6
+                + 353.0 / 64.0 * x**-8
             )
         else:
             return math.log(r)

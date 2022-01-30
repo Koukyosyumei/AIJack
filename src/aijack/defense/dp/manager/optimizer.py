@@ -36,7 +36,7 @@ def attach_differential_privacy_mechanism(
                 for param in group["params"]:
                     if param.requires_grad:
                         total_norm += param.grad.data.norm(2).item() ** 2.0
-            total_norm = total_norm ** 0.5
+            total_norm = total_norm**0.5
             clip_coef = min(self.l2_norm_clip / (total_norm + 1e-6), 1.0)
 
             for group in self.param_groups:
