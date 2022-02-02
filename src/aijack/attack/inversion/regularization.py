@@ -10,3 +10,8 @@ def total_variation(x):
 def label_matching(pred, label):
     onehot_label = torch.eye(pred.shape[-1])[label]
     return torch.sqrt(torch.sum((pred - onehot_label) ** 2))
+
+
+def group_consistency(x, group_x):
+    mean_group_x = sum(group_x) / len(group_x)
+    return torch.norm(x - mean_group_x, p=2)
