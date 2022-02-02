@@ -5,7 +5,12 @@ import torch.nn as nn
 
 from ..base_attack import BaseAttacker
 from .distance import cossim, l2
-from .regularization import group_consistency, label_matching, total_variation
+from .regularization import (
+    bn_regularizer,
+    group_consistency,
+    label_matching,
+    total_variation,
+)
 
 
 class GradientInversion_Attack(BaseAttacker):
@@ -21,12 +26,14 @@ class GradientInversion_Attack(BaseAttacker):
         lossfunc=nn.CrossEntropyLoss(),
         distancefunc=l2,
         distancename=None,
-        tv_reg_coef=0,
-        lm_reg_coef=0,
-        l2_reg_coef=0,
-        gc_reg_coef=0,
+        tv_reg_coef=0.0,
+        lm_reg_coef=0.0,
+        l2_reg_coef=0.0,
+        bn_reg_coef=0.0,
+        gc_reg_coef=0.0,
+        bn_reg_layers=[],
         custom_reg_func=None,
-        custom_reg_coef=0,
+        custom_reg_coef=0.0,
         device="cpu",
         log_interval=10,
         seed=0,
@@ -52,7 +59,13 @@ class GradientInversion_Attack(BaseAttacker):
         self.tv_reg_coef = tv_reg_coef
         self.lm_reg_coef = lm_reg_coef
         self.l2_reg_coef = l2_reg_coef
+        self.bn_reg_coef = bn_reg_coef
         self.gc_reg_coef = gc_reg_coef
+
+        self.bn_reg_layers = bn_reg_layers
+        self.bn_reg_layer_inputs = {}
+        for i, bn_layer in enumerate(self.bn_reg_layers):
+            bn_layer.register_forward_hook(self._get_hook_for_input(i))
 
         self.custom_reg_func = custom_reg_func
         self.custom_reg_coef = custom_reg_coef
@@ -81,6 +94,12 @@ class GradientInversion_Attack(BaseAttacker):
             self.optimizer_class = torch.optim.SGD
         elif optimizername == "Adam":
             self.optimizer_class = torch.optim.Adam
+
+    def _get_hook_for_input(self, name):
+        def hook(model, inp, output):
+            self.bn_reg_layer_inputs[name] = inp[0]
+
+        return hook
 
     def _initialize_x(self, batch_size):
         fake_x = torch.randn((batch_size,) + (self.x_shape), requires_grad=True)
@@ -124,6 +143,10 @@ class GradientInversion_Attack(BaseAttacker):
                 distance += self.lm_reg_coef * label_matching(fake_pred, fake_label)
             if self.l2_reg_coef != 0:
                 distance += self.l2_reg_coef * torch.norm(fake_x, p=2)
+            if self.bn_reg_coef != 0:
+                distance += self.bn_reg_coef * bn_regularizer(
+                    self.bn_reg_layer_inputs, self.bn_reg_layers
+                )
             if group_fake_x is not None and self.gc_reg_coef != 0:
                 distance += self.gc_reg_coef * group_consistency(fake_x, group_fake_x)
             if self.custom_reg_func is not None and self.custom_reg_coef != 0:
