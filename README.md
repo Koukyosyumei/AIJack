@@ -58,16 +58,14 @@ pip install git+https://github.com/Koukyosyumei/AIJack
 - [poisoning attack](example/adversarial_example/example_poison_attack.ipynb)
 - [model inversion attack (simple pytorch model)](example/model_inversion/mi_face.py)
 - [model inversion attack (split learning)](example/model_inversion/generator_attack.py)
-- [model inversion attack (federated learning)](example/model_inversion/gan_attack.py)
-- [model inversion attack (DLG attack)](example/model_inversion/dlg_gs.py)
-- [model inversion attack (GS attack)](example/model_inversion/dlg_gs.py)
+- [model inverison attack (gradient inversion)](example/model_inversion/gradient_inversion_attack.md)
 - [membership inference attack](example/membership_inference/membership_inference_CIFAR10.ipynb)
 - [label leakage attack with split learning](example/label_leakage/label_leakage.py)
 
 ### Defense
 
 - [Differential Privacy](example/differential_privacy/README.md)
-- [Soteria](example/model_inversion/fedavg_dlg_gs.py)
+- [Soteria](example/model_inversion/soteria.py)
 - [POC of Homomorphic Encryption](test/defense/ckks/test_core.py)
 
 ## Usage
