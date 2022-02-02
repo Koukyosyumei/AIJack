@@ -6,6 +6,7 @@ from .inversion import (  # noqa: F401
     DLG_Attack,
     GAN_Attack,
     Generator_Attack,
+    GradientInversion_Attack,
     GS_Attack,
 )
 from .labelleakage import SplitNNNormAttack  # noqa: F401
