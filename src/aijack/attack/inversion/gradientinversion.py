@@ -21,9 +21,10 @@ class GradientInversion_Attack(BaseAttacker):
         lossfunc=nn.CrossEntropyLoss(),
         distancefunc=l2,
         distancename=None,
-        tv_coef=0,
-        lm_coef=0,
-        gc_coef=0,
+        tv_reg_coef=0,
+        lm_reg_coef=0,
+        l2_reg_coef=0,
+        gc_reg_coef=0,
         custom_reg_func=None,
         custom_reg_coef=0,
         device="cpu",
@@ -33,6 +34,7 @@ class GradientInversion_Attack(BaseAttacker):
         group_seed=None,
         **kwargs,
     ):
+        """General Gradient Inverse Attacker"""
         super().__init__(target_model)
         self.x_shape = x_shape
         self.y_shape = (
@@ -47,9 +49,10 @@ class GradientInversion_Attack(BaseAttacker):
         self.optimizer_class = optimizer_class
         self._setup_optimizer_class(optimizername)
 
-        self.tv_coef = tv_coef
-        self.lm_coef = lm_coef
-        self.gc_coef = gc_coef
+        self.tv_reg_coef = tv_reg_coef
+        self.lm_reg_coef = lm_reg_coef
+        self.l2_reg_coef = l2_reg_coef
+        self.gc_reg_coef = gc_reg_coef
 
         self.custom_reg_func = custom_reg_func
         self.custom_reg_coef = custom_reg_coef
@@ -115,12 +118,14 @@ class GradientInversion_Attack(BaseAttacker):
             )
             distance = self.distancefunc(fake_gradients, received_gradients)
 
-            if self.tv_coef != 0:
-                distance += self.tv_coef * total_variation(fake_x)
-            if self.lm_coef != 0:
-                distance += self.lm_coef * label_matching(fake_pred, fake_label)
-            if group_fake_x is not None and self.gc_coef != 0:
-                distance += self.gc_coef * group_consistency(fake_x, group_fake_x)
+            if self.tv_reg_coef != 0:
+                distance += self.tv_reg_coef * total_variation(fake_x)
+            if self.lm_reg_coef != 0:
+                distance += self.lm_reg_coef * label_matching(fake_pred, fake_label)
+            if self.l2_reg_coef != 0:
+                distance += self.l2_reg_coef * torch.norm(fake_x, p=2)
+            if group_fake_x is not None and self.gc_reg_coef != 0:
+                distance += self.gc_reg_coef * group_consistency(fake_x, group_fake_x)
             if self.custom_reg_func is not None and self.custom_reg_coef != 0:
                 context = {
                     "attacker": self,
@@ -186,7 +191,7 @@ class GradientInversion_Attack(BaseAttacker):
 
         return best_fake_x, best_fake_label
 
-    def gruop_attack(self, received_gradients, batch_size=1):
+    def group_attack(self, received_gradients, batch_size=1):
         group_fake_x = []
         group_fake_label = []
         group_optimizer = []
@@ -205,27 +210,27 @@ class GradientInversion_Attack(BaseAttacker):
         best_iteration = [0 for _ in range(self.group_num)]
 
         for i in range(self.num_iteration):
-            for group_id in range(self.group_num):
-                self.reset_seed(self.group_seed[group_id])
+            for worker_id in range(self.group_num):
+                self.reset_seed(self.group_seed[worker_id])
                 closure = self._setup_closure(
-                    group_optimizer[group_id],
-                    group_fake_x[group_id],
-                    group_fake_label[group_id],
+                    group_optimizer[worker_id],
+                    group_fake_x[worker_id],
+                    group_fake_label[worker_id],
                     received_gradients,
                 )
-                distance = group_optimizer[group_id].step(closure)
+                distance = group_optimizer[worker_id].step(closure)
 
-                if best_distance > distance:
-                    best_fake_x[group_id] = copy.deepcopy(group_fake_x[group_id])
-                    best_fake_label[group_id] = copy.deepcopy(
-                        group_fake_label[group_id]
+                if best_distance[worker_id] > distance:
+                    best_fake_x[worker_id] = copy.deepcopy(group_fake_x[worker_id])
+                    best_fake_label[worker_id] = copy.deepcopy(
+                        group_fake_label[worker_id]
                     )
-                    best_distance[group_id] = distance
-                    best_iteration[group_id] = i
+                    best_distance[worker_id] = distance
+                    best_iteration[worker_id] = i
 
                 if self.log_interval != 0 and i % self.log_interval == 0:
                     print(
-                        f"iter={i}: {distance}, (best_iter={best_iteration[group_id]}: {best_distance[group_id]})"
+                        f"worker_id={worker_id}: iter={i}: {distance}, (best_iter={best_iteration[worker_id]}: {best_distance[worker_id]})"
                     )
 
         return best_fake_x, best_fake_label
