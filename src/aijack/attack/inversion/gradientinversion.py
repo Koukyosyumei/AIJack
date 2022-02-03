@@ -424,7 +424,7 @@ class GradientInversion_Attack(BaseAttacker):
         best_fake_label = copy.deepcopy(group_fake_label)
         best_iteration = [0 for _ in range(self.group_num)]
 
-        for i in range(self.num_iteration):
+        for i in range(1, self.num_iteration + 1):
             for worker_id in range(self.group_num):
                 self.reset_seed(self.group_seed[worker_id])
                 closure = self._setup_closure(
