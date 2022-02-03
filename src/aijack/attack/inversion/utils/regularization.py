@@ -9,6 +9,7 @@ def total_variation(x):
 
 def label_matching(pred, label):
     onehot_label = torch.eye(pred.shape[-1])[label]
+    onehot_label = onehot_label.to(pred.device)
     return torch.sqrt(torch.sum((pred - onehot_label) ** 2))
 
 
