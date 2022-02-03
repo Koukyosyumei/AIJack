@@ -114,7 +114,7 @@ double culc_upperbound_of_rdp_with_Sampled_Gaussian_Mechanism_frac(double alpha,
         {
             auto warnings = py::module::import("warnings");
             warnings.attr("warn")(
-                "Culculation of RDP did not converge. Please consider using `rdp_upperbound_closedformula` or `rdp_tight_upperbound`");
+                "Culculation of RDP did not converge. Please consider using backend=python");
             return std::nan("");
         }
 
