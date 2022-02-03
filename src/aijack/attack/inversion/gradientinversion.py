@@ -27,6 +27,8 @@ class GradientInversion_Attack(BaseAttacker):
         x_shape: the input shape of target_model.
         y_shape: the output shape of target_model.
         optimize_label: If true, only optimize images (the label will be automatically estimated).
+        pos_of_final_fc_layer: position of gradients corresponding to the final FC layer
+                               within the gradients received from the client.
         num_iteration: number of iterations of optimization.
         optimizer_class: a class of torch optimizer for the attack.
         lossfunc: a function that takes the predictions of the target model and true labels
@@ -55,6 +57,7 @@ class GradientInversion_Attack(BaseAttacker):
         x_shape,
         y_shape=None,
         optimize_label=True,
+        pos_of_final_fc_layer=-2,
         num_iteration=100,
         optimizer_class=torch.optim.LBFGS,
         optimizername=None,
@@ -83,6 +86,8 @@ class GradientInversion_Attack(BaseAttacker):
             x_shape: the input shape of target_model.
             y_shape: the output shape of target_model.
             optimize_label: If true, only optimize images (the label will be automatically estimated).
+            pos_of_final_fc_layer: position of gradients corresponding to the final FC layer
+                                   within the gradients received from the client.
             num_iteration: number of iterations of optimization.
             optimizer_class: a class of torch optimizer for the attack.
             optimizername: a name of optimizer class (priority over optimizer_class).
@@ -111,7 +116,9 @@ class GradientInversion_Attack(BaseAttacker):
         self.y_shape = (
             list(target_model.parameters())[-1].shape[0] if y_shape is None else y_shape
         )
+
         self.optimize_label = optimize_label
+        self.pos_of_final_fc_layer = pos_of_final_fc_layer
 
         self.num_iteration = num_iteration
         self.lossfunc = lossfunc
@@ -146,24 +153,42 @@ class GradientInversion_Attack(BaseAttacker):
         torch.manual_seed(seed)
 
     def _setup_distancefunc(self, distancename):
-        """Assign a function to self.distancefunc according to distancename"""
+        """Assign a function to self.distancefunc according to distancename
+
+        Args:
+            distancename: name of the function to culculat the distance between the gradients.
+                          currently support 'l2' or 'cossim'.
+
+        Raises:
+            ValueError: if distancename is not supported.
+        """
         if distancename == "l2":
             self.distancefunc = l2
         elif distancename == "cossim":
             self.distancefunc = cossim
+        else:
+            raise ValueError(f"{distancename} is not defined")
 
     def _setup_optimizer_class(self, optimizername):
-        """Assign a class to self.optimizer_class according to optimiername"""
+        """Assign a class to self.optimizer_class according to optimiername
+
+        Args:
+            optimizername: name of optimizer, currently support `LBFGS`, `SGD`, and `Adam`
+
+        Raises:
+            ValueError: if optimizername is not supported.
+        """
         if optimizername == "LBFGS":
             self.optimizer_class = torch.optim.LBFGS
         elif optimizername == "SGD":
             self.optimizer_class = torch.optim.SGD
         elif optimizername == "Adam":
             self.optimizer_class = torch.optim.Adam
+        else:
+            raise ValueError(f"{optimizername} is not defined")
 
     def _get_hook_for_input(self, name):
-        """Return a hook function to extract the input of the specified
-        layer of the target model
+        """Return a hook function to extract the input of the specified layer of the target model
 
         Args:
             name: the key of self.bn_reg_layer_inputs for the target layer
@@ -183,22 +208,30 @@ class GradientInversion_Attack(BaseAttacker):
         Args:
             batch_size: the batch size
 
-        Returs:
-            fake_x: randomly generated torch.Tensor whose shape is
-                    (batch_size, ) + (self.x_shape)
+        Returns:
+            randomly generated torch.Tensor whose shape is (batch_size, ) + (self.x_shape)
         """
         fake_x = torch.randn((batch_size,) + (self.x_shape), requires_grad=True)
         fake_x = fake_x.to(self.device)
         return fake_x
 
     def _initialize_label(self, batch_size):
-        """Inits the fake labels"""
+        """Inits the fake labels
+
+        Args:
+            batch_size: the batch size
+
+        Returns:
+            randomly initialized or estimated labels
+        """
         fake_label = torch.randn((batch_size, self.y_shape), requires_grad=True)
         fake_label = fake_label.to(self.device)
         return fake_label
 
     def _estimate_label(self, received_gradients, batch_size):
-        """Estimate the secret labels from the received gradients besed on the follwing papers:
+        """Estimate the secret labels from the received gradients
+
+        this function is based on the following papers:
         batch_size == 1: https://arxiv.org/abs/2001.02610
         batch_size > 1: https://arxiv.org/abs/2104.07586
 
@@ -207,14 +240,16 @@ class GradientInversion_Attack(BaseAttacker):
             batch_size: batch size used to culculate the received_gradients
 
         Returns:
-            fake_label: estimated labels
+            estimated labels
         """
         if batch_size == 1:
-            fake_label = torch.argmin(torch.sum(received_gradients[-2], dim=1))
+            fake_label = torch.argmin(
+                torch.sum(received_gradients[self.pos_of_final_fc_layer], dim=1)
+            )
         else:
-            fake_label = torch.argsort(torch.min(received_gradients[-2], dim=-1)[0])[
-                :batch_size
-            ]
+            fake_label = torch.argsort(
+                torch.min(received_gradients[self.pos_of_final_fc_layer], dim=-1)[0]
+            )[:batch_size]
         fake_label = fake_label.reshape(batch_size)
         fake_label = fake_label.to(self.device)
         return fake_label
@@ -232,7 +267,7 @@ class GradientInversion_Attack(BaseAttacker):
             received_gradients: gradients received from the client
 
         Returns:
-            reg_term: culculated regularization term
+            culculated regularization term
         """
         reg_term = 0
         if self.tv_reg_coef != 0:
@@ -289,7 +324,15 @@ class GradientInversion_Attack(BaseAttacker):
         return closure
 
     def _setup_attack(self, received_gradients, batch_size):
-        """Initialize the image and label, and set the optimizer"""
+        """Initialize the image and label, and set the optimizer
+
+        Args:
+            received_gradients: a list of gradients received from the client
+            batch_size: the batch size
+
+        Returns:
+            initial images, labels, and the optimizer instance
+        """
         fake_x = self._initialize_x(batch_size)
         fake_label = (
             self._initialize_label(batch_size)
@@ -316,7 +359,18 @@ class GradientInversion_Attack(BaseAttacker):
         torch.manual_seed(seed)
 
     def attack(self, received_gradients, batch_size=1):
-        """Reconstruct the images from the gradients received from the client"""
+        """Reconstruct the images from the gradients received from the client
+
+        Args:
+            received_gradients: the list of gradients received from the client.
+            batch_size: batch size.
+
+        Returns:
+            a tuple of the best reconstructed images and corresponding labels
+
+        Raises:
+            ValueError: If the culculated distance become Nan
+        """
         fake_x, fake_label, optimizer = self._setup_attack(
             received_gradients, batch_size
         )
@@ -327,6 +381,9 @@ class GradientInversion_Attack(BaseAttacker):
                 optimizer, fake_x, fake_label, received_gradients
             )
             distance = optimizer.step(closure)
+
+            if torch.sum(torch.isnan(distance)).item():
+                raise ValueError("stop because the culculated distance is Nan")
 
             if best_distance > distance:
                 best_fake_x = copy.deepcopy(fake_x)
