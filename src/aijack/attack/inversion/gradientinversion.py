@@ -162,7 +162,9 @@ class GradientInversion_Attack(BaseAttacker):
         Raises:
             ValueError: if distancename is not supported.
         """
-        if distancename == "l2":
+        if distancename is None:
+            return
+        elif distancename == "l2":
             self.distancefunc = l2
         elif distancename == "cossim":
             self.distancefunc = cossim
@@ -178,7 +180,9 @@ class GradientInversion_Attack(BaseAttacker):
         Raises:
             ValueError: if optimizername is not supported.
         """
-        if optimizername == "LBFGS":
+        if optimizername is None:
+            return
+        elif optimizername == "LBFGS":
             self.optimizer_class = torch.optim.LBFGS
         elif optimizername == "SGD":
             self.optimizer_class = torch.optim.SGD
