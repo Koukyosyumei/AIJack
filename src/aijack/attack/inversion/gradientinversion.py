@@ -4,8 +4,8 @@ import torch
 import torch.nn as nn
 
 from ..base_attack import BaseAttacker
-from .distance import cossim, l2
-from .regularization import (
+from .utils.distance import cossim, l2
+from .utils.regularization import (
     bn_regularizer,
     group_consistency,
     label_matching,
@@ -14,6 +14,41 @@ from .regularization import (
 
 
 class GradientInversion_Attack(BaseAttacker):
+    """General Gradient Inverse Attacker
+
+    model inversion attack based on gradients can be written as follows:
+            x^* = argmin_x' L_grad(x': W, delta_W) + R_aux(x')
+    , where X' is the reconstructed image.
+    The attacker tries to find images whose gradients w.r.t the given model parameter W
+    is similar to the gradients delta_W of the secret images.
+
+    Attributes:
+        target_model: a target torch module instance.
+        x_shape: the input shape of target_model.
+        y_shape: the output shape of target_model.
+        optimize_label: If true, only optimize images (the label will be automatically estimated).
+        num_iteration: number of iterations of optimization.
+        optimizer_class: a class of torch optimizer for the attack.
+        lossfunc: a function that takes the predictions of the target model and true labels
+                  and returns the loss between them.
+        distancefunc: a function which takes the gradients of reconstructed images and the client-side gradients
+                      and returns the distance between them.
+        tv_reg_coef: the coefficient of total-variance regularization.
+        lm_reg_coef: the coefficient of label-matching regularization.
+        l2_reg_coef: the coefficient of L2 regularization.
+        bn_reg_coef: the coefficient of BN regularization.
+        gc_reg_coef: the coefficient of group-consistency regularization.
+        bn_reg_layers: a list of batch normalization layers of the target model.
+        bn_reg_layer_inputs: a lit of extracted inputs of the specified bn layers
+        custom_reg_func: a custom regularization function.
+        custom_reg_coef: the coefficient of the custom regularization function
+        device: device type.
+        log_interval: the interval of logging.
+        seed: random state.
+        group_num: the size of group,
+        group_seed: a list of random states for each worker of the group
+    """
+
     def __init__(
         self,
         target_model,
@@ -41,7 +76,36 @@ class GradientInversion_Attack(BaseAttacker):
         group_seed=None,
         **kwargs,
     ):
-        """General Gradient Inverse Attacker"""
+        """Inits GradientInversion_Attack class.
+
+        Args:
+            target_model: a target torch module instance.
+            x_shape: the input shape of target_model.
+            y_shape: the output shape of target_model.
+            optimize_label: If true, only optimize images (the label will be automatically estimated).
+            num_iteration: number of iterations of optimization.
+            optimizer_class: a class of torch optimizer for the attack.
+            optimizername: a name of optimizer class (priority over optimizer_class).
+            lossfunc: a function that takes the predictions of the target model and true labels
+                    and returns the loss between them.
+            distancefunc: a function which takes the gradients of reconstructed images and the client-side gradients
+                        and returns the distance between them.
+            distancename: a name of distancefunc (priority over distancefunc).
+            tv_reg_coef: the coefficient of total-variance regularization.
+            lm_reg_coef: the coefficient of label-matching regularization.
+            l2_reg_coef: the coefficient of L2 regularization.
+            bn_reg_coef: the coefficient of BN regularization.
+            gc_reg_coef: the coefficient of group-consistency regularization.
+            bn_reg_layers: a list of batch normalization layers of the target model.
+            custom_reg_func: a custom regularization function.
+            custom_reg_coef: the coefficient of the custom regularization function
+            device: device type.
+            log_interval: the interval of logging.
+            seed: random state.
+            group_num: the size of group,
+            group_seed: a list of random states for each worker of the group
+            **kwargs: kwargs for the optimizer
+        """
         super().__init__(target_model)
         self.x_shape = x_shape
         self.y_shape = (
@@ -82,12 +146,14 @@ class GradientInversion_Attack(BaseAttacker):
         torch.manual_seed(seed)
 
     def _setup_distancefunc(self, distancename):
+        """Assign a function to self.distancefunc according to distancename"""
         if distancename == "l2":
             self.distancefunc = l2
         elif distancename == "cossim":
             self.distancefunc = cossim
 
     def _setup_optimizer_class(self, optimizername):
+        """Assign a class to self.optimizer_class according to optimiername"""
         if optimizername == "LBFGS":
             self.optimizer_class = torch.optim.LBFGS
         elif optimizername == "SGD":
@@ -96,22 +162,53 @@ class GradientInversion_Attack(BaseAttacker):
             self.optimizer_class = torch.optim.Adam
 
     def _get_hook_for_input(self, name):
+        """Return a hook function to extract the input of the specified
+        layer of the target model
+
+        Args:
+            name: the key of self.bn_reg_layer_inputs for the target layer
+
+        Returns:
+            hook: a hook function
+        """
+
         def hook(model, inp, output):
             self.bn_reg_layer_inputs[name] = inp[0]
 
         return hook
 
     def _initialize_x(self, batch_size):
+        """Inits the fake images
+
+        Args:
+            batch_size: the batch size
+
+        Returs:
+            fake_x: randomly generated torch.Tensor whose shape is
+                    (batch_size, ) + (self.x_shape)
+        """
         fake_x = torch.randn((batch_size,) + (self.x_shape), requires_grad=True)
         fake_x = fake_x.to(self.device)
         return fake_x
 
     def _initialize_label(self, batch_size):
+        """Inits the fake labels"""
         fake_label = torch.randn((batch_size, self.y_shape), requires_grad=True)
         fake_label = fake_label.to(self.device)
         return fake_label
 
     def _estimate_label(self, received_gradients, batch_size):
+        """Estimate the secret labels from the received gradients besed on the follwing papers:
+        batch_size == 1: https://arxiv.org/abs/2001.02610
+        batch_size > 1: https://arxiv.org/abs/2104.07586
+
+        Args:
+            received_gradients: gradients received from the client
+            batch_size: batch size used to culculate the received_gradients
+
+        Returns:
+            fake_label: estimated labels
+        """
         if batch_size == 1:
             fake_label = torch.argmin(torch.sum(received_gradients[-2], dim=1))
         else:
@@ -122,9 +219,51 @@ class GradientInversion_Attack(BaseAttacker):
         fake_label = fake_label.to(self.device)
         return fake_label
 
+    def _culc_regularization_term(
+        self, fake_x, fake_pred, fake_label, group_fake_x, received_gradients
+    ):
+        """Culculate the regularization term
+
+        Args:
+            fake_x: reconstructed images
+            fake_pred: the predicted value of reconstructed images
+            faka_label: the labels of fake_x
+            group_fake_x: a list of fake_x of each worker
+            received_gradients: gradients received from the client
+
+        Returns:
+            reg_term: culculated regularization term
+        """
+        reg_term = 0
+        if self.tv_reg_coef != 0:
+            reg_term += self.tv_reg_coef * total_variation(fake_x)
+        if self.lm_reg_coef != 0:
+            reg_term += self.lm_reg_coef * label_matching(fake_pred, fake_label)
+        if self.l2_reg_coef != 0:
+            reg_term += self.l2_reg_coef * torch.norm(fake_x, p=2)
+        if self.bn_reg_coef != 0:
+            reg_term += self.bn_reg_coef * bn_regularizer(
+                self.bn_reg_layer_inputs, self.bn_reg_layers
+            )
+        if group_fake_x is not None and self.gc_reg_coef != 0:
+            reg_term += self.gc_reg_coef * group_consistency(fake_x, group_fake_x)
+        if self.custom_reg_func is not None and self.custom_reg_coef != 0:
+            context = {
+                "attacker": self,
+                "fake_x": fake_x,
+                "fake_label": fake_label,
+                "received_gradients": received_gradients,
+                "group_fake_x": group_fake_x,
+            }
+            reg_term += self.custom_reg_coef * self.custom_reg_func(context)
+
+        return reg_term
+
     def _setup_closure(
         self, optimizer, fake_x, fake_label, received_gradients, group_fake_x=None
     ):
+        """Return a closure function for the optimizer"""
+
         def closure():
             optimizer.zero_grad()
             fake_pred = self.target_model(fake_x)
@@ -136,28 +275,13 @@ class GradientInversion_Attack(BaseAttacker):
                 loss, self.target_model.parameters(), create_graph=True
             )
             distance = self.distancefunc(fake_gradients, received_gradients)
-
-            if self.tv_reg_coef != 0:
-                distance += self.tv_reg_coef * total_variation(fake_x)
-            if self.lm_reg_coef != 0:
-                distance += self.lm_reg_coef * label_matching(fake_pred, fake_label)
-            if self.l2_reg_coef != 0:
-                distance += self.l2_reg_coef * torch.norm(fake_x, p=2)
-            if self.bn_reg_coef != 0:
-                distance += self.bn_reg_coef * bn_regularizer(
-                    self.bn_reg_layer_inputs, self.bn_reg_layers
-                )
-            if group_fake_x is not None and self.gc_reg_coef != 0:
-                distance += self.gc_reg_coef * group_consistency(fake_x, group_fake_x)
-            if self.custom_reg_func is not None and self.custom_reg_coef != 0:
-                context = {
-                    "attacker": self,
-                    "fake_x": fake_x,
-                    "fake_label": fake_label,
-                    "received_gradients": received_gradients,
-                    "group_fake_x": group_fake_x,
-                }
-                distance += self.custom_reg_coef * self.custom_reg_func(context)
+            distance += self._culc_regularization_term(
+                fake_x,
+                fake_pred,
+                fake_label,
+                group_fake_x,
+                received_gradients,
+            )
 
             distance.backward(retain_graph=True)
             return distance
@@ -165,6 +289,7 @@ class GradientInversion_Attack(BaseAttacker):
         return closure
 
     def _setup_attack(self, received_gradients, batch_size):
+        """Initialize the image and label, and set the optimizer"""
         fake_x = self._initialize_x(batch_size)
         fake_label = (
             self._initialize_label(batch_size)
@@ -186,10 +311,12 @@ class GradientInversion_Attack(BaseAttacker):
         return fake_x, fake_label, optimizer
 
     def reset_seed(self, seed):
+        """Reset the random state"""
         self.seed = seed
         torch.manual_seed(seed)
 
     def attack(self, received_gradients, batch_size=1):
+        """Reconstruct the images from the gradients received from the client"""
         fake_x, fake_label, optimizer = self._setup_attack(
             received_gradients, batch_size
         )
@@ -215,6 +342,7 @@ class GradientInversion_Attack(BaseAttacker):
         return best_fake_x, best_fake_label
 
     def group_attack(self, received_gradients, batch_size=1):
+        """Multiple simultaneous attacks with different random states"""
         group_fake_x = []
         group_fake_label = []
         group_optimizer = []
