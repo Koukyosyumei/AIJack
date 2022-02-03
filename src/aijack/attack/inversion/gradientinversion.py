@@ -215,7 +215,7 @@ class GradientInversion_Attack(BaseAttacker):
         Returns:
             randomly generated torch.Tensor whose shape is (batch_size, ) + (self.x_shape)
         """
-        fake_x = torch.randn((batch_size,) + (self.x_shape), requires_grad=True)
+        fake_x = torch.randn((batch_size,) + (self.x_shape))
         fake_x = fake_x.to(self.device)
         return fake_x
 
@@ -228,7 +228,7 @@ class GradientInversion_Attack(BaseAttacker):
         Returns:
             randomly initialized or estimated labels
         """
-        fake_label = torch.randn((batch_size, self.y_shape), requires_grad=True)
+        fake_label = torch.randn((batch_size, self.y_shape))
         fake_label = fake_label.to(self.device)
         return fake_label
 
