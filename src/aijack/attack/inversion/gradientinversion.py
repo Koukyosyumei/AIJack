@@ -383,7 +383,7 @@ class GradientInversion_Attack(BaseAttacker):
         )
 
         best_distance = float("inf")
-        for i in range(self.num_iteration):
+        for i in range(1, self.num_iteration + 1):
             closure = self._setup_closure(
                 optimizer, fake_x, fake_label, received_gradients
             )
