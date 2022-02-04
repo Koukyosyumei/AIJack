@@ -46,6 +46,7 @@ class GradientInversion_Attack(BaseAttacker):
         custom_reg_coef: the coefficient of the custom regularization function
         device: device type.
         log_interval: the interval of logging.
+        save_loss: If true, save the loss during the attack.
         seed: random state.
         group_num: the size of group,
         group_seed: a list of random states for each worker of the group
@@ -74,6 +75,7 @@ class GradientInversion_Attack(BaseAttacker):
         custom_reg_coef=0.0,
         device="cpu",
         log_interval=10,
+        save_loss=True,
         seed=0,
         group_num=5,
         group_seed=None,
@@ -106,6 +108,7 @@ class GradientInversion_Attack(BaseAttacker):
             custom_reg_coef: the coefficient of the custom regularization function
             device: device type.
             log_interval: the interval of logging.
+            save_loss: If true, save the loss during the attack.
             seed: random state.
             group_num: the size of group,
             group_seed: a list of random states for each worker of the group
@@ -143,6 +146,7 @@ class GradientInversion_Attack(BaseAttacker):
 
         self.device = device
         self.log_interval = log_interval
+        self.save_loss = save_loss
         self.seed = seed
 
         self.group_num = group_num
@@ -383,6 +387,7 @@ class GradientInversion_Attack(BaseAttacker):
         )
 
         best_distance = float("inf")
+        self.log_loss = []
         for i in range(1, self.num_iteration + 1):
             closure = self._setup_closure(
                 optimizer, fake_x, fake_label, received_gradients
@@ -391,6 +396,9 @@ class GradientInversion_Attack(BaseAttacker):
 
             if torch.sum(torch.isnan(distance)).item():
                 raise ValueError("stop because the culculated distance is Nan")
+
+            if self.save_loss:
+                self.log_loss.append(distance)
 
             if best_distance > distance:
                 best_fake_x = copy.deepcopy(fake_x)
@@ -424,6 +432,7 @@ class GradientInversion_Attack(BaseAttacker):
         best_fake_label = copy.deepcopy(group_fake_label)
         best_iteration = [0 for _ in range(self.group_num)]
 
+        self.log_loss = [[] for _ in range(self.group_num)]
         for i in range(1, self.num_iteration + 1):
             for worker_id in range(self.group_num):
                 self.reset_seed(self.group_seed[worker_id])
@@ -434,6 +443,9 @@ class GradientInversion_Attack(BaseAttacker):
                     received_gradients,
                 )
                 distance = group_optimizer[worker_id].step(closure)
+
+                if self.save_loss:
+                    self.log_loss[worker_id].append(distance)
 
                 if best_distance[worker_id] > distance:
                     best_fake_x[worker_id] = copy.deepcopy(group_fake_x[worker_id])
