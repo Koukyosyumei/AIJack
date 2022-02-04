@@ -114,7 +114,9 @@ def test_gs():
     reconstructed_x_1, reconstructed_y_1 = gs_attacker_1.attack(received_gradients)
 
     assert reconstructed_x_1.shape == x.shape
-    assert torch.argmax(reconstructed_y_1).item() == 4
+    assert (
+        torch.argmax(reconstructed_y_1).item() == 4
+    ), f"{torch.argmax(reconstructed_y_1).item()} is not 4"
     assert gs_attacker_1.log_loss[1] < gs_attacker_1.log_loss[0]
 
     gs_attacker_2 = GradientInversion_Attack(
