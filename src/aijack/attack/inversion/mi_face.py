@@ -4,6 +4,16 @@ from ..base_attack import BaseAttacker
 
 
 class MI_FACE(BaseAttacker):
+    """Implementation of model inversion attack
+    reference: https://dl.acm.org/doi/pdf/10.1145/2810103.2813677
+
+    Attributes:
+        target_model: model of the victim
+        input_shape: input shapes of taregt model
+        auxterm_func (function): the default is constant function
+        process_func (function): the default is identity function
+    """
+
     def __init__(
         self,
         target_model,
@@ -11,16 +21,8 @@ class MI_FACE(BaseAttacker):
         auxterm_func=lambda x: 0,
         process_func=lambda x: x,
     ):
-        """Implementation of model inversion attack
-           reference https://dl.acm.org/doi/pdf/10.1145/2810103.2813677
-
+        """Inits MI_FACE
         Args:
-            target_model: model of the victim
-            input_shape: input shapes of taregt model
-            auxterm_func (function): the default is constant function
-            process_func (function): the default is identity function
-
-        Attributes:
             target_model: model of the victim
             input_shape: input shapes of taregt model
             auxterm_func (function): the default is constant function
