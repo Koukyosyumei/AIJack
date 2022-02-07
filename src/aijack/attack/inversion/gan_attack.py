@@ -6,6 +6,19 @@ from ..base_attack import BaseAttacker
 
 
 class GAN_Attack(BaseAttacker):
+    """GAN based model inversion attack (https://arxiv.org/abs/1702.07464)
+
+    Attributes:
+        model (torch.nn.Module):
+        target_label(int): index of target class
+        generator (torch.nn.Module): Generator
+        generator_optimizer (torch.optim.Optimizer): optimizer for the generator
+        generator_criterion (function): loss function for the generator
+        nz (int): dimension of latent space of the generator
+        user_id (int): user id
+        device (string): device type (cpu or cuda)
+    """
+
     def __init__(
         self,
         client,
@@ -16,8 +29,7 @@ class GAN_Attack(BaseAttacker):
         nz=100,
         device="cpu",
     ):
-        """Implementation of model inversion attack
-           reference https://arxiv.org/abs/1702.07464
+        """Inits the GAN_Attack
 
         Args:
             model (torch.nn.Module):
@@ -52,7 +64,7 @@ class GAN_Attack(BaseAttacker):
             log_interval (int): interval of logging
         """
 
-        for i in range(epoch):
+        for i in range(1, epoch + 1):
             running_error = 0
             self.generator.zero_grad()
 
@@ -70,7 +82,7 @@ class GAN_Attack(BaseAttacker):
 
             running_error += loss_generator.item()
 
-            if i % log_interval == 0:
+            if log_interval != 0 and i % log_interval == 0:
                 print(
                     f"updating generator - epoch {i}: generator loss is {running_error/batch_size}"
                 )
