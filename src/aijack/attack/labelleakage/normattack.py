@@ -15,7 +15,7 @@ class NormAttack(BaseAttacker):
     def extract_intermidiate_gradient(self, outputs, target_client_index=0):
         pass
 
-    def attack(self, dataloader, criterion, device, target_client_index=0):
+    def attack(self, dataloader, criterion, device="cpu", target_client_index=0):
         """Culculate leak_auc on the given SplitNN model
            reference: https://arxiv.org/abs/2102.08504
         Args:
