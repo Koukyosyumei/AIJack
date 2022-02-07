@@ -4,3 +4,4 @@ flake8
 pytest
 isort
 pre-commit
+pandas
