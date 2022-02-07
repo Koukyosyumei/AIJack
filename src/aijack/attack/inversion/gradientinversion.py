@@ -14,7 +14,7 @@ from .utils.regularization import (
 
 
 class GradientInversion_Attack(BaseAttacker):
-    """General Gradient Inverse Attacker
+    """General Gradient Inversion Attacker
 
     model inversion attack based on gradients can be written as follows:
             x^* = argmin_x' L_grad(x': W, delta_W) + R_aux(x')
@@ -308,7 +308,15 @@ class GradientInversion_Attack(BaseAttacker):
     def _setup_closure(
         self, optimizer, fake_x, fake_label, received_gradients, group_fake_x=None
     ):
-        """Return a closure function for the optimizer"""
+        """Return a closure function for the optimizer
+
+        Args:
+            optimizer (torch.optim.Optimizer): an instance of the optimizer
+            fake_x (torch.Tensor): reconstructed images
+            fake_label (torch.Tensor): reconstructed or estimated labels
+            received_gradients (list): a list of gradients received from the client
+            group_fake_x (list, optional): a list of fake_x. Defaults to None.
+        """
 
         def closure():
             optimizer.zero_grad()
@@ -365,7 +373,11 @@ class GradientInversion_Attack(BaseAttacker):
         return fake_x, fake_label, optimizer
 
     def reset_seed(self, seed):
-        """Reset the random state"""
+        """Reset the random seed
+
+        Args:
+            seed (int): the random seed
+        """
         self.seed = seed
         torch.manual_seed(seed)
 
@@ -414,7 +426,18 @@ class GradientInversion_Attack(BaseAttacker):
         return best_fake_x, best_fake_label
 
     def group_attack(self, received_gradients, batch_size=1):
-        """Multiple simultaneous attacks with different random states"""
+        """Multiple simultaneous attacks with different random states
+
+        Args:
+            received_gradients: the list of gradients received from the client.
+            batch_size: batch size.
+
+        Returns:
+            a tuple of the best reconstructed images and corresponding labels
+
+        Raises:
+            ValueError: If the culculated distance become Nan
+        """
         group_fake_x = []
         group_fake_label = []
         group_optimizer = []
