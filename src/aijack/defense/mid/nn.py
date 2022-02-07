@@ -12,7 +12,7 @@ class VIB(nn.Module):
 
     def get_params_of_p_z_given_x(self, x):
         encoder_output = self.encoder(x)
-        if encoder_output.shape[0] != self.dim_z * 2:
+        if encoder_output.shape[1] != self.dim_z * 2:
             raise ValueError("the output dimension of encoder must be 2 * dim_z")
         mu = encoder_output[:, : self.dim_z]
         sigma = torch.nn.functional.softplus(encoder_output[:, self.dim_z :])
@@ -20,8 +20,8 @@ class VIB(nn.Module):
 
     def sampling_from_encoder(self, mu, sigma, batch_size):
         return mu + sigma * torch.normal(
-            torch.zeros((self.num_samples, batch_size), self.dim_z),
-            torch.ones((self.num_samples, batch_size), self.dim_z),
+            torch.zeros(self.num_samples, batch_size, self.dim_z),
+            torch.ones(self.num_samples, batch_size, self.dim_z),
         )
 
     def forward(self, x):
@@ -37,9 +37,12 @@ class VIB(nn.Module):
         sampled_decoded_outputs = self.decoder(sampled_encoded_features)
         outputs = torch.mean(sampled_decoded_outputs, dim=0)
 
-        return outputs, {
-            "sampled_decoded_outputs": sampled_decoded_outputs.permute(1, 2, 0),
-            "sampled_encoded_features": sampled_encoded_features,
-            "p_z_given_x_mu": p_z_given_x_mu,
-            "p_z_given_x_sigma": p_z_given_x_sigma,
-        }
+        if self.training:
+            return outputs, {
+                "sampled_decoded_outputs": sampled_decoded_outputs.permute(1, 2, 0),
+                "sampled_encoded_features": sampled_encoded_features,
+                "p_z_given_x_mu": p_z_given_x_mu,
+                "p_z_given_x_sigma": p_z_given_x_sigma,
+            }
+        else:
+            return outputs
