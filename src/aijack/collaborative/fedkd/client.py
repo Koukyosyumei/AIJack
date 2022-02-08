@@ -1,4 +1,3 @@
-import torch
 import torch.nn.functional as F
 
 from ..fedavg import FedAvgClient
@@ -17,7 +16,7 @@ class FedKDClient(FedAvgClient):
         gradient_compression_ratio=1.0,
         user_id=0,
     ):
-        super().__init__(student_model, user_id=user_id, lr=student_lr)
+        super(FedKDClient, self).__init__(student_model, user_id=user_id, lr=student_lr)
         self.student_model = student_model
         self.teacher_model = teacher_model
         self.teacher_lr = teacher_lr
@@ -41,9 +40,13 @@ class FedKDClient(FedAvgClient):
                  student_model must have `get_hidden_states` method"
                 )
 
-    def loss(self, x, y):
-        y_pred_teacher = self.teacher_model(x)
-        y_pred_student = self.student_model(x)
+    def loss(self, x, y, apply_softmax=True):
+        if apply_softmax:
+            y_pred_teacher = self.teacher_model(x).softmax(dim=1)
+            y_pred_student = self.student_model(x).softmax(dim=1)
+        else:
+            y_pred_teacher = self.teacher_model(x)
+            y_pred_student = self.student_model(x)
 
         teacher_loss = 0
         student_loss = 0
@@ -70,9 +73,23 @@ class FedKDClient(FedAvgClient):
             adaptive_hidden_losses_student_teacher = 0
             hidden_states_teacher = self.teacher_model.get_hidden_states()
             hidden_states_student = self.student_model.get_hidden_states()
+
+            if type(hidden_states_teacher) != list:
+                raise TypeError(
+                    "get_hidden_states should return a list of torch.Tensors"
+                )
+            if type(hidden_states_student) != list:
+                raise TypeError(
+                    "get_hidden_states should return a list of torch.Tensors"
+                )
+
             for hst, hss in zip(hidden_states_teacher, hidden_states_student):
-                adaptive_hidden_losses_student_teacher += torch.sum((hst - hss) ** 2)
-            teacher_loss += adaptive_hidden_losses_student_teacher
-            student_loss += adaptive_hidden_losses_student_teacher
+                adaptive_hidden_losses_student_teacher += F.mse_loss(hst, hss)
+            teacher_loss += adaptive_hidden_losses_student_teacher / (
+                task_loss_student + task_loss_teacher
+            )
+            student_loss += adaptive_hidden_losses_student_teacher / (
+                task_loss_student + task_loss_teacher
+            )
 
         return teacher_loss, student_loss
