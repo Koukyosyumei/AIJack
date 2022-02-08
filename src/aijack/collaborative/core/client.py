@@ -3,7 +3,7 @@ import torch
 
 class BaseClient(torch.nn.Module):
     def __init__(self, model, user_id=0):
-        super().__init__()
+        super(BaseClient, self).__init__()
         self.model = model
         self.user_id = user_id
 
