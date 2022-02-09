@@ -40,13 +40,9 @@ class FedKDClient(FedAvgClient):
                  student_model must have `get_hidden_states` method"
                 )
 
-    def loss(self, x, y, apply_softmax=True):
-        if apply_softmax:
-            y_pred_teacher = self.teacher_model(x).softmax(dim=1)
-            y_pred_student = self.student_model(x).softmax(dim=1)
-        else:
-            y_pred_teacher = self.teacher_model(x)
-            y_pred_student = self.student_model(x)
+    def loss(self, x, y):
+        y_pred_teacher = self.teacher_model(x)
+        y_pred_student = self.student_model(x)
 
         teacher_loss = 0
         student_loss = 0
@@ -60,10 +56,10 @@ class FedKDClient(FedAvgClient):
         # adaptive_distillation_losses
         if self.adaptive_distillation_losses:
             adaptive_distillaion_loss_teacher = F.kl_div(
-                y_pred_student.log(), y_pred_teacher
+                y_pred_student.softmax(dim=1).log(), y_pred_teacher.softmax(dim=1)
             ) / (task_loss_student + task_loss_teacher)
             adaptive_distillaion_loss_student = F.kl_div(
-                y_pred_teacher.log(), y_pred_student
+                y_pred_teacher.softmax(dim=1).log(), y_pred_student.softmax(dim=1)
             ) / (task_loss_student + task_loss_teacher)
             teacher_loss += adaptive_distillaion_loss_teacher
             student_loss += adaptive_distillaion_loss_student
