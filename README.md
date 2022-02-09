@@ -25,6 +25,8 @@
 This package implements algorithms for AI security such as Model Inversion, Poisoning Attack, Evasion Attack, Differential Privacy, and Homomorphic Encryption. For example, you can experiment with a variant gradient inversion attack (a kind of model inversion attack) with the same API.
 
 ```Python
+from aijack.attack import GradientInversion_Attack
+
 # DLG Attack (Zhu, Ligeng, Zhijian Liu, and Song Han. "Deep leakage from gradients." Advances in Neural Information Processing Systems 32 (2019).)
 attacker = GradientInversion_Attack(net, input_shape, distancename="l2")
 
