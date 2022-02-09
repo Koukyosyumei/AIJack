@@ -50,6 +50,7 @@ class GradientInversion_Attack(BaseAttacker):
         seed: random state.
         group_num: the size of group,
         group_seed: a list of random states for each worker of the group
+        early_stopping: early stopping
     """
 
     def __init__(
@@ -79,6 +80,7 @@ class GradientInversion_Attack(BaseAttacker):
         seed=0,
         group_num=5,
         group_seed=None,
+        early_stopping=50,
         **kwargs,
     ):
         """Inits GradientInversion_Attack class.
@@ -112,6 +114,7 @@ class GradientInversion_Attack(BaseAttacker):
             seed: random state.
             group_num: the size of group,
             group_seed: a list of random states for each worker of the group
+            early_stopping: early stopping
             **kwargs: kwargs for the optimizer
         """
         super().__init__(target_model)
@@ -151,6 +154,8 @@ class GradientInversion_Attack(BaseAttacker):
 
         self.group_num = group_num
         self.group_seed = list(range(group_num)) if group_seed is None else group_seed
+
+        self.early_stopping = early_stopping
 
         self.kwargs = kwargs
 
@@ -386,6 +391,7 @@ class GradientInversion_Attack(BaseAttacker):
             received_gradients, batch_size
         )
 
+        num_of_not_improve_round = 0
         best_distance = float("inf")
         self.log_loss = []
         for i in range(1, self.num_iteration + 1):
@@ -405,11 +411,17 @@ class GradientInversion_Attack(BaseAttacker):
                 best_fake_label = copy.deepcopy(fake_label)
                 best_distance = distance
                 best_iteration = i
+                num_of_not_improve_round = 0
+            else:
+                num_of_not_improve_round += 1
 
             if self.log_interval != 0 and i % self.log_interval == 0:
                 print(
                     f"iter={i}: {distance}, (best_iter={best_iteration}: {best_distance})"
                 )
+
+            if num_of_not_improve_round > self.early_stopping:
+                break
 
         return best_fake_x, best_fake_label
 
