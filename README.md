@@ -26,25 +26,29 @@ This package implements algorithms for AI security such as Model Inversion, Pois
 
 ```Python
 # DLG Attack (Zhu, Ligeng, Zhijian Liu, and Song Han. "Deep leakage from gradients." Advances in Neural Information Processing Systems 32 (2019).)
-dlg_attacker = GradientInversion_Attack(net, input_shape, distancename="l2")
+attacker = GradientInversion_Attack(net, input_shape, distancename="l2")
 
 # GS Attack (Geiping, Jonas, et al. "Inverting gradients-how easy is it to break privacy in federated learning?." Advances in Neural Information Processing Systems 33 (2020): 16937-16947.)
-gs_attacker = GradientInversion_Attack(net, input_shape, distancename="cossim", tv_reg_coef=0.01)
+attacker = GradientInversion_Attack(net, input_shape, distancename="cossim", tv_reg_coef=0.01)
 
 # iDLG (Zhao, Bo, Konda Reddy Mopuri, and Hakan Bilen. "idlg: Improved deep leakage from gradients." arXiv preprint arXiv:2001.02610 (2020).)
-idlg_attacker = GradientInversion_Attack(net, input_shape, distancename="l2", optimize_label=False)
+attacker = GradientInversion_Attack(net, input_shape, distancename="l2", optimize_label=False)
 
 # CPL (Wei, Wenqi, et al. "A framework for evaluating gradient leakage attacks in federated learning." arXiv preprint arXiv:2004.10397 (2020).)
-cpl_attacker = GradientInversion_Attack(net, input_shape, distancename="l2", optimize_label=False,
+attacker = GradientInversion_Attack(net, input_shape, distancename="l2", optimize_label=False,
                                         lm_reg_coef=0.01)
 
 # GradInversion (Yin, Hongxu, et al. "See through gradients: Image batch recovery via gradinversion." Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition. 2021.)
-gradinversion_attacker = GradientInversion_Attack(net, input_shape,
+attacker = GradientInversion_Attack(net, input_shape,
                                                   distancename="l2", optimize_label=False,
                                                   bn_reg_layers=[net.body[1], net.body[4], net.body[7]],
                                                   group_num = 5,
                                                   tv_reg_coef=0.00, l2_reg_coef=0.0001,
                                                   bn_reg_coef=0.001, gc_reg_coef=0.001)
+                                                  
+received_gradients = torch.autograd.grad(loss, net.parameters())
+received_gradients = [cg.detach() for cg in received_gradients]
+attacker.attack(received_gradients)
 ```
 
 
