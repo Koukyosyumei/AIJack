@@ -5,7 +5,7 @@ import torch
 import torchvision
 import torchvision.transforms as transforms
 
-from aijack.utils import NumpyDataset
+from .utils import NumpyDataset
 
 
 def prepareFederatedMNISTDataloaders(
