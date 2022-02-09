@@ -3,7 +3,7 @@ def l2(fake_gradients, received_gradients, gradient_ignore_pos):
     for i, (f_g, c_g) in enumerate(zip(fake_gradients, received_gradients)):
         if i not in gradient_ignore_pos:
             distance += ((f_g - c_g) ** 2).sum()
-    return distance**0.5
+    return distance
 
 
 def cossim(fake_gradients, received_gradients, gradient_ignore_pos):
