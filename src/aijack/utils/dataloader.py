@@ -19,7 +19,10 @@ def prepareFederatedMNISTDataloaders(
     transform=transforms.Compose(
         [transforms.ToTensor(), transforms.Normalize((0.5,), (0.5,))]
     ),
+    seed=0,
 ):
+    random.seed(seed)
+
     at_t_dataset_train = torchvision.datasets.MNIST(
         root=path, train=True, download=download
     )
@@ -58,7 +61,5 @@ def prepareFederatedMNISTDataloaders(
         train_sizes.append(len(temp_trainset))
 
         idx_used += assigned_idx
-
-    # assert len(idx_used) == len(list(set(idx_used)))
 
     return X, y, trainloaders, testloader, train_sizes, idx_used
