@@ -421,6 +421,9 @@ class GradientInversion_Attack(BaseAttacker):
                 )
 
             if num_of_not_improve_round > self.early_stopping:
+                print(
+                    f"iter={i}: loss did not improve in the last {self.early_stopping} rounds."
+                )
                 break
 
         return best_fake_x, best_fake_label
