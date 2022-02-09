@@ -59,6 +59,7 @@ class GradientInversion_Attack(BaseAttacker):
         x_shape,
         y_shape=None,
         optimize_label=True,
+        gradient_ignore_pos=[],
         pos_of_final_fc_layer=-2,
         num_iteration=100,
         optimizer_class=torch.optim.LBFGS,
@@ -90,6 +91,8 @@ class GradientInversion_Attack(BaseAttacker):
             x_shape: the input shape of target_model.
             y_shape: the output shape of target_model.
             optimize_label: If true, only optimize images (the label will be automatically estimated).
+            gradient_ignore_pos: a list of positions whihc will be ignored during the culculation of
+                                 the distance between gradients
             pos_of_final_fc_layer: position of gradients corresponding to the final FC layer
                                    within the gradients received from the client.
             num_iteration: number of iterations of optimization.
@@ -124,6 +127,7 @@ class GradientInversion_Attack(BaseAttacker):
         )
 
         self.optimize_label = optimize_label
+        self.gradient_ignore_pos = gradient_ignore_pos
         self.pos_of_final_fc_layer = pos_of_final_fc_layer
 
         self.num_iteration = num_iteration
@@ -328,7 +332,9 @@ class GradientInversion_Attack(BaseAttacker):
                 create_graph=True,
                 allow_unused=True,
             )
-            distance = self.distancefunc(fake_gradients, received_gradients)
+            distance = self.distancefunc(
+                fake_gradients, received_gradients, self.gradient_ignore_pos
+            )
             distance += self._culc_regularization_term(
                 fake_x,
                 fake_pred,
