@@ -323,7 +323,10 @@ class GradientInversion_Attack(BaseAttacker):
             else:
                 loss = self.lossfunc(fake_pred, fake_label)
             fake_gradients = torch.autograd.grad(
-                loss, self.target_model.parameters(), create_graph=True
+                loss,
+                self.target_model.parameters(),
+                create_graph=True,
+                allow_unused=True,
             )
             distance = self.distancefunc(fake_gradients, received_gradients)
             distance += self._culc_regularization_term(
