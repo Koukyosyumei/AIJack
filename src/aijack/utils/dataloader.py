@@ -44,7 +44,7 @@ def prepareFederatedMNISTDataloaders(
     idx_used = []
     for c in range(client_num):
         assigned_labels = random.sample(range(10), local_label_num)
-        print(f"the labels that client_id={c} has is: ", assigned_labels)
+        print(f"the labels that client_id={c} has are: ", assigned_labels)
         idx = np.concatenate([np.where(y == al)[0] for al in assigned_labels])
         assigned_idx = random.sample(list(set(idx) - set(idx_used)), local_data_num)
 
