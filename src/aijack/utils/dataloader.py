@@ -21,6 +21,7 @@ def prepareFederatedMNISTDataloaders(
     ),
     seed=0,
 ):
+    np.random.seed(seed)
     random.seed(seed)
 
     at_t_dataset_train = torchvision.datasets.MNIST(
