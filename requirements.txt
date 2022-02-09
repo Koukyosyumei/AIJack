@@ -2,4 +2,5 @@ numpy
 tqdm
 sklearn
 torch
+torchvision
 pybind11
