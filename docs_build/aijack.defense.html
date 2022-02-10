@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>aijack.defense package &mdash; AIJack v1.0 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="aijack.defense.ckks package" href="aijack.defense.ckks.html" />
+    <link rel="prev" title="aijack.collaborative.splitnn package" href="aijack.collaborative.splitnn.html" />
+</head>
+
+<body class="wy-body-for-nav">
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> AIJack
+          </a>
+              <div class="version">
+                v1.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="aijack.html">aijack package</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="aijack.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="aijack.attack.html">aijack.attack package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="aijack.collaborative.html">aijack.collaborative package</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">aijack.defense package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#subpackages">Subpackages</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-aijack.defense.purifier">aijack.defense.purifier module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-aijack.defense">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="aijack.utils.html">aijack.utils package</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="aijack.html#module-aijack">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">AIJack</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="aijack.html">aijack package</a> &raquo;</li>
+      <li>aijack.defense package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/aijack.defense.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+
+  <section id="aijack-defense-package">
+<h1>aijack.defense package<a class="headerlink" href="#aijack-defense-package" title="Permalink to this headline"></a></h1>
+<section id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this headline"></a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="aijack.defense.ckks.html">aijack.defense.ckks package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="aijack.defense.ckks.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="aijack.defense.ckks.html#module-aijack.defense.ckks.ciphertext">aijack.defense.ckks.ciphertext module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="aijack.defense.ckks.html#module-aijack.defense.ckks.encoder">aijack.defense.ckks.encoder module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="aijack.defense.ckks.html#module-aijack.defense.ckks.encrypter">aijack.defense.ckks.encrypter module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="aijack.defense.ckks.html#module-aijack.defense.ckks.plaintext">aijack.defense.ckks.plaintext module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="aijack.defense.ckks.html#module-aijack.defense.ckks.random">aijack.defense.ckks.random module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="aijack.defense.ckks.html#module-aijack.defense.ckks.utils">aijack.defense.ckks.utils module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="aijack.defense.ckks.html#module-aijack.defense.ckks">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="aijack.defense.dp.html">aijack.defense.dp package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="aijack.defense.dp.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="aijack.defense.dp.manager.html">aijack.defense.dp.manager package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="aijack.defense.dp.manager.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="aijack.defense.dp.manager.html#module-aijack.defense.dp.manager.accountant">aijack.defense.dp.manager.accountant module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="aijack.defense.dp.manager.html#module-aijack.defense.dp.manager.dataloader">aijack.defense.dp.manager.dataloader module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="aijack.defense.dp.manager.html#module-aijack.defense.dp.manager.optimizer">aijack.defense.dp.manager.optimizer module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="aijack.defense.dp.manager.html#module-aijack.defense.dp.manager.privacy_manager">aijack.defense.dp.manager.privacy_manager module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="aijack.defense.dp.manager.html#module-aijack.defense.dp.manager.rdp">aijack.defense.dp.manager.rdp module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="aijack.defense.dp.manager.html#module-aijack.defense.dp.manager.utils">aijack.defense.dp.manager.utils module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="aijack.defense.dp.manager.html#module-aijack.defense.dp.manager">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="aijack.defense.dp.html#module-aijack.defense.dp">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="aijack.defense.mid.html">aijack.defense.mid package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="aijack.defense.mid.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="aijack.defense.mid.html#module-aijack.defense.mid.loss">aijack.defense.mid.loss module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="aijack.defense.mid.html#module-aijack.defense.mid.nn">aijack.defense.mid.nn module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="aijack.defense.mid.html#module-aijack.defense.mid">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="aijack.defense.setoria.html">aijack.defense.setoria package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="aijack.defense.setoria.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="aijack.defense.setoria.html#module-aijack.defense.setoria.setoria_client">aijack.defense.setoria.setoria_client module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="aijack.defense.setoria.html#module-aijack.defense.setoria">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline"></a></h2>
+</section>
+<section id="module-aijack.defense.purifier">
+<span id="aijack-defense-purifier-module"></span><h2>aijack.defense.purifier module<a class="headerlink" href="#module-aijack.defense.purifier" title="Permalink to this headline"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="aijack.defense.purifier.PurifierLoss">
+<span class="sig-prename descclassname"><span class="pre">aijack.defense.purifier.</span></span><span class="sig-name descname"><span class="pre">PurifierLoss</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prediction</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pred_purified</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lam</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">purifier_criterion</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">MSELoss()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">accuracy_criterion</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">CrossEntropyLoss()</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/defense/purifier.html#PurifierLoss"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.defense.purifier.PurifierLoss" title="Permalink to this definition"></a></dt>
+<dd><dl>
+<dt>basic loss function for purification</dt><dd><p>reference <a class="reference external" href="https://arxiv.org/abs/2005.03915">https://arxiv.org/abs/2005.03915</a></p>
+<p>train purifier G against target model F to minimize the
+following objective function</p>
+<blockquote>
+<div><p>L(G) = E[R(G(F(x)), F(x)) + λC(G(F(x), argmax F(x)))]</p>
+</div></blockquote>
+<p>R is a reconstruction loss function
+C is a cross entropy loss function
+λ controls the balance of the two loss functions</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>prediction</strong> – predicted value of target model</p></li>
+<li><p><strong>pred_purified</strong> – purified predicted value of target model</p></li>
+<li><p><strong>lam</strong> – controls the balance of the following two functions</p></li>
+<li><p><strong>purifier_criterion</strong> – loss function to reshapre confidense score</p></li>
+<li><p><strong>accuracy_criterion</strong> – loss function to preserve the accuracy (C)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>weighted average of the two loss function</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>loss_purifier</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="aijack.defense.purifier.Purifier_Cifar10">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">aijack.defense.purifier.</span></span><span class="sig-name descname"><span class="pre">Purifier_Cifar10</span></span><a class="reference internal" href="_modules/aijack/defense/purifier.html#Purifier_Cifar10"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.defense.purifier.Purifier_Cifar10" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">torch.nn.modules.module.Module</span></code></p>
+<p>autoencoder for purification on Cifar10
+reference <a class="reference external" href="https://arxiv.org/abs/2005.03915">https://arxiv.org/abs/2005.03915</a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="aijack.defense.purifier.Purifier_Cifar10.forward">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/defense/purifier.html#Purifier_Cifar10.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.defense.purifier.Purifier_Cifar10.forward" title="Permalink to this definition"></a></dt>
+<dd><p>Defines the computation performed at every call.</p>
+<p>Should be overridden by all subclasses.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Although the recipe for forward pass needs to be defined within
+this function, one should call the <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code> instance afterwards
+instead of this since the former takes care of running the
+registered hooks while the latter silently ignores them.</p>
+</div>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="aijack.defense.purifier.Purifier_Cifar10.training">
+<span class="sig-name descname"><span class="pre">training</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#aijack.defense.purifier.Purifier_Cifar10.training" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-aijack.defense">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-aijack.defense" title="Permalink to this headline"></a></h2>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="aijack.collaborative.splitnn.html" class="btn btn-neutral float-left" title="aijack.collaborative.splitnn package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="aijack.defense.ckks.html" class="btn btn-neutral float-right" title="aijack.defense.ckks package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Hideaki Takahashi.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+</body>
+</html>
