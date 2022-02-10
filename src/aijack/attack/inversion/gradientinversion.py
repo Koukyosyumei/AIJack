@@ -50,6 +50,7 @@ class GradientInversion_Attack(BaseAttacker):
         seed: random state.
         group_num: the size of group,
         group_seed: a list of random states for each worker of the group
+        early_stopping: early stopping
     """
 
     def __init__(
@@ -58,6 +59,7 @@ class GradientInversion_Attack(BaseAttacker):
         x_shape,
         y_shape=None,
         optimize_label=True,
+        gradient_ignore_pos=[],
         pos_of_final_fc_layer=-2,
         num_iteration=100,
         optimizer_class=torch.optim.LBFGS,
@@ -79,6 +81,7 @@ class GradientInversion_Attack(BaseAttacker):
         seed=0,
         group_num=5,
         group_seed=None,
+        early_stopping=50,
         **kwargs,
     ):
         """Inits GradientInversion_Attack class.
@@ -88,6 +91,8 @@ class GradientInversion_Attack(BaseAttacker):
             x_shape: the input shape of target_model.
             y_shape: the output shape of target_model.
             optimize_label: If true, only optimize images (the label will be automatically estimated).
+            gradient_ignore_pos: a list of positions whihc will be ignored during the culculation of
+                                 the distance between gradients
             pos_of_final_fc_layer: position of gradients corresponding to the final FC layer
                                    within the gradients received from the client.
             num_iteration: number of iterations of optimization.
@@ -112,6 +117,7 @@ class GradientInversion_Attack(BaseAttacker):
             seed: random state.
             group_num: the size of group,
             group_seed: a list of random states for each worker of the group
+            early_stopping: early stopping
             **kwargs: kwargs for the optimizer
         """
         super().__init__(target_model)
@@ -121,6 +127,7 @@ class GradientInversion_Attack(BaseAttacker):
         )
 
         self.optimize_label = optimize_label
+        self.gradient_ignore_pos = gradient_ignore_pos
         self.pos_of_final_fc_layer = pos_of_final_fc_layer
 
         self.num_iteration = num_iteration
@@ -151,6 +158,8 @@ class GradientInversion_Attack(BaseAttacker):
 
         self.group_num = group_num
         self.group_seed = list(range(group_num)) if group_seed is None else group_seed
+
+        self.early_stopping = early_stopping
 
         self.kwargs = kwargs
 
@@ -326,9 +335,14 @@ class GradientInversion_Attack(BaseAttacker):
             else:
                 loss = self.lossfunc(fake_pred, fake_label)
             fake_gradients = torch.autograd.grad(
-                loss, self.target_model.parameters(), create_graph=True
+                loss,
+                self.target_model.parameters(),
+                create_graph=True,
+                allow_unused=True,
             )
-            distance = self.distancefunc(fake_gradients, received_gradients)
+            distance = self.distancefunc(
+                fake_gradients, received_gradients, self.gradient_ignore_pos
+            )
             distance += self._culc_regularization_term(
                 fake_x,
                 fake_pred,
@@ -398,6 +412,7 @@ class GradientInversion_Attack(BaseAttacker):
             received_gradients, batch_size
         )
 
+        num_of_not_improve_round = 0
         best_distance = float("inf")
         self.log_loss = []
         for i in range(1, self.num_iteration + 1):
@@ -417,11 +432,20 @@ class GradientInversion_Attack(BaseAttacker):
                 best_fake_label = copy.deepcopy(fake_label)
                 best_distance = distance
                 best_iteration = i
+                num_of_not_improve_round = 0
+            else:
+                num_of_not_improve_round += 1
 
             if self.log_interval != 0 and i % self.log_interval == 0:
                 print(
                     f"iter={i}: {distance}, (best_iter={best_iteration}: {best_distance})"
                 )
+
+            if num_of_not_improve_round > self.early_stopping:
+                print(
+                    f"iter={i}: loss did not improve in the last {self.early_stopping} rounds."
+                )
+                break
 
         return best_fake_x, best_fake_label
 

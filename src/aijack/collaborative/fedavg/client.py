@@ -5,7 +5,7 @@ from ..core import BaseClient
 
 class FedAvgClient(BaseClient):
     def __init__(self, model, user_id=0, lr=0.1):
-        super().__init__(model, user_id=user_id)
+        super(FedAvgClient, self).__init__(model, user_id=user_id)
         self.lr = lr
 
         self.prev_parameters = []

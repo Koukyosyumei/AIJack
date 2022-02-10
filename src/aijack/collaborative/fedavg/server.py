@@ -6,7 +6,7 @@ from ..core import BaseServer
 
 class FedAvgServer(BaseServer):
     def __init__(self, clients, global_model, server_id=0, lr=0.1):
-        super().__init__(clients, global_model, server_id=server_id)
+        super(FedAvgServer, self).__init__(clients, global_model, server_id=server_id)
         self.lr = lr
         self.distribtue()
 
