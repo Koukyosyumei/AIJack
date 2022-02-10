@@ -11,11 +11,14 @@ class FedAvgServer(BaseServer):
         self.distribtue()
 
     def action(self, gradients=True):
+        self.update(gradients)
+        self.distribtue()
+
+    def update(self, gradients=True):
         if gradients:
             self.updata_from_gradients()
         else:
             self.update_from_parameters()
-        self.distribtue()
 
     def updata_from_gradients(self, weight=None):
         if weight is None:
