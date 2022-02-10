@@ -4,6 +4,8 @@ from ..fedavg import FedAvgClient
 
 
 class FedKDClient(FedAvgClient):
+    """Implementation of FedKD (https://arxiv.org/abs/2108.13323)"""
+
     def __init__(
         self,
         student_model,
