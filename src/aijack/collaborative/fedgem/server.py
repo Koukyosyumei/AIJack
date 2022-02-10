@@ -4,7 +4,7 @@ from torch import nn
 from ..core import BaseServer
 
 
-class FedGEMServer(BaseServer):
+class FedGEMSServer(BaseServer):
     def __init__(
         self,
         clients,
@@ -18,7 +18,7 @@ class FedGEMServer(BaseServer):
         lr=0.1,
         epsilon=0.75,
     ):
-        super(FedGEMServer, self).__init__(clients, global_model, server_id=server_id)
+        super(FedGEMSServer, self).__init__(clients, global_model, server_id=server_id)
         self.len_public_dataloader = len_public_dataloader
         self.lr = lr
         self.epsilon = epsilon

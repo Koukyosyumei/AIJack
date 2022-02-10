@@ -3,7 +3,7 @@ from torch import nn
 from ..core import BaseClient
 
 
-class FedGEMClient(BaseClient):
+class FedGEMSClient(BaseClient):
     def __init__(
         self,
         model,
@@ -13,7 +13,7 @@ class FedGEMClient(BaseClient):
         kldiv_loss_func=nn.KLDivLoss(),
         epsilon=0.75,
     ):
-        super(FedGEMClient, self).__init__(model, user_id=user_id)
+        super(FedGEMSClient, self).__init__(model, user_id=user_id)
         self.lr = lr
         self.predicted_values_of_server = None
         self.base_loss_func = base_loss_func
