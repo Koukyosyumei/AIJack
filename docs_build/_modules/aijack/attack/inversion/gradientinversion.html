@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>aijack.attack.inversion.gradientinversion &mdash; AIJack v1.0 documentation</title>
+      <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+
+        <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+        <script src="../../../../_static/jquery.js"></script>
+        <script src="../../../../_static/underscore.js"></script>
+        <script src="../../../../_static/doctools.js"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+</head>
+
+<body class="wy-body-for-nav">
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../../index.html" class="icon icon-home"> AIJack
+          </a>
+              <div class="version">
+                v1.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../aijack.html">aijack package</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">AIJack</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../../../index.html">Module code</a> &raquo;</li>
+      <li>aijack.attack.inversion.gradientinversion</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+
+  <h1>Source code for aijack.attack.inversion.gradientinversion</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">copy</span>
+
+<span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">import</span> <span class="nn">torch.nn</span> <span class="k">as</span> <span class="nn">nn</span>
+
+<span class="kn">from</span> <span class="nn">..base_attack</span> <span class="kn">import</span> <span class="n">BaseAttacker</span>
+<span class="kn">from</span> <span class="nn">.utils.distance</span> <span class="kn">import</span> <span class="n">cossim</span><span class="p">,</span> <span class="n">l2</span>
+<span class="kn">from</span> <span class="nn">.utils.regularization</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">bn_regularizer</span><span class="p">,</span>
+    <span class="n">group_consistency</span><span class="p">,</span>
+    <span class="n">label_matching</span><span class="p">,</span>
+    <span class="n">total_variation</span><span class="p">,</span>
+<span class="p">)</span>
+
+
+<div class="viewcode-block" id="GradientInversion_Attack"><a class="viewcode-back" href="../../../../aijack.attack.inversion.html#aijack.attack.inversion.gradientinversion.GradientInversion_Attack">[docs]</a><span class="k">class</span> <span class="nc">GradientInversion_Attack</span><span class="p">(</span><span class="n">BaseAttacker</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;General Gradient Inversion Attacker</span>
+
+<span class="sd">    model inversion attack based on gradients can be written as follows:</span>
+<span class="sd">            x^* = argmin_x&#39; L_grad(x&#39;: W, delta_W) + R_aux(x&#39;)</span>
+<span class="sd">    , where X&#39; is the reconstructed image.</span>
+<span class="sd">    The attacker tries to find images whose gradients w.r.t the given model parameter W</span>
+<span class="sd">    is similar to the gradients delta_W of the secret images.</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        target_model: a target torch module instance.</span>
+<span class="sd">        x_shape: the input shape of target_model.</span>
+<span class="sd">        y_shape: the output shape of target_model.</span>
+<span class="sd">        optimize_label: If true, only optimize images (the label will be automatically estimated).</span>
+<span class="sd">        pos_of_final_fc_layer: position of gradients corresponding to the final FC layer</span>
+<span class="sd">                               within the gradients received from the client.</span>
+<span class="sd">        num_iteration: number of iterations of optimization.</span>
+<span class="sd">        optimizer_class: a class of torch optimizer for the attack.</span>
+<span class="sd">        lossfunc: a function that takes the predictions of the target model and true labels</span>
+<span class="sd">                  and returns the loss between them.</span>
+<span class="sd">        distancefunc: a function which takes the gradients of reconstructed images and the client-side gradients</span>
+<span class="sd">                      and returns the distance between them.</span>
+<span class="sd">        tv_reg_coef: the coefficient of total-variance regularization.</span>
+<span class="sd">        lm_reg_coef: the coefficient of label-matching regularization.</span>
+<span class="sd">        l2_reg_coef: the coefficient of L2 regularization.</span>
+<span class="sd">        bn_reg_coef: the coefficient of BN regularization.</span>
+<span class="sd">        gc_reg_coef: the coefficient of group-consistency regularization.</span>
+<span class="sd">        bn_reg_layers: a list of batch normalization layers of the target model.</span>
+<span class="sd">        bn_reg_layer_inputs: a lit of extracted inputs of the specified bn layers</span>
+<span class="sd">        custom_reg_func: a custom regularization function.</span>
+<span class="sd">        custom_reg_coef: the coefficient of the custom regularization function</span>
+<span class="sd">        device: device type.</span>
+<span class="sd">        log_interval: the interval of logging.</span>
+<span class="sd">        save_loss: If true, save the loss during the attack.</span>
+<span class="sd">        seed: random state.</span>
+<span class="sd">        group_num: the size of group,</span>
+<span class="sd">        group_seed: a list of random states for each worker of the group</span>
+<span class="sd">        early_stopping: early stopping</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">target_model</span><span class="p">,</span>
+        <span class="n">x_shape</span><span class="p">,</span>
+        <span class="n">y_shape</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">optimize_label</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">gradient_ignore_pos</span><span class="o">=</span><span class="p">[],</span>
+        <span class="n">pos_of_final_fc_layer</span><span class="o">=-</span><span class="mi">2</span><span class="p">,</span>
+        <span class="n">num_iteration</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+        <span class="n">optimizer_class</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">LBFGS</span><span class="p">,</span>
+        <span class="n">optimizername</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">lossfunc</span><span class="o">=</span><span class="n">nn</span><span class="o">.</span><span class="n">CrossEntropyLoss</span><span class="p">(),</span>
+        <span class="n">distancefunc</span><span class="o">=</span><span class="n">l2</span><span class="p">,</span>
+        <span class="n">distancename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">tv_reg_coef</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
+        <span class="n">lm_reg_coef</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
+        <span class="n">l2_reg_coef</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
+        <span class="n">bn_reg_coef</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
+        <span class="n">gc_reg_coef</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
+        <span class="n">bn_reg_layers</span><span class="o">=</span><span class="p">[],</span>
+        <span class="n">custom_reg_func</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">custom_reg_coef</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
+        <span class="n">device</span><span class="o">=</span><span class="s2">&quot;cpu&quot;</span><span class="p">,</span>
+        <span class="n">log_interval</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+        <span class="n">save_loss</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">seed</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+        <span class="n">group_num</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+        <span class="n">group_seed</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">early_stopping</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Inits GradientInversion_Attack class.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            target_model: a target torch module instance.</span>
+<span class="sd">            x_shape: the input shape of target_model.</span>
+<span class="sd">            y_shape: the output shape of target_model.</span>
+<span class="sd">            optimize_label: If true, only optimize images (the label will be automatically estimated).</span>
+<span class="sd">            gradient_ignore_pos: a list of positions whihc will be ignored during the culculation of</span>
+<span class="sd">                                 the distance between gradients</span>
+<span class="sd">            pos_of_final_fc_layer: position of gradients corresponding to the final FC layer</span>
+<span class="sd">                                   within the gradients received from the client.</span>
+<span class="sd">            num_iteration: number of iterations of optimization.</span>
+<span class="sd">            optimizer_class: a class of torch optimizer for the attack.</span>
+<span class="sd">            optimizername: a name of optimizer class (priority over optimizer_class).</span>
+<span class="sd">            lossfunc: a function that takes the predictions of the target model and true labels</span>
+<span class="sd">                    and returns the loss between them.</span>
+<span class="sd">            distancefunc: a function which takes the gradients of reconstructed images and the client-side gradients</span>
+<span class="sd">                        and returns the distance between them.</span>
+<span class="sd">            distancename: a name of distancefunc (priority over distancefunc).</span>
+<span class="sd">            tv_reg_coef: the coefficient of total-variance regularization.</span>
+<span class="sd">            lm_reg_coef: the coefficient of label-matching regularization.</span>
+<span class="sd">            l2_reg_coef: the coefficient of L2 regularization.</span>
+<span class="sd">            bn_reg_coef: the coefficient of BN regularization.</span>
+<span class="sd">            gc_reg_coef: the coefficient of group-consistency regularization.</span>
+<span class="sd">            bn_reg_layers: a list of batch normalization layers of the target model.</span>
+<span class="sd">            custom_reg_func: a custom regularization function.</span>
+<span class="sd">            custom_reg_coef: the coefficient of the custom regularization function</span>
+<span class="sd">            device: device type.</span>
+<span class="sd">            log_interval: the interval of logging.</span>
+<span class="sd">            save_loss: If true, save the loss during the attack.</span>
+<span class="sd">            seed: random state.</span>
+<span class="sd">            group_num: the size of group,</span>
+<span class="sd">            group_seed: a list of random states for each worker of the group</span>
+<span class="sd">            early_stopping: early stopping</span>
+<span class="sd">            **kwargs: kwargs for the optimizer</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">target_model</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">x_shape</span> <span class="o">=</span> <span class="n">x_shape</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">y_shape</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="nb">list</span><span class="p">(</span><span class="n">target_model</span><span class="o">.</span><span class="n">parameters</span><span class="p">())[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="n">y_shape</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">y_shape</span>
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">optimize_label</span> <span class="o">=</span> <span class="n">optimize_label</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gradient_ignore_pos</span> <span class="o">=</span> <span class="n">gradient_ignore_pos</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pos_of_final_fc_layer</span> <span class="o">=</span> <span class="n">pos_of_final_fc_layer</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">num_iteration</span> <span class="o">=</span> <span class="n">num_iteration</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lossfunc</span> <span class="o">=</span> <span class="n">lossfunc</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">distancefunc</span> <span class="o">=</span> <span class="n">distancefunc</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_setup_distancefunc</span><span class="p">(</span><span class="n">distancename</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">optimizer_class</span> <span class="o">=</span> <span class="n">optimizer_class</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_setup_optimizer_class</span><span class="p">(</span><span class="n">optimizername</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">tv_reg_coef</span> <span class="o">=</span> <span class="n">tv_reg_coef</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lm_reg_coef</span> <span class="o">=</span> <span class="n">lm_reg_coef</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">l2_reg_coef</span> <span class="o">=</span> <span class="n">l2_reg_coef</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bn_reg_coef</span> <span class="o">=</span> <span class="n">bn_reg_coef</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gc_reg_coef</span> <span class="o">=</span> <span class="n">gc_reg_coef</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">bn_reg_layers</span> <span class="o">=</span> <span class="n">bn_reg_layers</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bn_reg_layer_inputs</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">bn_layer</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bn_reg_layers</span><span class="p">):</span>
+            <span class="n">bn_layer</span><span class="o">.</span><span class="n">register_forward_hook</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_hook_for_input</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">custom_reg_func</span> <span class="o">=</span> <span class="n">custom_reg_func</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">custom_reg_coef</span> <span class="o">=</span> <span class="n">custom_reg_coef</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">device</span> <span class="o">=</span> <span class="n">device</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">log_interval</span> <span class="o">=</span> <span class="n">log_interval</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">save_loss</span> <span class="o">=</span> <span class="n">save_loss</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">seed</span> <span class="o">=</span> <span class="n">seed</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">group_num</span> <span class="o">=</span> <span class="n">group_num</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">group_seed</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">group_num</span><span class="p">))</span> <span class="k">if</span> <span class="n">group_seed</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">group_seed</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">early_stopping</span> <span class="o">=</span> <span class="n">early_stopping</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">kwargs</span> <span class="o">=</span> <span class="n">kwargs</span>
+
+        <span class="n">torch</span><span class="o">.</span><span class="n">manual_seed</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_setup_distancefunc</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">distancename</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Assign a function to self.distancefunc according to distancename</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            distancename: name of the function to culculat the distance between the gradients.</span>
+<span class="sd">                          currently support &#39;l2&#39; or &#39;cossim&#39;.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            ValueError: if distancename is not supported.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">distancename</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="k">elif</span> <span class="n">distancename</span> <span class="o">==</span> <span class="s2">&quot;l2&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">distancefunc</span> <span class="o">=</span> <span class="n">l2</span>
+        <span class="k">elif</span> <span class="n">distancename</span> <span class="o">==</span> <span class="s2">&quot;cossim&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">distancefunc</span> <span class="o">=</span> <span class="n">cossim</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">distancename</span><span class="si">}</span><span class="s2"> is not defined&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_setup_optimizer_class</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">optimizername</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Assign a class to self.optimizer_class according to optimiername</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            optimizername: name of optimizer, currently support `LBFGS`, `SGD`, and `Adam`</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            ValueError: if optimizername is not supported.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">optimizername</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="k">elif</span> <span class="n">optimizername</span> <span class="o">==</span> <span class="s2">&quot;LBFGS&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">optimizer_class</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">LBFGS</span>
+        <span class="k">elif</span> <span class="n">optimizername</span> <span class="o">==</span> <span class="s2">&quot;SGD&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">optimizer_class</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">SGD</span>
+        <span class="k">elif</span> <span class="n">optimizername</span> <span class="o">==</span> <span class="s2">&quot;Adam&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">optimizer_class</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">Adam</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">optimizername</span><span class="si">}</span><span class="s2"> is not defined&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_get_hook_for_input</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return a hook function to extract the input of the specified layer of the target model</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            name: the key of self.bn_reg_layer_inputs for the target layer</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            hook: a hook function</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">def</span> <span class="nf">hook</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">inp</span><span class="p">,</span> <span class="n">output</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">bn_reg_layer_inputs</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">inp</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="n">hook</span>
+
+    <span class="k">def</span> <span class="nf">_initialize_x</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Inits the fake images</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            batch_size: the batch size</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            randomly generated torch.Tensor whose shape is (batch_size, ) + (self.x_shape)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">fake_x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span>
+            <span class="p">(</span><span class="n">batch_size</span><span class="p">,)</span> <span class="o">+</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x_shape</span><span class="p">),</span> <span class="n">requires_grad</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">device</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">fake_x</span>
+
+    <span class="k">def</span> <span class="nf">_initialize_label</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Inits the fake labels</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            batch_size: the batch size</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            randomly initialized or estimated labels</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">fake_label</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span>
+            <span class="p">(</span><span class="n">batch_size</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y_shape</span><span class="p">),</span> <span class="n">requires_grad</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">device</span>
+        <span class="p">)</span>
+        <span class="n">fake_label</span> <span class="o">=</span> <span class="n">fake_label</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">fake_label</span>
+
+    <span class="k">def</span> <span class="nf">_estimate_label</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">received_gradients</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Estimate the secret labels from the received gradients</span>
+
+<span class="sd">        this function is based on the following papers:</span>
+<span class="sd">        batch_size == 1: https://arxiv.org/abs/2001.02610</span>
+<span class="sd">        batch_size &gt; 1: https://arxiv.org/abs/2104.07586</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            received_gradients: gradients received from the client</span>
+<span class="sd">            batch_size: batch size used to culculate the received_gradients</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            estimated labels</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">batch_size</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">fake_label</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span>
+                <span class="n">torch</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">received_gradients</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">pos_of_final_fc_layer</span><span class="p">],</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">fake_label</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span>
+                <span class="n">torch</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">received_gradients</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">pos_of_final_fc_layer</span><span class="p">],</span> <span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="p">)[:</span><span class="n">batch_size</span><span class="p">]</span>
+        <span class="n">fake_label</span> <span class="o">=</span> <span class="n">fake_label</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">batch_size</span><span class="p">)</span>
+        <span class="n">fake_label</span> <span class="o">=</span> <span class="n">fake_label</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">fake_label</span>
+
+    <span class="k">def</span> <span class="nf">_culc_regularization_term</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">fake_x</span><span class="p">,</span> <span class="n">fake_pred</span><span class="p">,</span> <span class="n">fake_label</span><span class="p">,</span> <span class="n">group_fake_x</span><span class="p">,</span> <span class="n">received_gradients</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Culculate the regularization term</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            fake_x: reconstructed images</span>
+<span class="sd">            fake_pred: the predicted value of reconstructed images</span>
+<span class="sd">            faka_label: the labels of fake_x</span>
+<span class="sd">            group_fake_x: a list of fake_x of each worker</span>
+<span class="sd">            received_gradients: gradients received from the client</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            culculated regularization term</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">reg_term</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">tv_reg_coef</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">reg_term</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tv_reg_coef</span> <span class="o">*</span> <span class="n">total_variation</span><span class="p">(</span><span class="n">fake_x</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">lm_reg_coef</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">reg_term</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lm_reg_coef</span> <span class="o">*</span> <span class="n">label_matching</span><span class="p">(</span><span class="n">fake_pred</span><span class="p">,</span> <span class="n">fake_label</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">l2_reg_coef</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">reg_term</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">l2_reg_coef</span> <span class="o">*</span> <span class="n">torch</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">fake_x</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">bn_reg_coef</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">reg_term</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bn_reg_coef</span> <span class="o">*</span> <span class="n">bn_regularizer</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">bn_reg_layer_inputs</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">bn_reg_layers</span>
+            <span class="p">)</span>
+        <span class="k">if</span> <span class="n">group_fake_x</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">gc_reg_coef</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">reg_term</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gc_reg_coef</span> <span class="o">*</span> <span class="n">group_consistency</span><span class="p">(</span><span class="n">fake_x</span><span class="p">,</span> <span class="n">group_fake_x</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">custom_reg_func</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">custom_reg_coef</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">context</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s2">&quot;attacker&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="p">,</span>
+                <span class="s2">&quot;fake_x&quot;</span><span class="p">:</span> <span class="n">fake_x</span><span class="p">,</span>
+                <span class="s2">&quot;fake_label&quot;</span><span class="p">:</span> <span class="n">fake_label</span><span class="p">,</span>
+                <span class="s2">&quot;received_gradients&quot;</span><span class="p">:</span> <span class="n">received_gradients</span><span class="p">,</span>
+                <span class="s2">&quot;group_fake_x&quot;</span><span class="p">:</span> <span class="n">group_fake_x</span><span class="p">,</span>
+            <span class="p">}</span>
+            <span class="n">reg_term</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">custom_reg_coef</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">custom_reg_func</span><span class="p">(</span><span class="n">context</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">reg_term</span>
+
+    <span class="k">def</span> <span class="nf">_setup_closure</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">optimizer</span><span class="p">,</span> <span class="n">fake_x</span><span class="p">,</span> <span class="n">fake_label</span><span class="p">,</span> <span class="n">received_gradients</span><span class="p">,</span> <span class="n">group_fake_x</span><span class="o">=</span><span class="kc">None</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return a closure function for the optimizer</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            optimizer (torch.optim.Optimizer): an instance of the optimizer</span>
+<span class="sd">            fake_x (torch.Tensor): reconstructed images</span>
+<span class="sd">            fake_label (torch.Tensor): reconstructed or estimated labels</span>
+<span class="sd">            received_gradients (list): a list of gradients received from the client</span>
+<span class="sd">            group_fake_x (list, optional): a list of fake_x. Defaults to None.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">def</span> <span class="nf">closure</span><span class="p">():</span>
+            <span class="n">optimizer</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
+            <span class="n">fake_pred</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">target_model</span><span class="p">(</span><span class="n">fake_x</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">optimize_label</span><span class="p">:</span>
+                <span class="n">loss</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lossfunc</span><span class="p">(</span><span class="n">fake_pred</span><span class="p">,</span> <span class="n">fake_label</span><span class="o">.</span><span class="n">softmax</span><span class="p">(</span><span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">loss</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lossfunc</span><span class="p">(</span><span class="n">fake_pred</span><span class="p">,</span> <span class="n">fake_label</span><span class="p">)</span>
+            <span class="n">fake_gradients</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">autograd</span><span class="o">.</span><span class="n">grad</span><span class="p">(</span>
+                <span class="n">loss</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">target_model</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span>
+                <span class="n">create_graph</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                <span class="n">allow_unused</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="n">distance</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">distancefunc</span><span class="p">(</span>
+                <span class="n">fake_gradients</span><span class="p">,</span> <span class="n">received_gradients</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">gradient_ignore_pos</span>
+            <span class="p">)</span>
+            <span class="n">distance</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_culc_regularization_term</span><span class="p">(</span>
+                <span class="n">fake_x</span><span class="p">,</span>
+                <span class="n">fake_pred</span><span class="p">,</span>
+                <span class="n">fake_label</span><span class="p">,</span>
+                <span class="n">group_fake_x</span><span class="p">,</span>
+                <span class="n">received_gradients</span><span class="p">,</span>
+            <span class="p">)</span>
+
+            <span class="n">distance</span><span class="o">.</span><span class="n">backward</span><span class="p">(</span><span class="n">retain_graph</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">distance</span>
+
+        <span class="k">return</span> <span class="n">closure</span>
+
+    <span class="k">def</span> <span class="nf">_setup_attack</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">received_gradients</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Initialize the image and label, and set the optimizer</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            received_gradients: a list of gradients received from the client</span>
+<span class="sd">            batch_size: the batch size</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            initial images, labels, and the optimizer instance</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">fake_x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_initialize_x</span><span class="p">(</span><span class="n">batch_size</span><span class="p">)</span>
+        <span class="n">fake_label</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_initialize_label</span><span class="p">(</span><span class="n">batch_size</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">optimize_label</span>
+            <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">_estimate_label</span><span class="p">(</span><span class="n">received_gradients</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">)</span>
+        <span class="p">)</span>
+
+        <span class="n">optimizer</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">optimizer_class</span><span class="p">([</span><span class="n">fake_x</span><span class="p">,</span> <span class="n">fake_label</span><span class="p">],</span> <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">kwargs</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">optimize_label</span>
+            <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">optimizer_class</span><span class="p">(</span>
+                <span class="p">[</span>
+                    <span class="n">fake_x</span><span class="p">,</span>
+                <span class="p">],</span>
+                <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">kwargs</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">fake_x</span><span class="p">,</span> <span class="n">fake_label</span><span class="p">,</span> <span class="n">optimizer</span>
+
+<div class="viewcode-block" id="GradientInversion_Attack.reset_seed"><a class="viewcode-back" href="../../../../aijack.attack.inversion.html#aijack.attack.inversion.gradientinversion.GradientInversion_Attack.reset_seed">[docs]</a>    <span class="k">def</span> <span class="nf">reset_seed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">seed</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Reset the random seed</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            seed (int): the random seed</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">seed</span> <span class="o">=</span> <span class="n">seed</span>
+        <span class="n">torch</span><span class="o">.</span><span class="n">manual_seed</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="GradientInversion_Attack.attack"><a class="viewcode-back" href="../../../../aijack.attack.inversion.html#aijack.attack.inversion.gradientinversion.GradientInversion_Attack.attack">[docs]</a>    <span class="k">def</span> <span class="nf">attack</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">received_gradients</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Reconstruct the images from the gradients received from the client</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            received_gradients: the list of gradients received from the client.</span>
+<span class="sd">            batch_size: batch size.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            a tuple of the best reconstructed images and corresponding labels</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            ValueError: If the culculated distance become Nan</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">fake_x</span><span class="p">,</span> <span class="n">fake_label</span><span class="p">,</span> <span class="n">optimizer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_setup_attack</span><span class="p">(</span>
+            <span class="n">received_gradients</span><span class="p">,</span> <span class="n">batch_size</span>
+        <span class="p">)</span>
+
+        <span class="n">num_of_not_improve_round</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">best_distance</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">log_loss</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_iteration</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="n">closure</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_setup_closure</span><span class="p">(</span>
+                <span class="n">optimizer</span><span class="p">,</span> <span class="n">fake_x</span><span class="p">,</span> <span class="n">fake_label</span><span class="p">,</span> <span class="n">received_gradients</span>
+            <span class="p">)</span>
+            <span class="n">distance</span> <span class="o">=</span> <span class="n">optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">closure</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">torch</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">distance</span><span class="p">))</span><span class="o">.</span><span class="n">item</span><span class="p">():</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;stop because the culculated distance is Nan&quot;</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">save_loss</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">log_loss</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">distance</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">best_distance</span> <span class="o">&gt;</span> <span class="n">distance</span><span class="p">:</span>
+                <span class="n">best_fake_x</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">fake_x</span><span class="p">)</span>
+                <span class="n">best_fake_label</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">fake_label</span><span class="p">)</span>
+                <span class="n">best_distance</span> <span class="o">=</span> <span class="n">distance</span>
+                <span class="n">best_iteration</span> <span class="o">=</span> <span class="n">i</span>
+                <span class="n">num_of_not_improve_round</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">num_of_not_improve_round</span> <span class="o">+=</span> <span class="mi">1</span>
+
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">log_interval</span> <span class="o">!=</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">i</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">log_interval</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;iter=</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">distance</span><span class="si">}</span><span class="s2">, (best_iter=</span><span class="si">{</span><span class="n">best_iteration</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">best_distance</span><span class="si">}</span><span class="s2">)&quot;</span>
+                <span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">num_of_not_improve_round</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">early_stopping</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;iter=</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">: loss did not improve in the last </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">early_stopping</span><span class="si">}</span><span class="s2"> rounds.&quot;</span>
+                <span class="p">)</span>
+                <span class="k">break</span>
+
+        <span class="k">return</span> <span class="n">best_fake_x</span><span class="p">,</span> <span class="n">best_fake_label</span></div>
+
+<div class="viewcode-block" id="GradientInversion_Attack.group_attack"><a class="viewcode-back" href="../../../../aijack.attack.inversion.html#aijack.attack.inversion.gradientinversion.GradientInversion_Attack.group_attack">[docs]</a>    <span class="k">def</span> <span class="nf">group_attack</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">received_gradients</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Multiple simultaneous attacks with different random states</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            received_gradients: the list of gradients received from the client.</span>
+<span class="sd">            batch_size: batch size.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            a tuple of the best reconstructed images and corresponding labels</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            ValueError: If the culculated distance become Nan</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">group_fake_x</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">group_fake_label</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">group_optimizer</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">group_num</span><span class="p">):</span>
+            <span class="n">fake_x</span><span class="p">,</span> <span class="n">fake_label</span><span class="p">,</span> <span class="n">optimizer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_setup_attack</span><span class="p">(</span>
+                <span class="n">received_gradients</span><span class="p">,</span> <span class="n">batch_size</span>
+            <span class="p">)</span>
+            <span class="n">group_fake_x</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fake_x</span><span class="p">)</span>
+            <span class="n">group_fake_label</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fake_label</span><span class="p">)</span>
+            <span class="n">group_optimizer</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">optimizer</span><span class="p">)</span>
+
+        <span class="n">best_distance</span> <span class="o">=</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">group_num</span><span class="p">)]</span>
+        <span class="n">best_fake_x</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">group_fake_x</span><span class="p">)</span>
+        <span class="n">best_fake_label</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">group_fake_label</span><span class="p">)</span>
+        <span class="n">best_iteration</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">group_num</span><span class="p">)]</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">log_loss</span> <span class="o">=</span> <span class="p">[[]</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">group_num</span><span class="p">)]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_iteration</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">worker_id</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">group_num</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">reset_seed</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">group_seed</span><span class="p">[</span><span class="n">worker_id</span><span class="p">])</span>
+                <span class="n">closure</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_setup_closure</span><span class="p">(</span>
+                    <span class="n">group_optimizer</span><span class="p">[</span><span class="n">worker_id</span><span class="p">],</span>
+                    <span class="n">group_fake_x</span><span class="p">[</span><span class="n">worker_id</span><span class="p">],</span>
+                    <span class="n">group_fake_label</span><span class="p">[</span><span class="n">worker_id</span><span class="p">],</span>
+                    <span class="n">received_gradients</span><span class="p">,</span>
+                <span class="p">)</span>
+                <span class="n">distance</span> <span class="o">=</span> <span class="n">group_optimizer</span><span class="p">[</span><span class="n">worker_id</span><span class="p">]</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">closure</span><span class="p">)</span>
+
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">save_loss</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">log_loss</span><span class="p">[</span><span class="n">worker_id</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">distance</span><span class="p">)</span>
+
+                <span class="k">if</span> <span class="n">best_distance</span><span class="p">[</span><span class="n">worker_id</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">distance</span><span class="p">:</span>
+                    <span class="n">best_fake_x</span><span class="p">[</span><span class="n">worker_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">group_fake_x</span><span class="p">[</span><span class="n">worker_id</span><span class="p">])</span>
+                    <span class="n">best_fake_label</span><span class="p">[</span><span class="n">worker_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span>
+                        <span class="n">group_fake_label</span><span class="p">[</span><span class="n">worker_id</span><span class="p">]</span>
+                    <span class="p">)</span>
+                    <span class="n">best_distance</span><span class="p">[</span><span class="n">worker_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">distance</span>
+                    <span class="n">best_iteration</span><span class="p">[</span><span class="n">worker_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span>
+
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">log_interval</span> <span class="o">!=</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">i</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">log_interval</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span>
+                        <span class="sa">f</span><span class="s2">&quot;worker_id=</span><span class="si">{</span><span class="n">worker_id</span><span class="si">}</span><span class="s2">: iter=</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">distance</span><span class="si">}</span><span class="s2">, (best_iter=</span><span class="si">{</span><span class="n">best_iteration</span><span class="p">[</span><span class="n">worker_id</span><span class="p">]</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">best_distance</span><span class="p">[</span><span class="n">worker_id</span><span class="p">]</span><span class="si">}</span><span class="s2">)&quot;</span>
+                    <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">best_fake_x</span><span class="p">,</span> <span class="n">best_fake_label</span></div></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Hideaki Takahashi.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+</body>
+</html>
