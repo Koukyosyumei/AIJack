@@ -11,7 +11,7 @@ class FedGEMClient(BaseClient):
         lr=0.1,
         base_loss_func=nn.CrossEntropyLoss(),
         kldiv_loss_func=nn.KLDivLoss(),
-        epsilon=0.1,
+        epsilon=0.75,
     ):
         super(FedGEMClient, self).__init__(model, user_id=user_id)
         self.lr = lr
@@ -27,6 +27,9 @@ class FedGEMClient(BaseClient):
         self.predicted_values_of_server = predicted_values_of_server
 
     def culc_loss_on_public_dataset(self, idx, y_pred, y):
-        return self.epsilon * self.base_loss_func(y_pred, y) + (
-            1 - self.epsilon
-        ) * self.kldiv_loss_func(self.predicted_values_of_server[idx].log(), y_pred)
+        y_pred_server = self.predicted_values_of_server[idx]
+        base_loss = self.epsilon * self.base_loss_func(y_pred, y)
+        kl_loss = (1 - self.epsilon) * self.kldiv_loss_func(
+            y_pred_server.softmax(dim=-1).log(), y_pred.softmax(dim=-1)
+        )
+        return base_loss + kl_loss

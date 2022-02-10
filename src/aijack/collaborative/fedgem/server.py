@@ -10,13 +10,13 @@ class FedGEMServer(BaseServer):
         clients,
         global_model,
         len_public_dataloader,
-        y_dim=1,
+        output_dim=1,
         self_evaluation_func=None,
         base_loss_func=nn.CrossEntropyLoss(),
         kldiv_loss_func=nn.KLDivLoss(),
         server_id=0,
         lr=0.1,
-        epsilon=0.1,
+        epsilon=0.75,
     ):
         super(FedGEMServer, self).__init__(clients, global_model, server_id=server_id)
         self.len_public_dataloader = len_public_dataloader
@@ -26,10 +26,12 @@ class FedGEMServer(BaseServer):
         self.base_loss_func = base_loss_func
         self.kldiv_loss_func = kldiv_loss_func
 
-        self.global_pool_of_logits = torch.ones((len_public_dataloader, y_dim)) * float(
-            "inf"
-        )
-        self.predicted_values = torch.ones((len_public_dataloader, y_dim)) * float(
+        self.output_dim = output_dim
+
+        self.global_pool_of_logits = torch.ones(
+            (len_public_dataloader, output_dim)
+        ) * float("inf")
+        self.predicted_values = torch.ones((len_public_dataloader, output_dim)) * float(
             "inf"
         )
 
@@ -38,7 +40,7 @@ class FedGEMServer(BaseServer):
 
     def update(self, idxs, x):
         """Register the predicted logits to self.predicted_values"""
-        self.predicted_values[idxs] = self.server_model(x)
+        self.predicted_values[idxs] = self.server_model(x).detach()
 
     def distribtue(self):
         """Distribute the logits of public dataset to each client."""
@@ -64,44 +66,68 @@ class FedGEMServer(BaseServer):
         loss_s3 = 0
 
         # for each sample that the server predicts correctly
-        loss_s1 += self.base_loss_func(y_pred[correct_idx], y[correct_idx])
-        self.global_pool_of_logits[idxs[correct_idx]] = y_pred[correct_idx]
+        if len(correct_idx) != 0:
+            loss_s1 += self.base_loss_func(y_pred[correct_idx], y[correct_idx])
+            self.global_pool_of_logits[idxs[correct_idx]] = y_pred[correct_idx].detach()
 
         # for each sample that the server predicts wrongly
         s_incorrect_not_star_idx = [
-            ici
-            for ici in incorrect_idx
-            if float("int") != self.global_pool_of_logits[idxs[ici]].item()
+            iid.item()
+            for iid in incorrect_idx
+            if self.global_pool_of_logits[idxs[iid]][0].item() != float("inf")
         ]
-        loss_s2 += self.epsilon * self.base_loss_func(
-            y_pred[s_incorrect_not_star_idx], y[s_incorrect_not_star_idx]
-        ) + (1 - self.epsilon) * self.kldiv_loss_func(
-            self.global_pool_of_logits[idxs[s_incorrect_not_star_idx]].log(),
-            y_pred[s_incorrect_not_star_idx],
-        )
+        if len(s_incorrect_not_star_idx) != 0:
+            loss_s2 += self.epsilon * self.base_loss_func(
+                y_pred[s_incorrect_not_star_idx], y[s_incorrect_not_star_idx]
+            ) + (1 - self.epsilon) * self.kldiv_loss_func(
+                self.global_pool_of_logits[idxs[s_incorrect_not_star_idx]]
+                .softmax(dim=-1)
+                .log(),
+                y_pred[s_incorrect_not_star_idx].softmax(dim=-1),
+            )
 
-        s_incorrect_star_idx = list(set(incorrect_idx) - set(s_incorrect_not_star_idx))
-        loss_s3 += self.epsilon * self.base_loss_func(
-            y_pred[s_incorrect_star_idx], y[s_incorrect_star_idx]
-        ) + (1 - self.epsilon) * self.kldiv_loss_func(
-            self._get_knowledge_from_clients(
-                x[s_incorrect_star_idx], y[s_incorrect_star_idx]
-            ).log(),
-            y_pred[s_incorrect_star_idx],
+        s_incorrect_star_idx = list(
+            set(incorrect_idx.cpu().tolist()) - set(s_incorrect_not_star_idx)
         )
-
+        if len(s_incorrect_star_idx) != 0:
+            loss_s3 += self.epsilon * self.base_loss_func(
+                y_pred[s_incorrect_star_idx], y[s_incorrect_star_idx]
+            ) + (1 - self.epsilon) * self.kldiv_loss_func(
+                self._get_knowledge_from_clients(
+                    x[s_incorrect_star_idx], y[s_incorrect_star_idx]
+                )
+                .softmax(dim=-1)
+                .log(),
+                y_pred[s_incorrect_star_idx].softmax(dim=-1),
+            )
         loss = loss_s1 + loss_s2 + loss_s3
         return loss
 
     def _get_knowledge_from_clients(self, x, y):
-        knowledge = 0
-        for client in self.clients:
+        client_weight = torch.zeros(self.num_clients, y.shape[0])
+        client_knowledge = torch.zeros(self.num_clients, y.shape[0], self.output_dim)
+        for cid, client in enumerate(self.clients):
             y_pred = client.upload(x)
+            client_knowledge[cid] = y_pred
             correct_idx, _ = self.self_evaluation_func(y_pred, y)
-            ep = torch.zeros((y_pred.shape[0]))
             if len(correct_idx) != 0:
+                ep = torch.zeros((y_pred.shape[0]))
                 ep[correct_idx] += -1 * torch.sum(
-                    y_pred[correct_idx] * torch.log(y_pred[correct_idx]), dim=1
+                    y_pred[correct_idx].softmax(dim=-1)
+                    * torch.log(y_pred[correct_idx].softmax(dim=-1)),
+                    dim=1,
                 )
-            knowledge += (1 / ep).softmax(dim=1) * y_pred
-        return knowledge
+                client_weight[cid, correct_idx] = 1 / ep[correct_idx]
+
+        client_weight = (
+            client_weight.softmax(dim=0)
+            .reshape(self.num_clients, y.shape[0], 1)
+            .expand(self.num_clients, y.shape[0], self.output_dim)
+        )
+
+        ensembled_knowledge = torch.sum(
+            client_weight * client_knowledge,
+            dim=0,
+        )
+
+        return ensembled_knowledge.detach()
