@@ -1,5 +1,3 @@
-import torch
-
 from ..base_attack import BaseAttacker
 
 
@@ -12,25 +10,19 @@ class Generator_Attack(BaseAttacker):
         self.attacker_optimizer = attacker_optimizer
         self.log_interval = log_interval
 
-    def fit(self, dataloader, epoch):
-
+    def fit(self, dataloader, epoch, x_pos=0):
         for i in range(epoch):
             for data in dataloader:
+                x = data[x_pos]
                 self.attacker_optimizer.zero_grad()
-                target_outputs = self.target_model(data)
+                target_outputs = self.target_model(x)
                 attack_outputs = self.attacker_model(target_outputs)
-                loss = ((data - attack_outputs) ** 2).mean()
+                loss = ((x - attack_outputs) ** 2).mean()
                 loss.backward()
                 self.attacker_optimizer.step()
 
             if self.log_interval != 0 and i % self.log_interval == 0:
                 print(f"epoch {i}: reconstruction_loss {loss.item()}")
 
-    def attack(self, dataloader):
-        attack_results = []
-
-        for data in dataloader:
-            recreated_data = self.attacker_model(data)
-            attack_results.append(recreated_data)
-
-        return torch.cat(attack_results)
+    def attack(self, data_tensor):
+        return self.attacker_model(data_tensor)
