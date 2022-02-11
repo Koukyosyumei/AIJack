@@ -47,7 +47,7 @@ class Generator_Attack(BaseAttacker):
 
                 loss.backward(retain_graph=True)
                 self.attacker_optimizer.step()
-                running_loss += loss / len(dataloader)
+                running_loss = running_loss + loss / len(dataloader)
 
             if self.log_interval != 0 and i % self.log_interval == 0:
                 print(f"epoch {i}: reconstruction_loss {running_loss.item()}")
