@@ -36,19 +36,21 @@ class Generator_Attack(BaseAttacker):
                 x = data[x_pos]
                 x = x.to(self.device)
 
+                loss = 0
                 for target_model in self.target_model_list:
                     target_outputs = data[y_pos] if arbitrary_y else target_model(x)
                     target_outputs = target_outputs.to(self.device)
 
                     self.attacker_optimizer.zero_grad()
                     attack_outputs = self.attacker_model(target_outputs)
-                    loss = ((x - attack_outputs) ** 2).mean()
-                    loss.backward(retain_graph=True)
-                    self.attacker_optimizer.step()
-                    running_loss += loss.item() / len(dataloader)
+                    loss = loss + ((x - attack_outputs) ** 2).mean()
+
+                loss.backward(retain_graph=True)
+                self.attacker_optimizer.step()
+                running_loss += loss / len(dataloader)
 
             if self.log_interval != 0 and i % self.log_interval == 0:
-                print(f"epoch {i}: reconstruction_loss {running_loss}")
+                print(f"epoch {i}: reconstruction_loss {running_loss.item()}")
 
             if running_loss < best_loss:
                 best_loss = running_loss
@@ -57,7 +59,7 @@ class Generator_Attack(BaseAttacker):
                 if i - best_epoch > self.early_stopping:
                     break
 
-        return loss
+        return running_loss
 
     def attack(self, data_tensor):
         return self.attacker_model(data_tensor)
