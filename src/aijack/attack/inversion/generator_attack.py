@@ -9,22 +9,33 @@ class Generator_Attack(BaseAttacker):
         attacker_optimizer,
         log_interval=1,
         early_stopping=5,
+        device="cpu",
     ):
         super().__init__(target_model=target_model)
         self.attacker_model = attacker_model
         self.attacker_optimizer = attacker_optimizer
         self.log_interval = log_interval
         self.early_stopping = early_stopping
+        self.device = device
 
-    def fit(self, dataloader, epoch, x_pos=0):
+    def fit(self, dataloader, epoch, x_pos=0, y_pos=1, arbitrary_y=False):
         best_loss = float("inf")
         best_epoch = 0
         for i in range(epoch):
             running_loss = 0
             for data in dataloader:
-                x = data[x_pos]
+
+                if arbitrary_y:
+                    x = data[x_pos]
+                    target_outputs = data[y_pos]
+                else:
+                    x = data[x_pos]
+                    target_outputs = self.target_model(x)
+
+                x = x.to(self.device)
+                target_outputs = target_outputs.to(self.device)
+
                 self.attacker_optimizer.zero_grad()
-                target_outputs = self.target_model(x)
                 attack_outputs = self.attacker_model(target_outputs)
                 loss = ((x - attack_outputs) ** 2).mean()
                 loss.backward()
