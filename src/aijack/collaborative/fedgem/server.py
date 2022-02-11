@@ -26,8 +26,8 @@ class FedGEMSServer(BaseServer):
         self.self_evaluation_func = self_evaluation_func
         self.base_loss_func = base_loss_func
         self.kldiv_loss_func = kldiv_loss_func
-
         self.output_dim = output_dim
+        self.device = device
 
         self.global_pool_of_logits = torch.ones((len_public_dataloader, output_dim)).to(
             self.device
@@ -35,7 +35,6 @@ class FedGEMSServer(BaseServer):
         self.predicted_values = torch.ones((len_public_dataloader, output_dim)).to(
             self.device
         ) * float("inf")
-        self.device = device
 
     def action(self):
         self.distribtue()
