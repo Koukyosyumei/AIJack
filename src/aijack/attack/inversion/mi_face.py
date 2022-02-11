@@ -20,6 +20,8 @@ class MI_FACE(BaseAttacker):
         input_shape,
         auxterm_func=lambda x: 0,
         process_func=lambda x: x,
+        device="cpu",
+        log_interval=1,
     ):
         """Inits MI_FACE
         Args:
@@ -32,12 +34,15 @@ class MI_FACE(BaseAttacker):
         self.input_shape = input_shape
         self.auxterm_func = auxterm_func
         self.process_func = process_func
+        self.device = device
+        self.log_interval = log_interval
 
     def attack(
         self,
         target_label,
         lam,
         num_itr,
+        init_x=None,
     ):
         """Execute the model inversion attack on the target model.
 
@@ -51,7 +56,11 @@ class MI_FACE(BaseAttacker):
             log :
         """
         log = []
-        x = torch.zeros(self.input_shape, requires_grad=True)
+        if init_x is None:
+            x = torch.zeros(self.input_shape, requires_grad=True).to(self.device)
+        else:
+            init_x = init_x.to(self.device)
+            x = init_x
         for i in range(num_itr):
             c = 1 - self.target_model(x)[:, [target_label]] + self.auxterm_func(x)
             c.backward()
@@ -60,6 +69,9 @@ class MI_FACE(BaseAttacker):
                 x -= lam * grad
                 x = self.process_func(x)
             log.append(c.item())
+
+            if self.log_interval != 0 and i % self.log_interval == 0:
+                print(f"epoch {i}: {c.item()}")
 
         x_numpy = x.to("cpu").detach().numpy().copy()
         return x_numpy, log
