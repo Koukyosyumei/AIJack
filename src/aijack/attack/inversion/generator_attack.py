@@ -24,23 +24,13 @@ class Generator_Attack(BaseAttacker):
         for i in range(epoch):
             running_loss = 0
             for data in dataloader:
-
-                if arbitrary_y:
-                    x = data[x_pos]
-                    target_outputs = data[y_pos]
-                else:
-                    x = data[x_pos]
-                    target_outputs = self.target_model(x)
-
+                x = data[x_pos]
                 x = x.to(self.device)
+                target_outputs = data[y_pos] if arbitrary_y else self.target_model(x)
                 target_outputs = target_outputs.to(self.device)
-
-                print(x.device)
-                print(target_outputs.device)
 
                 self.attacker_optimizer.zero_grad()
                 attack_outputs = self.attacker_model(target_outputs)
-                print(attack_outputs.device)
                 loss = ((x - attack_outputs) ** 2).mean()
                 loss.backward()
                 self.attacker_optimizer.step()
