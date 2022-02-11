@@ -42,7 +42,7 @@ class FedGEMSServer(BaseServer):
 
     def update(self, idxs, x):
         """Register the predicted logits to self.predicted_values"""
-        self.predicted_values[idxs] = self.server_model(x).detach()
+        self.predicted_values[idxs] = self.server_model(x).detach().to(self.device)
 
     def distribtue(self):
         """Distribute the logits of public dataset to each client."""
