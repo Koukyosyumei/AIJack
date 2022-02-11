@@ -43,7 +43,7 @@ class Generator_Attack(BaseAttacker):
                     self.attacker_optimizer.zero_grad()
                     attack_outputs = self.attacker_model(target_outputs)
                     loss = ((x - attack_outputs) ** 2).mean()
-                    loss.backward()
+                    loss.backward(retain_graph=True)
                     self.attacker_optimizer.step()
                     running_loss += loss.item() / len(dataloader)
 
@@ -56,6 +56,8 @@ class Generator_Attack(BaseAttacker):
             else:
                 if i - best_epoch > self.early_stopping:
                     break
+
+        return loss
 
     def attack(self, data_tensor):
         return self.attacker_model(data_tensor)
