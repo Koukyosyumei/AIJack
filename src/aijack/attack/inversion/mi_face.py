@@ -20,6 +20,7 @@ class MI_FACE(BaseAttacker):
         input_shape,
         auxterm_func=lambda x: 0,
         process_func=lambda x: x,
+        apply_softmax=False,
         device="cpu",
         log_interval=1,
     ):
@@ -36,6 +37,7 @@ class MI_FACE(BaseAttacker):
         self.process_func = process_func
         self.device = device
         self.log_interval = log_interval
+        self.apply_softmax = apply_softmax
 
     def attack(
         self,
@@ -62,7 +64,9 @@ class MI_FACE(BaseAttacker):
             init_x = init_x.to(self.device)
             x = init_x
         for i in range(num_itr):
-            c = 1 - self.target_model(x)[:, [target_label]] + self.auxterm_func(x)
+            pred = self.target_model(x)[:, [target_label]]
+            pred = pred.softmax(dim=-1) if self.apply_softmax else pred
+            c = 1 - pred + self.auxterm_func(x)
             c.backward()
             grad = x.grad
             with torch.no_grad():
