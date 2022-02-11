@@ -29,12 +29,12 @@ class FedGEMSServer(BaseServer):
 
         self.output_dim = output_dim
 
-        self.global_pool_of_logits = torch.ones(
-            (len_public_dataloader, output_dim)
+        self.global_pool_of_logits = torch.ones((len_public_dataloader, output_dim)).to(
+            self.device
         ) * float("inf")
-        self.predicted_values = torch.ones((len_public_dataloader, output_dim)) * float(
-            "inf"
-        )
+        self.predicted_values = torch.ones((len_public_dataloader, output_dim)).to(
+            self.device
+        ) * float("inf")
         self.device = device
 
     def action(self):
