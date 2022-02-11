@@ -61,7 +61,9 @@ class Generator_Attack(BaseAttacker):
                     target_outputs = target_outputs.to(self.device)
 
                     attack_outputs = self.attacker_model(target_outputs)
-                    loss = loss + ((x - attack_outputs) ** 2).mean()
+                    loss = loss + ((x - attack_outputs) ** 2).mean() / len(
+                        self.target_model_list
+                    )
                 loss.backward()
                 self.attacker_optimizer.step()
 
