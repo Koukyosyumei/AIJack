@@ -17,6 +17,7 @@ class FedGEMSServer(BaseServer):
         server_id=0,
         lr=0.1,
         epsilon=0.75,
+        device="cpu",
     ):
         super(FedGEMSServer, self).__init__(clients, global_model, server_id=server_id)
         self.len_public_dataloader = len_public_dataloader
@@ -34,6 +35,7 @@ class FedGEMSServer(BaseServer):
         self.predicted_values = torch.ones((len_public_dataloader, output_dim)) * float(
             "inf"
         )
+        self.device = device
 
     def action(self):
         self.distribtue()
@@ -104,14 +106,16 @@ class FedGEMSServer(BaseServer):
         return loss
 
     def _get_knowledge_from_clients(self, x, y):
-        client_weight = torch.zeros(self.num_clients, y.shape[0])
-        client_knowledge = torch.zeros(self.num_clients, y.shape[0], self.output_dim)
+        client_weight = torch.zeros(self.num_clients, y.shape[0]).to(self.device)
+        client_knowledge = torch.zeros(
+            self.num_clients, y.shape[0], self.output_dim
+        ).to(self.device)
         for cid, client in enumerate(self.clients):
-            y_pred = client.upload(x)
+            y_pred = client.upload(x).to(self.device)
             client_knowledge[cid] = y_pred
             correct_idx, _ = self.self_evaluation_func(y_pred, y)
             if len(correct_idx) != 0:
-                ep = torch.zeros((y_pred.shape[0]))
+                ep = torch.zeros((y_pred.shape[0])).to(self.device)
                 ep[correct_idx] += -1 * torch.sum(
                     y_pred[correct_idx].softmax(dim=-1)
                     * torch.log(y_pred[correct_idx].softmax(dim=-1)),
