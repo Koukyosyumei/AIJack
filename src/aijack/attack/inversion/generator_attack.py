@@ -27,6 +27,24 @@ class Generator_Attack(BaseAttacker):
             target_model if type(target_model) == list else [target_model]
         )
 
+    def culc_loss(self, dataloader, x_pos=0, y_pos=1, arbitrary_y=False):
+        running_loss = 0
+        for data in dataloader:
+            x = data[x_pos]
+            x = x.to(self.device)
+
+            loss = 0
+            for target_model in self.target_model_list:
+                target_outputs = data[y_pos] if arbitrary_y else target_model(x)
+                target_outputs = target_outputs.to(self.device)
+
+                attack_outputs = self.attacker_model(target_outputs)
+                loss = loss + ((x - attack_outputs) ** 2).mean()
+
+            running_loss = running_loss + loss / len(dataloader)
+
+        return running_loss
+
     def fit(self, dataloader, epoch, x_pos=0, y_pos=1, arbitrary_y=False):
         best_loss = float("inf")
         best_epoch = 0
@@ -44,13 +62,13 @@ class Generator_Attack(BaseAttacker):
 
                     attack_outputs = self.attacker_model(target_outputs)
                     loss = loss + ((x - attack_outputs) ** 2).mean()
-
-                loss.backward(retain_graph=True)
+                loss.backward()
                 self.attacker_optimizer.step()
-                running_loss = running_loss + loss / len(dataloader)
+
+                running_loss = running_loss + loss.item() / len(dataloader)
 
             if self.log_interval != 0 and i % self.log_interval == 0:
-                print(f"epoch {i}: reconstruction_loss {running_loss.item()}")
+                print(f"epoch {i}: reconstruction_loss {running_loss}")
 
             if running_loss < best_loss:
                 best_loss = running_loss
@@ -58,8 +76,6 @@ class Generator_Attack(BaseAttacker):
             else:
                 if i - best_epoch > self.early_stopping:
                     break
-
-        return running_loss
 
     def attack(self, data_tensor):
         return self.attacker_model(data_tensor)
