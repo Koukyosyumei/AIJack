@@ -12,6 +12,9 @@ class BaseServer(torch.nn.Module):
     def forward(self, x):
         return self.server_model(x)
 
+    def action(self):
+        pass
+
     def update(self):
         pass
 

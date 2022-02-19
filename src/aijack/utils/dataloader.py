@@ -20,6 +20,7 @@ def prepareFederatedMNISTDataloaders(
         [transforms.ToTensor(), transforms.Normalize((0.5,), (0.5,))]
     ),
     seed=0,
+    return_idx=False,
 ):
     np.random.seed(seed)
     random.seed(seed)
@@ -38,6 +39,7 @@ def prepareFederatedMNISTDataloaders(
         at_t_dataset_test.test_data.numpy(),
         at_t_dataset_test.test_labels.numpy(),
         transform=transform,
+        return_idx=return_idx,
     )
     testloader = torch.utils.data.DataLoader(
         test_set, batch_size=test_batch_size, shuffle=True, num_workers=0
@@ -53,7 +55,7 @@ def prepareFederatedMNISTDataloaders(
         assigned_idx = random.sample(list(set(idx) - set(idx_used)), local_data_num)
 
         temp_trainset = NumpyDataset(
-            X[assigned_idx], y[assigned_idx], transform=transform
+            X[assigned_idx], y[assigned_idx], transform=transform, return_idx=return_idx
         )
         temp_trainloader = torch.utils.data.DataLoader(
             temp_trainset, batch_size=batch_size, shuffle=True, num_workers=0

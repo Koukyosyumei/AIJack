@@ -17,8 +17,11 @@ class FedKDClient(FedAvgClient):
         adaptive_hidden_losses=True,
         gradient_compression_ratio=1.0,
         user_id=0,
+        send_gradient=True,
     ):
-        super(FedKDClient, self).__init__(student_model, user_id=user_id, lr=student_lr)
+        super(FedKDClient, self).__init__(
+            student_model, user_id=user_id, lr=student_lr, send_gradient=send_gradient
+        )
         self.student_model = student_model
         self.teacher_model = teacher_model
         self.teacher_lr = teacher_lr
