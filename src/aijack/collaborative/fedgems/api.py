@@ -50,7 +50,10 @@ class FedGEMSAPI:
 
             loss_on_local_dataest.append(copy.deepcopy(running_loss / len(trainloader)))
 
+        return loss_on_local_dataest
+
     def train_client_on_public_dataset(self):
+        loss_on_public_dataset = []
         for client_idx in range(self.client_num):
             client = self.clients[client_idx]
             optimizer = self.client_optimizers[client_idx]
@@ -68,6 +71,12 @@ class FedGEMSAPI:
                 optimizer.step()
 
                 running_loss += loss.item()
+
+            loss_on_public_dataset.append(
+                copy.deepcopy(running_loss / len(self.public_dataloader))
+            )
+
+        return loss_on_public_dataset
 
     def train_server_on_public_dataset(self):
         server_running_loss = 0
