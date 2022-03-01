@@ -23,7 +23,7 @@ class FedMDClient(BaseClient):
 
     def upload(self):
         y_pred = []
-        for x, _ in self.public_dataloader:
+        for (x, _) in self.public_dataloader:
             y_pred.append(self(x))
         return torch.cat(y_pred)
 
