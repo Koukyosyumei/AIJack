@@ -20,7 +20,7 @@ class FedMDServer(BaseServer):
         for client in self.clients[1:]:
             self.consensus += client.upload() / len(self.clients)
 
-    def distribtue(self):
+    def distribute(self):
         """Distribute the logits of public dataset to each client."""
         for client in self.clients:
             client.download(self.consensus)

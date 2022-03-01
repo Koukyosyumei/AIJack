@@ -1,4 +1,6 @@
+import numpy as np
 import torch
+from sklearn.metrics import accuracy_score
 from torch import nn
 
 from ..core import BaseClient
@@ -23,8 +25,9 @@ class FedMDClient(BaseClient):
 
     def upload(self):
         y_pred = []
-        for (x, _) in self.public_dataloader:
-            y_pred.append(self(x))
+        for data in self.public_dataloader:
+            x = data[0]
+            y_pred.append(self(x).detach())
         return torch.cat(y_pred)
 
     def download(self, predicted_values_of_server):
@@ -32,14 +35,15 @@ class FedMDClient(BaseClient):
 
     def approach_consensus(self, consensus_optimizer):
         running_loss = 0
-        for (x, _), y_consensus in zip(
+        for data_x, data_y in zip(
             self.public_dataloader,
             torch.utils.data.DataLoader(
                 torch.utils.data.TensorDataset(self.predicted_values_of_server),
                 batch_size=self.public_dataloader.batch_size,
             ),
         ):
-            x = self.transform(x)
+            x = data_x[0]
+            y_consensus = data_y[0]
             consensus_optimizer.zero_grad()
             y_pred = self(x)
             loss = self.consensus_loss_func(y_pred, y_consensus)
@@ -48,3 +52,21 @@ class FedMDClient(BaseClient):
             running_loss += loss.item()
 
         return running_loss
+
+    def score(self, dataloader):
+        in_preds = []
+        in_label = []
+        with torch.no_grad():
+            for data in dataloader:
+                inputs, labels = data
+                inputs = inputs
+                labels = labels
+                outputs = self(inputs)
+                in_preds.append(outputs)
+                in_label.append(labels)
+            in_preds = torch.cat(in_preds)
+            in_label = torch.cat(in_label)
+
+        return accuracy_score(
+            np.array(torch.argmax(in_preds, axis=1).cpu()), np.array(in_label.cpu())
+        )
