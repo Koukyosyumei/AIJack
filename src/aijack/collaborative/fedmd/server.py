@@ -17,7 +17,7 @@ class FedMDServer(BaseServer):
         pred = []
         for client in self.clients:
             pred.append(client(x).detach())
-        return torch.mean(torch.stack(pred), dim=0).reshape(x.shape[0], 1)
+        return torch.mean(torch.stack(pred), dim=0).reshape(x.shape[0], -1)
 
     def action(self):
         self.update()
