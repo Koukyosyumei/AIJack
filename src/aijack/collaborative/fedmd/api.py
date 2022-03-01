@@ -8,7 +8,6 @@ class FedMDAPI:
         clients,
         public_dataloader,
         local_dataloaders,
-        server_optimizer,
         client_optimizers,
         criterion,
         pretrain_epoch=10,
@@ -19,7 +18,6 @@ class FedMDAPI:
         self.clients = clients
         self.public_dataloader = public_dataloader
         self.local_dataloaders = local_dataloaders
-        self.server_optimizer = server_optimizer
         self.client_optimizers = client_optimizers
         self.criterion = criterion
         self.pretrain_epoch = (pretrain_epoch,)
