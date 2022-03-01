@@ -8,6 +8,7 @@ class FedMDAPI:
         clients,
         public_dataloader,
         local_dataloaders,
+        validation_dataloader,
         client_optimizers,
         criterion,
         pretrain_epoch=10,
@@ -18,6 +19,7 @@ class FedMDAPI:
         self.clients = clients
         self.public_dataloader = public_dataloader
         self.local_dataloaders = local_dataloaders
+        self.validation_dataloader = validation_dataloader
         self.client_optimizers = client_optimizers
         self.criterion = criterion
         self.pretrain_epoch = pretrain_epoch
@@ -65,5 +67,9 @@ class FedMDAPI:
             self.server.distribute()
 
             for j, client in enumerate(self.clients):
-                consensus_loss = client.approach_consensus()
+                consensus_loss = client.approach_consensus(self.client_optimizers[j])
                 print(f"epoch {i}, client {j}: {consensus_loss}")
+                print(
+                    f"client {j} acc score is ",
+                    client.score(self.validation_dataloader),
+                )
