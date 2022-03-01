@@ -20,7 +20,7 @@ class FedMDAPI:
         self.local_dataloaders = local_dataloaders
         self.client_optimizers = client_optimizers
         self.criterion = criterion
-        self.pretrain_epoch = (pretrain_epoch,)
+        self.pretrain_epoch = pretrain_epoch
         self.transfer_epoch = transfer_epoch
         self.device = device
 

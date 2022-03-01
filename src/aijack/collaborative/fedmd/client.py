@@ -23,9 +23,7 @@ class FedMDClient(BaseClient):
 
     def upload(self):
         y_pred = []
-        for x in torch.utils.data.DataLoader(
-            torch.utils.data.TensorDataset(self.public_data), batch_size=self.batch_size
-        ):
+        for x, _ in self.public_dataloader:
             y_pred.append(self(x))
         return torch.cat(y_pred)
 
