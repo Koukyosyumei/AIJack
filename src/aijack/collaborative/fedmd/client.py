@@ -8,16 +8,14 @@ class FedMDClient(BaseClient):
     def __init__(
         self,
         model,
-        public_data,
-        transform=lambda x: x,
+        public_dataloader,
         batch_size=8,
         user_id=0,
         base_loss_func=nn.CrossEntropyLoss(),
         consensus_loss_func=nn.L1Loss(),
     ):
         super(FedMDClient, self).__init__(model, user_id=user_id)
-        self.public_data = public_data
-        self.transform = transform
+        self.public_dataloader = public_dataloader
         self.batch_size = batch_size
         self.base_loss_func = base_loss_func
         self.consensus_loss_func = consensus_loss_func
@@ -36,10 +34,12 @@ class FedMDClient(BaseClient):
 
     def approach_consensus(self, consensus_optimizer):
         running_loss = 0
-        for x, y_consensus in torch.utils.data.DataLoader(
-            torch.utils.data.TensorDataset(
-                self.public_data, self.predicted_values_of_server
-            )
+        for (x, _), y_consensus in zip(
+            self.public_dataloader,
+            torch.utils.data.DataLoader(
+                torch.utils.data.TensorDataset(self.predicted_values_of_server),
+                batch_size=self.public_dataloader.batch_size,
+            ),
         ):
             x = self.transform(x)
             consensus_optimizer.zero_grad()
