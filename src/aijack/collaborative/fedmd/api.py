@@ -20,7 +20,6 @@ class FedMDAPI(BaseFLKnowledgeDistillationAPI):
         transfer_epoch=10,
     ):
         super().__init__(
-            self,
             server,
             clients,
             public_dataloader,

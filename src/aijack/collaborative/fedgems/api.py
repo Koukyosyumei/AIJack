@@ -25,7 +25,6 @@ class FedGEMSAPI(BaseFLKnowledgeDistillationAPI):
         device="cpu",
     ):
         super().__init__(
-            self,
             server,
             clients,
             public_dataloader,
