@@ -15,6 +15,7 @@ class FedMDClient(BaseClient):
         user_id=0,
         base_loss_func=nn.CrossEntropyLoss(),
         consensus_loss_func=nn.L1Loss(),
+        device="cpu",
     ):
         super(FedMDClient, self).__init__(model, user_id=user_id)
         self.public_dataloader = public_dataloader
@@ -22,11 +23,12 @@ class FedMDClient(BaseClient):
         self.base_loss_func = base_loss_func
         self.consensus_loss_func = consensus_loss_func
         self.predicted_values_of_server = None
+        self.device = device
 
     def upload(self):
         y_pred = []
         for data in self.public_dataloader:
-            x = data[0].to(self.model.device)
+            x = data[0].to(self.device)
             y_pred.append(self(x).detach())
         return torch.cat(y_pred)
 
@@ -42,8 +44,8 @@ class FedMDClient(BaseClient):
                 batch_size=self.public_dataloader.batch_size,
             ),
         ):
-            x = data_x[0].to(self.model.device)
-            y_consensus = data_y[0].to(self.model.device)
+            x = data_x[0].to(self.device)
+            y_consensus = data_y[0].to(self.device)
             consensus_optimizer.zero_grad()
             y_pred = self(x)
             loss = self.consensus_loss_func(y_pred, y_consensus)
@@ -59,8 +61,8 @@ class FedMDClient(BaseClient):
         with torch.no_grad():
             for data in dataloader:
                 inputs, labels = data
-                inputs = inputs.to(self.model.device)
-                labels = labels.to(self.model.device)
+                inputs = inputs.to(self.device)
+                labels = labels.to(self.device)
                 outputs = self(inputs)
                 in_preds.append(outputs)
                 in_label.append(labels)
