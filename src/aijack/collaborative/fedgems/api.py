@@ -4,29 +4,43 @@ import numpy as np
 import torch
 from sklearn.metrics import accuracy_score
 
+from ..core.api import BaseFLKnowledgeDistillationAPI
 
-class FedGEMSAPI:
+
+class FedGEMSAPI(BaseFLKnowledgeDistillationAPI):
     def __init__(
         self,
         server,
         clients,
         public_dataloader,
         local_dataloaders,
+        validation_dataloader,
+        criterion,
         server_optimizer,
         client_optimizers,
-        criterion,
+        num_commnication=10,
+        epoch_client_on_localdataset=10,
+        epoch_client_on_publicdataset=10,
+        epoch_server_on_publicdataset=10,
         device="cpu",
     ):
-        self.server = server
-        self.clients = clients
-        self.public_dataloader = public_dataloader
-        self.local_dataloaders = local_dataloaders
+        super().__init__(
+            self,
+            server,
+            clients,
+            public_dataloader,
+            local_dataloaders,
+            validation_dataloader,
+            criterion,
+            num_commnication=num_commnication,
+            device=device,
+        )
         self.server_optimizer = server_optimizer
         self.client_optimizers = client_optimizers
-        self.criterion = criterion
-        self.device = device
 
-        self.client_num = len(clients)
+        self.epoch_client_on_localdataset = epoch_client_on_localdataset
+        self.epoch_client_on_publicdataset = epoch_client_on_publicdataset
+        self.epoch_server_on_publicdataset = epoch_server_on_publicdataset
 
     def train_client_on_local_dataset(self):
         loss_on_local_dataest = []
@@ -115,3 +129,48 @@ class FedGEMSAPI:
         return accuracy_score(
             np.array(torch.argmax(in_preds, axis=1).cpu()), np.array(in_label.cpu())
         )
+
+    def run(self):
+        logging = {
+            "loss_client_local_dataset": [],
+            "loss_server_public_dataset": [],
+            "loss_client_public_dataset": [],
+            "acc": [],
+        }
+
+        # train FedGEMS
+        for epoch in range(1, self.num_communication + 1):
+            for _ in range(self.epoch_client_on_localdataset):
+                loss_client_local_dataset = self.train_client_on_local_dataset()
+            for _ in range(self.epoch_server_on_publicdataset):
+                loss_server_public_dataset = self.train_server_on_public_dataset()
+            for _ in range(self.epoch_client_on_publicdataset):
+                loss_client_public_dataset = self.train_client_on_public_dataset()
+
+            print(
+                f"epoch={epoch} loss_client_local_dataset: ", loss_client_local_dataset
+            )
+            logging["loss_client_local_dataset"].append(
+                copy.deepcopy(loss_client_local_dataset)
+            )
+            print(
+                f"epoch={epoch} loss_server_public_dataset: ",
+                loss_server_public_dataset,
+            )
+            logging["loss_server_public_dataset"].append(
+                copy.deepcopy(loss_server_public_dataset)
+            )
+            print(
+                f"epoch={epoch} loss_client_public_dataset: ",
+                loss_client_public_dataset,
+            )
+            logging["loss_client_public_dataset"].append(
+                copy.deepcopy(loss_client_public_dataset)
+            )
+
+            if self.validation_dataloader is not None:
+                acc = self.server_score(self.validation_dataloader)
+                print(f"epoch={epoch} acc: ", acc)
+                logging["acc"].append(copy.deepcopy(acc))
+
+        return logging

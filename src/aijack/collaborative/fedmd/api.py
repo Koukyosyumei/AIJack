@@ -1,7 +1,9 @@
 import copy
 
+from ..core.api import BaseFLKnowledgeDistillationAPI
 
-class FedMDAPI:
+
+class FedMDAPI(BaseFLKnowledgeDistillationAPI):
     def __init__(
         self,
         server,
@@ -9,24 +11,29 @@ class FedMDAPI:
         public_dataloader,
         local_dataloaders,
         validation_dataloader,
-        client_optimizers,
         criterion,
-        pretrain_epoch=10,
-        transfer_epoch=10,
+        client_optimizers,
+        num_commnication=10,
         device="cpu",
+        consensus_epoch=1,
+        revisit_epoch=1,
+        transfer_epoch=10,
     ):
-        self.server = server
-        self.clients = clients
-        self.public_dataloader = public_dataloader
-        self.local_dataloaders = local_dataloaders
-        self.validation_dataloader = validation_dataloader
+        super().__init__(
+            self,
+            server,
+            clients,
+            public_dataloader,
+            local_dataloaders,
+            validation_dataloader,
+            criterion,
+            num_commnication=num_commnication,
+            device=device,
+        )
         self.client_optimizers = client_optimizers
-        self.criterion = criterion
-        self.pretrain_epoch = pretrain_epoch
+        self.consensus_epoch = consensus_epoch
+        self.revisit_epoch = revisit_epoch
         self.transfer_epoch = transfer_epoch
-        self.device = device
-
-        self.client_num = len(clients)
 
     def train_client(self, public=True):
         loss_on_local_dataest = []
@@ -56,20 +63,49 @@ class FedMDAPI:
         return loss_on_local_dataest
 
     def run(self):
-        for i in range(self.pretrain_epoch):
-            loss_local = self.train_client(public=False)
-            loss_public = self.train_client(public=True)
-            print(f"epoch {i}: {loss_local}")
-            print(f"epoch {i}: {loss_public}")
+        logging = {
+            "loss_client_local_dataset_transfer": [],
+            "loss_client_public_dataset_transfer": [],
+            "loss_client_consensus": [],
+            "loss_client_revisit": [],
+            "loss_server_public_dataset": [],
+            "acc": [],
+        }
 
         for i in range(self.transfer_epoch):
+            loss_public = self.train_client(public=True)
+            loss_local = self.train_client(public=False)
+            print(f"epoch {i} (public - pretrain): {loss_local}")
+            print(f"epoch {i} (local - pretrain): {loss_public}")
+            logging["loss_client_public_dataset_transfer"].append(loss_public)
+            logging["loss_client_local_dataset_transfer"].append(loss_local)
+
+        for i in range(1, self.num_commnication + 1):
             self.server.update()
             self.server.distribute()
 
+            # Digest
+            temp_consensus_loss = []
             for j, client in enumerate(self.clients):
-                consensus_loss = client.approach_consensus(self.client_optimizers[j])
+                for _ in range(self.consensus_epoch):
+                    consensus_loss = client.approach_consensus(
+                        self.client_optimizers[j]
+                    )
                 print(f"epoch {i}, client {j}: {consensus_loss}")
-                print(
-                    f"client {j} acc score is ",
-                    client.score(self.validation_dataloader),
-                )
+                temp_consensus_loss.append(consensus_loss)
+            logging["loss_client_consensus"].append(temp_consensus_loss)
+
+            # Revisit
+            for _ in range(self.revisit_epoch):
+                loss_local_revisit = self.train_client(public=False)
+            logging["loss_client_revisit"].append(loss_local_revisit)
+
+            # evaluation
+            temp_acc_list = []
+            for j, client in enumerate(self.clients):
+                acc = client.score(self.validation_dataloader)
+                print(f"client {j} acc score is ", acc)
+                temp_acc_list.append(acc)
+            logging["acc"].append(temp_acc_list)
+
+        return logging
