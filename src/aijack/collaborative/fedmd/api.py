@@ -27,8 +27,8 @@ class FedMDAPI(BaseFLKnowledgeDistillationAPI):
             local_dataloaders,
             validation_dataloader,
             criterion,
-            num_communication=num_communication,
-            device=device,
+            num_communication,
+            device,
         )
         self.client_optimizers = client_optimizers
         self.consensus_epoch = consensus_epoch

@@ -10,8 +10,8 @@ class BaseFLKnowledgeDistillationAPI:
         local_dataloaders,
         validation_dataloader,
         criterion,
-        num_communication=10,
-        device="cpu",
+        num_communication,
+        device,
     ):
         self.server = server
         self.clients = clients
