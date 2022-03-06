@@ -13,7 +13,7 @@ class FedMDAPI(BaseFLKnowledgeDistillationAPI):
         validation_dataloader,
         criterion,
         client_optimizers,
-        num_commnication=10,
+        num_communication=10,
         device="cpu",
         consensus_epoch=1,
         revisit_epoch=1,
@@ -27,7 +27,7 @@ class FedMDAPI(BaseFLKnowledgeDistillationAPI):
             local_dataloaders,
             validation_dataloader,
             criterion,
-            num_commnication=num_commnication,
+            num_communication=num_communication,
             device=device,
         )
         self.client_optimizers = client_optimizers
@@ -80,7 +80,7 @@ class FedMDAPI(BaseFLKnowledgeDistillationAPI):
             logging["loss_client_public_dataset_transfer"].append(loss_public)
             logging["loss_client_local_dataset_transfer"].append(loss_local)
 
-        for i in range(1, self.num_commnication + 1):
+        for i in range(1, self.num_communication + 1):
             self.server.update()
             self.server.distribute()
 

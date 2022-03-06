@@ -18,7 +18,7 @@ class FedGEMSAPI(BaseFLKnowledgeDistillationAPI):
         criterion,
         server_optimizer,
         client_optimizers,
-        num_commnication=10,
+        num_communication=10,
         epoch_client_on_localdataset=10,
         epoch_client_on_publicdataset=10,
         epoch_server_on_publicdataset=10,
@@ -32,7 +32,7 @@ class FedGEMSAPI(BaseFLKnowledgeDistillationAPI):
             local_dataloaders,
             validation_dataloader,
             criterion,
-            num_commnication=num_commnication,
+            num_communication=num_communication,
             device=device,
         )
         self.server_optimizer = server_optimizer
