@@ -6,12 +6,19 @@ from ..core import BaseServer
 
 class DSFLServer(BaseServer):
     def __init__(
-        self, clients, global_model, public_dataloader, aggregation="ERA", server_id=0
+        self,
+        clients,
+        global_model,
+        public_dataloader,
+        aggregation="ERA",
+        server_id=0,
+        device="cpu",
     ):
         super(DSFLServer, self).__init__(clients, global_model, server_id=server_id)
         self.public_dataloader = public_dataloader
         self.aggregation = aggregation
         self.consensus = None
+        self.device = device
 
     def action(self):
         self.update()
