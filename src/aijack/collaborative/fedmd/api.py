@@ -1,5 +1,3 @@
-import copy
-
 from ..core.api import BaseFLKnowledgeDistillationAPI
 
 
@@ -33,33 +31,6 @@ class FedMDAPI(BaseFLKnowledgeDistillationAPI):
         self.consensus_epoch = consensus_epoch
         self.revisit_epoch = revisit_epoch
         self.transfer_epoch = transfer_epoch
-
-    def train_client(self, public=True):
-        loss_on_local_dataest = []
-        for client_idx in range(self.client_num):
-            client = self.clients[client_idx]
-            if public:
-                trainloader = self.public_dataloader
-            else:
-                trainloader = self.local_dataloaders[client_idx]
-            optimizer = self.client_optimizers[client_idx]
-
-            running_loss = 0.0
-            for data in trainloader:
-                x, y = data
-                x = x.to(self.device)
-                y = y.to(self.device)
-
-                optimizer.zero_grad()
-                loss = self.criterion(client(x), y)
-                loss.backward()
-                optimizer.step()
-
-                running_loss += loss.item()
-
-            loss_on_local_dataest.append(copy.deepcopy(running_loss / len(trainloader)))
-
-        return loss_on_local_dataest
 
     def run(self):
         logging = {

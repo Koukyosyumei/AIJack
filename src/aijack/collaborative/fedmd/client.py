@@ -44,7 +44,7 @@ class FedMDClient(BaseClient):
                 batch_size=self.public_dataloader.batch_size,
             ),
         ):
-            x = data_x[0].to(self.device)
+            x = data_x[1].to(self.device)
             y_consensus = data_y[0].to(self.device)
             consensus_optimizer.zero_grad()
             y_pred = self(x)
@@ -55,12 +55,13 @@ class FedMDClient(BaseClient):
 
         return running_loss
 
-    def score(self, dataloader):
+    def score(self, dataloader, x_pos=1, y_pos=2):
         in_preds = []
         in_label = []
         with torch.no_grad():
             for data in dataloader:
-                inputs, labels = data
+                inputs = data[x_pos]
+                labels = data[y_pos]
                 inputs = inputs.to(self.device)
                 labels = labels.to(self.device)
                 outputs = self(inputs)

@@ -41,30 +41,6 @@ class FedGEMSAPI(BaseFLKnowledgeDistillationAPI):
         self.epoch_client_on_publicdataset = epoch_client_on_publicdataset
         self.epoch_server_on_publicdataset = epoch_server_on_publicdataset
 
-    def train_client_on_local_dataset(self):
-        loss_on_local_dataest = []
-        for client_idx in range(self.client_num):
-            client = self.clients[client_idx]
-            trainloader = self.local_dataloaders[client_idx]
-            optimizer = self.client_optimizers[client_idx]
-
-            running_loss = 0.0
-            for data in trainloader:
-                _, x, y = data
-                x = x.to(self.device)
-                y = y.to(self.device)
-
-                optimizer.zero_grad()
-                loss = self.criterion(client(x), y)
-                loss.backward()
-                optimizer.step()
-
-                running_loss += loss.item()
-
-            loss_on_local_dataest.append(copy.deepcopy(running_loss / len(trainloader)))
-
-        return loss_on_local_dataest
-
     def train_client_on_public_dataset(self):
         loss_on_public_dataset = []
         for client_idx in range(self.client_num):
@@ -140,7 +116,7 @@ class FedGEMSAPI(BaseFLKnowledgeDistillationAPI):
         # train FedGEMS
         for epoch in range(1, self.num_communication + 1):
             for _ in range(self.epoch_client_on_localdataset):
-                loss_client_local_dataset = self.train_client_on_local_dataset()
+                loss_client_local_dataset = self.train_client(public=False)
             for _ in range(self.epoch_server_on_publicdataset):
                 loss_server_public_dataset = self.train_server_on_public_dataset()
             for _ in range(self.epoch_client_on_publicdataset):
