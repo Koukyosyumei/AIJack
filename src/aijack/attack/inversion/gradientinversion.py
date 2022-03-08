@@ -9,7 +9,7 @@ from .utils.regularization import (
     bn_regularizer,
     group_consistency,
     label_matching,
-    total_variation,
+    total_variance,
 )
 
 
@@ -291,7 +291,7 @@ class GradientInversion_Attack(BaseAttacker):
         """
         reg_term = 0
         if self.tv_reg_coef != 0:
-            reg_term += self.tv_reg_coef * total_variation(fake_x)
+            reg_term += self.tv_reg_coef * total_variance(fake_x)
         if self.lm_reg_coef != 0:
             reg_term += self.lm_reg_coef * label_matching(fake_pred, fake_label)
         if self.l2_reg_coef != 0:
