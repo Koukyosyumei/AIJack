@@ -1,4 +1,5 @@
 from .core import BaseClient, BaseServer  # noqa: F401
+from .dsfl import DSFLAPI, DSFLClient, DSFLServer  # noqa : F401
 from .fedavg import FedAvgClient, FedAvgServer  # noqa: F401
 from .fedgems import FedGEMSAPI, FedGEMSClient, FedGEMSServer  # noqa: F401
 from .fedkd import FedKDClient  # noqa :F401
