@@ -1,3 +1,4 @@
+import torch
 from torch import nn
 
 from ..core import BaseClient
@@ -28,7 +29,7 @@ class FedGEMSClient(BaseClient):
 
     def culc_loss_on_public_dataset(self, idx, y_pred, y):
         y_pred_server = self.predicted_values_of_server[idx]
-        base_loss = self.epsilon * self.base_loss_func(y_pred, y)
+        base_loss = self.epsilon * self.base_loss_func(y_pred, y.to(torch.int64))
         kl_loss = (1 - self.epsilon) * self.kldiv_loss_func(
             y_pred_server.softmax(dim=-1).log(), y_pred.softmax(dim=-1)
         )

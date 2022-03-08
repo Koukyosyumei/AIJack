@@ -51,7 +51,7 @@ class FedGEMSAPI(BaseFLKnowledgeDistillationAPI):
             for data in self.public_dataloader:
                 idx, inputs, labels = data
                 inputs = inputs.to(self.device)
-                labels = labels.to(self.device)
+                labels = labels.to(self.device).to(torch.int64)
 
                 optimizer.zero_grad()
                 y_preds = client(inputs)
@@ -72,7 +72,7 @@ class FedGEMSAPI(BaseFLKnowledgeDistillationAPI):
         for data in self.public_dataloader:
             idx, x, y = data
             x = x.to(self.device)
-            y = y.to(self.device)
+            y = y.to(self.device).to(torch.int64)
 
             self.server_optimizer.zero_grad()
             server_loss = self.server.self_evaluation_on_the_public_dataset(idx, x, y)
@@ -94,7 +94,7 @@ class FedGEMSAPI(BaseFLKnowledgeDistillationAPI):
             for data in dataloader:
                 _, inputs, labels = data
                 inputs = inputs.to(self.device)
-                labels = labels.to(self.device)
+                labels = labels.to(self.device).to(torch.int64)
                 outputs = self.server(inputs)
                 in_preds.append(outputs)
                 in_label.append(labels)

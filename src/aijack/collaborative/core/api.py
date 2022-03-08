@@ -1,6 +1,8 @@
 import copy
 from abc import abstractmethod
 
+import torch
+
 
 class BaseFLKnowledgeDistillationAPI:
     def __init__(
@@ -39,7 +41,7 @@ class BaseFLKnowledgeDistillationAPI:
             for data in trainloader:
                 _, x, y = data
                 x = x.to(self.device)
-                y = y.to(self.device)
+                y = y.to(self.device).to(torch.int64)
 
                 optimizer.zero_grad()
                 loss = self.criterion(client(x), y)
