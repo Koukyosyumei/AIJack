@@ -8,5 +8,9 @@ def total_variance(x):
     return dx + dy
 
 
-def crossentropyloss_between_logits(y1, y2):
-    return -torch.sum(F.log_softmax(y1, dim=1) * F.log_softmax(y2, dim=1), dim=1)
+def crossentropyloss_between_logits(y_pred_logit, y_true_logit):
+    return torch.mean(
+        -torch.sum(
+            F.log_softmax(y_pred_logit, dim=1) * F.softmax(y_true_logit, dim=1), dim=1
+        )
+    )
