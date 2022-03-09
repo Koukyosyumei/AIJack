@@ -11,12 +11,14 @@ class DSFLServer(BaseServer):
         global_model,
         public_dataloader,
         aggregation="ERA",
+        era_temperature=0.1,
         server_id=0,
         device="cpu",
     ):
         super(DSFLServer, self).__init__(clients, global_model, server_id=server_id)
         self.public_dataloader = public_dataloader
         self.aggregation = aggregation
+        self.era_temperature = era_temperature
         self.consensus = None
         self.device = device
 
@@ -59,7 +61,7 @@ class DSFLServer(BaseServer):
 
     def _entropy_reduction_aggregation(self):
         self._simple_aggregation()
-        self.consensus = torch.softmax(self.consensus, dim=1)
+        self.consensus = torch.softmax(self.consensus / self.era_temperature, dim=1)
 
     def _simple_aggregation(self):
         self.consensus = self.clients[0].upload() / len(self.clients)
