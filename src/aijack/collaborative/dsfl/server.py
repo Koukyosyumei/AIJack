@@ -34,20 +34,18 @@ class DSFLServer(BaseServer):
 
     def update_globalmodel(self, global_optimizer):
         running_loss = 0
-        for global_data, global_logit_data in enumerate(
+        for global_data, global_logit_data in zip(
             self.public_dataloader,
-            torch.utils.dataset.dataloader(
-                torch.utils.data.DataLoader(
-                    torch.utils.data.TensorDataset(self.consensus),
-                    batch_size=self.public_dataloader.batch_size,
-                )
+            torch.utils.data.DataLoader(
+                torch.utils.data.TensorDataset(self.consensus),
+                batch_size=self.public_dataloader.batch_size,
             ),
         ):
             x = global_data[1].to(self.device)
             y_global = global_logit_data[0].to(self.device)
             global_optimizer.zero_grad()
-            y_local = self(x)
-            loss_consensus = crossentropyloss_between_logits(y_global, y_local)
+            y_pred = self(x)
+            loss_consensus = crossentropyloss_between_logits(y_pred, y_global)
             loss_consensus.backward()
             global_optimizer.step()
             running_loss += loss_consensus.item()
