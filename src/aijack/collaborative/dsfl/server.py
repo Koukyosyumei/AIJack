@@ -49,6 +49,7 @@ class DSFLServer(BaseServer):
             loss_consensus.backward()
             global_optimizer.step()
             running_loss += loss_consensus.item()
+        running_loss /= len(self.public_dataloader)
         return running_loss
 
     def distribute(self):

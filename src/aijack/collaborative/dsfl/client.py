@@ -39,4 +39,5 @@ class DSFLClient(BaseClient):
             loss_consensus.backward()
             consensus_optimizer.step()
             running_loss += loss_consensus.item()
+        running_loss /= len(self.public_dataloader)
         return running_loss
