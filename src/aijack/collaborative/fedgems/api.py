@@ -1,8 +1,6 @@
 import copy
 
-import numpy as np
 import torch
-from sklearn.metrics import accuracy_score
 
 from ..core.api import BaseFLKnowledgeDistillationAPI
 
@@ -86,24 +84,6 @@ class FedGEMSAPI(BaseFLKnowledgeDistillationAPI):
 
         self.server.action()
         return server_running_loss
-
-    def server_score(self, dataloader):
-        in_preds = []
-        in_label = []
-        with torch.no_grad():
-            for data in dataloader:
-                _, inputs, labels = data
-                inputs = inputs.to(self.device)
-                labels = labels.to(self.device).to(torch.int64)
-                outputs = self.server(inputs)
-                in_preds.append(outputs)
-                in_label.append(labels)
-            in_preds = torch.cat(in_preds)
-            in_label = torch.cat(in_label)
-
-        return accuracy_score(
-            np.array(torch.argmax(in_preds, axis=1).cpu()), np.array(in_label.cpu())
-        )
 
     def run(self):
         logging = {
