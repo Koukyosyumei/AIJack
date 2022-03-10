@@ -1,9 +1,9 @@
 import copy
 from abc import abstractmethod
 
-import numpy as np
 import torch
-from sklearn.metrics import accuracy_score
+
+from ...utils import accuracy_torch_dataloader
 
 
 class BaseFLKnowledgeDistillationAPI:
@@ -60,20 +60,12 @@ class BaseFLKnowledgeDistillationAPI:
     def run(self):
         pass
 
-    def server_score(self, dataloader):
-        in_preds = []
-        in_label = []
-        with torch.no_grad():
-            for data in dataloader:
-                _, inputs, labels = data
-                inputs = inputs.to(self.device)
-                labels = labels.to(self.device).to(torch.int64)
-                outputs = self.server(inputs)
-                in_preds.append(outputs)
-                in_label.append(labels)
-            in_preds = torch.cat(in_preds)
-            in_label = torch.cat(in_label)
-
-        return accuracy_score(
-            np.array(torch.argmax(in_preds, axis=1).cpu()), np.array(in_label.cpu())
+    def score(self, dataloader):
+        server_score = accuracy_torch_dataloader(
+            self.server, dataloader, cpu=self.device
         )
+        clients_score = [
+            accuracy_torch_dataloader(client, dataloader, cpu=self.device)
+            for client in self.clients
+        ]
+        return {"server_score": server_score, "clients_score": clients_score}

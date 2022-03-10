@@ -124,7 +124,7 @@ class FedGEMSAPI(BaseFLKnowledgeDistillationAPI):
             )
 
             if self.validation_dataloader is not None:
-                acc = self.server_score(self.validation_dataloader)
+                acc = self.score(self.validation_dataloader)
                 print(f"epoch={epoch} acc: ", acc)
                 logging["acc"].append(copy.deepcopy(acc))
 

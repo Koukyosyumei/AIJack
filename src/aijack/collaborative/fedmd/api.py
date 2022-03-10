@@ -1,3 +1,5 @@
+import copy
+
 from ..core.api import BaseFLKnowledgeDistillationAPI
 
 
@@ -71,11 +73,9 @@ class FedMDAPI(BaseFLKnowledgeDistillationAPI):
             logging["loss_client_revisit"].append(loss_local_revisit)
 
             # evaluation
-            temp_acc_list = []
-            for j, client in enumerate(self.clients):
-                acc = client.score(self.validation_dataloader)
-                print(f"client {j} acc score is ", acc)
-                temp_acc_list.append(acc)
-            logging["acc"].append(temp_acc_list)
+            if self.validation_dataloader is not None:
+                acc = self.score(self.validation_dataloader)
+                print(f"epoch={i} acc: ", acc)
+                logging["acc"].append(copy.deepcopy(acc))
 
         return logging

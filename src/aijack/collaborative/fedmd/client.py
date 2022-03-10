@@ -1,6 +1,4 @@
-import numpy as np
 import torch
-from sklearn.metrics import accuracy_score
 from torch import nn
 
 from ..core import BaseClient
@@ -54,22 +52,3 @@ class FedMDClient(BaseClient):
             running_loss += loss.item()
 
         return running_loss
-
-    def score(self, dataloader, x_pos=1, y_pos=2):
-        in_preds = []
-        in_label = []
-        with torch.no_grad():
-            for data in dataloader:
-                inputs = data[x_pos]
-                labels = data[y_pos]
-                inputs = inputs.to(self.device)
-                labels = labels.to(self.device)
-                outputs = self(inputs)
-                in_preds.append(outputs)
-                in_label.append(labels)
-            in_preds = torch.cat(in_preds)
-            in_label = torch.cat(in_label)
-
-        return accuracy_score(
-            np.array(torch.argmax(in_preds, axis=1).cpu()), np.array(in_label.cpu())
-        )
