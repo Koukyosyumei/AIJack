@@ -65,7 +65,7 @@ class BaseFLKnowledgeDistillationAPI:
             self.server, dataloader, cpu=self.device
         )
         clients_score = [
-            accuracy_torch_dataloader(client, dataloader, cpu=self.device)
+            accuracy_torch_dataloader(client, dataloader, device=self.device)
             for client in self.clients
         ]
         return {"server_score": server_score, "clients_score": clients_score}
