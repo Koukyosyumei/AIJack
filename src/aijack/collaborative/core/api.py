@@ -62,7 +62,7 @@ class BaseFLKnowledgeDistillationAPI:
 
     def score(self, dataloader):
         server_score = accuracy_torch_dataloader(
-            self.server, dataloader, cpu=self.device
+            self.server, dataloader, device=self.device
         )
         clients_score = [
             accuracy_torch_dataloader(client, dataloader, device=self.device)
