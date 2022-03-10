@@ -17,7 +17,7 @@ class MI_FACE(BaseAttacker):
     def __init__(
         self,
         target_model,
-        input_shape,
+        input_shape=(1, 1, 64, 64),
         target_label=0,
         lam=0.01,
         num_itr=100,
