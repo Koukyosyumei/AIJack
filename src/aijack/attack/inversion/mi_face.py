@@ -18,6 +18,9 @@ class MI_FACE(BaseAttacker):
         self,
         target_model,
         input_shape,
+        target_label=0,
+        lam=0.01,
+        num_itr=100,
         auxterm_func=lambda x: 0,
         process_func=lambda x: x,
         apply_softmax=False,
@@ -33,6 +36,10 @@ class MI_FACE(BaseAttacker):
         """
         super().__init__(target_model)
         self.input_shape = input_shape
+        self.target_label = target_label
+        self.lam = lam
+        self.num_itr = num_itr
+
         self.auxterm_func = auxterm_func
         self.process_func = process_func
         self.device = device
@@ -43,9 +50,6 @@ class MI_FACE(BaseAttacker):
 
     def attack(
         self,
-        target_label,
-        lam,
-        num_itr,
         init_x=None,
     ):
         """Execute the model inversion attack on the target model.
@@ -65,14 +69,15 @@ class MI_FACE(BaseAttacker):
         else:
             init_x = init_x.to(self.device)
             x = init_x
-        for i in range(num_itr):
-            pred = self.target_model(x)[:, [target_label]]
+
+        for i in range(self.num_itr):
+            pred = self.target_model(x)[:, [self.target_label]]
             pred = pred.softmax(dim=1) if self.apply_softmax else pred
             c = 1 - pred + self.auxterm_func(x)
             c.backward()
             grad = x.grad
             with torch.no_grad():
-                x -= lam * grad
+                x -= self.lam * grad
                 x = self.process_func(x)
             log.append(c.item())
 
