@@ -1,6 +1,7 @@
 import torch
 from torch import nn
 
+from ...utils.utils import torch_round_x_decimal
 from ..core import BaseClient
 
 
@@ -28,7 +29,12 @@ class FedMDClient(BaseClient):
         for data in self.public_dataloader:
             x = data[1].to(self.device)
             y_pred.append(self(x).detach())
-        return torch.cat(y_pred)
+
+        result = torch.cat(y_pred)
+        if self.round_decimal is None:
+            return result
+        else:
+            return torch_round_x_decimal(result, self.round_decimal)
 
     def download(self, predicted_values_of_server):
         self.predicted_values_of_server = predicted_values_of_server

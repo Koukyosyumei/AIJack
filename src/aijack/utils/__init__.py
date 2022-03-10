@@ -4,4 +4,5 @@ from .metrics import (  # noqa: F401
     crossentropyloss_between_logits,
     total_variance,
 )
+from .utils import torch_round_x_decimal  # noqa: F401
 from .utils import NumpyDataset, try_gpu  # noqa: F401

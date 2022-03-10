@@ -16,6 +16,10 @@ def try_gpu(e):
     return e
 
 
+def torch_round_x_decimal(arr, n_digits):
+    return torch.round(arr * 10**n_digits) / (10**n_digits)
+
+
 class NumpyDataset(Dataset):
     """This class allows you to convert numpy.array to torch.Dataset
 

@@ -1,13 +1,17 @@
 import torch
 
 from ...utils.metrics import crossentropyloss_between_logits
+from ...utils.utils import torch_round_x_decimal
 from ..core import BaseClient
 
 
 class DSFLClient(BaseClient):
-    def __init__(self, model, public_dataloader, device="cpu", user_id=0):
+    def __init__(
+        self, model, public_dataloader, round_decimal=None, device="cpu", user_id=0
+    ):
         super().__init__(model, user_id)
         self.public_dataloader = public_dataloader
+        self.round_decimal = round_decimal
         self.device = device
         self.global_logit = None
 
@@ -17,7 +21,12 @@ class DSFLClient(BaseClient):
             x = data[1]
             x = x.to(self.device)
             y_pred.append(self(x).detach())
-        return torch.cat(y_pred)
+
+        result = torch.cat(y_pred)
+        if self.round_decimal is None:
+            return result
+        else:
+            return torch_round_x_decimal(result, self.round_decimal)
 
     def download(self, global_logit):
         self.global_logit = global_logit

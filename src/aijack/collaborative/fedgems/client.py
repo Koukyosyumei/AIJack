@@ -1,6 +1,7 @@
 import torch
 from torch import nn
 
+from ...utils.utils import torch_round_x_decimal
 from ..core import BaseClient
 
 
@@ -22,7 +23,11 @@ class FedGEMSClient(BaseClient):
         self.epsilon = epsilon
 
     def upload(self, x):
-        return self(x)
+        result = self(x)
+        if self.round_decimal is None:
+            return result
+        else:
+            return torch_round_x_decimal(result, self.round_decimal)
 
     def download(self, predicted_values_of_server):
         self.predicted_values_of_server = predicted_values_of_server
