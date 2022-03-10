@@ -1,4 +1,5 @@
 import torch
+from matplotlib import pyplot as plt
 
 from ..base_attack import BaseAttacker
 
@@ -83,6 +84,13 @@ class MI_FACE(BaseAttacker):
 
             if self.log_interval != 0 and i % self.log_interval == 0:
                 print(f"epoch {i}: {c.item()}")
+                if self.input_shape[1] == 1:
+                    plt.imshow(
+                        x.detach().cpu().numpy()[0][0],
+                        cmap="gray",
+                    )
+                else:
+                    plt.imshow(x.detach().cpu().numpy()[0].transpose(1, 2, 0))
 
             self.log_image.append(x.clone())
 
