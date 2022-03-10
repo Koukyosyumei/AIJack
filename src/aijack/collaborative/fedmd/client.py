@@ -14,6 +14,7 @@ class FedMDClient(BaseClient):
         user_id=0,
         base_loss_func=nn.CrossEntropyLoss(),
         consensus_loss_func=nn.L1Loss(),
+        round_decimal=None,
         device="cpu",
     ):
         super(FedMDClient, self).__init__(model, user_id=user_id)
@@ -21,8 +22,10 @@ class FedMDClient(BaseClient):
         self.batch_size = batch_size
         self.base_loss_func = base_loss_func
         self.consensus_loss_func = consensus_loss_func
-        self.predicted_values_of_server = None
+        self.round_decimal = round_decimal
         self.device = device
+
+        self.predicted_values_of_server = None
 
     def upload(self):
         y_pred = []
