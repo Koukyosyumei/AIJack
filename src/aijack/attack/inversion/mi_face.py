@@ -91,6 +91,7 @@ class MI_FACE(BaseAttacker):
                     )
                 else:
                     plt.imshow(x.detach().cpu().numpy()[0].transpose(1, 2, 0))
+                    plt.show()
 
             self.log_image.append(x.clone())
 
