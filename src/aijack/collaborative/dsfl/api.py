@@ -24,6 +24,23 @@ class DSFLAPI(BaseFLKnowledgeDistillationAPI):
         epoch_global_distillation=1,
         epoch_local_distillation=1,
     ):
+        """Init DSFLAPI
+
+        Args:
+            server (DSFLServer): an instance of DSFLServer
+            clients ([DSFLClient]): a list of instances of DSFLClient
+            public_dataloader (torch.DataLoader): a dataloader of public dataset
+            local_dataloaders ([torch.DataLoader]): a list of dataloaders of private dataests
+            validation_dataloader (torch.DataLoader): a dataloader of validation dataset
+            criterion (function): a loss function
+            num_communication (int): number of communication
+            device (str): device type
+            server_optimizer (torch.Optimizer): a optimizer for the global model
+            client_optimizers ([torch.Optimizer]): a list of optimizers for the local models
+            epoch_local_training (int, optional): number of epochs of local training. Defaults to 1.
+            epoch_global_distillation (int, optional): number of epochs of global distillation. Defaults to 1.
+            epoch_local_distillation (int, optional): number of epochs of local distillation. Defaults to 1.
+        """
         super().__init__(
             server,
             clients,
