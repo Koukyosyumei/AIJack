@@ -39,6 +39,8 @@ class MI_FACE(BaseAttacker):
         self.log_interval = log_interval
         self.apply_softmax = apply_softmax
 
+        self.log_image = []
+
     def attack(
         self,
         target_label,
@@ -76,6 +78,8 @@ class MI_FACE(BaseAttacker):
 
             if self.log_interval != 0 and i % self.log_interval == 0:
                 print(f"epoch {i}: {c.item()}")
+
+            self.log_image.append(x.clone())
 
         x_numpy = x.to("cpu").detach().numpy().copy()
         return x_numpy, log
