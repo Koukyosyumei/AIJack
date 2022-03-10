@@ -67,7 +67,6 @@ class DSFLAPI(BaseFLKnowledgeDistillationAPI):
 
             for _ in range(self.epoch_global_distillation):
                 loss_global = self.server.update_globalmodel(self.server_optimizer)
-                print("global distillation ", loss_global)
             logging["loss_server_consensus"].append(loss_global)
 
             print(f"epoch {i}: loss_local", loss_local)
