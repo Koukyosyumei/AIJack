@@ -83,7 +83,7 @@ class MI_FACE(BaseAttacker):
 
             with torch.no_grad():
                 if self.round_decimal is not None:
-                    grad = torch_round_x_decimal(grad)
+                    grad = torch_round_x_decimal(grad, self.round_decimal)
                 x -= self.lam * grad
                 x = self.process_func(x)
             log.append(c.item())
