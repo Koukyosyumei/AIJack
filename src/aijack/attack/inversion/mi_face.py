@@ -1,7 +1,6 @@
 import torch
 from matplotlib import pyplot as plt
 
-from ...utils.utils import torch_round_x_decimal
 from ..base_attack import BaseAttacker
 
 
@@ -26,7 +25,6 @@ class MI_FACE(BaseAttacker):
         auxterm_func=lambda x: 0,
         process_func=lambda x: x,
         apply_softmax=False,
-        round_decimal=None,
         device="cpu",
         log_interval=1,
     ):
@@ -48,7 +46,6 @@ class MI_FACE(BaseAttacker):
         self.device = device
         self.log_interval = log_interval
         self.apply_softmax = apply_softmax
-        self.round_decimal = round_decimal
 
         self.log_image = []
 
@@ -82,8 +79,6 @@ class MI_FACE(BaseAttacker):
             grad = x.grad
 
             with torch.no_grad():
-                if self.round_decimal is not None:
-                    grad = torch_round_x_decimal(grad, self.round_decimal)
                 x -= self.lam * grad
                 x = self.process_func(x)
             log.append(c.item())
