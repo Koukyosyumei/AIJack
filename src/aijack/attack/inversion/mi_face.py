@@ -52,6 +52,8 @@ class MI_FACE(BaseAttacker):
 
         self.log_image = []
 
+        print("self.round_decimal", round_decimal)
+
     def attack(
         self,
         init_x=None,
