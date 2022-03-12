@@ -33,15 +33,12 @@ class DSFLClient(BaseClient):
 
     def approach_consensus(self, consensus_optimizer):
         running_loss = 0
-        g = torch.Generator()
-        g.manual_seed(0)
         for global_data, global_logit_data in zip(
             self.public_dataloader,
             torch.utils.data.DataLoader(
                 torch.utils.data.TensorDataset(self.global_logit),
                 batch_size=self.public_dataloader.batch_size,
                 worker_init_fn=worker_init_fn,
-                generator=g,
                 shuffle=True,
             ),
         ):
