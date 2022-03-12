@@ -93,6 +93,7 @@ class MI_FACE(BaseAttacker):
                         x.detach().cpu().numpy()[0][0],
                         cmap="gray",
                     )
+                    plt.show()
                 else:
                     plt.imshow(x.detach().cpu().numpy()[0].transpose(1, 2, 0))
                     plt.show()
