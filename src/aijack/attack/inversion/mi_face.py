@@ -90,19 +90,23 @@ class MI_FACE(BaseAttacker):
 
             if self.log_interval != 0 and i % self.log_interval == 0:
                 print(f"epoch {i}: {c.item()}")
-
-                if self.log_show_img:
-                    if self.input_shape[1] == 1:
-                        plt.imshow(
-                            x.detach().cpu().numpy()[0][0],
-                            cmap="gray",
-                        )
-                        plt.show()
-                    else:
-                        plt.imshow(x.detach().cpu().numpy()[0].transpose(1, 2, 0))
-                        plt.show()
+                self._show_img(x)
 
             self.log_image.append(x.clone())
 
+        self._show_img(x)
+
         x_numpy = x.to("cpu").detach().numpy().copy()
         return x_numpy, log
+
+    def _show_img(self, x):
+        if self.log_show_img:
+            if self.input_shape[1] == 1:
+                plt.imshow(
+                    x.detach().cpu().numpy()[0][0],
+                    cmap="gray",
+                )
+                plt.show()
+            else:
+                plt.imshow(x.detach().cpu().numpy()[0].transpose(1, 2, 0))
+                plt.show()
