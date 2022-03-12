@@ -4,3 +4,4 @@ sklearn
 torch
 torchvision
 pybind11
+matplotlib
