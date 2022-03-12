@@ -1,6 +1,7 @@
 import torch
 
 from ...utils.metrics import crossentropyloss_between_logits
+from ...utils.utils import worker_init_fn
 from ..core import BaseServer
 
 
@@ -41,6 +42,7 @@ class DSFLServer(BaseServer):
             torch.utils.data.DataLoader(
                 torch.utils.data.TensorDataset(self.consensus),
                 batch_size=self.public_dataloader.batch_size,
+                worker_init_fn=worker_init_fn,
             ),
         ):
             x = global_data[1].to(self.device)

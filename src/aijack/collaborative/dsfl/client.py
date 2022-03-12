@@ -1,7 +1,7 @@
 import torch
 
 from ...utils.metrics import crossentropyloss_between_logits
-from ...utils.utils import torch_round_x_decimal
+from ...utils.utils import torch_round_x_decimal, worker_init_fn
 from ..core import BaseClient
 
 
@@ -38,6 +38,7 @@ class DSFLClient(BaseClient):
             torch.utils.data.DataLoader(
                 torch.utils.data.TensorDataset(self.global_logit),
                 batch_size=self.public_dataloader.batch_size,
+                worker_init_fn=worker_init_fn,
             ),
         ):
             x = global_data[1].to(self.device)
