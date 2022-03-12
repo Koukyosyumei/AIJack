@@ -1,5 +1,6 @@
 import random
 
+import numpy as np
 import torch
 from torch.utils.data.dataset import Dataset
 
@@ -19,7 +20,10 @@ def try_gpu(e):
 
 
 def worker_init_fn(worker_id):
-    random.seed(worker_id)
+    _ = worker_id
+    worker_seed = torch.initial_seed() % 2**32
+    np.random.seed(worker_seed)
+    random.seed(worker_seed)
 
 
 class RoundDecimal(torch.autograd.Function):
