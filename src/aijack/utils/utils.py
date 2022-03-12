@@ -16,8 +16,20 @@ def try_gpu(e):
     return e
 
 
-def torch_round_x_decimal(arr, n_digits):
-    return torch.round(arr * 10**n_digits) / (10**n_digits)
+class RoundDecimal(torch.autograd.Function):
+    @staticmethod
+    def forward(ctx, input, n_digits):
+        ctx.save_for_backward(input)
+        ctx.n_digits = n_digits
+        return torch.round(input * 10**n_digits) / (10**n_digits)
+
+    @staticmethod
+    def backward(ctx, grad_output):
+        grad_input = grad_output.clone()
+        return torch.round(grad_input * 10**ctx.n_digits) / (10**ctx.n_digits), None
+
+
+torch_round_x_decimal = RoundDecimal.apply
 
 
 class NumpyDataset(Dataset):
