@@ -1,7 +1,7 @@
 import torch
 from torch import nn
 
-from ...utils.utils import torch_round_x_decimal
+from ...utils.utils import torch_round_x_decimal, worker_init_fn
 from ..core import BaseClient
 
 
@@ -49,6 +49,7 @@ class FedMDClient(BaseClient):
             torch.utils.data.DataLoader(
                 torch.utils.data.TensorDataset(self.predicted_values_of_server),
                 batch_size=self.public_dataloader.batch_size,
+                worker_init_fn=worker_init_fn,
             ),
         ):
             x = data_x[1].to(self.device)

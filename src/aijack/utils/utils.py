@@ -1,3 +1,5 @@
+import random
+
 import torch
 from torch.utils.data.dataset import Dataset
 
@@ -14,6 +16,10 @@ def try_gpu(e):
     if torch.cuda.is_available():
         return e.cuda()
     return e
+
+
+def worker_init_fn(worker_id):
+    random.seed(worker_id)
 
 
 class RoundDecimal(torch.autograd.Function):
