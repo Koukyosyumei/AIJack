@@ -27,6 +27,7 @@ class MI_FACE(BaseAttacker):
         apply_softmax=False,
         device="cpu",
         log_interval=1,
+        log_show_img=False,
     ):
         """Inits MI_FACE
         Args:
@@ -45,6 +46,7 @@ class MI_FACE(BaseAttacker):
         self.process_func = process_func
         self.device = device
         self.log_interval = log_interval
+        self.log_show_img = log_show_img
         self.apply_softmax = apply_softmax
 
         self.log_image = []
@@ -88,15 +90,17 @@ class MI_FACE(BaseAttacker):
 
             if self.log_interval != 0 and i % self.log_interval == 0:
                 print(f"epoch {i}: {c.item()}")
-                if self.input_shape[1] == 1:
-                    plt.imshow(
-                        x.detach().cpu().numpy()[0][0],
-                        cmap="gray",
-                    )
-                    plt.show()
-                else:
-                    plt.imshow(x.detach().cpu().numpy()[0].transpose(1, 2, 0))
-                    plt.show()
+
+                if self.log_show_img:
+                    if self.input_shape[1] == 1:
+                        plt.imshow(
+                            x.detach().cpu().numpy()[0][0],
+                            cmap="gray",
+                        )
+                        plt.show()
+                    else:
+                        plt.imshow(x.detach().cpu().numpy()[0].transpose(1, 2, 0))
+                        plt.show()
 
             self.log_image.append(x.clone())
 
