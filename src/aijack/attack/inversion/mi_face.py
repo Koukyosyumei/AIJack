@@ -28,6 +28,7 @@ class MI_FACE(BaseAttacker):
         device="cpu",
         log_interval=1,
         log_show_img=False,
+        show_img_func=lambda x: x * 0.5 + 0.5,
     ):
         """Inits MI_FACE
         Args:
@@ -48,6 +49,7 @@ class MI_FACE(BaseAttacker):
         self.log_interval = log_interval
         self.log_show_img = log_show_img
         self.apply_softmax = apply_softmax
+        self.show_img_func = show_img_func
 
         self.log_image = []
 
@@ -103,10 +105,12 @@ class MI_FACE(BaseAttacker):
         if self.log_show_img:
             if self.input_shape[1] == 1:
                 plt.imshow(
-                    x.detach().cpu().numpy()[0][0],
+                    self.show_img_func(x.detach().cpu().numpy()[0][0]),
                     cmap="gray",
                 )
                 plt.show()
             else:
-                plt.imshow(x.detach().cpu().numpy()[0].transpose(1, 2, 0))
+                plt.imshow(
+                    self.show_img_func(x.detach().cpu().numpy()[0].transpose(1, 2, 0))
+                )
                 plt.show()
