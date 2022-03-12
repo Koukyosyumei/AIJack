@@ -74,9 +74,10 @@ class MI_FACE(BaseAttacker):
         for i in range(self.num_itr):
             x = x.detach()
             x.requires_grad = True
-            pred = self.target_model(x)[:, [self.target_label]]
+            pred = self.target_model(x)
             pred = pred.softmax(dim=1) if self.apply_softmax else pred
-            c = 1 - pred + self.auxterm_func(x)
+            target_pred = pred[:, [self.target_label]]
+            c = 1 - target_pred + self.auxterm_func(x)
             c.backward()
             grad = x.grad
 
