@@ -48,12 +48,15 @@ class FedMDAPI(BaseFLKnowledgeDistillationAPI):
 
         cnt = 0
         while True:
-            loss_public = self.train_client(public=True)
-            loss_local = self.train_client(public=False)
-            print(f"epoch {cnt} (public - pretrain): {loss_local}")
-            print(f"epoch {cnt} (local - pretrain): {loss_public}")
-            logging["loss_client_public_dataset_transfer"].append(loss_public)
-            logging["loss_client_local_dataset_transfer"].append(loss_local)
+            if self.transfer_epoch_public > cnt:
+                loss_public = self.train_client(public=True)
+                print(f"epoch {cnt} (public - pretrain): {loss_public}")
+                logging["loss_client_public_dataset_transfer"].append(loss_public)
+
+            if self.transfer_epoch_private > cnt:
+                loss_local = self.train_client(public=False)
+                print(f"epoch {cnt} (local - pretrain): {loss_public}")
+                logging["loss_client_local_dataset_transfer"].append(loss_local)
 
             cnt += 1
             if cnt >= self.transfer_epoch_public and cnt >= self.transfer_epoch_private:
