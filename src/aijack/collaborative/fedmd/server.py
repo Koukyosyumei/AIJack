@@ -1,5 +1,3 @@
-import torch
-
 from ..core import BaseServer
 
 
@@ -7,17 +5,18 @@ class FedMDServer(BaseServer):
     def __init__(
         self,
         clients,
+        server_model=None,
         server_id=0,
         device="cpu",
     ):
-        super(FedMDServer, self).__init__(clients, None, server_id=server_id)
+        super(FedMDServer, self).__init__(clients, server_model, server_id=server_id)
         self.device = device
 
     def forward(self, x):
-        pred = []
-        for client in self.clients:
-            pred.append(client(x).detach())
-        return torch.mean(torch.stack(pred), dim=0).reshape(x.shape[0], -1)
+        if self.server_model is not None:
+            return self.server_model(x)
+        else:
+            return None
 
     def action(self):
         self.update()

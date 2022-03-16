@@ -1,5 +1,7 @@
 import copy
 
+import torch
+
 from ..core.api import BaseFLKnowledgeDistillationAPI
 
 
@@ -13,12 +15,14 @@ class FedMDAPI(BaseFLKnowledgeDistillationAPI):
         validation_dataloader,
         criterion,
         client_optimizers,
+        server_optimizer=None,
         num_communication=1,
         device="cpu",
         consensus_epoch=1,
         revisit_epoch=1,
         transfer_epoch_public=1,
         transfer_epoch_private=1,
+        server_training_epoch=1,
     ):
         super().__init__(
             server,
@@ -31,10 +35,32 @@ class FedMDAPI(BaseFLKnowledgeDistillationAPI):
             device,
         )
         self.client_optimizers = client_optimizers
+        self.server_optimizer = server_optimizer
         self.consensus_epoch = consensus_epoch
         self.revisit_epoch = revisit_epoch
         self.transfer_epoch_public = transfer_epoch_public
         self.transfer_epoch_private = transfer_epoch_private
+        self.server_training_epoch = server_training_epoch
+
+    def train_server(self):
+        if self.server_optimizer is None:
+            raise ValueError("server_optimzier does not exist")
+        running_loss = 0.0
+        for data in self.public_dataloader:
+            _, x, y = data
+            x = x.to(self.device)
+            y = y.to(self.device).to(torch.int64)
+
+            self.server_optimizer.zero_grad()
+            loss = self.criterion(self.server(x), y)
+            loss.backward()
+            self.server_optimizer.step()
+
+            running_loss += loss.item()
+
+        running_loss /= len(self.public_dataloader)
+
+        return running_loss
 
     def run(self):
         logging = {
@@ -81,6 +107,11 @@ class FedMDAPI(BaseFLKnowledgeDistillationAPI):
             for _ in range(self.revisit_epoch):
                 loss_local_revisit = self.train_client(public=False)
             logging["loss_client_revisit"].append(loss_local_revisit)
+
+            # Train a server-side model if it exists (different from the original paper)
+            for _ in range(self.server_training_epoch):
+                loss_server_public = self.train_server()
+            logging["loss_server_public_dataset"].append(loss_server_public)
 
             # evaluation
             if self.validation_dataloader is not None:
