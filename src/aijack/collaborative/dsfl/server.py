@@ -12,6 +12,7 @@ class DSFLServer(BaseServer):
         global_model,
         public_dataloader,
         aggregation="ERA",
+        distillation_loss_name="crossentropy",
         era_temperature=0.1,
         server_id=0,
         device="cpu",
@@ -22,6 +23,18 @@ class DSFLServer(BaseServer):
         self.era_temperature = era_temperature
         self.consensus = None
         self.device = device
+
+        self._set_distillation_loss(distillation_loss_name)
+
+    def _set_distillation_loss(self, name):
+        if name == "crossentropy":
+            self.distillation_loss = crossentropyloss_between_logits
+        elif name == "L2":
+            self.distillation_loss = torch.nn.MSELoss()
+        elif name == "L1":
+            self.distillation_loss = torch.nn.L1Loss()
+        else:
+            raise NotImplementedError(f"{name} is not supported")
 
     def action(self):
         self.update()
