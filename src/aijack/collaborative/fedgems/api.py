@@ -90,7 +90,9 @@ class FedGEMSAPI(BaseFLKnowledgeDistillationAPI):
             "loss_client_local_dataset": [],
             "loss_server_public_dataset": [],
             "loss_client_public_dataset": [],
-            "acc": [],
+            "acc_local": [],
+            "acc_pub": [],
+            "acc_val": [],
         }
 
         # train FedGEMS
@@ -123,9 +125,16 @@ class FedGEMSAPI(BaseFLKnowledgeDistillationAPI):
                 copy.deepcopy(loss_client_public_dataset)
             )
 
+            acc_on_local_dataset = self.local_score()
+            print(f"epoch={epoch} acc on local datasets: ", acc_on_local_dataset)
+            logging["acc_local"].append(acc_on_local_dataset)
+            acc_pub = self.score(self.public_dataloader)
+            print(f"epoch={epoch} acc on public dataset: ", acc_pub)
+            logging["acc_pub"].append(copy.deepcopy(acc_pub))
+            # evaluation
             if self.validation_dataloader is not None:
-                acc = self.score(self.validation_dataloader)
-                print(f"epoch={epoch} acc: ", acc)
-                logging["acc"].append(copy.deepcopy(acc))
+                acc_val = self.score(self.validation_dataloader)
+                print(f"epoch={epoch} acc on validation dataset: ", acc_val)
+                logging["acc_val"].append(copy.deepcopy(acc_val))
 
         return logging

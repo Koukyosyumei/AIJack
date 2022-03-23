@@ -62,7 +62,8 @@ class DSFLAPI(BaseFLKnowledgeDistillationAPI):
             "loss_local": [],
             "loss_client_consensus": [],
             "loss_server_consensus": [],
-            "acc": [],
+            "acc_local": [],
+            "acc_val": [],
         }
         for i in range(1, self.num_communication + 1):
             for _ in range(self.epoch_local_training):
@@ -90,8 +91,11 @@ class DSFLAPI(BaseFLKnowledgeDistillationAPI):
             print(f"epoch {i}: loss_client_consensus", temp_consensus_loss)
             print(f"epoch {i}: loss_server_consensus", loss_global)
 
+            acc_on_local_dataset = self.local_score()
+            print(f"epoch={i} acc on local datasets: ", acc_on_local_dataset)
+            logging["acc_local"].append(acc_on_local_dataset)
             # validation
             if self.validation_dataloader is not None:
-                acc = self.score(self.validation_dataloader)
-                print(f"epoch={i} acc: ", acc)
-                logging["acc"].append(copy.deepcopy(acc))
+                acc_val = self.score(self.validation_dataloader)
+                print(f"epoch={i} acc on validation dataset: ", acc_val)
+                logging["acc_val"].append(copy.deepcopy(acc_val))

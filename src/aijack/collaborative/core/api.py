@@ -69,3 +69,13 @@ class BaseFLKnowledgeDistillationAPI:
             for client in self.clients
         ]
         return {"server_score": server_score, "clients_score": clients_score}
+
+    def local_score(self):
+        local_score_list = []
+        for client, local_dataloader in zip(self.clients, self.local_dataloaders):
+            temp_score = accuracy_torch_dataloader(
+                client, local_dataloader, device=self.device
+            )
+            local_score_list.append(temp_score)
+
+        return {"clients_score": local_score_list}
