@@ -1,7 +1,6 @@
 import torch
 
 from ...utils.metrics import crossentropyloss_between_logits
-from ...utils.utils import worker_init_fn
 from ..core import BaseServer
 
 
@@ -50,17 +49,10 @@ class DSFLServer(BaseServer):
 
     def update_globalmodel(self, global_optimizer):
         running_loss = 0
-        for global_data, global_logit_data in zip(
-            self.public_dataloader,
-            torch.utils.data.DataLoader(
-                torch.utils.data.TensorDataset(self.consensus),
-                batch_size=self.public_dataloader.batch_size,
-                worker_init_fn=worker_init_fn,
-                shuffle=False,
-            ),
-        ):
+        for global_data in self.public_dataloader:
+            idx = global_data[0]
             x = global_data[1].to(self.device)
-            y_global = global_logit_data[0].to(self.device)
+            y_global = self.consensus[idx][0].to(self.device)
             y_global_test = torch.mean(
                 torch.stack([client(x) for client in self.clients]), dim=0
             )

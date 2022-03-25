@@ -1,7 +1,7 @@
 import torch
 
 from ...utils.metrics import crossentropyloss_between_logits
-from ...utils.utils import torch_round_x_decimal, worker_init_fn
+from ...utils.utils import torch_round_x_decimal
 from ..core import BaseClient
 
 
@@ -16,11 +16,12 @@ class DSFLClient(BaseClient):
         self.global_logit = None
 
     def upload(self):
-        y_pred = []
+        y_pred = [None for _ in range(len(self.public_dataloader.dataset))]
         for data in self.public_dataloader:
+            idx = data[0]
             x = data[1]
             x = x.to(self.device)
-            y_pred.append(self(x).detach())
+            y_pred[idx] = self(x).detach()
 
         result = torch.cat(y_pred)
         if self.round_decimal is None:
@@ -33,17 +34,10 @@ class DSFLClient(BaseClient):
 
     def approach_consensus(self, consensus_optimizer):
         running_loss = 0
-        for global_data, global_logit_data in zip(
-            self.public_dataloader,
-            torch.utils.data.DataLoader(
-                torch.utils.data.TensorDataset(self.global_logit),
-                batch_size=self.public_dataloader.batch_size,
-                worker_init_fn=worker_init_fn,
-                shuffle=False,
-            ),
-        ):
+        for global_data in self.public_dataloader:
+            idx = global_data[0]
             x = global_data[1].to(self.device)
-            y_global = global_logit_data[0].to(self.device).detach()
+            y_global = self.global_logit[idx].to(self.device).detach()
             consensus_optimizer.zero_grad()
             y_local = self(x)
             loss_consensus = crossentropyloss_between_logits(y_local, y_global)
