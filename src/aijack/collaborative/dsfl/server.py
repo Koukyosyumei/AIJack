@@ -52,7 +52,7 @@ class DSFLServer(BaseServer):
         for global_data in self.public_dataloader:
             idx = global_data[0]
             x = global_data[1].to(self.device)
-            y_global = self.consensus[idx][0].to(self.device)
+            y_global = self.consensus[idx].to(self.device)
             y_global_test = torch.mean(
                 torch.stack([client(x) for client in self.clients]), dim=0
             )

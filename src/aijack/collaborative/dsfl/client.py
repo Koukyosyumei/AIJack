@@ -7,7 +7,13 @@ from ..core import BaseClient
 
 class DSFLClient(BaseClient):
     def __init__(
-        self, model, public_dataloader, round_decimal=None, device="cpu", user_id=0
+        self,
+        model,
+        public_dataloader,
+        output_dim=1,
+        round_decimal=None,
+        device="cpu",
+        user_id=0,
     ):
         super().__init__(model, user_id)
         self.public_dataloader = public_dataloader
@@ -15,19 +21,22 @@ class DSFLClient(BaseClient):
         self.device = device
         self.global_logit = None
 
+        len_public_dataloader = len(self.public_dataloader.dataset)
+        self.logit2server = torch.ones((len_public_dataloader, output_dim)).to(
+            self.device
+        ) * float("inf")
+
     def upload(self):
-        y_pred = [None for _ in range(len(self.public_dataloader.dataset))]
         for data in self.public_dataloader:
             idx = data[0]
             x = data[1]
             x = x.to(self.device)
-            y_pred[idx] = self(x).detach()
+            self.logit2server[idx] = self(x).detach()
 
-        result = torch.cat(y_pred)
         if self.round_decimal is None:
-            return result
+            return self.logit2server
         else:
-            return torch_round_x_decimal(result, self.round_decimal)
+            return torch_round_x_decimal(self.logit2server, self.round_decimal)
 
     def download(self, global_logit):
         self.global_logit = global_logit
