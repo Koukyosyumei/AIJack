@@ -1,7 +1,7 @@
 import torch
 from torch import nn
 
-from ...utils.utils import torch_round_x_decimal, worker_init_fn
+from ...utils.utils import torch_round_x_decimal
 from ..core import BaseClient
 
 
@@ -10,6 +10,7 @@ class FedMDClient(BaseClient):
         self,
         model,
         public_dataloader,
+        output_dim=1,
         batch_size=8,
         user_id=0,
         base_loss_func=nn.CrossEntropyLoss(),
@@ -27,17 +28,22 @@ class FedMDClient(BaseClient):
 
         self.predicted_values_of_server = None
 
-    def upload(self):
-        y_pred = []
-        for data in self.public_dataloader:
-            x = data[1].to(self.device)
-            y_pred.append(self(x).detach())
+        len_public_dataloader = len(self.public_dataloader.dataset)
+        self.logit2server = torch.ones((len_public_dataloader, output_dim)).to(
+            self.device
+        ) * float("inf")
 
-        result = torch.cat(y_pred)
+    def upload(self):
+        for data in self.public_dataloader:
+            idx = data[0]
+            x = data[1]
+            x = x.to(self.device)
+            self.logit2server[idx] = self(x).detach()
+
         if self.round_decimal is None:
-            return result
+            return self.logit2server
         else:
-            return torch_round_x_decimal(result, self.round_decimal)
+            return torch_round_x_decimal(self.logit2server, self.round_decimal)
 
     def download(self, predicted_values_of_server):
         self.predicted_values_of_server = predicted_values_of_server
@@ -45,17 +51,10 @@ class FedMDClient(BaseClient):
     def approach_consensus(self, consensus_optimizer):
         running_loss = 0
 
-        for data_x, data_y in zip(
-            self.public_dataloader,
-            torch.utils.data.DataLoader(
-                torch.utils.data.TensorDataset(self.predicted_values_of_server),
-                batch_size=self.public_dataloader.batch_size,
-                worker_init_fn=worker_init_fn,
-                shuffle=True,
-            ),
-        ):
-            x = data_x[1].to(self.device)
-            y_consensus = data_y[0].to(self.device)
+        for data in self.public_dataloader:
+            idx = data[0]
+            x = data[1].to(self.device)
+            y_consensus = self.predicted_values_of_server[idx].to(self.device)
             consensus_optimizer.zero_grad()
             y_pred = self(x)
             loss = self.consensus_loss_func(y_pred, y_consensus)
