@@ -31,7 +31,7 @@ class DSFLClient(BaseClient):
             idx = data[0]
             x = data[1]
             x = x.to(self.device)
-            self.logit2server[idx] = self(x).detach()
+            self.logit2server[idx, :] = self(x).detach()
 
         if self.round_decimal is None:
             return self.logit2server
@@ -46,7 +46,7 @@ class DSFLClient(BaseClient):
         for global_data in self.public_dataloader:
             idx = global_data[0]
             x = global_data[1].to(self.device)
-            y_global = self.global_logit[idx].to(self.device).detach()
+            y_global = self.global_logit[idx, :].to(self.device).detach()
             consensus_optimizer.zero_grad()
             y_local = self(x)
             loss_consensus = crossentropyloss_between_logits(y_local, y_global)

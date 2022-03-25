@@ -38,7 +38,7 @@ class FedMDClient(BaseClient):
             idx = data[0]
             x = data[1]
             x = x.to(self.device)
-            self.logit2server[idx] = self(x).detach()
+            self.logit2server[idx, :] = self(x).detach()
 
         if self.round_decimal is None:
             return self.logit2server
@@ -54,7 +54,7 @@ class FedMDClient(BaseClient):
         for data in self.public_dataloader:
             idx = data[0]
             x = data[1].to(self.device)
-            y_consensus = self.predicted_values_of_server[idx].to(self.device)
+            y_consensus = self.predicted_values_of_server[idx, :].to(self.device)
             consensus_optimizer.zero_grad()
             y_pred = self(x)
             loss = self.consensus_loss_func(y_pred, y_consensus)
