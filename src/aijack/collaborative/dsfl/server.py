@@ -64,6 +64,8 @@ class DSFLServer(BaseServer):
             y_global_test = torch.mean(
                 torch.stack([client(x) for client in self.clients]), dim=0
             )
+            print(y_global[:, :3])
+            print(y_global_test[:, :3])
             assert torch.all(y_global == y_global_test)
             global_optimizer.zero_grad()
             y_pred = self(x)
