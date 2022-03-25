@@ -53,12 +53,12 @@ class DSFLServer(BaseServer):
             idx = global_data[0]
             x = global_data[1].to(self.device)
             y_global = self.consensus[idx].to(self.device)
-            y_global_test = torch.mean(
-                torch.stack([client(x) for client in self.clients]), dim=0
-            )
-            print(y_global[:, :3])
-            print(y_global_test[:, :3])
-            assert torch.all(y_global == y_global_test)
+            # y_global_test = torch.mean(
+            #    torch.stack([client(x) for client in self.clients]), dim=0
+            # )
+            # print(y_global[:, :3])
+            # print(y_global_test[:, :3])
+            # assert torch.all(y_global == y_global_test)
             global_optimizer.zero_grad()
             y_pred = self(x)
             loss_consensus = self.distillation_loss(y_pred, y_global)
