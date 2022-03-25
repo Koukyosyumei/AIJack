@@ -39,7 +39,7 @@ class DSFLClient(BaseClient):
                 torch.utils.data.TensorDataset(self.global_logit),
                 batch_size=self.public_dataloader.batch_size,
                 worker_init_fn=worker_init_fn,
-                shuffle=True,
+                shuffle=False,
             ),
         ):
             x = global_data[1].to(self.device)
