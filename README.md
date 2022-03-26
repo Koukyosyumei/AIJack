@@ -38,6 +38,8 @@ pip install git+https://github.com/Koukyosyumei/AIJack
 - FedAVG
 
 ```Python
+from aijack.collaborative import FedAvgClient, FedAvgServer
+
 clients = [FedAvgClient(local_model_1, user_id=0), FedAvgClient(local_model_2, user_id=1)]
 optimizers = [optim.SGD(clients[0].parameters()), optim.SGD(clients[1].parameters())]
 server = FedAvgServer(clients, global_model)
@@ -58,6 +60,8 @@ server.distribtue()
 - SplitNN
 
 ```Python
+from aijack.collaborative import SplitNN, SplitNNClient
+
 optimizers = [optim.Adam(model_1.parameters()), optim.Adam(model_2.parameters())]
 splitnn = SplitNN([SplitNNClient(model_1, user_id=0), SplitNNClient(model_2, user_id=1)])
 
@@ -81,7 +85,8 @@ for data dataloader:
 - MI-FACE (model inversion attack)
 
 ```Python
-# Fredrikson, Matt, Somesh Jha, and Thomas Ristenpart. "Model inversion attacks that exploit confidence information and basic countermeasures." Proceedings of the 22nd ACM SIGSAC conference on computer and communications security. 2015.
+# Fredrikson, Matt, Somesh Jha, and Thomas Ristenpart. "Model inversion attacks that exploit confidence information and basic countermeasures." Proceedings of the 22nd # ACM SIGSAC conference on computer and communications security. 2015.
+from aijack.attack import MI_FACE
 
 mi = MI_FACE(target_torch_net, input_shape)
 reconstructed_data, _ = mi.attack(target_label, lam, num_itr)
@@ -90,6 +95,8 @@ reconstructed_data, _ = mi.attack(target_label, lam, num_itr)
 - Gradient Inversion (server-side model inversion attack against federated learning)
 
 ```Python
+from aijack.attack import GradientInversion_Attack
+
 # DLG Attack (Zhu, Ligeng, Zhijian Liu, and Song Han. "Deep leakage from gradients." Advances in Neural Information Processing Systems 32 (2019).)
 attacker = GradientInversion_Attack(net, input_shape, distancename="l2")
 
@@ -119,10 +126,13 @@ attacker.attack(received_gradients)
 - GAN Attack (client-side model inversion attack against federated learning)
 
 ```Python
-# Hitaj, Briland, Giuseppe Ateniese, and Fernando Perez-Cruz. "Deep models under the GAN: information leakage from collaborative deep learning." Proceedings of the 2017 ACM SIGSAC Conference on Computer and Communications Security. 2017.
+# Hitaj, Briland, Giuseppe Ateniese, and Fernando Perez-Cruz. "Deep models under the GAN: information leakage from collaborative deep learning." Proceedings of the # 2017 ACM SIGSAC Conference on Computer and Communications Security. 2017.
+from aijack.attack import GAN_Attack
 
 gan_attacker = GAN_Attack(client, target_label, generator, optimizer, criterion)
+
 # --- normal federated learning --- 
+
 gan_attacker.update_discriminator()
 gan_attacker.update_generator(batch_size=64, epoch=1000, log_interval=100)
 ```
@@ -130,7 +140,9 @@ gan_attacker.update_generator(batch_size=64, epoch=1000, log_interval=100)
 - Label Leakage Attack
 
 ```Python
-# Li, Oscar, et al. "Label leakage and protection in two-party split learning." arXiv preprint arXiv:2102.08504 (2021).  
+# Li, Oscar, et al. "Label leakage and protection in two-party split learning." arXiv preprint arXiv:2102.08504 (2021).
+from aijack.attack import SplitNNNormAttack
+
 nall = SplitNNNormAttack(targte_splitnn)
 train_leak_auc = nall.attack(train_dataloader, criterion, device)
 ```
