@@ -38,11 +38,32 @@ pip install git+https://github.com/Koukyosyumei/AIJack
 - FedAVG
 
 ```Python
+client_1 = FedAvgClient(net_1, user_id=0)
+client_2 = FedAvgClient(net_2, user_id=1)
+server = FedAvgServer([client_1, client_2], global_model)
+# --- local training ---
+server.update()
+server.distribtue()
 ```
 
 - SplitNN
 
 ```Python
+optimizers = [optim.Adam(model_1.parameters()), optim.Adam(model_2.parameters())]
+splitnn = SplitNN([SplitNNClient(model_1, user_id=0), SplitNNClient(model_2, user_id=1)])
+
+for i, data in enumerate(victim_train_dataloader):
+    for opt in optimizers:
+        opt.zero_grad()
+
+    inputs, labels = data
+    outputs = splitnn(inputs)
+    loss = criterion(outputs, labels)
+    loss.backward()
+    splitnn.backward(outputs.grad)
+
+    for opt in optimizers:
+        opt.step()
 ```
 
 ### Attack
@@ -90,6 +111,11 @@ attacker.attack(received_gradients)
 
 ```Python
 # Hitaj, Briland, Giuseppe Ateniese, and Fernando Perez-Cruz. "Deep models under the GAN: information leakage from collaborative deep learning." Proceedings of the 2017 ACM SIGSAC Conference on Computer and Communications Security. 2017.
+
+gan_attacker = GAN_Attack(client, target_label, generator, optimizer, criterion)
+# --- normal federated learning --- 
+gan_attacker.update_discriminator()
+gan_attacker.update_generator(batch_size=64, epoch=1000, log_interval=100)
 ```
 
 - Label Leakage Attack
@@ -104,17 +130,7 @@ train_leak_auc = nall.attack(train_dataloader, criterion, device)
 
 ```python
 # Biggio, Battista, et al. "Evasion attacks against machine learning at test time." Joint European conference on machine learning and knowledge discovery in databases. Springer, Berlin, Heidelberg, 2013.
-attacker = Evasion_attack_sklearn(
-    target_model=clf,
-    X_minus_1=attackers_dataset,
-    dmax=(5000 / 255) * 2.5,
-    max_iter=300,
-    gamma=1 / (X_train.shape[1] * np.var(X_train)),
-    lam=10,
-    t=0.5,
-    h=10,
-)
-
+attacker = Evasion_attack_sklearn(target_model=clf, X_minus_1=attackers_dataset)
 result, log = attacker.attack(initial_datapoint)
 ```
 
@@ -123,7 +139,7 @@ result, log = attacker.attack(initial_datapoint)
 ```python
 # Biggio, Battista, Blaine Nelson, and Pavel Laskov. "Poisoning attacks against support vector machines." arXiv preprint arXiv:1206.6389 (2012).
 attacker = Poison_attack_sklearn(clf, X_train_, y_train_, t=0.5)
-xc_attacked, log = attacker.attack(xc, 1, X_valid, y_valid_, num_iterations=200)
+xc_attacked, log = attacker.attack(xc, 1, X_valid, y_valid)
 ```
 
 
@@ -133,11 +149,7 @@ xc_attacked, log = attacker.attack(xc, 1, X_valid, y_valid_, num_iterations=200)
 
 ```Python
 #  Abadi, Martin, et al. "Deep learning with differential privacy." Proceedings of the 2016 ACM SIGSAC conference on computer and communications security. 2016.
-ga = GeneralMomentAccountant(noise_type="Gaussian",
-                             search="greedy",
-                             precision=0.001,
-                             orders=list(range(2, 64)),
-                             bound_type="rdp_tight_upperbound")
+ga = GeneralMomentAccountant(noise_type="Gaussian", search="greedy", orders=list(range(2, 64)), bound_type="rdp_tight_upperbound")
 ga.add_step_info({"sigma":noise_multiplier}, sampling_rate, iterations)
 ga.get_epsilon(delta)
 ```
