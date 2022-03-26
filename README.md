@@ -218,8 +218,7 @@ for x_batch, y_batch in tqdm(train_loader):
 - Soteria (Defense against model inversion attack in federated learning)
 
 ```Python
-# Sun, Jingwei, et al. "Soteria: Provable defense against privacy leakage in federated learning from representation perspective." Proceedings of the IEEE/CVF
-Conference on Computer Vision and Pattern Recognition. 2021.
+# Sun, Jingwei, et al. "Soteria: Provable defense against privacy leakage in federated learning from representation perspective." Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition. 2021.
 from aijack.defense import SetoriaFedAvgClient
 
 client = SetoriaFedAvgClient(Net(), "conv", "lin", user_id=i, lr=lr)
