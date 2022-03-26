@@ -22,11 +22,44 @@
 
 # AIJack
 
-This package implements algorithms for AI security such as Model Inversion, Poisoning Attack, Evasion Attack, Differential Privacy, and Homomorphic Encryption. For example, you can experiment with a variant gradient inversion attack (a kind of model inversion attack) with the same API.
+This package implements algorithms for AI security such as Model Inversion, Poisoning Attack, Evasion Attack, Differential Privacy, and Homomorphic Encryption.
+
+## Install
+
+```
+pip install pybind11
+pip install git+https://github.com/Koukyosyumei/AIJack
+```
+
+## Usage
+
+### Collaborative Learning
+
+- FedAVG
 
 ```Python
-from aijack.attack import GradientInversion_Attack
+```
 
+- SplitNN
+
+```Python
+```
+
+### Attack
+
+
+- MI-FACE (model inversion attack)
+
+```Python
+# Fredrikson, Matt, Somesh Jha, and Thomas Ristenpart. "Model inversion attacks that exploit confidence information and basic countermeasures." Proceedings of the 22nd ACM SIGSAC conference on computer and communications security. 2015.
+
+mi = MI_FACE(target_torch_net, input_shape)
+reconstructed_data, _ = mi.attack(target_label, lam, num_itr)
+```
+
+- Gradient Inversion (server-side model inversion attack against federated learning)
+
+```Python
 # DLG Attack (Zhu, Ligeng, Zhijian Liu, and Song Han. "Deep leakage from gradients." Advances in Neural Information Processing Systems 32 (2019).)
 attacker = GradientInversion_Attack(net, input_shape, distancename="l2")
 
@@ -53,102 +86,24 @@ received_gradients = [cg.detach() for cg in received_gradients]
 attacker.attack(received_gradients)
 ```
 
+- GAN Attack (client-side model inversion attack against federated learning)
 
-## Contents
-
-- [AIJack](#aijack)
-  - [Contents](#contents)
-  - [Install](#install)
-  - [Supported Techniques](#supported-techniques)
-    - [Collaborative Learning](#collaborative-learning)
-    - [Attack](#attack)
-    - [Defense](#defense)
-  - [Usage](#usage)
-    - [Collaborative Learning](#collaborative-learning-1)
-    - [Attack](#attack-1)
-    - [Defense](#defense-1)
-  - [Supported Papers](#supported-papers)
-
-## Install
-
-```
-pip install pybind11
-pip install git+https://github.com/Koukyosyumei/AIJack
+```Python
+# Hitaj, Briland, Giuseppe Ateniese, and Fernando Perez-Cruz. "Deep models under the GAN: information leakage from collaborative deep learning." Proceedings of the 2017 ACM SIGSAC Conference on Computer and Communications Security. 2017.
 ```
 
-## Supported Techniques
+- Label Leakage Attack
 
-### Collaborative Learning
+```Python
+# Li, Oscar, et al. "Label leakage and protection in two-party split learning." arXiv preprint arXiv:2102.08504 (2021).  
+nall = SplitNNNormAttack(targte_splitnn)
+train_leak_auc = nall.attack(train_dataloader, criterion, device)
+```
 
-- [Federated Learning](example/collaborative_learning/README.md)
-- [Split Learning](example/collaborative_learning/README.md)
-
-### Attack
-
-- [evasion attack](example/adversarial_example/example_evasion_attack_svm.ipynb)
-- [poisoning attack](example/adversarial_example/example_poison_attack.ipynb)
-- [model inversion attack (simple pytorch model)](example/model_inversion/mi_face.py)
-- [model inversion attack (split learning)](example/model_inversion/generator_attack.py)
-- [model inverison attack (gradient inversion)](example/model_inversion/gradient_inversion_attack.md)
-- [membership inference attack](example/membership_inference/membership_inference_CIFAR10.ipynb)
-- [label leakage attack with split learning](example/label_leakage/label_leakage.py)
-
-### Defense
-
-- [Differential Privacy](example/differential_privacy/README.md)
-- [Soteria](example/model_inversion/soteria.py)
-- [POC of Homomorphic Encryption](test/defense/ckks/test_core.py)
-
-## Usage
-
-### Collaborative Learning
-
-<details><summary>Federated Learning</summary><div>
+- Evasion Attack
 
 ```python
-clients = [TorchModule(), TorcnModule()]
-global_model = TorchModule()
-server = FedAvgServer(clients, global_model)
-
-for _ in range(epoch):
-
-  for client in clients:
-    normal pytorch training.
-
-  server.update()
-  server.distribtue()
-```
-</div></details>
-
-<details><summary>Split Learning</summary><div>
-
-```python
-client_1 = SplitNNClient(first_model, user_id=0)
-client_2 = SplitNNClient(second_model, user_id=1)
-clients = [client_1, client_2]
-splitnn = SplitNN(clients)
-
-for _ in range(epoch):
-  for x, y in dataloader:
-
-    for opt in optimizers:
-      opt.zero_grad()
-
-    pred = splitnn(x)
-    loss = criterion(y, pred)
-    loss.backwad()
-    splitnn.backward()
-
-    for opt in optimizers:
-      opt.step()
-```
-</div></details>
-
-### Attack
-
-<details><summary>Evasion Attack</summary><div>
-
-```python
+# Biggio, Battista, et al. "Evasion attacks against machine learning at test time." Joint European conference on machine learning and knowledge discovery in databases. Springer, Berlin, Heidelberg, 2013.
 attacker = Evasion_attack_sklearn(
     target_model=clf,
     X_minus_1=attackers_dataset,
@@ -163,22 +118,21 @@ attacker = Evasion_attack_sklearn(
 result, log = attacker.attack(initial_datapoint)
 ```
 
-</div></details>
-
-<details><summary>Poisonning Attack</summary><div>
+- Poisoning Attack
 
 ```python
+# Biggio, Battista, Blaine Nelson, and Pavel Laskov. "Poisoning attacks against support vector machines." arXiv preprint arXiv:1206.6389 (2012).
 attacker = Poison_attack_sklearn(clf, X_train_, y_train_, t=0.5)
 xc_attacked, log = attacker.attack(xc, 1, X_valid, y_valid_, num_iterations=200)
 ```
 
-</div></details>
 
 ### Defense
 
-<details><summary>Moment Accountant</summary><div>
+- Moment Accountant (Differential Privacy)
 
 ```Python
+#  Abadi, Martin, et al. "Deep learning with differential privacy." Proceedings of the 2016 ACM SIGSAC conference on computer and communications security. 2016.
 ga = GeneralMomentAccountant(noise_type="Gaussian",
                              search="greedy",
                              precision=0.001,
@@ -188,11 +142,10 @@ ga.add_step_info({"sigma":noise_multiplier}, sampling_rate, iterations)
 ga.get_epsilon(delta)
 ```
 
-</div></details>
-
-<details><summary>DPSGD</summary><div>
+- DPSGD (Differential Privacy)
 
 ```Python
+#  Abadi, Martin, et al. "Deep learning with differential privacy." Proceedings of the 2016 ACM SIGSAC conference on computer and communications security. 2016.
 privacy_manager = PrivacyManager(
         accountant,
         optim.SGD,
@@ -219,11 +172,10 @@ for data in lot_loader(trainset):
     optimizer.step()
 ```
 
-</div></details>
-
-<details><summary>Soteria</summary><div>
+- Soteria
 
 ```Python
+# Sun, Jingwei, et al. "Soteria: Provable defense against privacy leakage in federated learning from representation perspective." Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition. 2021.
 client = SetoriaFedAvgClient(Net(), "conv", "lin", user_id=i, lr=lr)
 
 normal fedavg training
@@ -232,21 +184,3 @@ client.action_before_lossbackward()
 loss.backward()
 client.action_after_lossbackward("lin.0.weight")
 ```
-
-</div></details>
-
-## Supported Papers
-
-| Paper                                                                                                                                                                                                                                       | Type    | example                                                                     |
-| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- | --------------------------------------------------------------------------- |
-| Abadi, Martin, et al. "Deep learning with differential privacy." Proceedings of the 2016 ACM SIGSAC conference on computer and communications security. 2016.                                                                               | Defense | [script](example/model_inversion/mi_face_differential_privacy.py)           |
-| Yang, Ziqi, et al. "Defending model inversion and membership inference attacks via prediction purification." arXiv preprint arXiv:2005.03915 (2020).                                                                                        | Defense | Coming Soon!                                                                |
-| Shokri, Reza, et al. "Membership inference attacks against machine learning models." 2017 IEEE Symposium on Security and Privacy (SP). IEEE, 2017.                                                                                          | Attack  | [notebook](example/membership_inference/membership_inference_CIFAR10.ipynb) |  |
-| Fredrikson, Matt, Somesh Jha, and Thomas Ristenpart. "Model inversion attacks that exploit confidence information and basic countermeasures." Proceedings of the 22nd ACM SIGSAC conference on computer and communications security. 2015.  | Attack  | [script](example/model_inversion/mi_face.py)                                |
-| Hitaj, Briland, Giuseppe Ateniese, and Fernando Perez-Cruz. "Deep models under the GAN: information leakage from collaborative deep learning." Proceedings of the 2017 ACM SIGSAC Conference on Computer and Communications Security. 2017. | Attack  | [script](example/model_inversion/gan_attack.py)                             |
-| Biggio, Battista, et al. "Evasion attacks against machine learning at test time." Joint European conference on machine learning and knowledge discovery in databases. Springer, Berlin, Heidelberg, 2013. attack                            | Attack  | [notebook](example/adversarial_example/example_evasion_attack_svm.ipynb)    |
-| Biggio, Battista, Blaine Nelson, and Pavel Laskov. "Poisoning attacks against support vector machines." arXiv preprint arXiv:1206.6389 (2012).                                                                                              | Attack  | [notebook](example/adversarial_example/example_poison_attack.ipynb)         |
-| Li, Oscar, et al. "Label leakage and protection in two-party split learning." arXiv preprint arXiv:2102.08504 (2021).                                                                                                                       | Attack  | [script](example/label_leakage/label_leakage.py)                            |
-| Geiping, Jonas, et al. "Inverting Gradients--How easy is it to break privacy in federated learning?." arXiv preprint arXiv:2003.14053 (2020).                                                                                               | Attack  | [script](example/model_inversion/dlg_gs.py)                                 |
-| Zhu, Ligeng, and Song Han. "Deep leakage from gradients." Federated learning. Springer, Cham, 2020. 17-31.                                                                                                                                  | Attack  | [script](example/model_invresion/../model_inversion/dlg_gs.py)              |
-| Sun, Jingwei, et al. "Soteria: Provable Defense Against Privacy Leakage in Federated Learning From Representation Perspective." Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition. 2021.                    | Defense | [script](example/model_inversion/fedavg_dlg_gs.py)                          |
