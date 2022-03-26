@@ -68,13 +68,11 @@ splitnn = SplitNN([SplitNNClient(model_1, user_id=0), SplitNNClient(model_2, use
 for data dataloader:
     for opt in optimizers:
         opt.zero_grad()
-
     inputs, labels = data
     outputs = splitnn(inputs)
     loss = criterion(outputs, labels)
     loss.backward()
     splitnn.backward(outputs.grad)
-
     for opt in optimizers:
         opt.step()
 ```
@@ -107,16 +105,11 @@ attacker = GradientInversion_Attack(net, input_shape, distancename="cossim", tv_
 attacker = GradientInversion_Attack(net, input_shape, distancename="l2", optimize_label=False)
 
 # CPL (Wei, Wenqi, et al. "A framework for evaluating gradient leakage attacks in federated learning." arXiv preprint arXiv:2004.10397 (2020).)
-attacker = GradientInversion_Attack(net, input_shape, distancename="l2", optimize_label=False,
-                                        lm_reg_coef=0.01)
+attacker = GradientInversion_Attack(net, input_shape, distancename="l2", optimize_label=False, lm_reg_coef=0.01)
 
 # GradInversion (Yin, Hongxu, et al. "See through gradients: Image batch recovery via gradinversion." Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition. 2021.)
-attacker = GradientInversion_Attack(net, input_shape,
-                                                  distancename="l2", optimize_label=False,
-                                                  bn_reg_layers=[net.body[1], net.body[4], net.body[7]],
-                                                  group_num = 5,
-                                                  tv_reg_coef=0.00, l2_reg_coef=0.0001,
-                                                  bn_reg_coef=0.001, gc_reg_coef=0.001)
+attacker = GradientInversion_Attack(net, input_shape, distancename="l2", optimize_label=False, bn_reg_layers=[net.body[1], net.body[4], net.body[7]],
+                                    group_num = 5, tv_reg_coef=0.00, l2_reg_coef=0.0001, bn_reg_coef=0.001, gc_reg_coef=0.001)
                                                   
 received_gradients = torch.autograd.grad(loss, net.parameters())
 received_gradients = [cg.detach() for cg in received_gradients]
@@ -206,7 +199,7 @@ for data in lot_loader(trainset):
 
 ```Python
 # Wang, Tianhao, Yuheng Zhang, and Ruoxi Jia. "Improving robustness to model inversion attacks via mutual information regularization." arXiv preprint arXiv:2009.05241 (2020).
-from aijack.defense import VIB, KL_between_normals, mib_loss
+from aijack.defense import VIB, mib_loss
 
 net = VIB(encoder, decoder, dim_of_latent_space, num_samples=samples_amount)
 optimizer = torch.optim.Adam(net.parameters(), lr=1e-4)
@@ -214,12 +207,9 @@ optimizer = torch.optim.Adam(net.parameters(), lr=1e-4)
 for x_batch, y_batch in tqdm(train_loader):
     optimizer.zero_grad()
     y_pred, result_dict = net(x_batch)
-    
     sampled_y_pred = result_dict["sampled_decoded_outputs"]
-    p_z_given_x_mu = result_dict["p_z_given_x_mu"]
-    p_z_given_x_sigma = result_dict["p_z_given_x_sigma"]
-    approximated_z_mean = torch.zeros_like(p_z_given_x_mu)
-    approximated_z_sigma = torch.ones_like(p_z_given_x_sigma)
+    p_z_given_x_mu, p_z_given_x_sigma = result_dict["p_z_given_x_mu"], result_dict["p_z_given_x_sigma"]
+    approximated_z_mean, approximated_z_sigma = torch.zeros_like(p_z_given_x_mu), torch.ones_like(p_z_given_x_sigma)
     loss, I_ZY_bound, I_ZX_bound = mib_loss(y_batch, sampled_y_pred, p_z_given_x_mu, p_z_given_x_sigma, approximated_z_mean, approximated_z_sigma)
     loss.backward()
     optimizer.step()
