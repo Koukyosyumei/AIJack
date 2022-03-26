@@ -151,6 +151,8 @@ train_leak_auc = nall.attack(train_dataloader, criterion, device)
 
 ```python
 # Biggio, Battista, et al. "Evasion attacks against machine learning at test time." Joint European conference on machine learning and knowledge discovery in databases. Springer, Berlin, Heidelberg, 2013.
+from aijack.attack import Evasion_attack_sklearn
+
 attacker = Evasion_attack_sklearn(target_model=clf, X_minus_1=attackers_dataset)
 result, log = attacker.attack(initial_datapoint)
 ```
@@ -159,6 +161,8 @@ result, log = attacker.attack(initial_datapoint)
 
 ```python
 # Biggio, Battista, Blaine Nelson, and Pavel Laskov. "Poisoning attacks against support vector machines." arXiv preprint arXiv:1206.6389 (2012).
+from aijack.attack import Poison_attack_sklearn
+
 attacker = Poison_attack_sklearn(clf, X_train_, y_train_, t=0.5)
 xc_attacked, log = attacker.attack(xc, 1, X_valid, y_valid)
 ```
@@ -170,6 +174,8 @@ xc_attacked, log = attacker.attack(xc, 1, X_valid, y_valid)
 
 ```Python
 #  Abadi, Martin, et al. "Deep learning with differential privacy." Proceedings of the 2016 ACM SIGSAC conference on computer and communications security. 2016.
+from aijack.defense import GeneralMomentAccountant
+
 ga = GeneralMomentAccountant(noise_type="Gaussian", search="greedy", orders=list(range(2, 64)), bound_type="rdp_tight_upperbound")
 ga.add_step_info({"sigma":noise_multiplier}, sampling_rate, iterations)
 ga.get_epsilon(delta)
@@ -179,6 +185,8 @@ ga.get_epsilon(delta)
 
 ```Python
 #  Abadi, Martin, et al. "Deep learning with differential privacy." Proceedings of the 2016 ACM SIGSAC conference on computer and communications security. 2016.
+from aijack.defense import PrivacyManager
+
 privacy_manager = PrivacyManager(accountant, optim.SGD, l2_norm_clip=l2_norm_clip, dataset=trainset, iterations=iterations)
 dpoptimizer_cls, lot_loader, batch_loader = privacy_manager.privatize(noise_multiplier=sigma)
 
@@ -197,7 +205,10 @@ for data in lot_loader(trainset):
 - Soteria
 
 ```Python
-# Sun, Jingwei, et al. "Soteria: Provable defense against privacy leakage in federated learning from representation perspective." Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition. 2021.
+# Sun, Jingwei, et al. "Soteria: Provable defense against privacy leakage in federated learning from representation perspective." Proceedings of the IEEE/CVF
+Conference on Computer Vision and Pattern Recognition. 2021.
+from aijack.defense import SetoriaFedAvgClient
+
 client = SetoriaFedAvgClient(Net(), "conv", "lin", user_id=i, lr=lr)
 
 # --- normal fedavg training ---
