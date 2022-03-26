@@ -38,10 +38,19 @@ pip install git+https://github.com/Koukyosyumei/AIJack
 - FedAVG
 
 ```Python
-client_1 = FedAvgClient(net_1, user_id=0)
-client_2 = FedAvgClient(net_2, user_id=1)
-server = FedAvgServer([client_1, client_2], global_model)
-# --- local training ---
+clients = [FedAvgClient(local_model_1, user_id=0), FedAvgClient(local_model_2, user_id=1)]
+optimizers = [optim.SGD(clients[0].parameters()), optim.SGD(clients[1].parameters())]
+server = FedAvgServer(clients, global_model)
+
+for client, local_trainloader, local_optimizer in zip(clients, trainloaders, optimizers):
+    for data in local_trainloader:
+        inputs, labels = data
+        local_optimizer.zero_grad()
+        outputs = client(inputs)
+        loss = criterion(outputs, labels.to(torch.int64))
+        loss.backward()
+        optimizer.step()
+ 
 server.update()
 server.distribtue()
 ```
@@ -52,7 +61,7 @@ server.distribtue()
 optimizers = [optim.Adam(model_1.parameters()), optim.Adam(model_2.parameters())]
 splitnn = SplitNN([SplitNNClient(model_1, user_id=0), SplitNNClient(model_2, user_id=1)])
 
-for i, data in enumerate(victim_train_dataloader):
+for data dataloader:
     for opt in optimizers:
         opt.zero_grad()
 
@@ -158,19 +167,8 @@ ga.get_epsilon(delta)
 
 ```Python
 #  Abadi, Martin, et al. "Deep learning with differential privacy." Proceedings of the 2016 ACM SIGSAC conference on computer and communications security. 2016.
-privacy_manager = PrivacyManager(
-        accountant,
-        optim.SGD,
-        l2_norm_clip=l2_norm_clip,
-        dataset=trainset,
-        lot_size=lot_size,
-        batch_size=batch_size,
-        iterations=iterations,
-    )
-
-dpoptimizer_cls, lot_loader, batch_loader = privacy_manager.privatize(
-        noise_multiplier=sigma
-    )
+privacy_manager = PrivacyManager(accountant, optim.SGD, l2_norm_clip=l2_norm_clip, dataset=trainset, iterations=iterations)
+dpoptimizer_cls, lot_loader, batch_loader = privacy_manager.privatize(noise_multiplier=sigma)
 
 for data in lot_loader(trainset):
     X_lot, y_lot = data
@@ -190,7 +188,7 @@ for data in lot_loader(trainset):
 # Sun, Jingwei, et al. "Soteria: Provable defense against privacy leakage in federated learning from representation perspective." Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition. 2021.
 client = SetoriaFedAvgClient(Net(), "conv", "lin", user_id=i, lr=lr)
 
-normal fedavg training
+# --- normal fedavg training ---
 
 client.action_before_lossbackward()
 loss.backward()
