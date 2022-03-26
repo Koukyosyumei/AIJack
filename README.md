@@ -27,7 +27,7 @@ This package implements algorithms for AI security such as Model Inversion, Pois
 ## Install
 
 ```
-pip install pybind11
+# pip install pybind11 (uncomment if necessary)
 pip install git+https://github.com/Koukyosyumei/AIJack
 ```
 
