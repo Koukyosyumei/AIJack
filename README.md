@@ -72,6 +72,7 @@ attacker.attack(received_gradients)
 ## Install
 
 ```
+pip install pybind11
 pip install git+https://github.com/Koukyosyumei/AIJack
 ```
 
