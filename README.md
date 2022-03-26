@@ -202,7 +202,30 @@ for data in lot_loader(trainset):
     optimizer.step()
 ```
 
-- Soteria
+- MID (Defense against model inversion attak)
+
+```Python
+# Wang, Tianhao, Yuheng Zhang, and Ruoxi Jia. "Improving robustness to model inversion attacks via mutual information regularization." arXiv preprint arXiv:2009.05241 (2020).
+from aijack.defense import VIB, KL_between_normals, mib_loss
+
+net = VIB(encoder, decoder, dim_of_latent_space, num_samples=samples_amount)
+optimizer = torch.optim.Adam(net.parameters(), lr=1e-4)
+
+for x_batch, y_batch in tqdm(train_loader):
+    optimizer.zero_grad()
+    y_pred, result_dict = net(x_batch)
+    
+    sampled_y_pred = result_dict["sampled_decoded_outputs"]
+    p_z_given_x_mu = result_dict["p_z_given_x_mu"]
+    p_z_given_x_sigma = result_dict["p_z_given_x_sigma"]
+    approximated_z_mean = torch.zeros_like(p_z_given_x_mu)
+    approximated_z_sigma = torch.ones_like(p_z_given_x_sigma)
+    loss, I_ZY_bound, I_ZX_bound = mib_loss(y_batch, sampled_y_pred, p_z_given_x_mu, p_z_given_x_sigma, approximated_z_mean, approximated_z_sigma)
+    loss.backward()
+    optimizer.step()
+```
+
+- Soteria (Defense against model inversion attack in federated learning)
 
 ```Python
 # Sun, Jingwei, et al. "Soteria: Provable defense against privacy leakage in federated learning from representation perspective." Proceedings of the IEEE/CVF
