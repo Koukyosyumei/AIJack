@@ -1,4 +1,5 @@
 import torch
+from matplotlib import pyplot as plt
 
 from ..base_attack import BaseAttacker
 
@@ -17,12 +18,17 @@ class MI_FACE(BaseAttacker):
     def __init__(
         self,
         target_model,
-        input_shape,
+        input_shape=(1, 1, 64, 64),
+        target_label=0,
+        lam=0.01,
+        num_itr=100,
         auxterm_func=lambda x: 0,
         process_func=lambda x: x,
         apply_softmax=False,
         device="cpu",
         log_interval=1,
+        log_show_img=False,
+        show_img_func=lambda x: x * 0.5 + 0.5,
     ):
         """Inits MI_FACE
         Args:
@@ -33,17 +39,22 @@ class MI_FACE(BaseAttacker):
         """
         super().__init__(target_model)
         self.input_shape = input_shape
+        self.target_label = target_label
+        self.lam = lam
+        self.num_itr = num_itr
+
         self.auxterm_func = auxterm_func
         self.process_func = process_func
         self.device = device
         self.log_interval = log_interval
+        self.log_show_img = log_show_img
         self.apply_softmax = apply_softmax
+        self.show_img_func = show_img_func
+
+        self.log_image = []
 
     def attack(
         self,
-        target_label,
-        lam,
-        num_itr,
         init_x=None,
     ):
         """Execute the model inversion attack on the target model.
@@ -63,19 +74,43 @@ class MI_FACE(BaseAttacker):
         else:
             init_x = init_x.to(self.device)
             x = init_x
-        for i in range(num_itr):
-            pred = self.target_model(x)[:, [target_label]]
+
+        for i in range(self.num_itr):
+            x = x.detach()
+            x.requires_grad = True
+            pred = self.target_model(x)
             pred = pred.softmax(dim=1) if self.apply_softmax else pred
-            c = 1 - pred + self.auxterm_func(x)
+            target_pred = pred[:, [self.target_label]]
+            c = 1 - target_pred + self.auxterm_func(x)
             c.backward()
             grad = x.grad
+
             with torch.no_grad():
-                x -= lam * grad
+                x -= self.lam * grad
                 x = self.process_func(x)
             log.append(c.item())
 
             if self.log_interval != 0 and i % self.log_interval == 0:
                 print(f"epoch {i}: {c.item()}")
+                self._show_img(x)
+
+            self.log_image.append(x.clone())
+
+        self._show_img(x)
 
         x_numpy = x.to("cpu").detach().numpy().copy()
         return x_numpy, log
+
+    def _show_img(self, x):
+        if self.log_show_img:
+            if self.input_shape[1] == 1:
+                plt.imshow(
+                    self.show_img_func(x.detach().cpu().numpy()[0][0]),
+                    cmap="gray",
+                )
+                plt.show()
+            else:
+                plt.imshow(
+                    self.show_img_func(x.detach().cpu().numpy()[0].transpose(1, 2, 0))
+                )
+                plt.show()

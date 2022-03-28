@@ -68,7 +68,9 @@ class FedGEMSServer(BaseServer):
 
         # for each sample that the server predicts correctly
         if len(correct_idx) != 0:
-            loss_s1 += self.base_loss_func(y_pred[correct_idx], y[correct_idx])
+            loss_s1 += self.base_loss_func(
+                y_pred[correct_idx], y[correct_idx].to(torch.int64)
+            )
             self.global_pool_of_logits[idxs[correct_idx]] = y_pred[correct_idx].detach()
 
         # for each sample that the server predicts wrongly
@@ -79,7 +81,8 @@ class FedGEMSServer(BaseServer):
         ]
         if len(s_incorrect_not_star_idx) != 0:
             loss_s2 += self.epsilon * self.base_loss_func(
-                y_pred[s_incorrect_not_star_idx], y[s_incorrect_not_star_idx]
+                y_pred[s_incorrect_not_star_idx],
+                y[s_incorrect_not_star_idx].to(torch.int64),
             ) + (1 - self.epsilon) * self.kldiv_loss_func(
                 self.global_pool_of_logits[idxs[s_incorrect_not_star_idx]]
                 .softmax(dim=-1)

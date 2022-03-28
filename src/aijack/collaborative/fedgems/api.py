@@ -1,8 +1,6 @@
 import copy
 
-import numpy as np
 import torch
-from sklearn.metrics import accuracy_score
 
 from ..core.api import BaseFLKnowledgeDistillationAPI
 
@@ -41,30 +39,6 @@ class FedGEMSAPI(BaseFLKnowledgeDistillationAPI):
         self.epoch_client_on_publicdataset = epoch_client_on_publicdataset
         self.epoch_server_on_publicdataset = epoch_server_on_publicdataset
 
-    def train_client_on_local_dataset(self):
-        loss_on_local_dataest = []
-        for client_idx in range(self.client_num):
-            client = self.clients[client_idx]
-            trainloader = self.local_dataloaders[client_idx]
-            optimizer = self.client_optimizers[client_idx]
-
-            running_loss = 0.0
-            for data in trainloader:
-                _, x, y = data
-                x = x.to(self.device)
-                y = y.to(self.device)
-
-                optimizer.zero_grad()
-                loss = self.criterion(client(x), y)
-                loss.backward()
-                optimizer.step()
-
-                running_loss += loss.item()
-
-            loss_on_local_dataest.append(copy.deepcopy(running_loss / len(trainloader)))
-
-        return loss_on_local_dataest
-
     def train_client_on_public_dataset(self):
         loss_on_public_dataset = []
         for client_idx in range(self.client_num):
@@ -75,7 +49,7 @@ class FedGEMSAPI(BaseFLKnowledgeDistillationAPI):
             for data in self.public_dataloader:
                 idx, inputs, labels = data
                 inputs = inputs.to(self.device)
-                labels = labels.to(self.device)
+                labels = labels.to(self.device).to(torch.int64)
 
                 optimizer.zero_grad()
                 y_preds = client(inputs)
@@ -96,7 +70,7 @@ class FedGEMSAPI(BaseFLKnowledgeDistillationAPI):
         for data in self.public_dataloader:
             idx, x, y = data
             x = x.to(self.device)
-            y = y.to(self.device)
+            y = y.to(self.device).to(torch.int64)
 
             self.server_optimizer.zero_grad()
             server_loss = self.server.self_evaluation_on_the_public_dataset(idx, x, y)
@@ -111,36 +85,20 @@ class FedGEMSAPI(BaseFLKnowledgeDistillationAPI):
         self.server.action()
         return server_running_loss
 
-    def server_score(self, dataloader):
-        in_preds = []
-        in_label = []
-        with torch.no_grad():
-            for data in dataloader:
-                _, inputs, labels = data
-                inputs = inputs.to(self.device)
-                labels = labels.to(self.device)
-                outputs = self.server(inputs)
-                in_preds.append(outputs)
-                in_label.append(labels)
-            in_preds = torch.cat(in_preds)
-            in_label = torch.cat(in_label)
-
-        return accuracy_score(
-            np.array(torch.argmax(in_preds, axis=1).cpu()), np.array(in_label.cpu())
-        )
-
     def run(self):
         logging = {
             "loss_client_local_dataset": [],
             "loss_server_public_dataset": [],
             "loss_client_public_dataset": [],
-            "acc": [],
+            "acc_local": [],
+            "acc_pub": [],
+            "acc_val": [],
         }
 
         # train FedGEMS
         for epoch in range(1, self.num_communication + 1):
             for _ in range(self.epoch_client_on_localdataset):
-                loss_client_local_dataset = self.train_client_on_local_dataset()
+                loss_client_local_dataset = self.train_client(public=False)
             for _ in range(self.epoch_server_on_publicdataset):
                 loss_server_public_dataset = self.train_server_on_public_dataset()
             for _ in range(self.epoch_client_on_publicdataset):
@@ -167,9 +125,16 @@ class FedGEMSAPI(BaseFLKnowledgeDistillationAPI):
                 copy.deepcopy(loss_client_public_dataset)
             )
 
+            acc_on_local_dataset = self.local_score()
+            print(f"epoch={epoch} acc on local datasets: ", acc_on_local_dataset)
+            logging["acc_local"].append(acc_on_local_dataset)
+            acc_pub = self.score(self.public_dataloader)
+            print(f"epoch={epoch} acc on public dataset: ", acc_pub)
+            logging["acc_pub"].append(copy.deepcopy(acc_pub))
+            # evaluation
             if self.validation_dataloader is not None:
-                acc = self.server_score(self.validation_dataloader)
-                print(f"epoch={epoch} acc: ", acc)
-                logging["acc"].append(copy.deepcopy(acc))
+                acc_val = self.score(self.validation_dataloader)
+                print(f"epoch={epoch} acc on validation dataset: ", acc_val)
+                logging["acc_val"].append(copy.deepcopy(acc_val))
 
         return logging

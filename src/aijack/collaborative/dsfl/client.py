@@ -1,32 +1,25 @@
 import torch
-from torch import nn
 
+from ...utils.metrics import crossentropyloss_between_logits
 from ...utils.utils import torch_round_x_decimal
 from ..core import BaseClient
 
 
-class FedMDClient(BaseClient):
+class DSFLClient(BaseClient):
     def __init__(
         self,
         model,
         public_dataloader,
         output_dim=1,
-        batch_size=8,
-        user_id=0,
-        base_loss_func=nn.CrossEntropyLoss(),
-        consensus_loss_func=nn.L1Loss(),
         round_decimal=None,
         device="cpu",
+        user_id=0,
     ):
-        super(FedMDClient, self).__init__(model, user_id=user_id)
+        super().__init__(model, user_id)
         self.public_dataloader = public_dataloader
-        self.batch_size = batch_size
-        self.base_loss_func = base_loss_func
-        self.consensus_loss_func = consensus_loss_func
         self.round_decimal = round_decimal
         self.device = device
-
-        self.predicted_values_of_server = None
+        self.global_logit = None
 
         len_public_dataloader = len(self.public_dataloader.dataset)
         self.logit2server = torch.ones((len_public_dataloader, output_dim)).to(
@@ -45,21 +38,20 @@ class FedMDClient(BaseClient):
         else:
             return torch_round_x_decimal(self.logit2server, self.round_decimal)
 
-    def download(self, predicted_values_of_server):
-        self.predicted_values_of_server = predicted_values_of_server
+    def download(self, global_logit):
+        self.global_logit = global_logit
 
     def approach_consensus(self, consensus_optimizer):
         running_loss = 0
-
-        for data in self.public_dataloader:
-            idx = data[0]
-            x = data[1].to(self.device)
-            y_consensus = self.predicted_values_of_server[idx, :].to(self.device)
+        for global_data in self.public_dataloader:
+            idx = global_data[0]
+            x = global_data[1].to(self.device)
+            y_global = self.global_logit[idx, :].to(self.device).detach()
             consensus_optimizer.zero_grad()
-            y_pred = self(x)
-            loss = self.consensus_loss_func(y_pred, y_consensus)
-            loss.backward()
+            y_local = self(x)
+            loss_consensus = crossentropyloss_between_logits(y_local, y_global)
+            loss_consensus.backward()
             consensus_optimizer.step()
-            running_loss += loss.item()
-
+            running_loss += loss_consensus.item()
+        running_loss /= len(self.public_dataloader)
         return running_loss

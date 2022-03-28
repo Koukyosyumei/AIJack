@@ -1,7 +1,7 @@
 import torch
 
 
-def total_variation(x):
+def total_variance(x):
     dx = torch.mean(torch.abs(x[:, :, :, :-1] - x[:, :, :, 1:]))
     dy = torch.mean(torch.abs(x[:, :, :-1, :] - x[:, :, 1:, :]))
     return dx + dy

@@ -1,4 +1,9 @@
+import copy
 from abc import abstractmethod
+
+import torch
+
+from ...utils import accuracy_torch_dataloader
 
 
 class BaseFLKnowledgeDistillationAPI:
@@ -24,6 +29,53 @@ class BaseFLKnowledgeDistillationAPI:
 
         self.client_num = len(clients)
 
+    def train_client(self, public=True):
+        loss_on_local_dataest = []
+        for client_idx in range(self.client_num):
+            client = self.clients[client_idx]
+            if public:
+                trainloader = self.public_dataloader
+            else:
+                trainloader = self.local_dataloaders[client_idx]
+            optimizer = self.client_optimizers[client_idx]
+
+            running_loss = 0.0
+            for data in trainloader:
+                _, x, y = data
+                x = x.to(self.device)
+                y = y.to(self.device).to(torch.int64)
+
+                optimizer.zero_grad()
+                loss = self.criterion(client(x), y)
+                loss.backward()
+                optimizer.step()
+
+                running_loss += loss.item()
+
+            loss_on_local_dataest.append(copy.deepcopy(running_loss / len(trainloader)))
+
+        return loss_on_local_dataest
+
     @abstractmethod
     def run(self):
         pass
+
+    def score(self, dataloader):
+        server_score = accuracy_torch_dataloader(
+            self.server, dataloader, device=self.device
+        )
+        clients_score = [
+            accuracy_torch_dataloader(client, dataloader, device=self.device)
+            for client in self.clients
+        ]
+        return {"server_score": server_score, "clients_score": clients_score}
+
+    def local_score(self):
+        local_score_list = []
+        for client, local_dataloader in zip(self.clients, self.local_dataloaders):
+            temp_score = accuracy_torch_dataloader(
+                client, local_dataloader, device=self.device
+            )
+            local_score_list.append(temp_score)
+
+        return {"clients_score": local_score_list}

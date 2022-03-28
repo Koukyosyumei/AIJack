@@ -28,6 +28,6 @@ def test_m1face():
     hidden = 588
     net = LeNet(channel=channel, hideen=hidden, num_classes=num_classes)
 
-    mi = MI_FACE(net, (1, 1, 28, 28))
-    x_result_1, _ = mi.attack(0, 0.1, 1)
+    mi = MI_FACE(net, input_shape=(1, 1, 28, 28), target_label=0, lam=0.1, num_itr=1)
+    x_result_1, _ = mi.attack()
     assert x_result_1.shape == (1, 1, 28, 28)
