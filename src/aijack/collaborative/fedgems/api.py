@@ -6,6 +6,8 @@ from ..core.api import BaseFLKnowledgeDistillationAPI
 
 
 class FedGEMSAPI(BaseFLKnowledgeDistillationAPI):
+    """Implementation of `FedGEMS: Federated Learning of Larger Server Models via Selective Knowledge Fusion.`"""
+
     def __init__(
         self,
         server,
