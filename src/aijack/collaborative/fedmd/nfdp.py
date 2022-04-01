@@ -18,8 +18,8 @@ def get_epsilon_of_fedmd_nfdp(n, k, replacement=True):
         return math.log((n + 1) / (n + 1 - k))
 
 
-def get_sigma_of_fedmd_nfdp(n, k, replacement=True):
-    """Return sigma of FedMD-NFDP
+def get_delta_of_fedmd_nfdp(n, k, replacement=True):
+    """Return delta of FedMD-NFDP
 
     Args:
         n (int): training set size
@@ -27,7 +27,7 @@ def get_sigma_of_fedmd_nfdp(n, k, replacement=True):
         replacement (bool, optional): sampling w/o replacement. Defaults to True.
 
     Returns:
-        float: sigma of FedMD-NFDP
+        float: delta of FedMD-NFDP
     """
     if replacement:
         return 1 - ((n - 1) / n) ** k
