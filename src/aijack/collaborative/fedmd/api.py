@@ -6,6 +6,8 @@ from ..core.api import BaseFLKnowledgeDistillationAPI
 
 
 class FedMDAPI(BaseFLKnowledgeDistillationAPI):
+    """Implementation of `Fedmd: Heterogenous federated learning via model distillation`"""
+
     def __init__(
         self,
         server,
