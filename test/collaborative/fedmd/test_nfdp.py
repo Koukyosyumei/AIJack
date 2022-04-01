@@ -27,3 +27,6 @@ def test_FedMD_NFDP():
     assert get_sigma_of_fedmd_nfdp(300, 120, replacement=True) == pytest.approx(
         0.3301, 1e-4
     )
+    assert get_sigma_of_fedmd_nfdp(300, 300, replacement=True) == pytest.approx(
+        0.6327, 1e-4
+    )
