@@ -65,7 +65,7 @@ class MI_FACE(BaseAttacker):
             num_itr (int): number of iteration
 
         Returns:
-            x_numpy (np.array) :
+            best_img: inversed image with the best score
             log :
         """
         log = []
@@ -74,6 +74,9 @@ class MI_FACE(BaseAttacker):
         else:
             init_x = init_x.to(self.device)
             x = init_x
+
+        best_score = float("inf")
+        best_img = None
 
         for i in range(self.num_itr):
             x = x.detach()
@@ -84,6 +87,9 @@ class MI_FACE(BaseAttacker):
             c = 1 - target_pred + self.auxterm_func(x)
             c.backward()
             grad = x.grad
+
+            if c.item() < best_score:
+                best_img = x
 
             with torch.no_grad():
                 x -= self.lam * grad
@@ -98,8 +104,7 @@ class MI_FACE(BaseAttacker):
 
         self._show_img(x)
 
-        x_numpy = x.to("cpu").detach().numpy().copy()
-        return x_numpy, log
+        return best_img, log
 
     def _show_img(self, x):
         if self.log_show_img:
