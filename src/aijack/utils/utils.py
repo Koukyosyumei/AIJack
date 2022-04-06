@@ -23,6 +23,8 @@ def worker_init_fn(worker_id):
     worker_seed = worker_id % 2**32
     np.random.seed(worker_seed)
     random.seed(worker_seed)
+    torch.manual_seed(worker_seed)
+    torch.cuda.manual_seed(worker_seed)
 
 
 class RoundDecimal(torch.autograd.Function):
