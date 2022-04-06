@@ -21,6 +21,7 @@ def try_gpu(e):
 
 def worker_init_fn(worker_id):
     worker_seed = torch.initial_seed() % 2**32
+    print(f"worker_seed in {worker_id} is ", worker_seed)
     np.random.seed(worker_seed)
     random.seed(worker_seed)
 
