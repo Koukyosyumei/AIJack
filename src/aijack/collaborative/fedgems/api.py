@@ -23,6 +23,7 @@ class FedGEMSAPI(BaseFLKnowledgeDistillationAPI):
         epoch_client_on_publicdataset=10,
         epoch_server_on_publicdataset=10,
         device="cpu",
+        custom_action=lambda x: x,
     ):
         super().__init__(
             server,
@@ -40,6 +41,8 @@ class FedGEMSAPI(BaseFLKnowledgeDistillationAPI):
         self.epoch_client_on_localdataset = epoch_client_on_localdataset
         self.epoch_client_on_publicdataset = epoch_client_on_publicdataset
         self.epoch_server_on_publicdataset = epoch_server_on_publicdataset
+
+        self.custom_action = custom_action
 
     def train_client_on_public_dataset(self):
         loss_on_public_dataset = []
@@ -138,5 +141,7 @@ class FedGEMSAPI(BaseFLKnowledgeDistillationAPI):
                 acc_val = self.score(self.validation_dataloader)
                 print(f"epoch={epoch} acc on validation dataset: ", acc_val)
                 logging["acc_val"].append(copy.deepcopy(acc_val))
+
+            self.custom_action(self)
 
         return logging
