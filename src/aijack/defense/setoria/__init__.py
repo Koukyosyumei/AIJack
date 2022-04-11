@@ -1,1 +1,1 @@
-from .setoria_client import SetoriaFedAvgClient  # noqa: F401
+from .setoria_client import attach_setoria_to_client  # noqa: F401
