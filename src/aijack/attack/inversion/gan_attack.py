@@ -2,37 +2,23 @@ import copy
 
 import torch
 
-from ..base_attack import BaseAttacker
 
+def attack_ganattack_to_client(
+    cls,
+    target_label,
+    generator,
+    generator_optimizer,
+    generator_criterion,
+    nz=100,
+    device="cpu",
+    gan_batch_size=1,
+    gan_epoch=1,
+    gan_log_interval=0,
+):
+    class GANAttackClientWrapper(cls):
+        """GAN based model inversion attack (https://arxiv.org/abs/1702.07464)
 
-class GAN_Attack(BaseAttacker):
-    """GAN based model inversion attack (https://arxiv.org/abs/1702.07464)
-
-    Attributes:
-        model (torch.nn.Module):
-        target_label(int): index of target class
-        generator (torch.nn.Module): Generator
-        generator_optimizer (torch.optim.Optimizer): optimizer for the generator
-        generator_criterion (function): loss function for the generator
-        nz (int): dimension of latent space of the generator
-        user_id (int): user id
-        device (string): device type (cpu or cuda)
-    """
-
-    def __init__(
-        self,
-        client,
-        target_label,
-        generator,
-        generator_optimizer,
-        generator_criterion,
-        nz=100,
-        device="cpu",
-    ):
-        """Inits the GAN_Attack
-
-        Args:
-            model (torch.nn.Module):
+        Attributes:
             target_label(int): index of target class
             generator (torch.nn.Module): Generator
             generator_optimizer (torch.optim.Optimizer): optimizer for the generator
@@ -41,66 +27,82 @@ class GAN_Attack(BaseAttacker):
             user_id (int): user id
             device (string): device type (cpu or cuda)
         """
-        super().__init__(target_model=None)
-        self.client = client
-        self.target_label = target_label
-        self.generator = generator
-        self.generator_optimizer = generator_optimizer
-        self.generator_criterion = generator_criterion
-        self.nz = nz
-        self.device = device
 
-        self.discriminator = copy.deepcopy(self.client.model)
-        self.discriminator.to(self.device)
+        def __init__(self, *args, **kwargs):
+            super(GANAttackClientWrapper, self).__init__(*args, **kwargs)
 
-        self.noise = torch.randn(1, self.nz, 1, 1, device=self.device)
+            self.target_label = target_label
+            self.generator = generator
+            self.generator_optimizer = generator_optimizer
+            self.generator_criterion = generator_criterion
+            self.nz = nz
+            self.device = device
 
-    def update_generator(self, batch_size=10, epoch=1, log_interval=5):
-        """Updata the Generator
+            self.discriminator = copy.deepcopy(self.model)
+            self.discriminator.to(self.device)
 
-        Args:
-            batch_size (int): batch size
-            epoch (int): epoch
-            log_interval (int): interval of logging
-        """
+            self.noise = torch.randn(1, self.nz, 1, 1, device=self.device)
 
-        for i in range(1, epoch + 1):
-            running_error = 0
-            self.generator.zero_grad()
+        def update_generator(self, batch_size=10, epoch=1, log_interval=5):
+            """Updata the Generator
 
-            noise = torch.randn(batch_size, self.nz, 1, 1, device=self.device)
-            fake = self.generator(noise)
-            output = self.discriminator(fake)
+            Args:
+                batch_size (int): batch size
+                epoch (int): epoch
+                log_interval (int): interval of logging
+            """
 
-            label = torch.full(
-                (batch_size,), self.target_label, dtype=torch.int64, device=self.device
-            )
-            loss_generator = self.generator_criterion(output, label)
-            loss_generator.backward()
+            for i in range(1, epoch + 1):
+                running_error = 0
+                self.generator.zero_grad()
 
-            self.generator_optimizer.step()
+                noise = torch.randn(batch_size, self.nz, 1, 1, device=self.device)
+                fake = self.generator(noise)
+                output = self.discriminator(fake)
 
-            running_error += loss_generator.item()
-
-            if log_interval != 0 and i % log_interval == 0:
-                print(
-                    f"updating generator - epoch {i}: generator loss is {running_error/batch_size}"
+                label = torch.full(
+                    (batch_size,),
+                    self.target_label,
+                    dtype=torch.int64,
+                    device=self.device,
                 )
+                loss_generator = self.generator_criterion(output, label)
+                loss_generator.backward()
 
-    def update_discriminator(self):
-        """Update the discriminator"""
-        self.discriminator.load_state_dict(self.client.model.state_dict())
+                self.generator_optimizer.step()
 
-    def attack(self, n):
-        """Generate fake images
+                running_error += loss_generator.item()
 
-        Args:
-            n (int): the number of fake images created by the Generator
+                if log_interval != 0 and i % log_interval == 0:
+                    print(
+                        f"updating generator - epoch {i}: generator loss is {running_error/batch_size}"
+                    )
 
-        Returns:
-            fake: generated fake images
-        """
-        noise = torch.randn(n, self.nz, 1, 1, device=self.device)
-        with torch.no_grad():
-            fake = self.generator(noise)
-        return fake
+        def update_discriminator(self):
+            """Update the discriminator"""
+            self.discriminator.load_state_dict(self.model.state_dict())
+
+        def download(self, model_parameters):
+            super().download(model_parameters)
+            self.update_discriminator()
+            self.update_generator(
+                batch_size=gan_batch_size,
+                epoch=gan_epoch,
+                log_interval=gan_log_interval,
+            )
+
+        def attack(self, n):
+            """Generate fake images
+
+            Args:
+                n (int): the number of fake images created by the Generator
+
+            Returns:
+                fake: generated fake images
+            """
+            noise = torch.randn(n, self.nz, 1, 1, device=self.device)
+            with torch.no_grad():
+                fake = self.generator(noise)
+            return fake
+
+    return GANAttackClientWrapper
