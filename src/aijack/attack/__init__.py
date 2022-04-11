@@ -6,6 +6,6 @@ from .inversion import (  # noqa: F401
     GradientInversion_Attack,
     attack_ganattack_to_client,
 )
-from .labelleakage import SplitNNNormAttack  # noqa: F401
+from .labelleakage import attach_normattack_to_splitnn  # noqa: F401
 from .membership import AttackerModel, Membership_Inference, ShadowModel  # noqa: F401
 from .poison import Poison_attack_sklearn  # noqa: F401
