@@ -5,12 +5,20 @@ from ...collaborative import FedAvgClient
 
 class SetoriaFedAvgClient(FedAvgClient):
     def __init__(
-        self, model, input_layer, perturbed_layer, user_id=0, lr=0.1, epsilon=0.2
+        self,
+        model,
+        input_layer,
+        perturbed_layer,
+        user_id=0,
+        lr=0.1,
+        epsilon=0.2,
+        target_layer_name=None,
     ):
         super().__init__(model, user_id=user_id, lr=lr)
         self.input_layer = input_layer
         self.perturbed_layer = perturbed_layer
         self.epsilon = epsilon
+        self.target_layer_name = target_layer_name
 
         self._set_hook()
 
@@ -78,3 +86,8 @@ class SetoriaFedAvgClient(FedAvgClient):
             )
         }
         dl_dw[target_layer_name][self.topk_idxs, :] = 0
+
+    def backward(self, loss):
+        self.action_before_lossbackward()
+        super().backward(loss)
+        self.action_after_lossbackward(self.target_layer_name)

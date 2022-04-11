@@ -37,7 +37,9 @@ def test_soteria():
     y = torch.load("test/demodata/demo_mnist_y.pt")
 
     clients = [
-        SetoriaFedAvgClient(Net(), "conv", "lin", user_id=i, lr=lr)
+        SetoriaFedAvgClient(
+            Net(), "conv", "lin", user_id=i, lr=lr, target_layer_name="lin.0.weight"
+        )
         for i in range(client_num)
     ]
     optimizers = [optim.SGD(client.parameters(), lr=lr) for client in clients]
@@ -60,10 +62,8 @@ def test_soteria():
             outputs = client(x)
             loss = criterion(outputs, y.to(torch.int64))
 
-            client.action_before_lossbackward()
-            loss.backward()
+            client.backward(loss)
             temp_loss = loss.item() / client_num
-            client.action_after_lossbackward("lin.0.weight")
 
             optimizer.step()
 
