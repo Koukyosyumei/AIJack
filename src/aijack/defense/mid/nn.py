@@ -1,14 +1,17 @@
 import torch
 from torch import nn
 
+from .loss import mib_loss
+
 
 class VIB(nn.Module):
-    def __init__(self, encoder, decoder, dim_z=256, num_samples=10):
+    def __init__(self, encoder, decoder, dim_z=256, num_samples=10, beta=1e-3):
         super(VIB, self).__init__()
         self.dim_z = dim_z
         self.num_samples = num_samples
         self.encoder = encoder
         self.decoder = decoder
+        self.beta = beta
 
     def get_params_of_p_z_given_x(self, x):
         encoder_output = self.encoder(x)
@@ -46,3 +49,23 @@ class VIB(nn.Module):
             }
         else:
             return outputs
+
+    def loss(self, y, result_dict):
+        sampled_y_pred = result_dict["sampled_decoded_outputs"]
+        p_z_given_x_mu = result_dict["p_z_given_x_mu"]
+        p_z_given_x_sigma = result_dict["p_z_given_x_sigma"]
+
+        approximated_z_mean = torch.zeros_like(p_z_given_x_mu)
+        approximated_z_sigma = torch.ones_like(p_z_given_x_sigma)
+
+        loss, _, _ = mib_loss(
+            y,
+            sampled_y_pred,
+            p_z_given_x_mu,
+            p_z_given_x_sigma,
+            approximated_z_mean,
+            approximated_z_sigma,
+            beta=self.beta,
+        )
+
+        return loss

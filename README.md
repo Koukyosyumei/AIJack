@@ -52,7 +52,6 @@ for client, local_trainloader, local_optimizer in zip(clients, trainloaders, opt
         loss = criterion(outputs, labels.to(torch.int64))
         client.backward(loss)
         optimizer.step()
-
 server.action()
 ```
 
@@ -128,20 +127,22 @@ GANAttackFedAvgClient = attack_ganattack_to_client(
     criterion,
     nz=nz,
 )
-
 client = GANAttackFedAvgClient(client)
+# --- normal federated learning --- #
 reconstructed_image = client.attack(1)
-# --- normal federated learning ---
 ```
 
 - Label Leakage Attack
 
 ```Python
 # Li, Oscar, et al. "Label leakage and protection in two-party split learning." arXiv preprint arXiv:2102.08504 (2021).
-from aijack.attack import SplitNNNormAttack
+from aijack.attack import attach_normattack_to_splitnn
+from aijack.collaborative import SplitNN
 
-nall = SplitNNNormAttack(targte_splitnn)
-train_leak_auc = nall.attack(train_dataloader, criterion, device)
+NormAttackSplitNN = attach_normattack_to_splitnn(SplitNN, criterion)
+normattacksplitnn = NormAttackSplitNN(clients, optimizers)
+# --- normal split learning --- #
+leak_auc = normattacksplitnn.attack(target_dataloader)
 ```
 
 - Evasion Attack
@@ -167,23 +168,14 @@ xc_attacked, log = attacker.attack(xc, 1, X_valid, y_valid)
 
 ### Defense
 
-- Moment Accountant (Differential Privacy)
-
-```Python
-#  Abadi, Martin, et al. "Deep learning with differential privacy." Proceedings of the 2016 ACM SIGSAC conference on computer and communications security. 2016.
-from aijack.defense import GeneralMomentAccountant
-
-ga = GeneralMomentAccountant(noise_type="Gaussian", search="greedy", orders=list(range(2, 64)), bound_type="rdp_tight_upperbound")
-ga.add_step_info({"sigma":noise_multiplier}, sampling_rate, iterations)
-ga.get_epsilon(delta)
-```
-
 - DPSGD (Differential Privacy)
 
 ```Python
 #  Abadi, Martin, et al. "Deep learning with differential privacy." Proceedings of the 2016 ACM SIGSAC conference on computer and communications security. 2016.
+from aijack.defense import GeneralMomentAccountant
 from aijack.defense import PrivacyManager
 
+accountant = GeneralMomentAccountant(noise_type="Gaussian", search="greedy", orders=list(range(2, 64)), bound_type="rdp_tight_upperbound")
 privacy_manager = PrivacyManager(accountant, optim.SGD, l2_norm_clip=l2_norm_clip, dataset=trainset, iterations=iterations)
 dpoptimizer_cls, lot_loader, batch_loader = privacy_manager.privatize(noise_multiplier=sigma)
 
@@ -211,10 +203,7 @@ optimizer = torch.optim.Adam(net.parameters(), lr=1e-4)
 for x_batch, y_batch in tqdm(train_loader):
     optimizer.zero_grad()
     y_pred, result_dict = net(x_batch)
-    sampled_y_pred = result_dict["sampled_decoded_outputs"]
-    p_z_given_x_mu, p_z_given_x_sigma = result_dict["p_z_given_x_mu"], result_dict["p_z_given_x_sigma"]
-    approximated_z_mean, approximated_z_sigma = torch.zeros_like(p_z_given_x_mu), torch.ones_like(p_z_given_x_sigma)
-    loss, I_ZY_bound, I_ZX_bound = mib_loss(y_batch, sampled_y_pred, p_z_given_x_mu, p_z_given_x_sigma, approximated_z_mean, approximated_z_sigma)
+    loss = net.loss(y_batch, result_dict)
     loss.backward()
     optimizer.step()
 ```
