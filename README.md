@@ -50,11 +50,10 @@ for client, local_trainloader, local_optimizer in zip(clients, trainloaders, opt
         local_optimizer.zero_grad()
         outputs = client(inputs)
         loss = criterion(outputs, labels.to(torch.int64))
-        loss.backward()
+        client.backward(loss)
         optimizer.step()
- 
-server.update()
-server.distribtue()
+
+server.action()
 ```
 
 - SplitNN
@@ -62,19 +61,17 @@ server.distribtue()
 ```Python
 from aijack.collaborative import SplitNN, SplitNNClient
 
+clients = [SplitNNClient(model_1, user_id=0), SplitNNClient(model_2, user_id=1)]
 optimizers = [optim.Adam(model_1.parameters()), optim.Adam(model_2.parameters())]
-splitnn = SplitNN([SplitNNClient(model_1, user_id=0), SplitNNClient(model_2, user_id=1)])
+splitnn = SplitNN(clients, optimizers)
 
 for data dataloader:
-    for opt in optimizers:
-        opt.zero_grad()
+    splitnn.zero_grad()
     inputs, labels = data
     outputs = splitnn(inputs)
     loss = criterion(outputs, labels)
-    loss.backward()
-    splitnn.backward(outputs.grad)
-    for opt in optimizers:
-        opt.step()
+    splitnn.backward(loss)
+    splitnn.step()
 ```
 
 ### Attack
@@ -110,7 +107,7 @@ attacker = GradientInversion_Attack(net, input_shape, distancename="l2", optimiz
 # GradInversion (Yin, Hongxu, et al. "See through gradients: Image batch recovery via gradinversion." Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition. 2021.)
 attacker = GradientInversion_Attack(net, input_shape, distancename="l2", optimize_label=False, bn_reg_layers=[net.body[1], net.body[4], net.body[7]],
                                     group_num = 5, tv_reg_coef=0.00, l2_reg_coef=0.0001, bn_reg_coef=0.001, gc_reg_coef=0.001)
-                                                  
+
 received_gradients = torch.autograd.grad(loss, net.parameters())
 received_gradients = [cg.detach() for cg in received_gradients]
 attacker.attack(received_gradients)
@@ -120,14 +117,21 @@ attacker.attack(received_gradients)
 
 ```Python
 # Hitaj, Briland, Giuseppe Ateniese, and Fernando Perez-Cruz. "Deep models under the GAN: information leakage from collaborative deep learning." Proceedings of the # 2017 ACM SIGSAC Conference on Computer and Communications Security. 2017.
-from aijack.attack import GAN_Attack
+from aijack.attack import attack_ganattack_to_client
+from aijack.collaborative import FedAvgClient
 
-gan_attacker = GAN_Attack(client, target_label, generator, optimizer, criterion)
+GANAttackFedAvgClient = attack_ganattack_to_client(
+    FedAvgClient,
+    target_label,
+    generator,
+    optimizer_g,
+    criterion,
+    nz=nz,
+)
 
-# --- normal federated learning --- 
-
-gan_attacker.update_discriminator()
-gan_attacker.update_generator(batch_size=64, epoch=1000, log_interval=100)
+client = GANAttackFedAvgClient(client)
+reconstructed_image = client.attack(1)
+# --- normal federated learning ---
 ```
 
 - Label Leakage Attack
@@ -219,13 +223,13 @@ for x_batch, y_batch in tqdm(train_loader):
 
 ```Python
 # Sun, Jingwei, et al. "Soteria: Provable defense against privacy leakage in federated learning from representation perspective." Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition. 2021.
-from aijack.defense import SetoriaFedAvgClient
+from aijack.collaborative import FedAvgClient
+from aijack.defense import attach_soteria_to_client
 
-client = SetoriaFedAvgClient(Net(), "conv", "lin", user_id=i, lr=lr)
+SoteriaFedAvgClient = attach_soteria_to_client(
+    FedAvgClient, "conv", "lin", target_layer_name="lin.0.weight"
+)
+client = SoteriaFedAvgClient(Net(), user_id=i, lr=lr)
 
 # --- normal fedavg training ---
-
-client.action_before_lossbackward()
-loss.backward()
-client.action_after_lossbackward("lin.0.weight")
 ```
