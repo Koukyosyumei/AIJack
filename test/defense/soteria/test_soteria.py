@@ -4,7 +4,7 @@ def test_soteria():
     import torch.optim as optim
 
     from aijack.collaborative import FedAvgClient, FedAvgServer
-    from aijack.defense import attach_setoria_to_client
+    from aijack.defense import attach_soteria_to_client
 
     torch.manual_seed(0)
 
@@ -36,12 +36,12 @@ def test_soteria():
     x.requires_grad = True
     y = torch.load("test/demodata/demo_mnist_y.pt")
 
-    SetoriaFedAvgClient = attach_setoria_to_client(
+    SoteriaFedAvgClient = attach_soteria_to_client(
         FedAvgClient, "conv", "lin", target_layer_name="lin.0.weight"
     )
 
     clients = [
-        SetoriaFedAvgClient(
+        SoteriaFedAvgClient(
             Net(),
             user_id=i,
             lr=lr,

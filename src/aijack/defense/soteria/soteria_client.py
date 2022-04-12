@@ -1,16 +1,16 @@
 import torch
 
 
-def attach_setoria_to_client(
+def attach_soteria_to_client(
     cls,
     input_layer,
     perturbed_layer,
     epsilon=0.2,
     target_layer_name=None,
 ):
-    class SetoriaClientWrapper(cls):
+    class SoteriaClientWrapper(cls):
         def __init__(self, *args, **kwargs):
-            super(SetoriaClientWrapper, self).__init__(*args, **kwargs)
+            super(SoteriaClientWrapper, self).__init__(*args, **kwargs)
             self.input_layer = input_layer
             self.perturbed_layer = perturbed_layer
             self.epsilon = epsilon
@@ -88,4 +88,4 @@ def attach_setoria_to_client(
             super().backward(loss)
             self.action_after_lossbackward(self.target_layer_name)
 
-    return SetoriaClientWrapper
+    return SoteriaClientWrapper
