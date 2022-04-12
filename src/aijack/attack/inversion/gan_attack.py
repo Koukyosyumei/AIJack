@@ -14,6 +14,7 @@ def attack_ganattack_to_client(
     gan_batch_size=1,
     gan_epoch=1,
     gan_log_interval=0,
+    ignore_first_download=False,
 ):
     class GANAttackClientWrapper(cls):
         """GAN based model inversion attack (https://arxiv.org/abs/1702.07464)
@@ -42,6 +43,7 @@ def attack_ganattack_to_client(
             self.discriminator.to(self.device)
 
             self.noise = torch.randn(1, self.nz, 1, 1, device=self.device)
+            self.is_params_initialized = False
 
         def update_generator(self, batch_size=10, epoch=1, log_interval=5):
             """Updata the Generator
@@ -84,6 +86,9 @@ def attack_ganattack_to_client(
 
         def download(self, model_parameters):
             super().download(model_parameters)
+            if ignore_first_download and not self.is_params_initialized:
+                self.is_params_initialized = True
+                return
             self.update_discriminator()
             self.update_generator(
                 batch_size=gan_batch_size,
