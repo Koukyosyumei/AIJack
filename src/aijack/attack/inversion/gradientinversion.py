@@ -579,8 +579,15 @@ def attach_gradient_inversion_attack_to_server(
             set.attacker.target_model = self.clients[target_client_id]
 
         def attack(self, **kwargs):
-            received_gradient = self.clients[target_client_id].upload()
+            received_gradient = self.uploaded_gradients[target_client_id]
             return self.attacker.attack(received_gradient, **kwargs)
+
+        def group_attack(self, **kwargs):
+            received_gradient = self.uploaded_gradients[target_client_id]
+            return self.attacker.group_attack(received_gradient, **kwargs)
+
+        def reset_seed(self, seed):
+            self.attacker.reset_seed(seed)
 
     return GradientInversionServerWrapper
 

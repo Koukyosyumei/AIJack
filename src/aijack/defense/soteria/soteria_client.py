@@ -1,5 +1,7 @@
 import torch
 
+from ...manager import BaseManager
+
 
 def attach_soteria_to_client(
     cls,
@@ -89,3 +91,12 @@ def attach_soteria_to_client(
             self.action_after_lossbackward(self.target_layer_name)
 
     return SoteriaClientWrapper
+
+
+class SoteriaManager(BaseManager):
+    def __init__(self, *args, **kwargs):
+        self.args = args
+        self.kwargs = kwargs
+
+    def attach(self, cls):
+        return attach_soteria_to_client(cls, *self.args, **self.kwargs)

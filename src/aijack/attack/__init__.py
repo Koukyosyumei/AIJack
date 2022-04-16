@@ -5,6 +5,7 @@ from .inversion import (  # noqa: F401
     GANAttackManager,
     Generator_Attack,
     GradientInversion_Attack,
+    GradientInversionAttackManager,
     attach_ganattack_to_client,
 )
 from .labelleakage import NormAttackManager, attach_normattack_to_splitnn  # noqa: F401
