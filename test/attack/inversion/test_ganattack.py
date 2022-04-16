@@ -3,7 +3,7 @@ def test_ganattack():
     import torch.nn as nn
     import torch.optim as optim
 
-    from aijack.attack import GAN_Attack
+    from aijack.attack import GANAttackManager
     from aijack.collaborative import FedAvgClient, FedAvgServer
 
     nc = 1
@@ -72,27 +72,28 @@ def test_ganattack():
 
     criterion = nn.CrossEntropyLoss()
 
-    net_2 = Net()
-    client_2 = FedAvgClient(net_2, user_id=1)
-    optimizer_2 = optim.SGD(
-        client_2.parameters(), lr=0.02, weight_decay=1e-7, momentum=0.9
-    )
-
-    clients = [client_1, client_2]
-    optimizers = [optimizer_1, optimizer_2]
-
     generator = Generator(nz, nc, ngf)
     optimizer_g = optim.SGD(
         generator.parameters(), lr=0.05, weight_decay=1e-7, momentum=0.0
     )
-    gan_attacker = GAN_Attack(
-        client_2,
+
+    manager = GANAttackManager(
         target_label,
         generator,
         optimizer_g,
         criterion,
         nz=nz,
     )
+    GANAttackFedAvgClient = manager.attach(FedAvgClient)
+
+    net_2 = Net()
+    client_2 = GANAttackFedAvgClient(net_2, user_id=1)
+    optimizer_2 = optim.SGD(
+        client_2.parameters(), lr=0.02, weight_decay=1e-7, momentum=0.9
+    )
+
+    clients = [client_1, client_2]
+    optimizers = [optimizer_1, optimizer_2]
 
     global_model = Net()
     server = FedAvgServer(clients, global_model)
@@ -106,7 +107,7 @@ def test_ganattack():
             optimizer = optimizers[client_idx]
 
             if epoch != 0 and client_idx == adversary_client_id:
-                fake_image = gan_attacker.attack(fake_batch_size)
+                fake_image = client.attack(fake_batch_size)
                 inputs = torch.cat([inputs, fake_image])
                 labels = torch.cat(
                     [
@@ -121,11 +122,7 @@ def test_ganattack():
             # forward + backward + optimize
             outputs = client(inputs)
             loss = criterion(outputs, labels.to(torch.int64))
-            loss.backward()
+            client.backward(loss)
             optimizer.step()
 
-        server.update()
-        server.distribtue()
-
-        gan_attacker.update_discriminator()
-        gan_attacker.update_generator(batch_size=1, epoch=1, log_interval=0)
+        server.action()

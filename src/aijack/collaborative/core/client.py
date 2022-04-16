@@ -21,3 +21,6 @@ class BaseClient(torch.nn.Module):
 
     def eval(self):
         self.model.eval()
+
+    def backward(self, loss):
+        loss.backward()

@@ -3,8 +3,8 @@ def test_soteria():
     import torch.nn as nn
     import torch.optim as optim
 
-    from aijack.collaborative import FedAvgServer
-    from aijack.defense import SetoriaFedAvgClient
+    from aijack.collaborative import FedAvgClient, FedAvgServer
+    from aijack.defense import SoteriaManager
 
     torch.manual_seed(0)
 
@@ -36,8 +36,15 @@ def test_soteria():
     x.requires_grad = True
     y = torch.load("test/demodata/demo_mnist_y.pt")
 
+    manager = SoteriaManager("conv", "lin", target_layer_name="lin.0.weight")
+    SoteriaFedAvgClient = manager.attach(FedAvgClient)
+
     clients = [
-        SetoriaFedAvgClient(Net(), "conv", "lin", user_id=i, lr=lr)
+        SoteriaFedAvgClient(
+            Net(),
+            user_id=i,
+            lr=lr,
+        )
         for i in range(client_num)
     ]
     optimizers = [optim.SGD(client.parameters(), lr=lr) for client in clients]
@@ -59,11 +66,8 @@ def test_soteria():
 
             outputs = client(x)
             loss = criterion(outputs, y.to(torch.int64))
-
-            client.action_before_lossbackward()
-            loss.backward()
+            client.backward(loss)
             temp_loss = loss.item() / client_num
-            client.action_after_lossbackward("lin.0.weight")
 
             optimizer.step()
 

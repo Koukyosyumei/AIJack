@@ -9,7 +9,7 @@ from ..base_attack import BaseAttacker
 
 class Poison_attack_sklearn(BaseAttacker):
     def __init__(self, target_model, X_train, y_train, t=0.5):
-        """implementation of poison attack for sklearn classifier
+        """implementation of poison attack for sklearn binary classifier
            reference https://arxiv.org/abs/1206.6389
 
         Args:

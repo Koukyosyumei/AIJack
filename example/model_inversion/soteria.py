@@ -9,9 +9,9 @@ import torchvision
 import torchvision.transforms as transforms
 from matplotlib import pyplot as plt
 
-from aijack.attack import GradientInversion_Attack
+from aijack.attack import GradientInversionAttackManager
 from aijack.collaborative import FedAvgClient, FedAvgServer
-from aijack.defense import SetoriaFedAvgClient
+from aijack.defense import SoteriaManager
 from aijack.utils import NumpyDataset
 
 lr = 0.01
@@ -117,8 +117,10 @@ def main():
             FedAvgClient(Net(), user_id=i, lr=lr).to(device) for i in range(client_num)
         ]
     else:
+        manager = SoteriaManager("conv", "lin", target_layer_name="lin.0.weight")
+        SoteriaFedAvgClient = manager.attach(FedAvgClient)
         clients = [
-            SetoriaFedAvgClient(Net(), "conv", "lin", user_id=i, lr=lr).to(device)
+            SoteriaFedAvgClient(Net(), user_id=i, lr=lr).to(device)
             for i in range(client_num)
         ]
 
@@ -126,7 +128,15 @@ def main():
 
     global_model = Net()
     global_model.to(device)
-    server = FedAvgServer(clients, global_model, lr=lr)
+
+    manager = GradientInversionAttackManager(
+        (1, 28, 28),
+        log_interval=0,
+        num_iteration=100,
+        distancename="l2",
+    )
+    FedAvgServer_GradInvAttack = manager.attach(FedAvgServer)
+    server = FedAvgServer_GradInvAttack(clients, global_model, lr=lr)
 
     for epoch in range(epochs):
         for client_idx in range(client_num):
@@ -164,22 +174,11 @@ def main():
 
         server.action(gradients=True)
 
-    client_gradients = server.uploaded_gradients[-1]
-    client_gradients = [(c / len(trainloader)).detach() for c in client_gradients]
-
-    attacker = GradientInversion_Attack(
-        server,
-        (1, 28, 28),
-        lr=1.0,
-        log_interval=0,
-        num_iteration=100,
-        distancename="l2",
-    )
     num_seeds = 5
     fig = plt.figure()
     for s in range(num_seeds):
-        attacker.reset_seed(s)
-        result = attacker.attack(client_gradients)
+        server.reset_seed(s)
+        result = server.attack()
         ax1 = fig.add_subplot(2, num_seeds, s + 1)
         ax1.axis("off")
         ax1.imshow(result[0].detach().numpy()[0][0], cmap="gray")
@@ -192,26 +191,6 @@ def main():
     plt.savefig("dlg.png")
     plt.close()
 
-    attacker = GradientInversion_Attack(
-        server,
-        (1, 28, 28),
-        lr=1.0,
-        log_interval=0,
-        num_iteration=100,
-        distancename="cossim",
-    )
-    num_seeds = 5
-    fig = plt.figure()
-    for s in range(num_seeds):
-        attacker.reset_seed(s)
-        result = attacker.attack(client_gradients)
-        ax1 = fig.add_subplot(2, num_seeds, s + 1)
-        ax1.axis("off")
-        ax1.imshow(result[0].detach().numpy()[0][0], cmap="gray")
-        ax1.set_title(torch.argmax(result[1]).item())
-        ax2 = fig.add_subplot(2, num_seeds, num_seeds + s + 1)
-        ax2.imshow(cv2.medianBlur(result[0].detach().numpy()[0][0], 5), cmap="gray")
-        ax2.axis("off")
-    plt.suptitle("Result of GS")
-    plt.tight_layout()
-    plt.savefig("gs.png")
+
+if __name__ == "__main__":
+    main()

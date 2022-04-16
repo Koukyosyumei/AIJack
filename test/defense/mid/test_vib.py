@@ -3,7 +3,7 @@ def test_vib():
     from torch import nn
     from torch.utils.data import DataLoader, TensorDataset
 
-    from aijack.defense import VIB, mib_loss
+    from aijack.defense import VIB
 
     torch.manual_seed(0)
 
@@ -27,48 +27,28 @@ def test_vib():
     )
     decoder = nn.Linear(in_features=dim_z, out_features=10)
 
-    net = VIB(encoder, decoder, dim_z, num_samples=samples_amount)
+    net = VIB(encoder, decoder, dim_z, num_samples=samples_amount, beta=beta)
     opt = torch.optim.Adam(net.parameters(), lr=1e-4)
 
     loss_log = []
-    minus_izy_log = []
-    izx_log = []
 
     for _ in range(num_epochs):
         for x_batch, y_batch in train_loader:
             x_batch = x_batch
             y_batch = y_batch
 
-            y_pred, result_dict = net(x_batch)
-            assert y_pred.shape == (1, 10)
-            sampled_y_pred = result_dict["sampled_decoded_outputs"]
-            assert sampled_y_pred.shape == (1, 10, 15)
-            p_z_given_x_mu = result_dict["p_z_given_x_mu"]
-            assert p_z_given_x_mu.shape == (1, 256)
-            p_z_given_x_sigma = result_dict["p_z_given_x_sigma"]
-            assert p_z_given_x_sigma.shape == (1, 256)
-
-            approximated_z_mean = torch.zeros_like(p_z_given_x_mu)
-            approximated_z_sigma = torch.ones_like(p_z_given_x_sigma)
-
-            loss, minus_I_ZY_bound, I_ZX_bound = mib_loss(
-                y_batch,
-                sampled_y_pred,
-                p_z_given_x_mu,
-                p_z_given_x_sigma,
-                approximated_z_mean,
-                approximated_z_sigma,
-                beta=beta,
-            )
-
-            loss.backward()
-            opt.step()
             opt.zero_grad()
 
+            y_pred, result_dict = net(x_batch)
+            assert y_pred.shape == (1, 10)
+            assert result_dict["sampled_decoded_outputs"].shape == (1, 10, 15)
+            assert result_dict["p_z_given_x_mu"].shape == (1, 256)
+            assert result_dict["p_z_given_x_sigma"].shape == (1, 256)
+
+            loss = net.loss(y_batch, result_dict)
+            loss.backward()
+            opt.step()
+
             loss_log.append(loss.item())
-            minus_izy_log.append(minus_I_ZY_bound.item())
-            izx_log.append(I_ZX_bound.item())
 
     assert loss_log[0] is not None
-    assert minus_izy_log[0] is not None
-    assert izx_log[0] is not None

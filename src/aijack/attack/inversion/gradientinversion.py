@@ -3,6 +3,7 @@ import copy
 import torch
 import torch.nn as nn
 
+from ...manager import BaseManager
 from ..base_attack import BaseAttacker
 from .utils.distance import cossim, l2
 from .utils.regularization import (
@@ -508,3 +509,95 @@ class GradientInversion_Attack(BaseAttacker):
                     )
 
         return best_fake_x, best_fake_label
+
+
+def attach_gradient_inversion_attack_to_server(
+    cls,
+    x_shape,
+    y_shape=None,
+    optimize_label=True,
+    gradient_ignore_pos=[],
+    pos_of_final_fc_layer=-2,
+    num_iteration=100,
+    optimizer_class=torch.optim.LBFGS,
+    optimizername=None,
+    lossfunc=nn.CrossEntropyLoss(),
+    distancefunc=l2,
+    distancename=None,
+    tv_reg_coef=0.0,
+    lm_reg_coef=0.0,
+    l2_reg_coef=0.0,
+    bn_reg_coef=0.0,
+    gc_reg_coef=0.0,
+    bn_reg_layers=[],
+    custom_reg_func=None,
+    custom_reg_coef=0.0,
+    device="cpu",
+    log_interval=10,
+    save_loss=True,
+    seed=0,
+    group_num=5,
+    group_seed=None,
+    early_stopping=50,
+    target_client_id=0,
+):
+    class GradientInversionServerWrapper(cls):
+        def __init__(self, *args, **kwargs):
+            super(GradientInversionServerWrapper, self).__init__(*args, **kwargs)
+
+            self.attacker = GradientInversion_Attack(
+                self.clients[target_client_id],
+                x_shape,
+                y_shape=y_shape,
+                optimize_label=optimize_label,
+                gradient_ignore_pos=gradient_ignore_pos,
+                pos_of_final_fc_layer=pos_of_final_fc_layer,
+                num_iteration=num_iteration,
+                optimizer_class=optimizer_class,
+                optimizername=optimizername,
+                lossfunc=lossfunc,
+                distancefunc=distancefunc,
+                distancename=distancename,
+                tv_reg_coef=tv_reg_coef,
+                lm_reg_coef=lm_reg_coef,
+                l2_reg_coef=l2_reg_coef,
+                bn_reg_coef=bn_reg_coef,
+                gc_reg_coef=gc_reg_coef,
+                bn_reg_layers=bn_reg_layers,
+                custom_reg_func=custom_reg_func,
+                custom_reg_coef=custom_reg_coef,
+                device=device,
+                log_interval=log_interval,
+                save_loss=save_loss,
+                seed=seed,
+                group_num=group_num,
+                group_seed=group_seed,
+                early_stopping=early_stopping,
+            )
+
+        def change_target_client_id(self, target_client_id):
+            set.attacker.target_model = self.clients[target_client_id]
+
+        def attack(self, **kwargs):
+            received_gradient = self.uploaded_gradients[target_client_id]
+            return self.attacker.attack(received_gradient, **kwargs)
+
+        def group_attack(self, **kwargs):
+            received_gradient = self.uploaded_gradients[target_client_id]
+            return self.attacker.group_attack(received_gradient, **kwargs)
+
+        def reset_seed(self, seed):
+            self.attacker.reset_seed(seed)
+
+    return GradientInversionServerWrapper
+
+
+class GradientInversionAttackManager(BaseManager):
+    def __init__(self, *args, **kwargs):
+        self.args = args
+        self.kwargs = kwargs
+
+    def attach(self, cls):
+        return attach_gradient_inversion_attack_to_server(
+            cls, *self.args, **self.kwargs
+        )

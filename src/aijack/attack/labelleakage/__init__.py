@@ -1,1 +1,1 @@
-from .normattack import SplitNNNormAttack  # noqa: F401
+from .normattack import NormAttackManager, attach_normattack_to_splitnn  # noqa: F401
