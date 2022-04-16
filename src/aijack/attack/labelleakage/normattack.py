@@ -1,6 +1,8 @@
 import torch
 from sklearn.metrics import roc_auc_score
 
+from ...manager import BaseManager
+
 
 def attach_normattack_to_splitnn(
     cls, attack_criterion, target_client_index=0, device="cpu"
@@ -49,3 +51,12 @@ def attach_normattack_to_splitnn(
             return score
 
     return NormAttackSplitNNWrapper
+
+
+class NormAttackManager(BaseManager):
+    def __init__(self, *args, **kwargs):
+        self.args = args
+        self.kwargs = kwargs
+
+    def attach(self, cls):
+        return attach_normattack_to_splitnn(cls, *self.args, **self.kwargs)
