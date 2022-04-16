@@ -4,7 +4,7 @@ from .inversion import (  # noqa: F401
     MI_FACE,
     Generator_Attack,
     GradientInversion_Attack,
-    attack_ganattack_to_client,
+    attach_ganattack_to_client,
 )
 from .labelleakage import attach_normattack_to_splitnn  # noqa: F401
 from .membership import AttackerModel, Membership_Inference, ShadowModel  # noqa: F401

@@ -3,7 +3,7 @@ import copy
 import torch
 
 
-def attack_ganattack_to_client(
+def attach_ganattack_to_client(
     cls,
     target_label,
     generator,

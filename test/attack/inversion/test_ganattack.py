@@ -3,7 +3,7 @@ def test_ganattack():
     import torch.nn as nn
     import torch.optim as optim
 
-    from aijack.attack import attack_ganattack_to_client
+    from aijack.attack import attach_ganattack_to_client
     from aijack.collaborative import FedAvgClient, FedAvgServer
 
     nc = 1
@@ -76,7 +76,7 @@ def test_ganattack():
     optimizer_g = optim.SGD(
         generator.parameters(), lr=0.05, weight_decay=1e-7, momentum=0.0
     )
-    GANAttackFedAvgClient = attack_ganattack_to_client(
+    GANAttackFedAvgClient = attach_ganattack_to_client(
         FedAvgClient,
         target_label,
         generator,
