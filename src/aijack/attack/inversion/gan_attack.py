@@ -2,6 +2,8 @@ import copy
 
 import torch
 
+from ...manager import BaseManager
+
 
 def attach_ganattack_to_client(
     cls,
@@ -111,3 +113,12 @@ def attach_ganattack_to_client(
             return fake
 
     return GANAttackClientWrapper
+
+
+class GANAttackManager(BaseManager):
+    def __init__(self, *args, **kwargs):
+        self.args = args
+        self.kwargs = kwargs
+
+    def attach(self, cls):
+        return attach_ganattack_to_client(cls, *self.args, **self.kwargs)

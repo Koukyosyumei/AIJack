@@ -3,6 +3,7 @@ import copy
 import torch
 import torch.nn as nn
 
+from ...manager import BaseManager
 from ..base_attack import BaseAttacker
 from .utils.distance import cossim, l2
 from .utils.regularization import (
@@ -580,3 +581,16 @@ def attach_gradient_inversion_attack_to_server(
         def attack(self, **kwargs):
             received_gradient = self.clients[target_client_id].upload()
             return self.attacker.attack(received_gradient, **kwargs)
+
+    return GradientInversionServerWrapper
+
+
+class GradientInversionAttackManager(BaseManager):
+    def __init__(self, *args, **kwargs):
+        self.args = args
+        self.kwargs = kwargs
+
+    def attach(self, cls):
+        return attach_gradient_inversion_attack_to_server(
+            cls, *self.args, **self.kwargs
+        )
