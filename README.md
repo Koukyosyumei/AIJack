@@ -128,7 +128,7 @@ client = GANAttackFedAvgClient(client)
 reconstructed_image = client.attack(1)
 ```
 
-### Defense against Federated Learning
+### Defense for Federated Learning
 
 - Soteria
 
