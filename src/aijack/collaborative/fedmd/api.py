@@ -86,7 +86,7 @@ class FedMDAPI(BaseFLKnowledgeDistillationAPI):
 
         for i in range(1, self.transfer_epoch_private + 1):
             loss_local = self.train_client(public=False)
-            print(f"epoch {i} (local - pretrain): {loss_public}")
+            print(f"epoch {i} (local - pretrain): {loss_local}")
             logging["loss_client_local_dataset_transfer"].append(loss_local)
 
         for i in range(1, self.num_communication + 1):
