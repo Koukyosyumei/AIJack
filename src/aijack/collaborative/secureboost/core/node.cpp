@@ -5,6 +5,7 @@
 #include <limits>
 #include <algorithm>
 #include <set>
+#include <tuple>
 #include <unordered_map>
 using namespace std;
 
@@ -133,11 +134,13 @@ struct Node
         hessian = hessian_;
         idxs = idxs_;
 
-        row_count = y.size();
+        row_count = idxs.size();
         num_parties = parties.size();
 
         val = compute_weight();
-        find_split();
+
+        tuple<int, int, int> best_split = find_split();
+        vector<double> left_idxs = parties[get<0>(best_split)].split_rows(idxs, get<1>(best_split), get<2>(best_split));
     }
 
     double compute_weight()
@@ -152,15 +155,52 @@ struct Node
         return -1 * (sum_grad / (sum_hess + lam));
     }
 
-    void find_split()
+    double compute_gain(int left_grad, int right_grad, int left_hess, int right_hess)
     {
+        return 0.5 * ((left_grad * left_grad) / (left_hess + lam) +
+                      (right_grad * right_grad) / (right_hess + lam) -
+                      ((left_grad + right_grad) *
+                       (left_grad + right_grad) / (left_hess + right_hess + lam))) -
+               gamma;
+    }
+
+    tuple<int, int, int> find_split()
+    {
+        double sum_grad = 0;
+        double sum_hess = 0;
+        for (int i = 0; i < row_count; i++)
+        {
+            sum_grad += gradient[idxs[i]];
+            sum_hess += hessian[idxs[i]];
+        }
+
         double best_score = -1 * numeric_limits<double>::infinity();
+        double temp_score, temp_left_grad, temp_left_hess;
         int best_party_id, best_col_id, best_threshold_id;
         for (int i = 0; i < num_parties; i++)
         {
             vector<vector<pair<double, double>>> search_results =
                 parties[i].greedy_search_split(gradient, hessian, idxs);
+            for (int j = 0; j < search_results.size(); j++)
+            {
+                for (int k = 0; k < search_results[j].size(); k++)
+                {
+                    temp_left_grad = search_results[j][k].first;
+                    temp_left_hess = search_results[j][k].second;
+                    temp_score = compute_gain(temp_left_grad, sum_grad - temp_left_grad,
+                                              temp_left_hess, sum_hess - temp_left_hess);
+
+                    if (temp_score > best_score)
+                    {
+                        best_party_id = i;
+                        best_col_id = j;
+                        best_threshold_id = k;
+                    }
+                }
+            }
         }
+
+        return make_tuple(best_party_id, best_col_id, best_threshold_id);
     }
 
     bool is_leaf()
