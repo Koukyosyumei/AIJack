@@ -110,9 +110,9 @@ struct XGBoostClassifier : public XGBoostBase
         return hess;
     }
 
-    vector<double> get_init_pred(vector<vector<double>> x, vector<double> y)
+    vector<double> get_init_pred(vector<double> y)
     {
-        vector<double> init_pred(x.size(), 1);
+        vector<double> init_pred(y.size(), 1);
         return init_pred;
     }
 
