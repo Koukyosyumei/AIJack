@@ -14,18 +14,20 @@ struct Party
     vector<vector<double>> x; // partyが持つ特徴量
     vector<int> feature_id;   // partyが持つ特徴量のidのベクトル
     int party_id;             // partyのid
-    double subsample_cols;    // サンプリングされる特徴量の割合
+    int min_leaf;
+    double subsample_cols; // サンプリングされる特徴量の割合
 
     int col_count; // partyが持つ特徴量の種類の数
 
     unordered_map<int, pair<int, double>> lookup_table; // record_id: (feature_id, threshold)
     vector<vector<double>> temp_thresholds;             // feature_id->threshold
 
-    Party(vector<vector<double>> x_, vector<int> feaure_id_, int party_id_, double subsample_cols_ = 1.0)
+    Party(vector<vector<double>> x_, vector<int> feaure_id_, int party_id_, int min_leaf_, double subsample_cols_ = 1.0)
     {
         x = x_;
         feature_id = feaure_id_;
         party_id = party_id_;
+        min_leaf = min_leaf_;
         subsample_cols = subsample_cols_;
 
         col_count = x.at(0).size();
@@ -75,17 +77,23 @@ struct Party
             {
                 int temp_grad = 0;
                 int temp_hess = 0;
+                int temp_left_size = 0;
                 for (int r = 0; r < row_count; r++)
                 {
                     if (x_col[r] <= percentiles[p])
                     {
                         temp_grad += gradient[idxs[r]];
                         temp_hess += hessian[idxs[r]];
+                        temp_left_size += 1;
                     }
                 }
 
-                split_candidates_grad_hess[i].push_back(make_pair(temp_grad, temp_hess));
-                temp_thresholds[i].push_back(percentiles[p]);
+                if (temp_left_size >= min_leaf &&
+                    row_count - temp_left_size >= min_leaf)
+                {
+                    split_candidates_grad_hess[i].push_back(make_pair(temp_grad, temp_hess));
+                    temp_thresholds[i].push_back(percentiles[p]);
+                }
             }
         }
 
@@ -116,7 +124,7 @@ struct Node
     vector<double> y, gradient, hessian;
     vector<int> idxs;
     double min_child_weight, lam, gamma, eps;
-    int min_leaf, depth;
+    int depth;
     bool use_ispure;
 
     int party_id, record_id;
@@ -128,7 +136,7 @@ struct Node
     Node(vector<Party> parties_, vector<double> y_, vector<double> gradient_,
          vector<double> hessian_, vector<int> idxs_,
          double min_child_weight_, double lam_, double gamma_, double eps_,
-         int min_leaf_, int depth_)
+         int depth_)
     {
         parties = parties_;
         y = y_;
@@ -139,7 +147,6 @@ struct Node
         lam = lam_;
         gamma = gamma_;
         eps = eps_;
-        min_leaf = min_leaf_;
         depth = depth_;
 
         row_count = idxs.size();
@@ -195,6 +202,11 @@ struct Node
                 {
                     temp_left_grad = search_results[j][k].first;
                     temp_left_hess = search_results[j][k].second;
+
+                    if (temp_left_hess < min_child_weight ||
+                        sum_hess - temp_left_hess < min_child_weight)
+                        continue;
+
                     temp_score = compute_gain(temp_left_grad, sum_grad - temp_left_grad,
                                               temp_left_hess, sum_hess - temp_left_hess);
 
@@ -221,9 +233,9 @@ struct Node
                 right_idxs.push_back(idxs[i]);
 
         left = new Node(parties, y, gradient, hessian, left_idxs, min_child_weight,
-                        lam, gamma, eps, min_leaf, depth - 1);
+                        lam, gamma, eps, depth - 1);
         right = new Node(parties, y, gradient, hessian, right_idxs, min_child_weight,
-                         lam, gamma, eps, min_leaf, depth - 1);
+                         lam, gamma, eps, depth - 1);
     }
 
     bool is_leaf()
