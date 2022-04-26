@@ -92,7 +92,7 @@ struct Party
         return split_candidates_grad_hess;
     }
 
-    vector<double> split_rows(vector<int> idxs, int feature_opt_id, int threshold_opt_id)
+    vector<int> split_rows(vector<int> idxs, int feature_opt_id, int threshold_opt_id)
     {
         // feature_opt_idがthreshold_opt_id以下のindexを返す
         int row_count = idxs.size();
@@ -100,7 +100,7 @@ struct Party
         for (int r = 0; r < row_count; r++)
             x_col[r] = x[idxs[r]][feature_opt_id];
 
-        vector<double> left_idxs;
+        vector<int> left_idxs;
         double threshold = temp_thresholds[feature_opt_id][threshold_opt_id];
         for (int r = 0; r < row_count; r++)
             if (x_col[r] <= threshold)
@@ -115,7 +115,7 @@ struct Node
     vector<Party> parties;
     vector<double> y, gradient, hessian;
     vector<int> idxs;
-    double subsample_cols, min_child_weight, lam, gamma, eps;
+    double min_child_weight, lam, gamma, eps;
     int min_leaf, depth;
     bool use_ispure;
 
@@ -126,13 +126,21 @@ struct Node
 
     Node() {}
     Node(vector<Party> parties_, vector<double> y_, vector<double> gradient_,
-         vector<double> hessian_, vector<int> idxs_)
+         vector<double> hessian_, vector<int> idxs_,
+         double min_child_weight_, double lam_, double gamma_, double eps_,
+         int min_leaf_, int depth_)
     {
         parties = parties_;
         y = y_;
         gradient = gradient_;
         hessian = hessian_;
         idxs = idxs_;
+        min_child_weight = min_child_weight_;
+        lam = lam_;
+        gamma = gamma_;
+        eps = eps_;
+        min_leaf = min_leaf_;
+        depth = depth_;
 
         row_count = idxs.size();
         num_parties = parties.size();
@@ -140,7 +148,7 @@ struct Node
         val = compute_weight();
 
         tuple<int, int, int> best_split = find_split();
-        vector<double> left_idxs = parties[get<0>(best_split)].split_rows(idxs, get<1>(best_split), get<2>(best_split));
+        make_children_nodes(get<0>(best_split), get<1>(best_split), get<2>(best_split));
     }
 
     double compute_weight()
@@ -201,6 +209,21 @@ struct Node
         }
 
         return make_tuple(best_party_id, best_col_id, best_threshold_id);
+    }
+
+    void make_children_nodes(int best_party_id, int best_col_id, int best_threshold_id)
+    {
+        vector<int> left_idxs = parties[best_party_id].split_rows(idxs, best_col_id, best_threshold_id);
+        vector<int> right_idxs;
+        for (int i = 0; i < idxs.size(); i++)
+            if (!any_of(left_idxs.begin(), left_idxs.end(), [&](double x)
+                        { return x == idxs[i]; }))
+                right_idxs.push_back(idxs[i]);
+
+        left = new Node(parties, y, gradient, hessian, left_idxs, min_child_weight,
+                        lam, gamma, eps, min_leaf, depth - 1);
+        right = new Node(parties, y, gradient, hessian, right_idxs, min_child_weight,
+                         lam, gamma, eps, min_leaf, depth - 1);
     }
 
     bool is_leaf()
