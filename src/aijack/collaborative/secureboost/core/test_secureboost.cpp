@@ -51,8 +51,6 @@ int main()
         cin >> y[j];
 
     // --- Check Initialization --- //
-    cout << "Check Initialization" << endl;
-
     XGBoostClassifier clf = XGBoostClassifier(subsample_cols,
                                               min_child_weight,
                                               depth, min_leaf,
@@ -60,13 +58,11 @@ int main()
                                               boosting_rounds,
                                               lam, gamma, eps);
 
-    cout << "..check init_pred" << endl;
     vector<double> test_init_pred = {1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0};
     vector<double> init_pred = clf.get_init_pred(y);
     for (int i = 0; i < init_pred.size(); i++)
         assert(init_pred[i] == test_init_pred[i]);
 
-    cout << "..check grad" << endl;
     vector<double> base_pred;
     copy(init_pred.begin(), init_pred.end(), back_inserter(base_pred));
     vector<double> test_base_grad = {
@@ -83,41 +79,27 @@ int main()
     for (int i = 0; i < grad.size(); i++)
         assert(abs(grad[i] - test_base_grad[i]) <= 1e-5);
 
-    cout << "..check hess" << endl;
     vector<double> hess = clf.get_hess(base_pred, y);
     vector<double> test_hess = {0.19661, 0.19661, 0.19661, 0.19661, 0.19661, 0.19661, 0.19661, 0.19661};
     for (int i = 0; i < hess.size(); i++)
         assert(abs(hess[i] - test_hess[i]) <= 1e-5);
 
     // --- Check Training --- //
-    cout << "Check Training" << endl;
-
     clf.fit(parties, y);
-    cout << ".start checking the trained model" << endl;
 
-    cout << "..check idxs_root" << endl;
     vector<int> test_idxs_root = {0, 1, 2, 3, 4, 5, 6, 7};
     vector<int> idxs_root = clf.estimators[0].dtree.idxs;
     for (int i = 0; i < idxs_root.size(); i++)
         assert(idxs_root[i] == test_idxs_root[i]);
-    cout << "..check the depth of the first node" << endl;
     assert(clf.estimators[0].dtree.depth == 3);
-    cout << "..check the feature of the first leaf" << endl;
     assert(clf.estimators[0].dtree.parties
                [clf.estimators[0].dtree.party_id]
                    .lookup_table.at(clf.estimators[0].dtree.record_id)
                    .first == 0);
-    cout << "..check the val of the first leaf" << endl;
-    cout << clf.estimators[0].dtree.parties
-                [clf.estimators[0].dtree.party_id]
-                    .lookup_table.at(clf.estimators[0].dtree.record_id)
-                    .second
-         << endl;
     assert(clf.estimators[0].dtree.parties
                [clf.estimators[0].dtree.party_id]
                    .lookup_table.at(clf.estimators[0].dtree.record_id)
                    .second == 16);
-    cout << "..check is_leaf of the first node" << endl;
     assert(clf.estimators[0].dtree.is_leaf() == 0);
 
     vector<int> test_idxs_left = {0, 2, 7};
