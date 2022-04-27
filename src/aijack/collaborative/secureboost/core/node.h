@@ -22,7 +22,9 @@ struct Party
     unordered_map<int, pair<int, double>> lookup_table; // record_id: (feature_id, threshold)
     vector<vector<double>> temp_thresholds;             // feature_id->threshold
 
-    Party(vector<vector<double>> x_, vector<int> feaure_id_, int party_id_, int min_leaf_, double subsample_cols_ = 1.0)
+    Party() {}
+    Party(vector<vector<double>> x_, vector<int> feaure_id_, int party_id_,
+          int min_leaf_, double subsample_cols_ = 1.0)
     {
         x = x_;
         feature_id = feaure_id_;
@@ -36,7 +38,7 @@ struct Party
     vector<double> get_percentiles(vector<double> x_col)
     {
         vector<double> percentiles;
-        copy(percentiles.begin(), percentiles.end(), back_inserter(x_col));
+        copy(x_col.begin(), x_col.end(), back_inserter(percentiles));
         sort(percentiles.begin(), percentiles.end(),
              [&percentiles](size_t i1, size_t i2)
              { return percentiles[i1] < percentiles[i2]; });
@@ -75,8 +77,8 @@ struct Party
 
             for (int p = 0; p < percentiles.size(); p++)
             {
-                int temp_grad = 0;
-                int temp_hess = 0;
+                double temp_grad = 0;
+                double temp_hess = 0;
                 int temp_left_size = 0;
                 for (int r = 0; r < row_count; r++)
                 {
@@ -116,6 +118,14 @@ struct Party
 
         return left_idxs;
     }
+
+    int insert_lookup_table(int feature_opt_id, int threshold_opt_id)
+    {
+        lookup_table.emplace(lookup_table.size(),
+                             make_pair(feature_opt_id,
+                                       temp_thresholds[feature_opt_id][threshold_opt_id]));
+        return lookup_table.size() - 1;
+    }
 };
 
 struct Node
@@ -153,9 +163,14 @@ struct Node
         num_parties = parties.size();
 
         val = compute_weight();
-
         tuple<int, int, int> best_split = find_split();
-        make_children_nodes(get<0>(best_split), get<1>(best_split), get<2>(best_split));
+
+        if (!is_leaf())
+        {
+            party_id = get<0>(best_split);
+            record_id = parties[party_id].insert_lookup_table(get<1>(best_split), get<2>(best_split));
+            make_children_nodes(get<0>(best_split), get<1>(best_split), get<2>(best_split));
+        }
     }
 
     double compute_weight()
@@ -196,6 +211,7 @@ struct Node
         {
             vector<vector<pair<double, double>>> search_results =
                 parties[i].greedy_search_split(gradient, hessian, idxs);
+
             for (int j = 0; j < search_results.size(); j++)
             {
                 for (int k = 0; k < search_results[j].size(); k++)
@@ -212,6 +228,7 @@ struct Node
 
                     if (temp_score > best_score)
                     {
+                        best_score = temp_score;
                         best_party_id = i;
                         best_col_id = j;
                         best_threshold_id = k;
@@ -219,7 +236,7 @@ struct Node
                 }
             }
         }
-
+        score = best_score;
         return make_tuple(best_party_id, best_col_id, best_threshold_id);
     }
 

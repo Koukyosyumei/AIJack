@@ -2,7 +2,6 @@
 #include <iterator>
 #include <limits>
 #include <iostream>
-#include "node.h"
 #include "tree.h"
 #include "utils.h"
 using namespace std;

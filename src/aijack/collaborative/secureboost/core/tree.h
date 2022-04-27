@@ -3,7 +3,6 @@
 #include <limits>
 #include <iostream>
 #include "node.h"
-#include "utils.h"
 
 struct XGBoostTree
 {
