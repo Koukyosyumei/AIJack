@@ -47,7 +47,7 @@ struct Party
 
     bool is_left(int record_id, vector<double> xi)
     {
-        return xi[lookup_table[record_id].first] <= lookup_table[record_id].second;
+        return xi[feature_id[lookup_table[record_id].first]] <= lookup_table[record_id].second;
     }
 
     vector<vector<pair<double, double>>> greedy_search_split(vector<double> gradient,
@@ -135,7 +135,6 @@ struct Node
     vector<int> idxs;
     double min_child_weight, lam, gamma, eps;
     int depth;
-    bool use_ispure;
 
     int party_id, record_id;
     int row_count, num_parties;
@@ -185,7 +184,7 @@ struct Node
         return -1 * (sum_grad / (sum_hess + lam));
     }
 
-    double compute_gain(int left_grad, int right_grad, int left_hess, int right_hess)
+    double compute_gain(double left_grad, double right_grad, double left_hess, double right_hess)
     {
         return 0.5 * ((left_grad * left_grad) / (left_hess + lam) +
                       (right_grad * right_grad) / (right_hess + lam) -
@@ -262,11 +261,11 @@ struct Node
 
     bool is_pure()
     {
-        vector<int> y_temp(row_count);
+        vector<double> y_temp(row_count);
         for (int i = 0; i < row_count; i++)
             y_temp[i] = y[idxs[i]];
-        set<int> y_set_temp(y_temp.begin(), y_temp.end());
-        return use_ispure && y_set_temp.size() == 1;
+        set<double> y_set_temp(y_temp.begin(), y_temp.end());
+        return y_set_temp.size() == 1;
     }
 
     vector<double> predict(vector<vector<double>> x_new)
