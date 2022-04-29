@@ -540,6 +540,7 @@ def attach_gradient_inversion_attack_to_server(
     group_seed=None,
     early_stopping=50,
     target_client_id=0,
+    gradinvattack_kwargs={},
 ):
     class GradientInversionServerWrapper(cls):
         def __init__(self, *args, **kwargs):
@@ -573,6 +574,7 @@ def attach_gradient_inversion_attack_to_server(
                 group_num=group_num,
                 group_seed=group_seed,
                 early_stopping=early_stopping,
+                **gradinvattack_kwargs,
             )
 
         def change_target_client_id(self, target_client_id):
