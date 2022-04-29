@@ -83,6 +83,7 @@ class GradientInversion_Attack(BaseAttacker):
         group_num=5,
         group_seed=None,
         early_stopping=50,
+        clamp_range=None,
         **kwargs,
     ):
         """Inits GradientInversion_Attack class.
@@ -161,6 +162,7 @@ class GradientInversion_Attack(BaseAttacker):
         self.group_seed = list(range(group_num)) if group_seed is None else group_seed
 
         self.early_stopping = early_stopping
+        self.clamp_range = clamp_range
 
         self.kwargs = kwargs
 
@@ -425,6 +427,9 @@ class GradientInversion_Attack(BaseAttacker):
                 optimizer, fake_x, fake_label, received_gradients
             )
             distance = optimizer.step(closure)
+
+            if self.clamp_range is not None:
+                fake_x = torch.clamp(fake_x, self.clamp_range[0], self.clamp_range[1])
 
             if torch.sum(torch.isnan(distance)).item():
                 raise ValueError("stop because the culculated distance is Nan")
