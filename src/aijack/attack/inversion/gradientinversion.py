@@ -548,6 +548,7 @@ def attach_gradient_inversion_attack_to_server(
     group_num=5,
     group_seed=None,
     early_stopping=50,
+    clamp_range=None,
     target_client_id=0,
     gradinvattack_kwargs={},
 ):
@@ -583,6 +584,7 @@ def attach_gradient_inversion_attack_to_server(
                 group_num=group_num,
                 group_seed=group_seed,
                 early_stopping=early_stopping,
+                clamp_range=clamp_range,
                 **gradinvattack_kwargs,
             )
 
