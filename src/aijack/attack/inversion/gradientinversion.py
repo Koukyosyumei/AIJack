@@ -558,7 +558,7 @@ def attach_gradient_inversion_attack_to_server(
             super(GradientInversionServerWrapper, self).__init__(*args, **kwargs)
             self.target_client_id = target_client_id
             self.attacker = GradientInversion_Attack(
-                self.server,
+                self.server_model,
                 x_shape,
                 y_shape=y_shape,
                 optimize_label=optimize_label,
