@@ -76,6 +76,7 @@ class GradientInversion_Attack(BaseAttacker):
         bn_reg_layers=[],
         custom_reg_func=None,
         custom_reg_coef=0.0,
+        custom_generate_fake_grad_fn=None,
         device="cpu",
         log_interval=10,
         save_loss=True,
@@ -152,6 +153,8 @@ class GradientInversion_Attack(BaseAttacker):
 
         self.custom_reg_func = custom_reg_func
         self.custom_reg_coef = custom_reg_coef
+
+        self.custom_generate_fake_grad_fn = custom_generate_fake_grad_fn
 
         self.device = device
         self.log_interval = log_interval
@@ -317,6 +320,19 @@ class GradientInversion_Attack(BaseAttacker):
 
         return reg_term
 
+    def _generate_fake_gradients(self, fake_pred, fake_label):
+        if self.optimize_label:
+            loss = self.lossfunc(fake_pred, fake_label.softmax(dim=-1))
+        else:
+            loss = self.lossfunc(fake_pred, fake_label)
+        fake_gradients = torch.autograd.grad(
+            loss,
+            self.target_model.parameters(),
+            create_graph=True,
+            allow_unused=True,
+        )
+        return fake_gradients
+
     def _setup_closure(
         self, optimizer, fake_x, fake_label, received_gradients, group_fake_x=None
     ):
@@ -333,16 +349,12 @@ class GradientInversion_Attack(BaseAttacker):
         def closure():
             optimizer.zero_grad()
             fake_pred = self.target_model(fake_x)
-            if self.optimize_label:
-                loss = self.lossfunc(fake_pred, fake_label.softmax(dim=-1))
+            if self.custom_generate_fake_grad_fn is None:
+                fake_gradients = self._generate_fake_gradients(fake_pred, fake_label)
             else:
-                loss = self.lossfunc(fake_pred, fake_label)
-            fake_gradients = torch.autograd.grad(
-                loss,
-                self.target_model.parameters(),
-                create_graph=True,
-                allow_unused=True,
-            )
+                fake_gradients = self.custom_generate_fake_grad_fn(
+                    self, fake_pred, fake_label
+                )
             distance = self.distancefunc(
                 fake_gradients, received_gradients, self.gradient_ignore_pos
             )
@@ -542,6 +554,7 @@ def attach_gradient_inversion_attack_to_server(
     bn_reg_layers=[],
     custom_reg_func=None,
     custom_reg_coef=0.0,
+    custom_generate_fake_grad_fn=None,
     device="cpu",
     log_interval=10,
     save_loss=True,
@@ -578,6 +591,7 @@ def attach_gradient_inversion_attack_to_server(
                 bn_reg_layers=bn_reg_layers,
                 custom_reg_func=custom_reg_func,
                 custom_reg_coef=custom_reg_coef,
+                custom_generate_fake_grad_fn=custom_generate_fake_grad_fn,
                 device=device,
                 log_interval=log_interval,
                 save_loss=save_loss,
