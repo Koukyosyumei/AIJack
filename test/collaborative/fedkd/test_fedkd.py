@@ -80,7 +80,7 @@ def test_fedkd():
             teacher_loss_log.append(teacher_loss.item())
             student_loss_log.append(student_loss.item())
 
-        server.action(gradients=True)
+        server.action(use_gradients=True)
 
     assert teacher_loss_log[1] < teacher_loss_log[0]
     assert student_loss_log[1] < student_loss_log[0]

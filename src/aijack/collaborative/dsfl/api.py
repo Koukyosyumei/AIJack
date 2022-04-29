@@ -23,6 +23,7 @@ class DSFLAPI(BaseFLKnowledgeDistillationAPI):
         epoch_local_training=1,
         epoch_global_distillation=1,
         epoch_local_distillation=1,
+        custom_action=lambda x: x,
     ):
         """Init DSFLAPI
 
@@ -56,6 +57,8 @@ class DSFLAPI(BaseFLKnowledgeDistillationAPI):
         self.epoch_local_training = epoch_local_training
         self.epoch_global_distillation = epoch_global_distillation
         self.epoch_local_distillation = epoch_local_distillation
+
+        self.custom_action = custom_action
 
     def run(self):
         logging = {
@@ -99,3 +102,5 @@ class DSFLAPI(BaseFLKnowledgeDistillationAPI):
                 acc_val = self.score(self.validation_dataloader)
                 print(f"epoch={i} acc on validation dataset: ", acc_val)
                 logging["acc_val"].append(copy.deepcopy(acc_val))
+
+            self.custom_action(self)

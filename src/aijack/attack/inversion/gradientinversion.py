@@ -76,6 +76,7 @@ class GradientInversion_Attack(BaseAttacker):
         bn_reg_layers=[],
         custom_reg_func=None,
         custom_reg_coef=0.0,
+        custom_generate_fake_grad_fn=None,
         device="cpu",
         log_interval=10,
         save_loss=True,
@@ -83,6 +84,7 @@ class GradientInversion_Attack(BaseAttacker):
         group_num=5,
         group_seed=None,
         early_stopping=50,
+        clamp_range=None,
         **kwargs,
     ):
         """Inits GradientInversion_Attack class.
@@ -152,6 +154,8 @@ class GradientInversion_Attack(BaseAttacker):
         self.custom_reg_func = custom_reg_func
         self.custom_reg_coef = custom_reg_coef
 
+        self.custom_generate_fake_grad_fn = custom_generate_fake_grad_fn
+
         self.device = device
         self.log_interval = log_interval
         self.save_loss = save_loss
@@ -161,6 +165,7 @@ class GradientInversion_Attack(BaseAttacker):
         self.group_seed = list(range(group_num)) if group_seed is None else group_seed
 
         self.early_stopping = early_stopping
+        self.clamp_range = clamp_range
 
         self.kwargs = kwargs
 
@@ -315,6 +320,20 @@ class GradientInversion_Attack(BaseAttacker):
 
         return reg_term
 
+    def _generate_fake_gradients(self, fake_x, fake_label):
+        fake_pred = self.target_model(fake_x)
+        if self.optimize_label:
+            loss = self.lossfunc(fake_pred, fake_label.softmax(dim=-1))
+        else:
+            loss = self.lossfunc(fake_pred, fake_label)
+        fake_gradients = torch.autograd.grad(
+            loss,
+            self.target_model.parameters(),
+            create_graph=True,
+            allow_unused=True,
+        )
+        return fake_pred, fake_gradients
+
     def _setup_closure(
         self, optimizer, fake_x, fake_label, received_gradients, group_fake_x=None
     ):
@@ -329,18 +348,15 @@ class GradientInversion_Attack(BaseAttacker):
         """
 
         def closure():
-            optimizer.zero_grad()
-            fake_pred = self.target_model(fake_x)
-            if self.optimize_label:
-                loss = self.lossfunc(fake_pred, fake_label.softmax(dim=-1))
+            if self.custom_generate_fake_grad_fn is None:
+                fake_pred, fake_gradients = self._generate_fake_gradients(
+                    fake_x, fake_label
+                )
             else:
-                loss = self.lossfunc(fake_pred, fake_label)
-            fake_gradients = torch.autograd.grad(
-                loss,
-                self.target_model.parameters(),
-                create_graph=True,
-                allow_unused=True,
-            )
+                fake_pred, fake_gradients = self.custom_generate_fake_grad_fn(
+                    self, fake_x, fake_label
+                )
+            optimizer.zero_grad()
             distance = self.distancefunc(
                 fake_gradients, received_gradients, self.gradient_ignore_pos
             )
@@ -357,7 +373,7 @@ class GradientInversion_Attack(BaseAttacker):
 
         return closure
 
-    def _setup_attack(self, received_gradients, batch_size):
+    def _setup_attack(self, received_gradients, batch_size, labels=None):
         """Initialize the image and label, and set the optimizer
 
         Args:
@@ -368,11 +384,15 @@ class GradientInversion_Attack(BaseAttacker):
             initial images, labels, and the optimizer instance
         """
         fake_x = self._initialize_x(batch_size)
-        fake_label = (
-            self._initialize_label(batch_size)
-            if self.optimize_label
-            else self._estimate_label(received_gradients, batch_size)
-        )
+
+        if labels is None:
+            fake_label = (
+                self._initialize_label(batch_size)
+                if self.optimize_label
+                else self._estimate_label(received_gradients, batch_size)
+            )
+        else:
+            fake_label = labels
 
         optimizer = (
             self.optimizer_class([fake_x, fake_label], **self.kwargs)
@@ -396,7 +416,7 @@ class GradientInversion_Attack(BaseAttacker):
         self.seed = seed
         torch.manual_seed(seed)
 
-    def attack(self, received_gradients, batch_size=1):
+    def attack(self, received_gradients, batch_size=1, labels=None):
         """Reconstruct the images from the gradients received from the client
 
         Args:
@@ -410,7 +430,7 @@ class GradientInversion_Attack(BaseAttacker):
             ValueError: If the culculated distance become Nan
         """
         fake_x, fake_label, optimizer = self._setup_attack(
-            received_gradients, batch_size
+            received_gradients, batch_size, labels=labels
         )
 
         num_of_not_improve_round = 0
@@ -421,6 +441,10 @@ class GradientInversion_Attack(BaseAttacker):
                 optimizer, fake_x, fake_label, received_gradients
             )
             distance = optimizer.step(closure)
+
+            if self.clamp_range is not None:
+                with torch.no_grad():
+                    fake_x[:] = fake_x.clamp(self.clamp_range[0], self.clamp_range[1])
 
             if torch.sum(torch.isnan(distance)).item():
                 raise ValueError("stop because the culculated distance is Nan")
@@ -532,6 +556,7 @@ def attach_gradient_inversion_attack_to_server(
     bn_reg_layers=[],
     custom_reg_func=None,
     custom_reg_coef=0.0,
+    custom_generate_fake_grad_fn=None,
     device="cpu",
     log_interval=10,
     save_loss=True,
@@ -539,14 +564,16 @@ def attach_gradient_inversion_attack_to_server(
     group_num=5,
     group_seed=None,
     early_stopping=50,
+    clamp_range=None,
     target_client_id=0,
+    gradinvattack_kwargs={},
 ):
     class GradientInversionServerWrapper(cls):
         def __init__(self, *args, **kwargs):
             super(GradientInversionServerWrapper, self).__init__(*args, **kwargs)
-
+            self.target_client_id = target_client_id
             self.attacker = GradientInversion_Attack(
-                self.clients[target_client_id],
+                self.server_model,
                 x_shape,
                 y_shape=y_shape,
                 optimize_label=optimize_label,
@@ -566,6 +593,7 @@ def attach_gradient_inversion_attack_to_server(
                 bn_reg_layers=bn_reg_layers,
                 custom_reg_func=custom_reg_func,
                 custom_reg_coef=custom_reg_coef,
+                custom_generate_fake_grad_fn=custom_generate_fake_grad_fn,
                 device=device,
                 log_interval=log_interval,
                 save_loss=save_loss,
@@ -573,17 +601,20 @@ def attach_gradient_inversion_attack_to_server(
                 group_num=group_num,
                 group_seed=group_seed,
                 early_stopping=early_stopping,
+                clamp_range=clamp_range,
+                **gradinvattack_kwargs,
             )
 
         def change_target_client_id(self, target_client_id):
-            set.attacker.target_model = self.clients[target_client_id]
+            self.target_client_id = target_client_id
+            self.attacker.target_model = self.clients[self.target_client_id]
 
         def attack(self, **kwargs):
-            received_gradient = self.uploaded_gradients[target_client_id]
+            received_gradient = self.uploaded_gradients[self.target_client_id]
             return self.attacker.attack(received_gradient, **kwargs)
 
         def group_attack(self, **kwargs):
-            received_gradient = self.uploaded_gradients[target_client_id]
+            received_gradient = self.uploaded_gradients[self.target_client_id]
             return self.attacker.group_attack(received_gradient, **kwargs)
 
         def reset_seed(self, seed):

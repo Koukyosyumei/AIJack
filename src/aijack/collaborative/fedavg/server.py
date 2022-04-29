@@ -10,21 +10,33 @@ class FedAvgServer(BaseServer):
         self.lr = lr
         self.distribtue()
 
-    def action(self, gradients=True):
-        self.update(gradients)
+    def action(self, use_gradients=True):
+        self.receive(use_gradients)
+        self.update(use_gradients)
         self.distribtue()
 
-    def update(self, gradients=True):
-        if gradients:
+    def receive(self, use_gradients=True):
+        if use_gradients:
+            self.receive_local_gradients()
+        else:
+            self.receive_local_parameters()
+
+    def update(self, use_gradients=True):
+        if use_gradients:
             self.updata_from_gradients()
         else:
             self.update_from_parameters()
+
+    def receive_local_gradients(self):
+        self.uploaded_gradients = [c.upload_gradients() for c in self.clients]
+
+    def receive_local_parameters(self):
+        self.uploaded_parameters = [c.upload_parameters() for c in self.clients]
 
     def updata_from_gradients(self, weight=None):
         if weight is None:
             weight = np.ones(self.num_clients) / self.num_clients
 
-        self.uploaded_gradients = [c.upload_gradients() for c in self.clients]
         aggregated_gradients = [
             torch.zeros_like(params) for params in self.server_model.parameters()
         ]
@@ -43,12 +55,11 @@ class FedAvgServer(BaseServer):
         if weight is None:
             weight = np.ones(self.num_clients) / self.num_clients
 
-        uploaded_parameters = [c.upload_parameters() for c in self.clients]
-        averaged_params = uploaded_parameters[0]
+        averaged_params = self.uploaded_parameters[0]
 
         for k in averaged_params.keys():
-            for i in range(0, len(uploaded_parameters)):
-                local_model_params = uploaded_parameters[i]
+            for i in range(0, len(self.uploaded_parameters)):
+                local_model_params = self.uploaded_parameters[i]
                 w = weight[i]
                 if i == 0:
                     averaged_params[k] = local_model_params[k] * w
