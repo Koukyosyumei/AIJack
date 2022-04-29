@@ -73,6 +73,6 @@ def test_soteria():
 
         loss_log.append(temp_loss)
 
-        server.action(gradients=True)
+        server.action(use_gradients=True)
 
     assert loss_log[0] > loss_log[1]
