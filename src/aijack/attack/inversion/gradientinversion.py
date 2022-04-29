@@ -320,7 +320,8 @@ class GradientInversion_Attack(BaseAttacker):
 
         return reg_term
 
-    def _generate_fake_gradients(self, fake_pred, fake_label):
+    def _generate_fake_gradients(self, fake_x, fake_label):
+        fake_pred = self.target_model(fake_x)
         if self.optimize_label:
             loss = self.lossfunc(fake_pred, fake_label.softmax(dim=-1))
         else:
@@ -331,7 +332,7 @@ class GradientInversion_Attack(BaseAttacker):
             create_graph=True,
             allow_unused=True,
         )
-        return fake_gradients
+        return fake_pred, fake_gradients
 
     def _setup_closure(
         self, optimizer, fake_x, fake_label, received_gradients, group_fake_x=None
@@ -348,12 +349,13 @@ class GradientInversion_Attack(BaseAttacker):
 
         def closure():
             optimizer.zero_grad()
-            fake_pred = self.target_model(fake_x)
             if self.custom_generate_fake_grad_fn is None:
-                fake_gradients = self._generate_fake_gradients(fake_pred, fake_label)
+                fake_pred, fake_gradients = self._generate_fake_gradients(
+                    fake_x, fake_label
+                )
             else:
-                fake_gradients = self.custom_generate_fake_grad_fn(
-                    self, fake_pred, fake_label
+                fake_pred, fake_gradients = self.custom_generate_fake_grad_fn(
+                    self, fake_x, fake_label
                 )
             distance = self.distancefunc(
                 fake_gradients, received_gradients, self.gradient_ignore_pos
