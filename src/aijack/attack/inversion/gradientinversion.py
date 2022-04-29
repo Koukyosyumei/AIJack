@@ -429,7 +429,9 @@ class GradientInversion_Attack(BaseAttacker):
             distance = optimizer.step(closure)
 
             if self.clamp_range is not None:
+                fake_x = fake_x.detach()
                 fake_x = torch.clamp(fake_x, self.clamp_range[0], self.clamp_range[1])
+                fake_x.requires_grad = True
 
             if torch.sum(torch.isnan(distance)).item():
                 raise ValueError("stop because the culculated distance is Nan")
