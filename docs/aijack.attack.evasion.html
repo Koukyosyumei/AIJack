@@ -262,10 +262,10 @@ surrogate classifier f learnt on D</p>
 </dd>
 </dl>
 <dl>
-<dt>Usage:</dt><dd><p># datasets which contains only “3”
-X_minus_1 = X_train[np.where(y_train == “3”)]</p>
-<p># Attack_sklearn automatically detect the type of the classifier
-attacker = Attack_sklearn(target_model = target_model,</p>
+<dt>Usage:</dt><dd><p>&gt;&gt;# datasets which contains only “3”
+&gt;&gt;X_minus_1 = X_train[np.where(y_train == “3”)]</p>
+<p>&gt;&gt;# Attack_sklearn automatically detect the type of the classifier
+&gt;&gt;attacker = Attack_sklearn(target_model = target_model,</p>
 <blockquote>
 <div><p>X_minus_1 = X_minus_1,
 dmax =  (5000 / 255) * 2.5,
@@ -276,8 +276,8 @@ gamma = 1 / (X_train.shape[1] *</p>
 </div></blockquote>
 <p>lam = 10, t = 0.5, h = 10)</p>
 </div></blockquote>
-<p># x0 is the intial ponint (“7”)
-xm, log = attacker.attack(x0)</p>
+<p>&gt;&gt;# x0 is the intial ponint (“7”)
+&gt;&gt;xm, log = attacker.attack(x0)</p>
 </dd>
 </dl>
 <dl class="py method">
