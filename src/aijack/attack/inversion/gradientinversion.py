@@ -373,7 +373,7 @@ class GradientInversion_Attack(BaseAttacker):
 
         return closure
 
-    def _setup_attack(self, received_gradients, batch_size, labels=None):
+    def _setup_attack(self, received_gradients, batch_size, init_x=None, labels=None):
         """Initialize the image and label, and set the optimizer
 
         Args:
@@ -383,7 +383,7 @@ class GradientInversion_Attack(BaseAttacker):
         Returns:
             initial images, labels, and the optimizer instance
         """
-        fake_x = self._initialize_x(batch_size)
+        fake_x = self._initialize_x(batch_size) if init_x is None else init_x
 
         if labels is None:
             fake_label = (
@@ -416,7 +416,7 @@ class GradientInversion_Attack(BaseAttacker):
         self.seed = seed
         torch.manual_seed(seed)
 
-    def attack(self, received_gradients, batch_size=1, labels=None):
+    def attack(self, received_gradients, batch_size=1, init_x=None, labels=None):
         """Reconstruct the images from the gradients received from the client
 
         Args:
@@ -430,7 +430,7 @@ class GradientInversion_Attack(BaseAttacker):
             ValueError: If the culculated distance become Nan
         """
         fake_x, fake_label, optimizer = self._setup_attack(
-            received_gradients, batch_size, labels=labels
+            received_gradients, batch_size, init_x=init_x, labels=labels
         )
 
         num_of_not_improve_round = 0
