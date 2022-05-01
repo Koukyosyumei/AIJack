@@ -99,6 +99,187 @@ machine learning model cannot correctly classify.</p>
 <dt class="sig sig-object py" id="aijack.attack.evasion.evasion_attack.Evasion_attack_sklearn">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">aijack.attack.evasion.evasion_attack.</span></span><span class="sig-name descname"><span class="pre">Evasion_attack_sklearn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target_model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">X_minus_1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dmax</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_iter</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lam</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">h</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">distance</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'L1'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kde_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'L1'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/attack/evasion/evasion_attack.html#Evasion_attack_sklearn"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.attack.evasion.evasion_attack.Evasion_attack_sklearn" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="aijack.attack.html#aijack.attack.base_attack.BaseAttacker" title="aijack.attack.base_attack.BaseAttacker"><code class="xref py py-class docutils literal notranslate"><span class="pre">aijack.attack.base_attack.BaseAttacker</span></code></a></p>
+<dl class="simple">
+<dt>Create an adversarial example against sklearn objects</dt><dd><p>reference <a class="reference external" href="https://arxiv.org/abs/1708.06131">https://arxiv.org/abs/1708.06131</a></p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>target_model</strong> (<em>sklearn</em>) – sklearn classifier</p></li>
+<li><p><strong>X_minus_1</strong> (<em>numpy.array</em>) – datasets that contains
+only the class you want to misclasssify</p></li>
+<li><p><strong>dmax</strong> (<em>float</em>) – max distance between the adversarial example
+and initial one</p></li>
+<li><p><strong>max_iter</strong> (<em>int</em>) – maxium number of iterations</p></li>
+<li><p><strong>gamma</strong> (<em>float</em>) – parameter gamma of svm (used for only svm)</p></li>
+<li><p><strong>lam</strong> (<em>float</em>) – trade - off parameter</p></li>
+<li><p><strong>t</strong> (<em>float</em>) – step_size</p></li>
+<li><p><strong>h</strong> (<em>float</em>) – a badwidtch paramter for a KDE</p></li>
+<li><p><strong>distance</strong> (<em>str</em>) – type of distance such as L2 or L1</p></li>
+<li><p><strong>kde_type</strong> (<em>str</em>) – type of kernel density estimator</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="aijack.attack.evasion.evasion_attack.Evasion_attack_sklearn.target_model">
+<span class="sig-name descname"><span class="pre">target_model</span></span><a class="headerlink" href="#aijack.attack.evasion.evasion_attack.Evasion_attack_sklearn.target_model" title="Permalink to this definition"></a></dt>
+<dd><p>sklearn classifier</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>sklearn</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="aijack.attack.evasion.evasion_attack.Evasion_attack_sklearn.X_minus_1">
+<span class="sig-name descname"><span class="pre">X_minus_1</span></span><a class="headerlink" href="#aijack.attack.evasion.evasion_attack.Evasion_attack_sklearn.X_minus_1" title="Permalink to this definition"></a></dt>
+<dd><p>datasets that contains
+only the class you want to misclasssify</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>numpy.array</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="aijack.attack.evasion.evasion_attack.Evasion_attack_sklearn.dmax">
+<span class="sig-name descname"><span class="pre">dmax</span></span><a class="headerlink" href="#aijack.attack.evasion.evasion_attack.Evasion_attack_sklearn.dmax" title="Permalink to this definition"></a></dt>
+<dd><p>max distance between the adversarial example
+and initial one</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="aijack.attack.evasion.evasion_attack.Evasion_attack_sklearn.max_iter">
+<span class="sig-name descname"><span class="pre">max_iter</span></span><a class="headerlink" href="#aijack.attack.evasion.evasion_attack.Evasion_attack_sklearn.max_iter" title="Permalink to this definition"></a></dt>
+<dd><p>maxium number of iterations</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="aijack.attack.evasion.evasion_attack.Evasion_attack_sklearn.gamma">
+<span class="sig-name descname"><span class="pre">gamma</span></span><a class="headerlink" href="#aijack.attack.evasion.evasion_attack.Evasion_attack_sklearn.gamma" title="Permalink to this definition"></a></dt>
+<dd><p>parameter gamma of svm (used for only svm)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="aijack.attack.evasion.evasion_attack.Evasion_attack_sklearn.lam">
+<span class="sig-name descname"><span class="pre">lam</span></span><a class="headerlink" href="#aijack.attack.evasion.evasion_attack.Evasion_attack_sklearn.lam" title="Permalink to this definition"></a></dt>
+<dd><p>trade - off parameter</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="aijack.attack.evasion.evasion_attack.Evasion_attack_sklearn.t">
+<span class="sig-name descname"><span class="pre">t</span></span><a class="headerlink" href="#aijack.attack.evasion.evasion_attack.Evasion_attack_sklearn.t" title="Permalink to this definition"></a></dt>
+<dd><p>step_size</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="aijack.attack.evasion.evasion_attack.Evasion_attack_sklearn.h">
+<span class="sig-name descname"><span class="pre">h</span></span><a class="headerlink" href="#aijack.attack.evasion.evasion_attack.Evasion_attack_sklearn.h" title="Permalink to this definition"></a></dt>
+<dd><p>a badwidtch paramter for a KDE</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="aijack.attack.evasion.evasion_attack.Evasion_attack_sklearn.distance">
+<span class="sig-name descname"><span class="pre">distance</span></span><a class="headerlink" href="#aijack.attack.evasion.evasion_attack.Evasion_attack_sklearn.distance" title="Permalink to this definition"></a></dt>
+<dd><p>type of distance such as L2 or L1</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="aijack.attack.evasion.evasion_attack.Evasion_attack_sklearn.kde_type">
+<span class="sig-name descname"><span class="pre">kde_type</span></span><a class="headerlink" href="#aijack.attack.evasion.evasion_attack.Evasion_attack_sklearn.kde_type" title="Permalink to this definition"></a></dt>
+<dd><p>type of kernel density estimator</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="aijack.attack.evasion.evasion_attack.Evasion_attack_sklearn.n_minus_1">
+<span class="sig-name descname"><span class="pre">n_minus_1</span></span><a class="headerlink" href="#aijack.attack.evasion.evasion_attack.Evasion_attack_sklearn.n_minus_1" title="Permalink to this definition"></a></dt>
+<dd><p>number of rows of X_minus_1</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="aijack.attack.evasion.evasion_attack.Evasion_attack_sklearn.delta_g">
+<span class="sig-name descname"><span class="pre">delta_g</span></span><a class="headerlink" href="#aijack.attack.evasion.evasion_attack.Evasion_attack_sklearn.delta_g" title="Permalink to this definition"></a></dt>
+<dd><p>deviation of he discriminant function of a
+surrogate classifier f learnt on D</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>func</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="field-list simple">
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><strong>ValueError</strong> – if given distance is not supported.</p>
+</dd>
+</dl>
+<dl>
+<dt>Usage:</dt><dd><p># datasets which contains only “3”
+X_minus_1 = X_train[np.where(y_train == “3”)]</p>
+<p># Attack_sklearn automatically detect the type of the classifier
+attacker = Attack_sklearn(target_model = target_model,</p>
+<blockquote>
+<div><p>X_minus_1 = X_minus_1,
+dmax =  (5000 / 255) * 2.5,
+max_iter = 300,
+gamma = 1 / (X_train.shape[1] *</p>
+<blockquote>
+<div><p>np.var(X_train)),</p>
+</div></blockquote>
+<p>lam = 10, t = 0.5, h = 10)</p>
+</div></blockquote>
+<p># x0 is the intial ponint (“7”)
+xm, log = attacker.attack(x0)</p>
+</dd>
+</dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="aijack.attack.evasion.evasion_attack.Evasion_attack_sklearn.attack">
 <span class="sig-name descname"><span class="pre">attack</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/attack/evasion/evasion_attack.html#Evasion_attack_sklearn.attack"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.attack.evasion.evasion_attack.Evasion_attack_sklearn.attack" title="Permalink to this definition"></a></dt>
