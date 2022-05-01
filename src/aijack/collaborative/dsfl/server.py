@@ -5,6 +5,8 @@ from ..core import BaseServer
 
 
 class DSFLServer(BaseServer):
+    """Server of DS-FL"""
+
     def __init__(
         self,
         clients,
@@ -16,6 +18,19 @@ class DSFLServer(BaseServer):
         server_id=0,
         device="cpu",
     ):
+        """Init DSFLServer
+
+        Args:
+            clients (Llist[torch.nn.Module]): a list of clients.
+            global_model (torch.nn.Module): the global model
+            public_dataloader (torch.utils.data.DataLoader): a dataloader of the public dataset
+            aggregation (str, optional): the type of the aggregation of the logits. Defaults to "ERA".
+            distillation_loss_name (str, optional): the type of the loss function fot the distillation loss.
+                                                    Defaults to "crossentropy".
+            era_temperature (float, optional): the temperature of ERA. Defaults to 0.1.
+            server_id (int, optional): the id of this server. Defaults to 0.
+            device (str, optional): device type. Defaults to "cpu".
+        """
         super(DSFLServer, self).__init__(clients, global_model, server_id=server_id)
         self.public_dataloader = public_dataloader
         self.aggregation = aggregation

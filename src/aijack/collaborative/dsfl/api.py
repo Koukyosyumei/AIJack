@@ -4,9 +4,7 @@ from ..core.api import BaseFLKnowledgeDistillationAPI
 
 
 class DSFLAPI(BaseFLKnowledgeDistillationAPI):
-    """Implementation of `Distillation-Based Semi-Supervised Federated Learning
-    for Communication-Efficient Collaborative Training
-    with Non-IID Private Data`"""
+    """API of DS-FL"""
 
     def __init__(
         self,
@@ -28,9 +26,9 @@ class DSFLAPI(BaseFLKnowledgeDistillationAPI):
 
         Args:
             server (DSFLServer): an instance of DSFLServer
-            clients ([DSFLClient]): a list of instances of DSFLClient
+            clients (List[DSFLClient]): a list of instances of DSFLClient
             public_dataloader (torch.DataLoader): a dataloader of public dataset
-            local_dataloaders ([torch.DataLoader]): a list of dataloaders of private dataests
+            local_dataloaders (List[torch.DataLoader]): a list of dataloaders of private dataests
             validation_dataloader (torch.DataLoader): a dataloader of validation dataset
             criterion (function): a loss function
             num_communication (int): number of communication
@@ -70,8 +68,7 @@ class DSFLAPI(BaseFLKnowledgeDistillationAPI):
                 loss_local = self.train_client(public=False)
             logging["loss_local"].append(loss_local)
 
-            self.server.update()
-            self.server.distribute()
+            self.server.action()
 
             # distillation
             temp_consensus_loss = []
@@ -94,6 +91,7 @@ class DSFLAPI(BaseFLKnowledgeDistillationAPI):
             acc_on_local_dataset = self.local_score()
             print(f"epoch={i} acc on local datasets: ", acc_on_local_dataset)
             logging["acc_local"].append(acc_on_local_dataset)
+
             # validation
             if self.validation_dataloader is not None:
                 acc_val = self.score(self.validation_dataloader)
