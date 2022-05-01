@@ -114,11 +114,11 @@
 <span class="sd">        ValueError: if given distance is not supported.</span>
 
 <span class="sd">    Usage:</span>
-<span class="sd">        # datasets which contains only &quot;3&quot;</span>
-<span class="sd">        X_minus_1 = X_train[np.where(y_train == &quot;3&quot;)]</span>
+<span class="sd">        &gt;&gt;# datasets which contains only &quot;3&quot;</span>
+<span class="sd">        &gt;&gt;X_minus_1 = X_train[np.where(y_train == &quot;3&quot;)]</span>
 
-<span class="sd">        # Attack_sklearn automatically detect the type of the classifier</span>
-<span class="sd">        attacker = Attack_sklearn(target_model = target_model,</span>
+<span class="sd">        &gt;&gt;# Attack_sklearn automatically detect the type of the classifier</span>
+<span class="sd">        &gt;&gt;attacker = Attack_sklearn(target_model = target_model,</span>
 <span class="sd">                                    X_minus_1 = X_minus_1,</span>
 <span class="sd">                                    dmax =  (5000 / 255) * 2.5,</span>
 <span class="sd">                                    max_iter = 300,</span>
@@ -126,8 +126,8 @@
 <span class="sd">                                                np.var(X_train)),</span>
 <span class="sd">                                    lam = 10, t = 0.5, h = 10)</span>
 
-<span class="sd">        # x0 is the intial ponint (&quot;7&quot;)</span>
-<span class="sd">        xm, log = attacker.attack(x0)</span>
+<span class="sd">        &gt;&gt;# x0 is the intial ponint (&quot;7&quot;)</span>
+<span class="sd">        &gt;&gt;xm, log = attacker.attack(x0)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
