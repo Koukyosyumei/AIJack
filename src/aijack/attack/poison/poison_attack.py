@@ -8,24 +8,25 @@ from ..base_attack import BaseAttacker
 
 
 class Poison_attack_sklearn(BaseAttacker):
+    """implementation of poison attack for sklearn binary classifier
+        reference https://arxiv.org/abs/1206.6389
+
+    Args:
+        target_model: sklean classifier
+        X_train: training data for target_model
+        y_train: training label for target_model
+        t: step size
+
+    Attributes:
+        target_model: sklean classifier
+        X_train:
+        y_train:
+        t: step size
+        kernel
+        delta_kernel
+    """
+
     def __init__(self, target_model, X_train, y_train, t=0.5):
-        """implementation of poison attack for sklearn binary classifier
-           reference https://arxiv.org/abs/1206.6389
-
-        Args:
-            target_model: sklean classifier
-            X_train: training data for target_model
-            y_train: training label for target_model
-            t: step size
-
-        Attributes:
-            target_model: sklean classifier
-            X_train:
-            y_train:
-            t: step size
-            kernel
-            delta_kernel
-        """
         super().__init__(target_model)
 
         self.X_train = X_train
