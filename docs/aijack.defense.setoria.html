@@ -18,8 +18,6 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="aijack.utils package" href="aijack.utils.html" />
-    <link rel="prev" title="aijack.defense.mid package" href="aijack.defense.mid.html" />
 </head>
 
 <body class="wy-body-for-nav">
@@ -41,24 +39,8 @@
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
-<ul class="current">
-<li class="toctree-l1 current"><a class="reference internal" href="aijack.html">aijack package</a><ul class="current">
-<li class="toctree-l2 current"><a class="reference internal" href="aijack.html#subpackages">Subpackages</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="aijack.attack.html">aijack.attack package</a></li>
-<li class="toctree-l3"><a class="reference internal" href="aijack.collaborative.html">aijack.collaborative package</a></li>
-<li class="toctree-l3 current"><a class="reference internal" href="aijack.defense.html">aijack.defense package</a><ul class="current">
-<li class="toctree-l4 current"><a class="reference internal" href="aijack.defense.html#subpackages">Subpackages</a></li>
-<li class="toctree-l4"><a class="reference internal" href="aijack.defense.html#submodules">Submodules</a></li>
-<li class="toctree-l4"><a class="reference internal" href="aijack.defense.html#module-aijack.defense.purifier">aijack.defense.purifier module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="aijack.defense.html#module-aijack.defense">Module contents</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="aijack.utils.html">aijack.utils package</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="aijack.html#module-aijack">Module contents</a></li>
-</ul>
-</li>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="aijack.html">aijack package</a></li>
 </ul>
 
         </div>
@@ -75,8 +57,6 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="aijack.html">aijack package</a> &raquo;</li>
-          <li><a href="aijack.defense.html">aijack.defense package</a> &raquo;</li>
       <li>aijack.defense.setoria package</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/aijack.defense.setoria.rst.txt" rel="nofollow"> View page source</a>
@@ -92,42 +72,18 @@
 <section id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline"></a></h2>
 </section>
-<section id="module-aijack.defense.setoria.setoria_client">
-<span id="aijack-defense-setoria-setoria-client-module"></span><h2>aijack.defense.setoria.setoria_client module<a class="headerlink" href="#module-aijack.defense.setoria.setoria_client" title="Permalink to this headline"></a></h2>
-<dl class="py class">
-<dt class="sig sig-object py" id="aijack.defense.setoria.setoria_client.SetoriaFedAvgClient">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">aijack.defense.setoria.setoria_client.</span></span><span class="sig-name descname"><span class="pre">SetoriaFedAvgClient</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_layer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">perturbed_layer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epsilon</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/defense/setoria/setoria_client.html#SetoriaFedAvgClient"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.defense.setoria.setoria_client.SetoriaFedAvgClient" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference internal" href="aijack.collaborative.fedavg.html#aijack.collaborative.fedavg.client.FedAvgClient" title="aijack.collaborative.fedavg.client.FedAvgClient"><code class="xref py py-class docutils literal notranslate"><span class="pre">aijack.collaborative.fedavg.client.FedAvgClient</span></code></a></p>
-<dl class="py method">
-<dt class="sig sig-object py" id="aijack.defense.setoria.setoria_client.SetoriaFedAvgClient.action_after_lossbackward">
-<span class="sig-name descname"><span class="pre">action_after_lossbackward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target_layer_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/defense/setoria/setoria_client.html#SetoriaFedAvgClient.action_after_lossbackward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.defense.setoria.setoria_client.SetoriaFedAvgClient.action_after_lossbackward" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="aijack.defense.setoria.setoria_client.SetoriaFedAvgClient.action_before_lossbackward">
-<span class="sig-name descname"><span class="pre">action_before_lossbackward</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/defense/setoria/setoria_client.html#SetoriaFedAvgClient.action_before_lossbackward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.defense.setoria.setoria_client.SetoriaFedAvgClient.action_before_lossbackward" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="aijack.defense.setoria.setoria_client.SetoriaFedAvgClient.training">
-<span class="sig-name descname"><span class="pre">training</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#aijack.defense.setoria.setoria_client.SetoriaFedAvgClient.training" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
+<section id="aijack-defense-setoria-setoria-client-module">
+<h2>aijack.defense.setoria.setoria_client module<a class="headerlink" href="#aijack-defense-setoria-setoria-client-module" title="Permalink to this headline"></a></h2>
 </section>
-<section id="module-aijack.defense.setoria">
-<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-aijack.defense.setoria" title="Permalink to this headline"></a></h2>
+<section id="module-contents">
+<h2>Module contents<a class="headerlink" href="#module-contents" title="Permalink to this headline"></a></h2>
 </section>
 </section>
 
 
            </div>
           </div>
-          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="aijack.defense.mid.html" class="btn btn-neutral float-left" title="aijack.defense.mid package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="aijack.utils.html" class="btn btn-neutral float-right" title="aijack.utils package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-    </div>
+          <footer>
 
   <hr/>
 

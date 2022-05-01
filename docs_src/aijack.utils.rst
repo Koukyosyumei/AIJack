@@ -1,6 +1,11 @@
 aijack.utils package
 ====================
 
+.. automodule:: aijack.utils
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Submodules
 ----------
 
@@ -24,14 +29,6 @@ aijack.utils.utils module
 -------------------------
 
 .. automodule:: aijack.utils.utils
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-Module contents
----------------
-
-.. automodule:: aijack.utils
    :members:
    :undoc-members:
    :show-inheritance:

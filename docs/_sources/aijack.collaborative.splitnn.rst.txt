@@ -1,6 +1,11 @@
 aijack.collaborative.splitnn package
 ====================================
 
+.. automodule:: aijack.collaborative.splitnn
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Submodules
 ----------
 
@@ -16,14 +21,6 @@ aijack.collaborative.splitnn.flow module
 ----------------------------------------
 
 .. automodule:: aijack.collaborative.splitnn.flow
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-Module contents
----------------
-
-.. automodule:: aijack.collaborative.splitnn
    :members:
    :undoc-members:
    :show-inheritance:

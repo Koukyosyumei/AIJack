@@ -48,15 +48,14 @@
 <li class="toctree-l4 current"><a class="reference internal" href="aijack.attack.html#subpackages">Subpackages</a></li>
 <li class="toctree-l4"><a class="reference internal" href="aijack.attack.html#submodules">Submodules</a></li>
 <li class="toctree-l4"><a class="reference internal" href="aijack.attack.html#module-aijack.attack.base_attack">aijack.attack.base_attack module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="aijack.attack.html#module-aijack.attack">Module contents</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="aijack.collaborative.html">aijack.collaborative package</a></li>
 <li class="toctree-l3"><a class="reference internal" href="aijack.defense.html">aijack.defense package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="aijack.manager.html">aijack.manager package</a></li>
 <li class="toctree-l3"><a class="reference internal" href="aijack.utils.html">aijack.utils package</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="aijack.html#module-aijack">Module contents</a></li>
 </ul>
 </li>
 </ul>
@@ -87,8 +86,10 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
 
-  <section id="aijack-attack-inversion-package">
-<h1>aijack.attack.inversion package<a class="headerlink" href="#aijack-attack-inversion-package" title="Permalink to this headline"></a></h1>
+  <section id="module-aijack.attack.inversion">
+<span id="aijack-attack-inversion-package"></span><h1>aijack.attack.inversion package<a class="headerlink" href="#module-aijack.attack.inversion" title="Permalink to this headline"></a></h1>
+<p>Subpackage for model inversion attack, which reconstructs the private data from
+the trained machine learning models.</p>
 <section id="subpackages">
 <h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this headline"></a></h2>
 <div class="toctree-wrapper compound">
@@ -98,7 +99,6 @@
 <li class="toctree-l2"><a class="reference internal" href="aijack.attack.inversion.utils.html#module-aijack.attack.inversion.utils.datarepextractor">aijack.attack.inversion.utils.datarepextractor module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="aijack.attack.inversion.utils.html#module-aijack.attack.inversion.utils.distance">aijack.attack.inversion.utils.distance module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="aijack.attack.inversion.utils.html#module-aijack.attack.inversion.utils.regularization">aijack.attack.inversion.utils.regularization module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="aijack.attack.inversion.utils.html#module-aijack.attack.inversion.utils">Module contents</a></li>
 </ul>
 </li>
 </ul>
@@ -110,152 +110,41 @@
 <section id="module-aijack.attack.inversion.gan_attack">
 <span id="aijack-attack-inversion-gan-attack-module"></span><h2>aijack.attack.inversion.gan_attack module<a class="headerlink" href="#module-aijack.attack.inversion.gan_attack" title="Permalink to this headline"></a></h2>
 <dl class="py class">
-<dt class="sig sig-object py" id="aijack.attack.inversion.gan_attack.GAN_Attack">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">aijack.attack.inversion.gan_attack.</span></span><span class="sig-name descname"><span class="pre">GAN_Attack</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_label</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">generator</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">generator_optimizer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">generator_criterion</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nz</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'cpu'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/attack/inversion/gan_attack.html#GAN_Attack"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.attack.inversion.gan_attack.GAN_Attack" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference internal" href="aijack.attack.html#aijack.attack.base_attack.BaseAttacker" title="aijack.attack.base_attack.BaseAttacker"><code class="xref py py-class docutils literal notranslate"><span class="pre">aijack.attack.base_attack.BaseAttacker</span></code></a></p>
-<p>GAN based model inversion attack (<a class="reference external" href="https://arxiv.org/abs/1702.07464">https://arxiv.org/abs/1702.07464</a>)</p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="aijack.attack.inversion.gan_attack.GAN_Attack.model">
-<span class="sig-name descname"><span class="pre">model</span></span><a class="headerlink" href="#aijack.attack.inversion.gan_attack.GAN_Attack.model" title="Permalink to this definition"></a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>torch.nn.Module</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="aijack.attack.inversion.gan_attack.GAN_Attack.target_label">
-<span class="sig-name descname"><span class="pre">target_label</span></span><a class="headerlink" href="#aijack.attack.inversion.gan_attack.GAN_Attack.target_label" title="Permalink to this definition"></a></dt>
-<dd><p>index of target class</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>int</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="aijack.attack.inversion.gan_attack.GAN_Attack.generator">
-<span class="sig-name descname"><span class="pre">generator</span></span><a class="headerlink" href="#aijack.attack.inversion.gan_attack.GAN_Attack.generator" title="Permalink to this definition"></a></dt>
-<dd><p>Generator</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>torch.nn.Module</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="aijack.attack.inversion.gan_attack.GAN_Attack.generator_optimizer">
-<span class="sig-name descname"><span class="pre">generator_optimizer</span></span><a class="headerlink" href="#aijack.attack.inversion.gan_attack.GAN_Attack.generator_optimizer" title="Permalink to this definition"></a></dt>
-<dd><p>optimizer for the generator</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>torch.optim.Optimizer</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="aijack.attack.inversion.gan_attack.GAN_Attack.generator_criterion">
-<span class="sig-name descname"><span class="pre">generator_criterion</span></span><a class="headerlink" href="#aijack.attack.inversion.gan_attack.GAN_Attack.generator_criterion" title="Permalink to this definition"></a></dt>
-<dd><p>loss function for the generator</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>function</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="aijack.attack.inversion.gan_attack.GAN_Attack.nz">
-<span class="sig-name descname"><span class="pre">nz</span></span><a class="headerlink" href="#aijack.attack.inversion.gan_attack.GAN_Attack.nz" title="Permalink to this definition"></a></dt>
-<dd><p>dimension of latent space of the generator</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>int</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="aijack.attack.inversion.gan_attack.GAN_Attack.user_id">
-<span class="sig-name descname"><span class="pre">user_id</span></span><a class="headerlink" href="#aijack.attack.inversion.gan_attack.GAN_Attack.user_id" title="Permalink to this definition"></a></dt>
-<dd><p>user id</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>int</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="aijack.attack.inversion.gan_attack.GAN_Attack.device">
-<span class="sig-name descname"><span class="pre">device</span></span><a class="headerlink" href="#aijack.attack.inversion.gan_attack.GAN_Attack.device" title="Permalink to this definition"></a></dt>
-<dd><p>device type (cpu or cuda)</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>string</p>
-</dd>
-</dl>
-</dd></dl>
-
+<dt class="sig sig-object py" id="aijack.attack.inversion.gan_attack.GANAttackManager">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">aijack.attack.inversion.gan_attack.</span></span><span class="sig-name descname"><span class="pre">GANAttackManager</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/attack/inversion/gan_attack.html#GANAttackManager"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.attack.inversion.gan_attack.GANAttackManager" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="aijack.manager.html#aijack.manager.base.BaseManager" title="aijack.manager.base.BaseManager"><code class="xref py py-class docutils literal notranslate"><span class="pre">aijack.manager.base.BaseManager</span></code></a></p>
 <dl class="py method">
-<dt class="sig sig-object py" id="aijack.attack.inversion.gan_attack.GAN_Attack.attack">
-<span class="sig-name descname"><span class="pre">attack</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/attack/inversion/gan_attack.html#GAN_Attack.attack"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.attack.inversion.gan_attack.GAN_Attack.attack" title="Permalink to this definition"></a></dt>
-<dd><p>Generate fake images</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>n</strong> (<em>int</em>) – the number of fake images created by the Generator</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>generated fake images</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>fake</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="aijack.attack.inversion.gan_attack.GAN_Attack.update_discriminator">
-<span class="sig-name descname"><span class="pre">update_discriminator</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/attack/inversion/gan_attack.html#GAN_Attack.update_discriminator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.attack.inversion.gan_attack.GAN_Attack.update_discriminator" title="Permalink to this definition"></a></dt>
-<dd><p>Update the discriminator</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="aijack.attack.inversion.gan_attack.GAN_Attack.update_generator">
-<span class="sig-name descname"><span class="pre">update_generator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epoch</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">log_interval</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/attack/inversion/gan_attack.html#GAN_Attack.update_generator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.attack.inversion.gan_attack.GAN_Attack.update_generator" title="Permalink to this definition"></a></dt>
-<dd><p>Updata the Generator</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>batch_size</strong> (<em>int</em>) – batch size</p></li>
-<li><p><strong>epoch</strong> (<em>int</em>) – epoch</p></li>
-<li><p><strong>log_interval</strong> (<em>int</em>) – interval of logging</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
+<dt class="sig sig-object py" id="aijack.attack.inversion.gan_attack.GANAttackManager.attach">
+<span class="sig-name descname"><span class="pre">attach</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cls</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/attack/inversion/gan_attack.html#GANAttackManager.attach"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.attack.inversion.gan_attack.GANAttackManager.attach" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
 
 </dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="aijack.attack.inversion.gan_attack.attach_ganattack_to_client">
+<span class="sig-prename descclassname"><span class="pre">aijack.attack.inversion.gan_attack.</span></span><span class="sig-name descname"><span class="pre">attach_ganattack_to_client</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cls</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_label</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">generator</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">generator_optimizer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">generator_criterion</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nz</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'cpu'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gan_batch_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gan_epoch</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gan_log_interval</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ignore_first_download</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/attack/inversion/gan_attack.html#attach_ganattack_to_client"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.attack.inversion.gan_attack.attach_ganattack_to_client" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
 
 </section>
 <section id="module-aijack.attack.inversion.generator_attack">
 <span id="aijack-attack-inversion-generator-attack-module"></span><h2>aijack.attack.inversion.generator_attack module<a class="headerlink" href="#module-aijack.attack.inversion.generator_attack" title="Permalink to this headline"></a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="aijack.attack.inversion.generator_attack.Generator_Attack">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">aijack.attack.inversion.generator_attack.</span></span><span class="sig-name descname"><span class="pre">Generator_Attack</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target_model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attacker_model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attacker_optimizer</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/attack/inversion/generator_attack.html#Generator_Attack"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.attack.inversion.generator_attack.Generator_Attack" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">aijack.attack.inversion.generator_attack.</span></span><span class="sig-name descname"><span class="pre">Generator_Attack</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target_model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attacker_model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attacker_optimizer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">log_interval</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">early_stopping</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'cpu'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/attack/inversion/generator_attack.html#Generator_Attack"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.attack.inversion.generator_attack.Generator_Attack" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="aijack.attack.html#aijack.attack.base_attack.BaseAttacker" title="aijack.attack.base_attack.BaseAttacker"><code class="xref py py-class docutils literal notranslate"><span class="pre">aijack.attack.base_attack.BaseAttacker</span></code></a></p>
 <dl class="py method">
 <dt class="sig sig-object py" id="aijack.attack.inversion.generator_attack.Generator_Attack.attack">
-<span class="sig-name descname"><span class="pre">attack</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataloader_target</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/attack/inversion/generator_attack.html#Generator_Attack.attack"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.attack.inversion.generator_attack.Generator_Attack.attack" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">attack</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_tensor</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/attack/inversion/generator_attack.html#Generator_Attack.attack"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.attack.inversion.generator_attack.Generator_Attack.attack" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="aijack.attack.inversion.generator_attack.Generator_Attack.culc_loss">
+<span class="sig-name descname"><span class="pre">culc_loss</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataloader</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x_pos</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_pos</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">arbitrary_y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/attack/inversion/generator_attack.html#Generator_Attack.culc_loss"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.attack.inversion.generator_attack.Generator_Attack.culc_loss" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="aijack.attack.inversion.generator_attack.Generator_Attack.fit">
-<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataloader_for_attacker</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epoch</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/attack/inversion/generator_attack.html#Generator_Attack.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.attack.inversion.generator_attack.Generator_Attack.fit" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataloader</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epoch</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x_pos</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_pos</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">arbitrary_y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/attack/inversion/generator_attack.html#Generator_Attack.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.attack.inversion.generator_attack.Generator_Attack.fit" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -263,6 +152,17 @@
 </section>
 <section id="module-aijack.attack.inversion.gradientinversion">
 <span id="aijack-attack-inversion-gradientinversion-module"></span><h2>aijack.attack.inversion.gradientinversion module<a class="headerlink" href="#module-aijack.attack.inversion.gradientinversion" title="Permalink to this headline"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="aijack.attack.inversion.gradientinversion.GradientInversionAttackManager">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">aijack.attack.inversion.gradientinversion.</span></span><span class="sig-name descname"><span class="pre">GradientInversionAttackManager</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/attack/inversion/gradientinversion.html#GradientInversionAttackManager"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.attack.inversion.gradientinversion.GradientInversionAttackManager" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="aijack.manager.html#aijack.manager.base.BaseManager" title="aijack.manager.base.BaseManager"><code class="xref py py-class docutils literal notranslate"><span class="pre">aijack.manager.base.BaseManager</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="aijack.attack.inversion.gradientinversion.GradientInversionAttackManager.attach">
+<span class="sig-name descname"><span class="pre">attach</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cls</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/attack/inversion/gradientinversion.html#GradientInversionAttackManager.attach"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.attack.inversion.gradientinversion.GradientInversionAttackManager.attach" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
 <dl class="py class">
 <dt class="sig sig-object py" id="aijack.attack.inversion.gradientinversion.GradientInversion_Attack">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">aijack.attack.inversion.gradientinversion.</span></span><span class="sig-name descname"><span class="pre">GradientInversion_Attack</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target_model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x_shape</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_shape=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">optimize_label=True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gradient_ignore_pos=[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pos_of_final_fc_layer=-2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_iteration=100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">optimizer_class=&lt;class</span> <span class="pre">'torch.optim.lbfgs.LBFGS'&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">optimizername=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lossfunc=CrossEntropyLoss()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">distancefunc=&lt;function</span> <span class="pre">l2&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">distancename=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tv_reg_coef=0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lm_reg_coef=0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">l2_reg_coef=0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bn_reg_coef=0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gc_reg_coef=0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bn_reg_layers=[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">custom_reg_func=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">custom_reg_coef=0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device='cpu'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">log_interval=10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_loss=True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed=0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">group_num=5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">group_seed=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">early_stopping=50</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">**kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/attack/inversion/gradientinversion.html#GradientInversion_Attack"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.attack.inversion.gradientinversion.GradientInversion_Attack" title="Permalink to this definition"></a></dt>
@@ -481,12 +381,17 @@ and returns the distance between them.</p>
 
 </dd></dl>
 
+<dl class="py function">
+<dt class="sig sig-object py" id="aijack.attack.inversion.gradientinversion.attach_gradient_inversion_attack_to_server">
+<span class="sig-prename descclassname"><span class="pre">aijack.attack.inversion.gradientinversion.</span></span><span class="sig-name descname"><span class="pre">attach_gradient_inversion_attack_to_server</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cls</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x_shape</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_shape=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">optimize_label=True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gradient_ignore_pos=[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pos_of_final_fc_layer=-2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_iteration=100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">optimizer_class=&lt;class</span> <span class="pre">'torch.optim.lbfgs.LBFGS'&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">optimizername=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lossfunc=CrossEntropyLoss()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">distancefunc=&lt;function</span> <span class="pre">l2&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">distancename=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tv_reg_coef=0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lm_reg_coef=0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">l2_reg_coef=0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bn_reg_coef=0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gc_reg_coef=0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bn_reg_layers=[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">custom_reg_func=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">custom_reg_coef=0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device='cpu'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">log_interval=10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_loss=True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed=0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">group_num=5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">group_seed=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">early_stopping=50</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_client_id=0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/attack/inversion/gradientinversion.html#attach_gradient_inversion_attack_to_server"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.attack.inversion.gradientinversion.attach_gradient_inversion_attack_to_server" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
 </section>
 <section id="module-aijack.attack.inversion.mi_face">
 <span id="aijack-attack-inversion-mi-face-module"></span><h2>aijack.attack.inversion.mi_face module<a class="headerlink" href="#module-aijack.attack.inversion.mi_face" title="Permalink to this headline"></a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="aijack.attack.inversion.mi_face.MI_FACE">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">aijack.attack.inversion.mi_face.</span></span><span class="sig-name descname"><span class="pre">MI_FACE</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target_model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_shape</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">auxterm_func=&lt;function</span> <span class="pre">MI_FACE.&lt;lambda&gt;&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">process_func=&lt;function</span> <span class="pre">MI_FACE.&lt;lambda&gt;&gt;</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/attack/inversion/mi_face.html#MI_FACE"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.attack.inversion.mi_face.MI_FACE" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">aijack.attack.inversion.mi_face.</span></span><span class="sig-name descname"><span class="pre">MI_FACE</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target_model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_shape=(1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">64</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">64)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_label=0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lam=0.01</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_itr=100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">auxterm_func=&lt;function</span> <span class="pre">MI_FACE.&lt;lambda&gt;&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">process_func=&lt;function</span> <span class="pre">MI_FACE.&lt;lambda&gt;&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">apply_softmax=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device='cpu'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">log_interval=1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">log_show_img=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_img_func=&lt;function</span> <span class="pre">MI_FACE.&lt;lambda&gt;&gt;</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/attack/inversion/mi_face.html#MI_FACE"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.attack.inversion.mi_face.MI_FACE" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="aijack.attack.html#aijack.attack.base_attack.BaseAttacker" title="aijack.attack.base_attack.BaseAttacker"><code class="xref py py-class docutils literal notranslate"><span class="pre">aijack.attack.base_attack.BaseAttacker</span></code></a></p>
 <p>Implementation of model inversion attack
 reference: <a class="reference external" href="https://dl.acm.org/doi/pdf/10.1145/2810103.2813677">https://dl.acm.org/doi/pdf/10.1145/2810103.2813677</a></p>
@@ -526,7 +431,7 @@ reference: <a class="reference external" href="https://dl.acm.org/doi/pdf/10.114
 
 <dl class="py method">
 <dt class="sig sig-object py" id="aijack.attack.inversion.mi_face.MI_FACE.attack">
-<span class="sig-name descname"><span class="pre">attack</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target_label</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lam</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_itr</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/attack/inversion/mi_face.html#MI_FACE.attack"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.attack.inversion.mi_face.MI_FACE.attack" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">attack</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">init_x</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/attack/inversion/mi_face.html#MI_FACE.attack"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.attack.inversion.mi_face.MI_FACE.attack" title="Permalink to this definition"></a></dt>
 <dd><p>Execute the model inversion attack on the target model.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -537,19 +442,17 @@ reference: <a class="reference external" href="https://dl.acm.org/doi/pdf/10.114
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>log :</p>
+<dd class="field-even"><p>inversed image with the best score
+log :</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>x_numpy (np.array)</p>
+<dd class="field-odd"><p>best_img</p>
 </dd>
 </dl>
 </dd></dl>
 
 </dd></dl>
 
-</section>
-<section id="module-aijack.attack.inversion">
-<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-aijack.attack.inversion" title="Permalink to this headline"></a></h2>
 </section>
 </section>
 

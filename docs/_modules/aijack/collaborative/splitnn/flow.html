@@ -71,19 +71,26 @@
 
 
 <div class="viewcode-block" id="SplitNN"><a class="viewcode-back" href="../../../../aijack.collaborative.splitnn.html#aijack.collaborative.splitnn.flow.SplitNN">[docs]</a><span class="k">class</span> <span class="nc">SplitNN</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">clients</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">clients</span><span class="p">,</span> <span class="n">optimizers</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">clients</span> <span class="o">=</span> <span class="n">clients</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">optimizers</span> <span class="o">=</span> <span class="n">optimizers</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">num_clients</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">clients</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">recent_output</span> <span class="o">=</span> <span class="kc">None</span>
 
 <div class="viewcode-block" id="SplitNN.forward"><a class="viewcode-back" href="../../../../aijack.collaborative.splitnn.html#aijack.collaborative.splitnn.flow.SplitNN.forward">[docs]</a>    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
         <span class="n">intermidiate_to_next_client</span> <span class="o">=</span> <span class="n">x</span>
         <span class="k">for</span> <span class="n">client</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">clients</span><span class="p">:</span>
             <span class="n">intermidiate_to_next_client</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">upload</span><span class="p">(</span><span class="n">intermidiate_to_next_client</span><span class="p">)</span>
         <span class="n">output</span> <span class="o">=</span> <span class="n">intermidiate_to_next_client</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">recent_output</span> <span class="o">=</span> <span class="n">output</span>
         <span class="k">return</span> <span class="n">output</span></div>
 
-<div class="viewcode-block" id="SplitNN.backward"><a class="viewcode-back" href="../../../../aijack.collaborative.splitnn.html#aijack.collaborative.splitnn.flow.SplitNN.backward">[docs]</a>    <span class="k">def</span> <span class="nf">backward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">grads_outputs</span><span class="p">):</span>
+<div class="viewcode-block" id="SplitNN.backward"><a class="viewcode-back" href="../../../../aijack.collaborative.splitnn.html#aijack.collaborative.splitnn.flow.SplitNN.backward">[docs]</a>    <span class="k">def</span> <span class="nf">backward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">loss</span><span class="p">):</span>
+        <span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">backward_gradient</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">recent_output</span><span class="o">.</span><span class="n">grad</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SplitNN.backward_gradient"><a class="viewcode-back" href="../../../../aijack.collaborative.splitnn.html#aijack.collaborative.splitnn.flow.SplitNN.backward_gradient">[docs]</a>    <span class="k">def</span> <span class="nf">backward_gradient</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">grads_outputs</span><span class="p">):</span>
         <span class="n">grad_from_next_client</span> <span class="o">=</span> <span class="n">grads_outputs</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_clients</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">clients</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">download</span><span class="p">(</span><span class="n">grad_from_next_client</span><span class="p">)</span>
@@ -97,7 +104,15 @@
 
 <div class="viewcode-block" id="SplitNN.eval"><a class="viewcode-back" href="../../../../aijack.collaborative.splitnn.html#aijack.collaborative.splitnn.flow.SplitNN.eval">[docs]</a>    <span class="k">def</span> <span class="nf">eval</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">client</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">clients</span><span class="p">:</span>
-            <span class="n">client</span><span class="o">.</span><span class="n">train</span><span class="p">()</span></div></div>
+            <span class="n">client</span><span class="o">.</span><span class="n">train</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="SplitNN.zero_grad"><a class="viewcode-back" href="../../../../aijack.collaborative.splitnn.html#aijack.collaborative.splitnn.flow.SplitNN.zero_grad">[docs]</a>    <span class="k">def</span> <span class="nf">zero_grad</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">opt</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">optimizers</span><span class="p">:</span>
+            <span class="n">opt</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="SplitNN.step"><a class="viewcode-back" href="../../../../aijack.collaborative.splitnn.html#aijack.collaborative.splitnn.flow.SplitNN.step">[docs]</a>    <span class="k">def</span> <span class="nf">step</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">opt</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">optimizers</span><span class="p">:</span>
+            <span class="n">opt</span><span class="o">.</span><span class="n">step</span><span class="p">()</span></div></div>
 </pre></div>
 
            </div>

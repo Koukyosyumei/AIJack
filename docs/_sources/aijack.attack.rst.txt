@@ -1,6 +1,11 @@
 aijack.attack package
 =====================
 
+.. automodule:: aijack.attack
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Subpackages
 -----------
 
@@ -20,14 +25,6 @@ aijack.attack.base\_attack module
 ---------------------------------
 
 .. automodule:: aijack.attack.base_attack
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-Module contents
----------------
-
-.. automodule:: aijack.attack
    :members:
    :undoc-members:
    :show-inheritance:

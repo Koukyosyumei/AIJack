@@ -1,6 +1,11 @@
 aijack.defense.ckks package
 ===========================
 
+.. automodule:: aijack.defense.ckks
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Submodules
 ----------
 
@@ -48,14 +53,6 @@ aijack.defense.ckks.utils module
 --------------------------------
 
 .. automodule:: aijack.defense.ckks.utils
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-Module contents
----------------
-
-.. automodule:: aijack.defense.ckks
    :members:
    :undoc-members:
    :show-inheritance:

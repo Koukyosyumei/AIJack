@@ -18,7 +18,7 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="aijack.collaborative.fedavg package" href="aijack.collaborative.fedavg.html" />
+    <link rel="next" title="aijack.collaborative.dsfl package" href="aijack.collaborative.dsfl.html" />
     <link rel="prev" title="aijack.collaborative package" href="aijack.collaborative.html" />
 </head>
 
@@ -49,14 +49,13 @@
 <li class="toctree-l4 current"><a class="reference internal" href="aijack.collaborative.html#subpackages">Subpackages</a></li>
 <li class="toctree-l4"><a class="reference internal" href="aijack.collaborative.html#submodules">Submodules</a></li>
 <li class="toctree-l4"><a class="reference internal" href="aijack.collaborative.html#module-aijack.collaborative.utils">aijack.collaborative.utils module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="aijack.collaborative.html#module-aijack.collaborative">Module contents</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="aijack.defense.html">aijack.defense package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="aijack.manager.html">aijack.manager package</a></li>
 <li class="toctree-l3"><a class="reference internal" href="aijack.utils.html">aijack.utils package</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="aijack.html#module-aijack">Module contents</a></li>
 </ul>
 </li>
 </ul>
@@ -87,10 +86,39 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
 
-  <section id="aijack-collaborative-core-package">
-<h1>aijack.collaborative.core package<a class="headerlink" href="#aijack-collaborative-core-package" title="Permalink to this headline"></a></h1>
+  <section id="module-aijack.collaborative.core">
+<span id="aijack-collaborative-core-package"></span><h1>aijack.collaborative.core package<a class="headerlink" href="#module-aijack.collaborative.core" title="Permalink to this headline"></a></h1>
 <section id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline"></a></h2>
+</section>
+<section id="module-aijack.collaborative.core.api">
+<span id="aijack-collaborative-core-api-module"></span><h2>aijack.collaborative.core.api module<a class="headerlink" href="#module-aijack.collaborative.core.api" title="Permalink to this headline"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="aijack.collaborative.core.api.BaseFLKnowledgeDistillationAPI">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">aijack.collaborative.core.api.</span></span><span class="sig-name descname"><span class="pre">BaseFLKnowledgeDistillationAPI</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">server</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clients</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">public_dataloader</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">local_dataloaders</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">validation_dataloader</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">criterion</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_communication</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/collaborative/core/api.html#BaseFLKnowledgeDistillationAPI"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.collaborative.core.api.BaseFLKnowledgeDistillationAPI" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="aijack.collaborative.core.api.BaseFLKnowledgeDistillationAPI.local_score">
+<span class="sig-name descname"><span class="pre">local_score</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/collaborative/core/api.html#BaseFLKnowledgeDistillationAPI.local_score"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.collaborative.core.api.BaseFLKnowledgeDistillationAPI.local_score" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="aijack.collaborative.core.api.BaseFLKnowledgeDistillationAPI.run">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/collaborative/core/api.html#BaseFLKnowledgeDistillationAPI.run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.collaborative.core.api.BaseFLKnowledgeDistillationAPI.run" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="aijack.collaborative.core.api.BaseFLKnowledgeDistillationAPI.score">
+<span class="sig-name descname"><span class="pre">score</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataloader</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/collaborative/core/api.html#BaseFLKnowledgeDistillationAPI.score"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.collaborative.core.api.BaseFLKnowledgeDistillationAPI.score" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="aijack.collaborative.core.api.BaseFLKnowledgeDistillationAPI.train_client">
+<span class="sig-name descname"><span class="pre">train_client</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">public</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/collaborative/core/api.html#BaseFLKnowledgeDistillationAPI.train_client"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.collaborative.core.api.BaseFLKnowledgeDistillationAPI.train_client" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
 </section>
 <section id="module-aijack.collaborative.core.client">
 <span id="aijack-collaborative-core-client-module"></span><h2>aijack.collaborative.core.client module<a class="headerlink" href="#module-aijack.collaborative.core.client" title="Permalink to this headline"></a></h2>
@@ -98,6 +126,11 @@
 <dt class="sig sig-object py" id="aijack.collaborative.core.client.BaseClient">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">aijack.collaborative.core.client.</span></span><span class="sig-name descname"><span class="pre">BaseClient</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/collaborative/core/client.html#BaseClient"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.collaborative.core.client.BaseClient" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">torch.nn.modules.module.Module</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="aijack.collaborative.core.client.BaseClient.backward">
+<span class="sig-name descname"><span class="pre">backward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">loss</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/collaborative/core/client.html#BaseClient.backward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.collaborative.core.client.BaseClient.backward" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="aijack.collaborative.core.client.BaseClient.download">
 <span class="sig-name descname"><span class="pre">download</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/collaborative/core/client.html#BaseClient.download"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.collaborative.core.client.BaseClient.download" title="Permalink to this definition"></a></dt>
@@ -180,6 +213,11 @@ mode (<code class="docutils literal notranslate"><span class="pre">False</span><
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">aijack.collaborative.core.server.</span></span><span class="sig-name descname"><span class="pre">BaseServer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">clients</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">server_model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">server_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/collaborative/core/server.html#BaseServer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.collaborative.core.server.BaseServer" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">torch.nn.modules.module.Module</span></code></p>
 <dl class="py method">
+<dt class="sig sig-object py" id="aijack.collaborative.core.server.BaseServer.action">
+<span class="sig-name descname"><span class="pre">action</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/collaborative/core/server.html#BaseServer.action"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.collaborative.core.server.BaseServer.action" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="aijack.collaborative.core.server.BaseServer.distribtue">
 <span class="sig-name descname"><span class="pre">distribtue</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/collaborative/core/server.html#BaseServer.distribtue"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.collaborative.core.server.BaseServer.distribtue" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
@@ -254,9 +292,6 @@ mode (<code class="docutils literal notranslate"><span class="pre">False</span><
 </dd></dl>
 
 </section>
-<section id="module-aijack.collaborative.core">
-<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-aijack.collaborative.core" title="Permalink to this headline"></a></h2>
-</section>
 </section>
 
 
@@ -264,7 +299,7 @@ mode (<code class="docutils literal notranslate"><span class="pre">False</span><
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="aijack.collaborative.html" class="btn btn-neutral float-left" title="aijack.collaborative package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="aijack.collaborative.fedavg.html" class="btn btn-neutral float-right" title="aijack.collaborative.fedavg package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="aijack.collaborative.dsfl.html" class="btn btn-neutral float-right" title="aijack.collaborative.dsfl package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

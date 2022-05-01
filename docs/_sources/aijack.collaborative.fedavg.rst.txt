@@ -1,6 +1,11 @@
 aijack.collaborative.fedavg package
 ===================================
 
+.. automodule:: aijack.collaborative.fedavg
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Submodules
 ----------
 
@@ -16,14 +21,6 @@ aijack.collaborative.fedavg.server module
 -----------------------------------------
 
 .. automodule:: aijack.collaborative.fedavg.server
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-Module contents
----------------
-
-.. automodule:: aijack.collaborative.fedavg
    :members:
    :undoc-members:
    :show-inheritance:

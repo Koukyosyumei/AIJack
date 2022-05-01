@@ -72,13 +72,14 @@
 <span class="kn">import</span> <span class="nn">torch</span>
 <span class="kn">import</span> <span class="nn">torch.nn</span> <span class="k">as</span> <span class="nn">nn</span>
 
+<span class="kn">from</span> <span class="nn">...manager</span> <span class="kn">import</span> <span class="n">BaseManager</span>
 <span class="kn">from</span> <span class="nn">..base_attack</span> <span class="kn">import</span> <span class="n">BaseAttacker</span>
 <span class="kn">from</span> <span class="nn">.utils.distance</span> <span class="kn">import</span> <span class="n">cossim</span><span class="p">,</span> <span class="n">l2</span>
 <span class="kn">from</span> <span class="nn">.utils.regularization</span> <span class="kn">import</span> <span class="p">(</span>
     <span class="n">bn_regularizer</span><span class="p">,</span>
     <span class="n">group_consistency</span><span class="p">,</span>
     <span class="n">label_matching</span><span class="p">,</span>
-    <span class="n">total_variation</span><span class="p">,</span>
+    <span class="n">total_variance</span><span class="p">,</span>
 <span class="p">)</span>
 
 
@@ -360,7 +361,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">reg_term</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">tv_reg_coef</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="n">reg_term</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tv_reg_coef</span> <span class="o">*</span> <span class="n">total_variation</span><span class="p">(</span><span class="n">fake_x</span><span class="p">)</span>
+            <span class="n">reg_term</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tv_reg_coef</span> <span class="o">*</span> <span class="n">total_variance</span><span class="p">(</span><span class="n">fake_x</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">lm_reg_coef</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
             <span class="n">reg_term</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lm_reg_coef</span> <span class="o">*</span> <span class="n">label_matching</span><span class="p">(</span><span class="n">fake_pred</span><span class="p">,</span> <span class="n">fake_label</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">l2_reg_coef</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
@@ -577,6 +578,98 @@
                     <span class="p">)</span>
 
         <span class="k">return</span> <span class="n">best_fake_x</span><span class="p">,</span> <span class="n">best_fake_label</span></div></div>
+
+
+<div class="viewcode-block" id="attach_gradient_inversion_attack_to_server"><a class="viewcode-back" href="../../../../aijack.attack.inversion.html#aijack.attack.inversion.gradientinversion.attach_gradient_inversion_attack_to_server">[docs]</a><span class="k">def</span> <span class="nf">attach_gradient_inversion_attack_to_server</span><span class="p">(</span>
+    <span class="bp">cls</span><span class="p">,</span>
+    <span class="n">x_shape</span><span class="p">,</span>
+    <span class="n">y_shape</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">optimize_label</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">gradient_ignore_pos</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">pos_of_final_fc_layer</span><span class="o">=-</span><span class="mi">2</span><span class="p">,</span>
+    <span class="n">num_iteration</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+    <span class="n">optimizer_class</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">LBFGS</span><span class="p">,</span>
+    <span class="n">optimizername</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">lossfunc</span><span class="o">=</span><span class="n">nn</span><span class="o">.</span><span class="n">CrossEntropyLoss</span><span class="p">(),</span>
+    <span class="n">distancefunc</span><span class="o">=</span><span class="n">l2</span><span class="p">,</span>
+    <span class="n">distancename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">tv_reg_coef</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
+    <span class="n">lm_reg_coef</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
+    <span class="n">l2_reg_coef</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
+    <span class="n">bn_reg_coef</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
+    <span class="n">gc_reg_coef</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
+    <span class="n">bn_reg_layers</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">custom_reg_func</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">custom_reg_coef</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
+    <span class="n">device</span><span class="o">=</span><span class="s2">&quot;cpu&quot;</span><span class="p">,</span>
+    <span class="n">log_interval</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+    <span class="n">save_loss</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">seed</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+    <span class="n">group_num</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+    <span class="n">group_seed</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">early_stopping</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
+    <span class="n">target_client_id</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+<span class="p">):</span>
+    <span class="k">class</span> <span class="nc">GradientInversionServerWrapper</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+        <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+            <span class="nb">super</span><span class="p">(</span><span class="n">GradientInversionServerWrapper</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">attacker</span> <span class="o">=</span> <span class="n">GradientInversion_Attack</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">clients</span><span class="p">[</span><span class="n">target_client_id</span><span class="p">],</span>
+                <span class="n">x_shape</span><span class="p">,</span>
+                <span class="n">y_shape</span><span class="o">=</span><span class="n">y_shape</span><span class="p">,</span>
+                <span class="n">optimize_label</span><span class="o">=</span><span class="n">optimize_label</span><span class="p">,</span>
+                <span class="n">gradient_ignore_pos</span><span class="o">=</span><span class="n">gradient_ignore_pos</span><span class="p">,</span>
+                <span class="n">pos_of_final_fc_layer</span><span class="o">=</span><span class="n">pos_of_final_fc_layer</span><span class="p">,</span>
+                <span class="n">num_iteration</span><span class="o">=</span><span class="n">num_iteration</span><span class="p">,</span>
+                <span class="n">optimizer_class</span><span class="o">=</span><span class="n">optimizer_class</span><span class="p">,</span>
+                <span class="n">optimizername</span><span class="o">=</span><span class="n">optimizername</span><span class="p">,</span>
+                <span class="n">lossfunc</span><span class="o">=</span><span class="n">lossfunc</span><span class="p">,</span>
+                <span class="n">distancefunc</span><span class="o">=</span><span class="n">distancefunc</span><span class="p">,</span>
+                <span class="n">distancename</span><span class="o">=</span><span class="n">distancename</span><span class="p">,</span>
+                <span class="n">tv_reg_coef</span><span class="o">=</span><span class="n">tv_reg_coef</span><span class="p">,</span>
+                <span class="n">lm_reg_coef</span><span class="o">=</span><span class="n">lm_reg_coef</span><span class="p">,</span>
+                <span class="n">l2_reg_coef</span><span class="o">=</span><span class="n">l2_reg_coef</span><span class="p">,</span>
+                <span class="n">bn_reg_coef</span><span class="o">=</span><span class="n">bn_reg_coef</span><span class="p">,</span>
+                <span class="n">gc_reg_coef</span><span class="o">=</span><span class="n">gc_reg_coef</span><span class="p">,</span>
+                <span class="n">bn_reg_layers</span><span class="o">=</span><span class="n">bn_reg_layers</span><span class="p">,</span>
+                <span class="n">custom_reg_func</span><span class="o">=</span><span class="n">custom_reg_func</span><span class="p">,</span>
+                <span class="n">custom_reg_coef</span><span class="o">=</span><span class="n">custom_reg_coef</span><span class="p">,</span>
+                <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">,</span>
+                <span class="n">log_interval</span><span class="o">=</span><span class="n">log_interval</span><span class="p">,</span>
+                <span class="n">save_loss</span><span class="o">=</span><span class="n">save_loss</span><span class="p">,</span>
+                <span class="n">seed</span><span class="o">=</span><span class="n">seed</span><span class="p">,</span>
+                <span class="n">group_num</span><span class="o">=</span><span class="n">group_num</span><span class="p">,</span>
+                <span class="n">group_seed</span><span class="o">=</span><span class="n">group_seed</span><span class="p">,</span>
+                <span class="n">early_stopping</span><span class="o">=</span><span class="n">early_stopping</span><span class="p">,</span>
+            <span class="p">)</span>
+
+        <span class="k">def</span> <span class="nf">change_target_client_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target_client_id</span><span class="p">):</span>
+            <span class="nb">set</span><span class="o">.</span><span class="n">attacker</span><span class="o">.</span><span class="n">target_model</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">clients</span><span class="p">[</span><span class="n">target_client_id</span><span class="p">]</span>
+
+        <span class="k">def</span> <span class="nf">attack</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+            <span class="n">received_gradient</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">uploaded_gradients</span><span class="p">[</span><span class="n">target_client_id</span><span class="p">]</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">attacker</span><span class="o">.</span><span class="n">attack</span><span class="p">(</span><span class="n">received_gradient</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="k">def</span> <span class="nf">group_attack</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+            <span class="n">received_gradient</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">uploaded_gradients</span><span class="p">[</span><span class="n">target_client_id</span><span class="p">]</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">attacker</span><span class="o">.</span><span class="n">group_attack</span><span class="p">(</span><span class="n">received_gradient</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="k">def</span> <span class="nf">reset_seed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">seed</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">attacker</span><span class="o">.</span><span class="n">reset_seed</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">GradientInversionServerWrapper</span></div>
+
+
+<div class="viewcode-block" id="GradientInversionAttackManager"><a class="viewcode-back" href="../../../../aijack.attack.inversion.html#aijack.attack.inversion.gradientinversion.GradientInversionAttackManager">[docs]</a><span class="k">class</span> <span class="nc">GradientInversionAttackManager</span><span class="p">(</span><span class="n">BaseManager</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">args</span> <span class="o">=</span> <span class="n">args</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">kwargs</span> <span class="o">=</span> <span class="n">kwargs</span>
+
+<div class="viewcode-block" id="GradientInversionAttackManager.attach"><a class="viewcode-back" href="../../../../aijack.attack.inversion.html#aijack.attack.inversion.gradientinversion.GradientInversionAttackManager.attach">[docs]</a>    <span class="k">def</span> <span class="nf">attach</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">cls</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">attach_gradient_inversion_attack_to_server</span><span class="p">(</span>
+            <span class="bp">cls</span><span class="p">,</span> <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">kwargs</span>
+        <span class="p">)</span></div></div>
 </pre></div>
 
            </div>

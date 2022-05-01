@@ -18,7 +18,7 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="aijack.defense.setoria package" href="aijack.defense.setoria.html" />
+    <link rel="next" title="aijack.defense.soteria package" href="aijack.defense.soteria.html" />
     <link rel="prev" title="aijack.defense.dp.manager package" href="aijack.defense.dp.manager.html" />
 </head>
 
@@ -50,13 +50,12 @@
 <li class="toctree-l4 current"><a class="reference internal" href="aijack.defense.html#subpackages">Subpackages</a></li>
 <li class="toctree-l4"><a class="reference internal" href="aijack.defense.html#submodules">Submodules</a></li>
 <li class="toctree-l4"><a class="reference internal" href="aijack.defense.html#module-aijack.defense.purifier">aijack.defense.purifier module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="aijack.defense.html#module-aijack.defense">Module contents</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="aijack.manager.html">aijack.manager package</a></li>
 <li class="toctree-l3"><a class="reference internal" href="aijack.utils.html">aijack.utils package</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="aijack.html#module-aijack">Module contents</a></li>
 </ul>
 </li>
 </ul>
@@ -87,8 +86,8 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
 
-  <section id="aijack-defense-mid-package">
-<h1>aijack.defense.mid package<a class="headerlink" href="#aijack-defense-mid-package" title="Permalink to this headline"></a></h1>
+  <section id="module-aijack.defense.mid">
+<span id="aijack-defense-mid-package"></span><h1>aijack.defense.mid package<a class="headerlink" href="#module-aijack.defense.mid" title="Permalink to this headline"></a></h1>
 <section id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline"></a></h2>
 </section>
@@ -109,7 +108,7 @@
 <span id="aijack-defense-mid-nn-module"></span><h2>aijack.defense.mid.nn module<a class="headerlink" href="#module-aijack.defense.mid.nn" title="Permalink to this headline"></a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="aijack.defense.mid.nn.VIB">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">aijack.defense.mid.nn.</span></span><span class="sig-name descname"><span class="pre">VIB</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">encoder</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">decoder</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dim_z</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">256</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_samples</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/defense/mid/nn.html#VIB"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.defense.mid.nn.VIB" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">aijack.defense.mid.nn.</span></span><span class="sig-name descname"><span class="pre">VIB</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">encoder</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">decoder</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dim_z</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">256</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_samples</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">beta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.001</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/defense/mid/nn.html#VIB"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.defense.mid.nn.VIB" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">torch.nn.modules.module.Module</span></code></p>
 <dl class="py method">
 <dt class="sig sig-object py" id="aijack.defense.mid.nn.VIB.forward">
@@ -131,6 +130,11 @@ registered hooks while the latter silently ignores them.</p>
 <dd></dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="aijack.defense.mid.nn.VIB.loss">
+<span class="sig-name descname"><span class="pre">loss</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">result_dict</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/defense/mid/nn.html#VIB.loss"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.defense.mid.nn.VIB.loss" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="aijack.defense.mid.nn.VIB.sampling_from_encoder">
 <span class="sig-name descname"><span class="pre">sampling_from_encoder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mu</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/defense/mid/nn.html#VIB.sampling_from_encoder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.defense.mid.nn.VIB.sampling_from_encoder" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
@@ -143,9 +147,6 @@ registered hooks while the latter silently ignores them.</p>
 </dd></dl>
 
 </section>
-<section id="module-aijack.defense.mid">
-<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-aijack.defense.mid" title="Permalink to this headline"></a></h2>
-</section>
 </section>
 
 
@@ -153,7 +154,7 @@ registered hooks while the latter silently ignores them.</p>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="aijack.defense.dp.manager.html" class="btn btn-neutral float-left" title="aijack.defense.dp.manager package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="aijack.defense.setoria.html" class="btn btn-neutral float-right" title="aijack.defense.setoria package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="aijack.defense.soteria.html" class="btn btn-neutral float-right" title="aijack.defense.soteria package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

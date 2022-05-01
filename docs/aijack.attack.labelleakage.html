@@ -48,15 +48,14 @@
 <li class="toctree-l4 current"><a class="reference internal" href="aijack.attack.html#subpackages">Subpackages</a></li>
 <li class="toctree-l4"><a class="reference internal" href="aijack.attack.html#submodules">Submodules</a></li>
 <li class="toctree-l4"><a class="reference internal" href="aijack.attack.html#module-aijack.attack.base_attack">aijack.attack.base_attack module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="aijack.attack.html#module-aijack.attack">Module contents</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="aijack.collaborative.html">aijack.collaborative package</a></li>
 <li class="toctree-l3"><a class="reference internal" href="aijack.defense.html">aijack.defense package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="aijack.manager.html">aijack.manager package</a></li>
 <li class="toctree-l3"><a class="reference internal" href="aijack.utils.html">aijack.utils package</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="aijack.html#module-aijack">Module contents</a></li>
 </ul>
 </li>
 </ul>
@@ -87,62 +86,30 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
 
-  <section id="aijack-attack-labelleakage-package">
-<h1>aijack.attack.labelleakage package<a class="headerlink" href="#aijack-attack-labelleakage-package" title="Permalink to this headline"></a></h1>
+  <section id="module-aijack.attack.labelleakage">
+<span id="aijack-attack-labelleakage-package"></span><h1>aijack.attack.labelleakage package<a class="headerlink" href="#module-aijack.attack.labelleakage" title="Permalink to this headline"></a></h1>
+<p>Subpackage for label leakage attack, which infere the private label information of the training dataset.</p>
 <section id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline"></a></h2>
 </section>
 <section id="module-aijack.attack.labelleakage.normattack">
 <span id="aijack-attack-labelleakage-normattack-module"></span><h2>aijack.attack.labelleakage.normattack module<a class="headerlink" href="#module-aijack.attack.labelleakage.normattack" title="Permalink to this headline"></a></h2>
 <dl class="py class">
-<dt class="sig sig-object py" id="aijack.attack.labelleakage.normattack.NormAttack">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">aijack.attack.labelleakage.normattack.</span></span><span class="sig-name descname"><span class="pre">NormAttack</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target_model</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/attack/labelleakage/normattack.html#NormAttack"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.attack.labelleakage.normattack.NormAttack" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference internal" href="aijack.attack.html#aijack.attack.base_attack.BaseAttacker" title="aijack.attack.base_attack.BaseAttacker"><code class="xref py py-class docutils literal notranslate"><span class="pre">aijack.attack.base_attack.BaseAttacker</span></code></a></p>
+<dt class="sig sig-object py" id="aijack.attack.labelleakage.normattack.NormAttackManager">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">aijack.attack.labelleakage.normattack.</span></span><span class="sig-name descname"><span class="pre">NormAttackManager</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/attack/labelleakage/normattack.html#NormAttackManager"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.attack.labelleakage.normattack.NormAttackManager" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="aijack.manager.html#aijack.manager.base.BaseManager" title="aijack.manager.base.BaseManager"><code class="xref py py-class docutils literal notranslate"><span class="pre">aijack.manager.base.BaseManager</span></code></a></p>
 <dl class="py method">
-<dt class="sig sig-object py" id="aijack.attack.labelleakage.normattack.NormAttack.attack">
-<span class="sig-name descname"><span class="pre">attack</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataloader</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">criterion</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'cpu'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_client_index</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/attack/labelleakage/normattack.html#NormAttack.attack"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.attack.labelleakage.normattack.NormAttack.attack" title="Permalink to this definition"></a></dt>
-<dd><dl class="simple">
-<dt>Culculate leak_auc on the given SplitNN model</dt><dd><p>reference: <a class="reference external" href="https://arxiv.org/abs/2102.08504">https://arxiv.org/abs/2102.08504</a></p>
-</dd>
-</dl>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>dataloader</strong> (<em>torch dataloader</em>) – dataloader for evaluation</p></li>
-<li><p><strong>criterion</strong> – loss function for training</p></li>
-<li><p><strong>device</strong> – cpu or GPU</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>culculated leak auc</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>score</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="aijack.attack.labelleakage.normattack.NormAttack.extract_intermidiate_gradient">
-<span class="sig-name descname"><span class="pre">extract_intermidiate_gradient</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">outputs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_client_index</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/attack/labelleakage/normattack.html#NormAttack.extract_intermidiate_gradient"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.attack.labelleakage.normattack.NormAttack.extract_intermidiate_gradient" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="aijack.attack.labelleakage.normattack.NormAttackManager.attach">
+<span class="sig-name descname"><span class="pre">attach</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cls</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/attack/labelleakage/normattack.html#NormAttackManager.attach"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.attack.labelleakage.normattack.NormAttackManager.attach" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
-<dl class="py class">
-<dt class="sig sig-object py" id="aijack.attack.labelleakage.normattack.SplitNNNormAttack">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">aijack.attack.labelleakage.normattack.</span></span><span class="sig-name descname"><span class="pre">SplitNNNormAttack</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target_model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_client_index</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/attack/labelleakage/normattack.html#SplitNNNormAttack"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.attack.labelleakage.normattack.SplitNNNormAttack" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference internal" href="#aijack.attack.labelleakage.normattack.NormAttack" title="aijack.attack.labelleakage.normattack.NormAttack"><code class="xref py py-class docutils literal notranslate"><span class="pre">aijack.attack.labelleakage.normattack.NormAttack</span></code></a></p>
-<dl class="py method">
-<dt class="sig sig-object py" id="aijack.attack.labelleakage.normattack.SplitNNNormAttack.extract_intermidiate_gradient">
-<span class="sig-name descname"><span class="pre">extract_intermidiate_gradient</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">outputs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/attack/labelleakage/normattack.html#SplitNNNormAttack.extract_intermidiate_gradient"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.attack.labelleakage.normattack.SplitNNNormAttack.extract_intermidiate_gradient" title="Permalink to this definition"></a></dt>
+<dl class="py function">
+<dt class="sig sig-object py" id="aijack.attack.labelleakage.normattack.attach_normattack_to_splitnn">
+<span class="sig-prename descclassname"><span class="pre">aijack.attack.labelleakage.normattack.</span></span><span class="sig-name descname"><span class="pre">attach_normattack_to_splitnn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cls</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attack_criterion</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_client_index</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'cpu'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/attack/labelleakage/normattack.html#attach_normattack_to_splitnn"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.attack.labelleakage.normattack.attach_normattack_to_splitnn" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
-</dd></dl>
-
-</section>
-<section id="module-aijack.attack.labelleakage">
-<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-aijack.attack.labelleakage" title="Permalink to this headline"></a></h2>
 </section>
 </section>
 
