@@ -76,6 +76,60 @@
 
 
 <div class="viewcode-block" id="Evasion_attack_sklearn"><a class="viewcode-back" href="../../../../aijack.attack.evasion.html#aijack.attack.evasion.evasion_attack.Evasion_attack_sklearn">[docs]</a><span class="k">class</span> <span class="nc">Evasion_attack_sklearn</span><span class="p">(</span><span class="n">BaseAttacker</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Create an adversarial example against sklearn objects</span>
+<span class="sd">        reference https://arxiv.org/abs/1708.06131</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        target_model (sklearn): sklearn classifier</span>
+<span class="sd">        X_minus_1 (numpy.array): datasets that contains</span>
+<span class="sd">                                only the class you want to misclasssify</span>
+<span class="sd">        dmax (float): max distance between the adversarial example</span>
+<span class="sd">                        and initial one</span>
+<span class="sd">        max_iter (int): maxium number of iterations</span>
+<span class="sd">        gamma (float): parameter gamma of svm (used for only svm)</span>
+<span class="sd">        lam (float): trade - off parameter</span>
+<span class="sd">        t (float): step_size</span>
+<span class="sd">        h (float): a badwidtch paramter for a KDE</span>
+<span class="sd">        distance (str): type of distance such as L2 or L1</span>
+<span class="sd">        kde_type (str): type of kernel density estimator</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        target_model (sklearn): sklearn classifier</span>
+<span class="sd">        X_minus_1 (numpy.array): datasets that contains</span>
+<span class="sd">                                only the class you want to misclasssify</span>
+<span class="sd">        dmax (float): max distance between the adversarial example</span>
+<span class="sd">                        and initial one</span>
+<span class="sd">        max_iter (int): maxium number of iterations</span>
+<span class="sd">        gamma (float): parameter gamma of svm (used for only svm)</span>
+<span class="sd">        lam (float): trade - off parameter</span>
+<span class="sd">        t (float): step_size</span>
+<span class="sd">        h (float): a badwidtch paramter for a KDE</span>
+<span class="sd">        distance (str): type of distance such as L2 or L1</span>
+<span class="sd">        kde_type (str): type of kernel density estimator</span>
+<span class="sd">        n_minus_1 (int): number of rows of X_minus_1</span>
+<span class="sd">        delta_g (func): deviation of he discriminant function of a</span>
+<span class="sd">                        surrogate classifier f learnt on D</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        ValueError: if given distance is not supported.</span>
+
+<span class="sd">    Usage:</span>
+<span class="sd">        # datasets which contains only &quot;3&quot;</span>
+<span class="sd">        X_minus_1 = X_train[np.where(y_train == &quot;3&quot;)]</span>
+
+<span class="sd">        # Attack_sklearn automatically detect the type of the classifier</span>
+<span class="sd">        attacker = Attack_sklearn(target_model = target_model,</span>
+<span class="sd">                                    X_minus_1 = X_minus_1,</span>
+<span class="sd">                                    dmax =  (5000 / 255) * 2.5,</span>
+<span class="sd">                                    max_iter = 300,</span>
+<span class="sd">                                    gamma = 1 / (X_train.shape[1] *</span>
+<span class="sd">                                                np.var(X_train)),</span>
+<span class="sd">                                    lam = 10, t = 0.5, h = 10)</span>
+
+<span class="sd">        # x0 is the intial ponint (&quot;7&quot;)</span>
+<span class="sd">        xm, log = attacker.attack(x0)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">target_model</span><span class="p">,</span>
@@ -89,59 +143,6 @@
         <span class="n">distance</span><span class="o">=</span><span class="s2">&quot;L1&quot;</span><span class="p">,</span>
         <span class="n">kde_type</span><span class="o">=</span><span class="s2">&quot;L1&quot;</span><span class="p">,</span>
     <span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;create an adversarial example against sklearn objects</span>
-<span class="sd">           reference https://arxiv.org/abs/1708.06131</span>
-
-<span class="sd">        Args:</span>
-<span class="sd">            target_model (sklearn): sklearn classifier</span>
-<span class="sd">            X_minus_1 (numpy.array): datasets that contains</span>
-<span class="sd">                                    only the class you want to misclasssify</span>
-<span class="sd">            dmax (float): max distance between the adversarial example</span>
-<span class="sd">                           and initial one</span>
-<span class="sd">            max_iter (int): maxium number of iterations</span>
-<span class="sd">            gamma (float): parameter gamma of svm (used for only svm)</span>
-<span class="sd">            lam (float): trade - off parameter</span>
-<span class="sd">            t (float): step_size</span>
-<span class="sd">            h (float): a badwidtch paramter for a KDE</span>
-<span class="sd">            distance (str): type of distance such as L2 or L1</span>
-<span class="sd">            kde_type (str): type of kernel density estimator</span>
-
-<span class="sd">        Attributes:</span>
-<span class="sd">            target_model (sklearn): sklearn classifier</span>
-<span class="sd">            X_minus_1 (numpy.array): datasets that contains</span>
-<span class="sd">                                    only the class you want to misclasssify</span>
-<span class="sd">            dmax (float): max distance between the adversarial example</span>
-<span class="sd">                           and initial one</span>
-<span class="sd">            max_iter (int): maxium number of iterations</span>
-<span class="sd">            gamma (float): parameter gamma of svm (used for only svm)</span>
-<span class="sd">            lam (float): trade - off parameter</span>
-<span class="sd">            t (float): step_size</span>
-<span class="sd">            h (float): a badwidtch paramter for a KDE</span>
-<span class="sd">            distance (str): type of distance such as L2 or L1</span>
-<span class="sd">            kde_type (str): type of kernel density estimator</span>
-<span class="sd">            n_minus_1 (int): number of rows of X_minus_1</span>
-<span class="sd">            delta_g (func): deviation of he discriminant function of a</span>
-<span class="sd">                            surrogate classifier f learnt on D</span>
-
-<span class="sd">        Raises:</span>
-<span class="sd">            ValueError: if given distance is not supported.</span>
-
-<span class="sd">        Usage:</span>
-<span class="sd">            # datasets which contains only &quot;3&quot;</span>
-<span class="sd">            X_minus_1 = X_train[np.where(y_train == &quot;3&quot;)]</span>
-
-<span class="sd">            # Attack_sklearn automatically detect the type of the classifier</span>
-<span class="sd">            attacker = Attack_sklearn(target_model = target_model,</span>
-<span class="sd">                                      X_minus_1 = X_minus_1,</span>
-<span class="sd">                                      dmax =  (5000 / 255) * 2.5,</span>
-<span class="sd">                                      max_iter = 300,</span>
-<span class="sd">                                      gamma = 1 / (X_train.shape[1] *</span>
-<span class="sd">                                                   np.var(X_train)),</span>
-<span class="sd">                                      lam = 10, t = 0.5, h = 10)</span>
-
-<span class="sd">            # x0 is the intial ponint (&quot;7&quot;)</span>
-<span class="sd">            xm, log = attacker.attack(x0)</span>
-<span class="sd">        &quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">target_model</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">X_minus_1</span> <span class="o">=</span> <span class="n">X_minus_1</span>

@@ -7,6 +7,60 @@ from ..base_attack import BaseAttacker
 
 
 class Evasion_attack_sklearn(BaseAttacker):
+    """Create an adversarial example against sklearn objects
+        reference https://arxiv.org/abs/1708.06131
+
+    Args:
+        target_model (sklearn): sklearn classifier
+        X_minus_1 (numpy.array): datasets that contains
+                                only the class you want to misclasssify
+        dmax (float): max distance between the adversarial example
+                        and initial one
+        max_iter (int): maxium number of iterations
+        gamma (float): parameter gamma of svm (used for only svm)
+        lam (float): trade - off parameter
+        t (float): step_size
+        h (float): a badwidtch paramter for a KDE
+        distance (str): type of distance such as L2 or L1
+        kde_type (str): type of kernel density estimator
+
+    Attributes:
+        target_model (sklearn): sklearn classifier
+        X_minus_1 (numpy.array): datasets that contains
+                                only the class you want to misclasssify
+        dmax (float): max distance between the adversarial example
+                        and initial one
+        max_iter (int): maxium number of iterations
+        gamma (float): parameter gamma of svm (used for only svm)
+        lam (float): trade - off parameter
+        t (float): step_size
+        h (float): a badwidtch paramter for a KDE
+        distance (str): type of distance such as L2 or L1
+        kde_type (str): type of kernel density estimator
+        n_minus_1 (int): number of rows of X_minus_1
+        delta_g (func): deviation of he discriminant function of a
+                        surrogate classifier f learnt on D
+
+    Raises:
+        ValueError: if given distance is not supported.
+
+    Usage:
+        # datasets which contains only "3"
+        X_minus_1 = X_train[np.where(y_train == "3")]
+
+        # Attack_sklearn automatically detect the type of the classifier
+        attacker = Attack_sklearn(target_model = target_model,
+                                    X_minus_1 = X_minus_1,
+                                    dmax =  (5000 / 255) * 2.5,
+                                    max_iter = 300,
+                                    gamma = 1 / (X_train.shape[1] *
+                                                np.var(X_train)),
+                                    lam = 10, t = 0.5, h = 10)
+
+        # x0 is the intial ponint ("7")
+        xm, log = attacker.attack(x0)
+    """
+
     def __init__(
         self,
         target_model,
@@ -20,59 +74,6 @@ class Evasion_attack_sklearn(BaseAttacker):
         distance="L1",
         kde_type="L1",
     ):
-        """create an adversarial example against sklearn objects
-           reference https://arxiv.org/abs/1708.06131
-
-        Args:
-            target_model (sklearn): sklearn classifier
-            X_minus_1 (numpy.array): datasets that contains
-                                    only the class you want to misclasssify
-            dmax (float): max distance between the adversarial example
-                           and initial one
-            max_iter (int): maxium number of iterations
-            gamma (float): parameter gamma of svm (used for only svm)
-            lam (float): trade - off parameter
-            t (float): step_size
-            h (float): a badwidtch paramter for a KDE
-            distance (str): type of distance such as L2 or L1
-            kde_type (str): type of kernel density estimator
-
-        Attributes:
-            target_model (sklearn): sklearn classifier
-            X_minus_1 (numpy.array): datasets that contains
-                                    only the class you want to misclasssify
-            dmax (float): max distance between the adversarial example
-                           and initial one
-            max_iter (int): maxium number of iterations
-            gamma (float): parameter gamma of svm (used for only svm)
-            lam (float): trade - off parameter
-            t (float): step_size
-            h (float): a badwidtch paramter for a KDE
-            distance (str): type of distance such as L2 or L1
-            kde_type (str): type of kernel density estimator
-            n_minus_1 (int): number of rows of X_minus_1
-            delta_g (func): deviation of he discriminant function of a
-                            surrogate classifier f learnt on D
-
-        Raises:
-            ValueError: if given distance is not supported.
-
-        Usage:
-            # datasets which contains only "3"
-            X_minus_1 = X_train[np.where(y_train == "3")]
-
-            # Attack_sklearn automatically detect the type of the classifier
-            attacker = Attack_sklearn(target_model = target_model,
-                                      X_minus_1 = X_minus_1,
-                                      dmax =  (5000 / 255) * 2.5,
-                                      max_iter = 300,
-                                      gamma = 1 / (X_train.shape[1] *
-                                                   np.var(X_train)),
-                                      lam = 10, t = 0.5, h = 10)
-
-            # x0 is the intial ponint ("7")
-            xm, log = attacker.attack(x0)
-        """
         super().__init__(target_model)
 
         self.X_minus_1 = X_minus_1

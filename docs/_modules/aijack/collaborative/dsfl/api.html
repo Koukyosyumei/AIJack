@@ -73,7 +73,23 @@
 
 
 <div class="viewcode-block" id="DSFLAPI"><a class="viewcode-back" href="../../../../aijack.collaborative.dsfl.html#aijack.collaborative.dsfl.api.DSFLAPI">[docs]</a><span class="k">class</span> <span class="nc">DSFLAPI</span><span class="p">(</span><span class="n">BaseFLKnowledgeDistillationAPI</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;API of DS-FL&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;API of DS-FL</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        server (DSFLServer): an instance of DSFLServer</span>
+<span class="sd">        clients (List[DSFLClient]): a list of instances of DSFLClient</span>
+<span class="sd">        public_dataloader (torch.DataLoader): a dataloader of public dataset</span>
+<span class="sd">        local_dataloaders (List[torch.DataLoader]): a list of dataloaders of private dataests</span>
+<span class="sd">        validation_dataloader (torch.DataLoader): a dataloader of validation dataset</span>
+<span class="sd">        criterion (function): a loss function</span>
+<span class="sd">        num_communication (int): number of communication</span>
+<span class="sd">        device (str): device type</span>
+<span class="sd">        server_optimizer (torch.Optimizer): a optimizer for the global model</span>
+<span class="sd">        client_optimizers ([torch.Optimizer]): a list of optimizers for the local models</span>
+<span class="sd">        epoch_local_training (int, optional): number of epochs of local training. Defaults to 1.</span>
+<span class="sd">        epoch_global_distillation (int, optional): number of epochs of global distillation. Defaults to 1.</span>
+<span class="sd">        epoch_local_distillation (int, optional): number of epochs of local distillation. Defaults to 1.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -91,23 +107,7 @@
         <span class="n">epoch_global_distillation</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
         <span class="n">epoch_local_distillation</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
     <span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Init DSFLAPI</span>
-
-<span class="sd">        Args:</span>
-<span class="sd">            server (DSFLServer): an instance of DSFLServer</span>
-<span class="sd">            clients (List[DSFLClient]): a list of instances of DSFLClient</span>
-<span class="sd">            public_dataloader (torch.DataLoader): a dataloader of public dataset</span>
-<span class="sd">            local_dataloaders (List[torch.DataLoader]): a list of dataloaders of private dataests</span>
-<span class="sd">            validation_dataloader (torch.DataLoader): a dataloader of validation dataset</span>
-<span class="sd">            criterion (function): a loss function</span>
-<span class="sd">            num_communication (int): number of communication</span>
-<span class="sd">            device (str): device type</span>
-<span class="sd">            server_optimizer (torch.Optimizer): a optimizer for the global model</span>
-<span class="sd">            client_optimizers ([torch.Optimizer]): a list of optimizers for the local models</span>
-<span class="sd">            epoch_local_training (int, optional): number of epochs of local training. Defaults to 1.</span>
-<span class="sd">            epoch_global_distillation (int, optional): number of epochs of global distillation. Defaults to 1.</span>
-<span class="sd">            epoch_local_distillation (int, optional): number of epochs of local distillation. Defaults to 1.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Init DSFLAPI&quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
             <span class="n">server</span><span class="p">,</span>
             <span class="n">clients</span><span class="p">,</span>

@@ -99,6 +99,52 @@ so that the performance of the trained machine learning model will degregate.</p
 <dt class="sig sig-object py" id="aijack.attack.poison.poison_attack.Poison_attack_sklearn">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">aijack.attack.poison.poison_attack.</span></span><span class="sig-name descname"><span class="pre">Poison_attack_sklearn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target_model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">X_train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/attack/poison/poison_attack.html#Poison_attack_sklearn"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.attack.poison.poison_attack.Poison_attack_sklearn" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="aijack.attack.html#aijack.attack.base_attack.BaseAttacker" title="aijack.attack.base_attack.BaseAttacker"><code class="xref py py-class docutils literal notranslate"><span class="pre">aijack.attack.base_attack.BaseAttacker</span></code></a></p>
+<dl class="simple">
+<dt>implementation of poison attack for sklearn binary classifier</dt><dd><p>reference <a class="reference external" href="https://arxiv.org/abs/1206.6389">https://arxiv.org/abs/1206.6389</a></p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>target_model</strong> – sklean classifier</p></li>
+<li><p><strong>X_train</strong> – training data for target_model</p></li>
+<li><p><strong>y_train</strong> – training label for target_model</p></li>
+<li><p><strong>t</strong> – step size</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="aijack.attack.poison.poison_attack.Poison_attack_sklearn.target_model">
+<span class="sig-name descname"><span class="pre">target_model</span></span><a class="headerlink" href="#aijack.attack.poison.poison_attack.Poison_attack_sklearn.target_model" title="Permalink to this definition"></a></dt>
+<dd><p>sklean classifier</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="aijack.attack.poison.poison_attack.Poison_attack_sklearn.X_train">
+<span class="sig-name descname"><span class="pre">X_train</span></span><a class="headerlink" href="#aijack.attack.poison.poison_attack.Poison_attack_sklearn.X_train" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="aijack.attack.poison.poison_attack.Poison_attack_sklearn.y_train">
+<span class="sig-name descname"><span class="pre">y_train</span></span><a class="headerlink" href="#aijack.attack.poison.poison_attack.Poison_attack_sklearn.y_train" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="aijack.attack.poison.poison_attack.Poison_attack_sklearn.t">
+<span class="sig-name descname"><span class="pre">t</span></span><a class="headerlink" href="#aijack.attack.poison.poison_attack.Poison_attack_sklearn.t" title="Permalink to this definition"></a></dt>
+<dd><p>step size</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="aijack.attack.poison.poison_attack.Poison_attack_sklearn.kernel">
+<span class="sig-name descname"><span class="pre">kernel</span></span><a class="headerlink" href="#aijack.attack.poison.poison_attack.Poison_attack_sklearn.kernel" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="aijack.attack.poison.poison_attack.Poison_attack_sklearn.delta_kernel">
+<span class="sig-name descname"><span class="pre">delta_kernel</span></span><a class="headerlink" href="#aijack.attack.poison.poison_attack.Poison_attack_sklearn.delta_kernel" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="aijack.attack.poison.poison_attack.Poison_attack_sklearn.attack">
 <span class="sig-name descname"><span class="pre">attack</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">yc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">X_valid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_valid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_iterations</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">200</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/attack/poison/poison_attack.html#Poison_attack_sklearn.attack"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.attack.poison.poison_attack.Poison_attack_sklearn.attack" title="Permalink to this definition"></a></dt>

@@ -71,15 +71,15 @@
 
 
 <div class="viewcode-block" id="BaseClient"><a class="viewcode-back" href="../../../../aijack.collaborative.core.html#aijack.collaborative.core.client.BaseClient">[docs]</a><span class="k">class</span> <span class="nc">BaseClient</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Abstract class foe the client of collaborative learning.&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;Abstract class foe the client of collaborative learning.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        model (torch.nn.Module): a local model</span>
+<span class="sd">        user_id (int, optional): id of this client. Defaults to 0.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">user_id</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Initialize BaseClient</span>
-
-<span class="sd">        Args:</span>
-<span class="sd">            model (torch.nn.Module): a local model</span>
-<span class="sd">            user_id (int, optional): id of this client. Defaults to 0.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Initialize BaseClient&quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">BaseClient</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">model</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">user_id</span> <span class="o">=</span> <span class="n">user_id</span>
