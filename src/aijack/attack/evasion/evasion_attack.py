@@ -45,11 +45,11 @@ class Evasion_attack_sklearn(BaseAttacker):
         ValueError: if given distance is not supported.
 
     Usage:
-        # datasets which contains only "3"
-        X_minus_1 = X_train[np.where(y_train == "3")]
+        >># datasets which contains only "3"
+        >>X_minus_1 = X_train[np.where(y_train == "3")]
 
-        # Attack_sklearn automatically detect the type of the classifier
-        attacker = Attack_sklearn(target_model = target_model,
+        >># Attack_sklearn automatically detect the type of the classifier
+        >>attacker = Attack_sklearn(target_model = target_model,
                                     X_minus_1 = X_minus_1,
                                     dmax =  (5000 / 255) * 2.5,
                                     max_iter = 300,
@@ -57,8 +57,8 @@ class Evasion_attack_sklearn(BaseAttacker):
                                                 np.var(X_train)),
                                     lam = 10, t = 0.5, h = 10)
 
-        # x0 is the intial ponint ("7")
-        xm, log = attacker.attack(x0)
+        >># x0 is the intial ponint ("7")
+        >>xm, log = attacker.attack(x0)
     """
 
     def __init__(
