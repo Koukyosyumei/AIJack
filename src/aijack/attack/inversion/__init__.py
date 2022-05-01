@@ -1,4 +1,4 @@
-"""Submodule for model inversion attack, which reconstructs the private data from
+"""Subpackage for model inversion attack, which reconstructs the private data from
 the trained machine learning models.
 """
 from .gan_attack import GANAttackManager, attach_ganattack_to_client  # noqa: F401

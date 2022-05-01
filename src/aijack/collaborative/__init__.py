@@ -1,4 +1,4 @@
-"""Submodule for collaborative learning, where multiple clients trains a single
+"""Subpackage for collaborative learning, where multiple clients trains a single
 global model without sharing their local datasets.
 """
 from .core import BaseClient, BaseServer  # noqa: F401

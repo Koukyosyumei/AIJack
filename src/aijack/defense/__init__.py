@@ -1,4 +1,4 @@
-"""Submodule for defense algorithms for machine learning models.
+"""Subpackage for defense algorithms for machine learning models.
 """
 from .ckks import CKKSEncoder, CKKSEncrypter, CKKSPlaintext  # noqa: F401
 from .dp import GeneralMomentAccountant, PrivacyManager  # noqa: F401
