@@ -7,7 +7,18 @@ from ...utils import accuracy_torch_dataloader
 
 
 class BaseFLKnowledgeDistillationAPI:
-    """Abstract class for API of federated learning with knowledge distillation."""
+    """Abstract class for API of federated learning with knowledge distillation.
+
+    Args:
+        server (aijack.collaborative.core.BaseServer): the server
+        clients (List[aijack.collaborative.core.BaseClient]): a list of the clients
+        public_dataloader (torch.utils.data.DataLoader): a dataloader for the public dataset
+        local_dataloaders (List[torch.utils.data.DataLoader]): a list of local dataloaders
+        validation_dataloader (torch.utils.data.DataLoader): a dataloader for the validation dataset
+        criterion (function): a function to calculate the loss
+        num_communication (int): the number of communication
+        device (str): device type
+    """
 
     def __init__(
         self,
@@ -20,18 +31,7 @@ class BaseFLKnowledgeDistillationAPI:
         num_communication,
         device,
     ):
-        """Initialize BaseFLKnowledgeDistillationAPI
-
-        Args:
-            server (aijack.collaborative.core.BaseServer): the server
-            clients (List[aijack.collaborative.core.BaseClient]): a list of the clients
-            public_dataloader (torch.utils.data.DataLoader): a dataloader for the public dataset
-            local_dataloaders (List[torch.utils.data.DataLoader]): a list of local dataloaders
-            validation_dataloader (torch.utils.data.DataLoader): a dataloader for the validation dataset
-            criterion (function): a function to calculate the loss
-            num_communication (int): the number of communication
-            device (str): device type
-        """
+        """Initialize BaseFLKnowledgeDistillationAPI"""
         self.server = server
         self.clients = clients
         self.public_dataloader = public_dataloader

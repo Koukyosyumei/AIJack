@@ -6,7 +6,16 @@ from ..core import BaseClient
 
 
 class DSFLClient(BaseClient):
-    """Client of DS-FL."""
+    """Client of DS-FL.
+
+    Args:
+        model (torch.nn.Module): _description_
+        public_dataloader (torch.utils.data.DataLoader): a dataloader of the public dataset.
+        output_dim (int, optional): the dimension of the output. Defaults to 1.
+        round_decimal (int, optional): number of digits to round up. Defaults to None.
+        device (str, optional): device type. Defaults to "cpu".
+        user_id (int, optional): id of this client. Defaults to 0.
+    """
 
     def __init__(
         self,
@@ -17,16 +26,7 @@ class DSFLClient(BaseClient):
         device="cpu",
         user_id=0,
     ):
-        """Init DSFLClient.
-
-        Args:
-            model (torch.nn.Module): _description_
-            public_dataloader (torch.utils.data.DataLoader): a dataloader of the public dataset.
-            output_dim (int, optional): the dimension of the output. Defaults to 1.
-            round_decimal (int, optional): number of digits to round up. Defaults to None.
-            device (str, optional): device type. Defaults to "cpu".
-            user_id (int, optional): id of this client. Defaults to 0.
-        """
+        """Init DSFLClient."""
         super().__init__(model, user_id)
         self.public_dataloader = public_dataloader
         self.round_decimal = round_decimal

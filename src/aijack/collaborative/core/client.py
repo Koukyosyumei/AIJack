@@ -2,15 +2,15 @@ import torch
 
 
 class BaseClient(torch.nn.Module):
-    """Abstract class foe the client of collaborative learning."""
+    """Abstract class foe the client of collaborative learning.
+
+    Args:
+        model (torch.nn.Module): a local model
+        user_id (int, optional): id of this client. Defaults to 0.
+    """
 
     def __init__(self, model, user_id=0):
-        """Initialize BaseClient
-
-        Args:
-            model (torch.nn.Module): a local model
-            user_id (int, optional): id of this client. Defaults to 0.
-        """
+        """Initialize BaseClient"""
         super(BaseClient, self).__init__()
         self.model = model
         self.user_id = user_id
