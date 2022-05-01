@@ -88,6 +88,9 @@
 
   <section id="module-aijack.collaborative.dsfl">
 <span id="aijack-collaborative-dsfl-package"></span><h1>aijack.collaborative.dsfl package<a class="headerlink" href="#module-aijack.collaborative.dsfl" title="Permalink to this headline"></a></h1>
+<p>Implementation of DS-FL,  <cite>Itahara, Sohei, et al. “Distillation-based semi-supervised federated learning for
+communication-efficient collaborative training with non-iid private data.
+” arXiv preprint arXiv:2008.06180 (2020).</cite></p>
 <section id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline"></a></h2>
 </section>
@@ -97,9 +100,7 @@
 <dt class="sig sig-object py" id="aijack.collaborative.dsfl.api.DSFLAPI">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">aijack.collaborative.dsfl.api.</span></span><span class="sig-name descname"><span class="pre">DSFLAPI</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">server</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clients</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">public_dataloader</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">local_dataloaders</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">validation_dataloader</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">criterion</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_communication</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">server_optimizer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">client_optimizers</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epoch_local_training</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epoch_global_distillation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epoch_local_distillation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/collaborative/dsfl/api.html#DSFLAPI"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.collaborative.dsfl.api.DSFLAPI" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="aijack.collaborative.core.html#aijack.collaborative.core.api.BaseFLKnowledgeDistillationAPI" title="aijack.collaborative.core.api.BaseFLKnowledgeDistillationAPI"><code class="xref py py-class docutils literal notranslate"><span class="pre">aijack.collaborative.core.api.BaseFLKnowledgeDistillationAPI</span></code></a></p>
-<p>Implementation of <cite>Distillation-Based Semi-Supervised Federated Learning
-for Communication-Efficient Collaborative Training
-with Non-IID Private Data</cite></p>
+<p>API of DS-FL</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="aijack.collaborative.dsfl.api.DSFLAPI.run">
 <span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/collaborative/dsfl/api.html#DSFLAPI.run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.collaborative.dsfl.api.DSFLAPI.run" title="Permalink to this definition"></a></dt>
@@ -114,15 +115,35 @@ with Non-IID Private Data</cite></p>
 <dt class="sig sig-object py" id="aijack.collaborative.dsfl.client.DSFLClient">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">aijack.collaborative.dsfl.client.</span></span><span class="sig-name descname"><span class="pre">DSFLClient</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">public_dataloader</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_dim</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">round_decimal</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'cpu'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/collaborative/dsfl/client.html#DSFLClient"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.collaborative.dsfl.client.DSFLClient" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="aijack.collaborative.core.html#aijack.collaborative.core.client.BaseClient" title="aijack.collaborative.core.client.BaseClient"><code class="xref py py-class docutils literal notranslate"><span class="pre">aijack.collaborative.core.client.BaseClient</span></code></a></p>
+<p>Client of DS-FL.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="aijack.collaborative.dsfl.client.DSFLClient.approach_consensus">
 <span class="sig-name descname"><span class="pre">approach_consensus</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">consensus_optimizer</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/collaborative/dsfl/client.html#DSFLClient.approach_consensus"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.collaborative.dsfl.client.DSFLClient.approach_consensus" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Train the own local model to minimize the distance between the global logits and
+the output logits of the local model on the public dataset.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>consensus_optimizer</strong> (<em>torch.optim.Optimizer</em>) – an optimizer to train the local model.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>averaged loss.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="aijack.collaborative.dsfl.client.DSFLClient.download">
 <span class="sig-name descname"><span class="pre">download</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">global_logit</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/collaborative/dsfl/client.html#DSFLClient.download"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.collaborative.dsfl.client.DSFLClient.download" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Download the global logits from the server.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>global_logit</strong> (<em>torch.Tensor</em>) – the global logits from the server</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="aijack.collaborative.dsfl.client.DSFLClient.training">
@@ -132,7 +153,16 @@ with Non-IID Private Data</cite></p>
 <dl class="py method">
 <dt class="sig sig-object py" id="aijack.collaborative.dsfl.client.DSFLClient.upload">
 <span class="sig-name descname"><span class="pre">upload</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/collaborative/dsfl/client.html#DSFLClient.upload"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.collaborative.dsfl.client.DSFLClient.upload" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Upload the output logits on the public dataset to the server.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the output logits of the public dataset.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>torch.Tensor</p>
+</dd>
+</dl>
+</dd></dl>
 
 </dd></dl>
 
@@ -148,10 +178,12 @@ with Non-IID Private Data</cite></p>
 <dt class="sig sig-object py" id="aijack.collaborative.dsfl.server.DSFLServer">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">aijack.collaborative.dsfl.server.</span></span><span class="sig-name descname"><span class="pre">DSFLServer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">clients</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">global_model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">public_dataloader</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">aggregation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'ERA'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">distillation_loss_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'crossentropy'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">era_temperature</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">server_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'cpu'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/collaborative/dsfl/server.html#DSFLServer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.collaborative.dsfl.server.DSFLServer" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="aijack.collaborative.core.html#aijack.collaborative.core.server.BaseServer" title="aijack.collaborative.core.server.BaseServer"><code class="xref py py-class docutils literal notranslate"><span class="pre">aijack.collaborative.core.server.BaseServer</span></code></a></p>
+<p>Server of DS-FL</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="aijack.collaborative.dsfl.server.DSFLServer.action">
 <span class="sig-name descname"><span class="pre">action</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/collaborative/dsfl/server.html#DSFLServer.action"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.collaborative.dsfl.server.DSFLServer.action" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Execute thr routine of each communication.</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="aijack.collaborative.dsfl.server.DSFLServer.distribute">
@@ -167,7 +199,8 @@ with Non-IID Private Data</cite></p>
 <dl class="py method">
 <dt class="sig sig-object py" id="aijack.collaborative.dsfl.server.DSFLServer.update">
 <span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/collaborative/dsfl/server.html#DSFLServer.update"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.collaborative.dsfl.server.DSFLServer.update" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Update the global model.</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="aijack.collaborative.dsfl.server.DSFLServer.update_globalmodel">

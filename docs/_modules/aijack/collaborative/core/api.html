@@ -76,6 +76,8 @@
 
 
 <div class="viewcode-block" id="BaseFLKnowledgeDistillationAPI"><a class="viewcode-back" href="../../../../aijack.collaborative.core.html#aijack.collaborative.core.api.BaseFLKnowledgeDistillationAPI">[docs]</a><span class="k">class</span> <span class="nc">BaseFLKnowledgeDistillationAPI</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Abstract class for API of federated learning with knowledge distillation.&quot;&quot;&quot;</span>
+
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">server</span><span class="p">,</span>
@@ -87,6 +89,18 @@
         <span class="n">num_communication</span><span class="p">,</span>
         <span class="n">device</span><span class="p">,</span>
     <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Initialize BaseFLKnowledgeDistillationAPI</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            server (aijack.collaborative.core.BaseServer): the server</span>
+<span class="sd">            clients (List[aijack.collaborative.core.BaseClient]): a list of the clients</span>
+<span class="sd">            public_dataloader (torch.utils.data.DataLoader): a dataloader for the public dataset</span>
+<span class="sd">            local_dataloaders (List[torch.utils.data.DataLoader]): a list of local dataloaders</span>
+<span class="sd">            validation_dataloader (torch.utils.data.DataLoader): a dataloader for the validation dataset</span>
+<span class="sd">            criterion (function): a function to calculate the loss</span>
+<span class="sd">            num_communication (int): the number of communication</span>
+<span class="sd">            device (str): device type</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">server</span> <span class="o">=</span> <span class="n">server</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">clients</span> <span class="o">=</span> <span class="n">clients</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">public_dataloader</span> <span class="o">=</span> <span class="n">public_dataloader</span>
@@ -99,6 +113,15 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">client_num</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">clients</span><span class="p">)</span>
 
 <div class="viewcode-block" id="BaseFLKnowledgeDistillationAPI.train_client"><a class="viewcode-back" href="../../../../aijack.collaborative.core.html#aijack.collaborative.core.api.BaseFLKnowledgeDistillationAPI.train_client">[docs]</a>    <span class="k">def</span> <span class="nf">train_client</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">public</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Train local models with the local datasets or the public dataset.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            public (bool, optional): Train with the public dataset or the local datasets.</span>
+<span class="sd">                                     Defaults to True.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            List[float]: a list of average loss of each clients.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">loss_on_local_dataest</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">client_idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">client_num</span><span class="p">):</span>
             <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">clients</span><span class="p">[</span><span class="n">client_idx</span><span class="p">]</span>
@@ -130,6 +153,14 @@
         <span class="k">pass</span></div>
 
 <div class="viewcode-block" id="BaseFLKnowledgeDistillationAPI.score"><a class="viewcode-back" href="../../../../aijack.collaborative.core.html#aijack.collaborative.core.api.BaseFLKnowledgeDistillationAPI.score">[docs]</a>    <span class="k">def</span> <span class="nf">score</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataloader</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Returns the performance on the given dataset.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            dataloader (torch.utils.data.DataLoader): a dataloader</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Dict[str, int]: performance of global model and local models</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">server_score</span> <span class="o">=</span> <span class="n">accuracy_torch_dataloader</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">server</span><span class="p">,</span> <span class="n">dataloader</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">device</span>
         <span class="p">)</span>
@@ -140,6 +171,11 @@
         <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;server_score&quot;</span><span class="p">:</span> <span class="n">server_score</span><span class="p">,</span> <span class="s2">&quot;clients_score&quot;</span><span class="p">:</span> <span class="n">clients_score</span><span class="p">}</span></div>
 
 <div class="viewcode-block" id="BaseFLKnowledgeDistillationAPI.local_score"><a class="viewcode-back" href="../../../../aijack.collaborative.core.html#aijack.collaborative.core.api.BaseFLKnowledgeDistillationAPI.local_score">[docs]</a>    <span class="k">def</span> <span class="nf">local_score</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Returns the local performance of each clients.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Dict[str, int]: performance of global model and local models</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">local_score_list</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">client</span><span class="p">,</span> <span class="n">local_dataloader</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">clients</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">local_dataloaders</span><span class="p">):</span>
             <span class="n">temp_score</span> <span class="o">=</span> <span class="n">accuracy_torch_dataloader</span><span class="p">(</span>

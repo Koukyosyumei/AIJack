@@ -75,6 +75,8 @@
 
 
 <div class="viewcode-block" id="DSFLClient"><a class="viewcode-back" href="../../../../aijack.collaborative.dsfl.html#aijack.collaborative.dsfl.client.DSFLClient">[docs]</a><span class="k">class</span> <span class="nc">DSFLClient</span><span class="p">(</span><span class="n">BaseClient</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Client of DS-FL.&quot;&quot;&quot;</span>
+
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">model</span><span class="p">,</span>
@@ -84,6 +86,16 @@
         <span class="n">device</span><span class="o">=</span><span class="s2">&quot;cpu&quot;</span><span class="p">,</span>
         <span class="n">user_id</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
     <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Init DSFLClient.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            model (torch.nn.Module): _description_</span>
+<span class="sd">            public_dataloader (torch.utils.data.DataLoader): a dataloader of the public dataset.</span>
+<span class="sd">            output_dim (int, optional): the dimension of the output. Defaults to 1.</span>
+<span class="sd">            round_decimal (int, optional): number of digits to round up. Defaults to None.</span>
+<span class="sd">            device (str, optional): device type. Defaults to &quot;cpu&quot;.</span>
+<span class="sd">            user_id (int, optional): id of this client. Defaults to 0.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">user_id</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">public_dataloader</span> <span class="o">=</span> <span class="n">public_dataloader</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">round_decimal</span> <span class="o">=</span> <span class="n">round_decimal</span>
@@ -96,6 +108,11 @@
         <span class="p">)</span> <span class="o">*</span> <span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">)</span>
 
 <div class="viewcode-block" id="DSFLClient.upload"><a class="viewcode-back" href="../../../../aijack.collaborative.dsfl.html#aijack.collaborative.dsfl.client.DSFLClient.upload">[docs]</a>    <span class="k">def</span> <span class="nf">upload</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Upload the output logits on the public dataset to the server.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            torch.Tensor: the output logits of the public dataset.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">for</span> <span class="n">data</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">public_dataloader</span><span class="p">:</span>
             <span class="n">idx</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
             <span class="n">x</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
@@ -108,9 +125,23 @@
             <span class="k">return</span> <span class="n">torch_round_x_decimal</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">logit2server</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">round_decimal</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="DSFLClient.download"><a class="viewcode-back" href="../../../../aijack.collaborative.dsfl.html#aijack.collaborative.dsfl.client.DSFLClient.download">[docs]</a>    <span class="k">def</span> <span class="nf">download</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">global_logit</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Download the global logits from the server.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            global_logit (torch.Tensor): the global logits from the server</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">global_logit</span> <span class="o">=</span> <span class="n">global_logit</span></div>
 
 <div class="viewcode-block" id="DSFLClient.approach_consensus"><a class="viewcode-back" href="../../../../aijack.collaborative.dsfl.html#aijack.collaborative.dsfl.client.DSFLClient.approach_consensus">[docs]</a>    <span class="k">def</span> <span class="nf">approach_consensus</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">consensus_optimizer</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Train the own local model to minimize the distance between the global logits and</span>
+<span class="sd">        the output logits of the local model on the public dataset.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            consensus_optimizer (torch.optim.Optimizer): an optimizer to train the local model.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            float: averaged loss.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">running_loss</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="k">for</span> <span class="n">global_data</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">public_dataloader</span><span class="p">:</span>
             <span class="n">idx</span> <span class="o">=</span> <span class="n">global_data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>

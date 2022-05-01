@@ -71,7 +71,15 @@
 
 
 <div class="viewcode-block" id="BaseClient"><a class="viewcode-back" href="../../../../aijack.collaborative.core.html#aijack.collaborative.core.client.BaseClient">[docs]</a><span class="k">class</span> <span class="nc">BaseClient</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Abstract class foe the client of collaborative learning.&quot;&quot;&quot;</span>
+
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">user_id</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Initialize BaseClient</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            model (torch.nn.Module): a local model</span>
+<span class="sd">            user_id (int, optional): id of this client. Defaults to 0.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">BaseClient</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">model</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">user_id</span> <span class="o">=</span> <span class="n">user_id</span>
@@ -80,9 +88,11 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">(</span><span class="n">x</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="BaseClient.upload"><a class="viewcode-back" href="../../../../aijack.collaborative.core.html#aijack.collaborative.core.client.BaseClient.upload">[docs]</a>    <span class="k">def</span> <span class="nf">upload</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Upload the locally learned informatino to the server.&quot;&quot;&quot;</span>
         <span class="k">pass</span></div>
 
 <div class="viewcode-block" id="BaseClient.download"><a class="viewcode-back" href="../../../../aijack.collaborative.core.html#aijack.collaborative.core.client.BaseClient.download">[docs]</a>    <span class="k">def</span> <span class="nf">download</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Download the global model from the server.&quot;&quot;&quot;</span>
         <span class="k">pass</span></div>
 
 <div class="viewcode-block" id="BaseClient.train"><a class="viewcode-back" href="../../../../aijack.collaborative.core.html#aijack.collaborative.core.client.BaseClient.train">[docs]</a>    <span class="k">def</span> <span class="nf">train</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -92,6 +102,11 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="BaseClient.backward"><a class="viewcode-back" href="../../../../aijack.collaborative.core.html#aijack.collaborative.core.client.BaseClient.backward">[docs]</a>    <span class="k">def</span> <span class="nf">backward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">loss</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Execute backward mode automatic differentiation with the give loss.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            loss (torch.Tensor): the value of calculated loss.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span></div></div>
 </pre></div>
 

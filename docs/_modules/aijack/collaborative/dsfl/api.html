@@ -73,9 +73,7 @@
 
 
 <div class="viewcode-block" id="DSFLAPI"><a class="viewcode-back" href="../../../../aijack.collaborative.dsfl.html#aijack.collaborative.dsfl.api.DSFLAPI">[docs]</a><span class="k">class</span> <span class="nc">DSFLAPI</span><span class="p">(</span><span class="n">BaseFLKnowledgeDistillationAPI</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Implementation of `Distillation-Based Semi-Supervised Federated Learning</span>
-<span class="sd">    for Communication-Efficient Collaborative Training</span>
-<span class="sd">    with Non-IID Private Data`&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;API of DS-FL&quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -97,9 +95,9 @@
 
 <span class="sd">        Args:</span>
 <span class="sd">            server (DSFLServer): an instance of DSFLServer</span>
-<span class="sd">            clients ([DSFLClient]): a list of instances of DSFLClient</span>
+<span class="sd">            clients (List[DSFLClient]): a list of instances of DSFLClient</span>
 <span class="sd">            public_dataloader (torch.DataLoader): a dataloader of public dataset</span>
-<span class="sd">            local_dataloaders ([torch.DataLoader]): a list of dataloaders of private dataests</span>
+<span class="sd">            local_dataloaders (List[torch.DataLoader]): a list of dataloaders of private dataests</span>
 <span class="sd">            validation_dataloader (torch.DataLoader): a dataloader of validation dataset</span>
 <span class="sd">            criterion (function): a loss function</span>
 <span class="sd">            num_communication (int): number of communication</span>
@@ -139,8 +137,7 @@
                 <span class="n">loss_local</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">train_client</span><span class="p">(</span><span class="n">public</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
             <span class="n">logging</span><span class="p">[</span><span class="s2">&quot;loss_local&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">loss_local</span><span class="p">)</span>
 
-            <span class="bp">self</span><span class="o">.</span><span class="n">server</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">server</span><span class="o">.</span><span class="n">distribute</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">server</span><span class="o">.</span><span class="n">action</span><span class="p">()</span>
 
             <span class="c1"># distillation</span>
             <span class="n">temp_consensus_loss</span> <span class="o">=</span> <span class="p">[]</span>
@@ -163,6 +160,7 @@
             <span class="n">acc_on_local_dataset</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">local_score</span><span class="p">()</span>
             <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;epoch=</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2"> acc on local datasets: &quot;</span><span class="p">,</span> <span class="n">acc_on_local_dataset</span><span class="p">)</span>
             <span class="n">logging</span><span class="p">[</span><span class="s2">&quot;acc_local&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">acc_on_local_dataset</span><span class="p">)</span>
+
             <span class="c1"># validation</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">validation_dataloader</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="n">acc_val</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">validation_dataloader</span><span class="p">)</span>
