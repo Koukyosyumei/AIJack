@@ -18,8 +18,8 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="aijack.collaborative.fedkd package" href="aijack.collaborative.fedkd.html" />
-    <link rel="prev" title="aijack.collaborative.core package" href="aijack.collaborative.core.html" />
+    <link rel="next" title="aijack.collaborative.fedgems package" href="aijack.collaborative.fedgems.html" />
+    <link rel="prev" title="aijack.collaborative.dsfl package" href="aijack.collaborative.dsfl.html" />
 </head>
 
 <body class="wy-body-for-nav">
@@ -49,14 +49,13 @@
 <li class="toctree-l4 current"><a class="reference internal" href="aijack.collaborative.html#subpackages">Subpackages</a></li>
 <li class="toctree-l4"><a class="reference internal" href="aijack.collaborative.html#submodules">Submodules</a></li>
 <li class="toctree-l4"><a class="reference internal" href="aijack.collaborative.html#module-aijack.collaborative.utils">aijack.collaborative.utils module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="aijack.collaborative.html#module-aijack.collaborative">Module contents</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="aijack.defense.html">aijack.defense package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="aijack.manager.html">aijack.manager package</a></li>
 <li class="toctree-l3"><a class="reference internal" href="aijack.utils.html">aijack.utils package</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="aijack.html#module-aijack">Module contents</a></li>
 </ul>
 </li>
 </ul>
@@ -87,8 +86,8 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
 
-  <section id="aijack-collaborative-fedavg-package">
-<h1>aijack.collaborative.fedavg package<a class="headerlink" href="#aijack-collaborative-fedavg-package" title="Permalink to this headline"></a></h1>
+  <section id="module-aijack.collaborative.fedavg">
+<span id="aijack-collaborative-fedavg-package"></span><h1>aijack.collaborative.fedavg package<a class="headerlink" href="#module-aijack.collaborative.fedavg" title="Permalink to this headline"></a></h1>
 <section id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline"></a></h2>
 </section>
@@ -96,17 +95,24 @@
 <span id="aijack-collaborative-fedavg-client-module"></span><h2>aijack.collaborative.fedavg.client module<a class="headerlink" href="#module-aijack.collaborative.fedavg.client" title="Permalink to this headline"></a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="aijack.collaborative.fedavg.client.FedAvgClient">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">aijack.collaborative.fedavg.client.</span></span><span class="sig-name descname"><span class="pre">FedAvgClient</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/collaborative/fedavg/client.html#FedAvgClient"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.collaborative.fedavg.client.FedAvgClient" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">aijack.collaborative.fedavg.client.</span></span><span class="sig-name descname"><span class="pre">FedAvgClient</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">send_gradient</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/collaborative/fedavg/client.html#FedAvgClient"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.collaborative.fedavg.client.FedAvgClient" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="aijack.collaborative.core.html#aijack.collaborative.core.client.BaseClient" title="aijack.collaborative.core.client.BaseClient"><code class="xref py py-class docutils literal notranslate"><span class="pre">aijack.collaborative.core.client.BaseClient</span></code></a></p>
 <dl class="py method">
 <dt class="sig sig-object py" id="aijack.collaborative.fedavg.client.FedAvgClient.download">
 <span class="sig-name descname"><span class="pre">download</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model_parameters</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/collaborative/fedavg/client.html#FedAvgClient.download"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.collaborative.fedavg.client.FedAvgClient.download" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Download the global model from the server.</p>
+</dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="aijack.collaborative.fedavg.client.FedAvgClient.training">
 <span class="sig-name descname"><span class="pre">training</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#aijack.collaborative.fedavg.client.FedAvgClient.training" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="aijack.collaborative.fedavg.client.FedAvgClient.upload">
+<span class="sig-name descname"><span class="pre">upload</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/collaborative/fedavg/client.html#FedAvgClient.upload"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.collaborative.fedavg.client.FedAvgClient.upload" title="Permalink to this definition"></a></dt>
+<dd><p>Upload the locally learned informatino to the server.</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="aijack.collaborative.fedavg.client.FedAvgClient.upload_gradients">
@@ -130,12 +136,14 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="aijack.collaborative.fedavg.server.FedAvgServer.action">
 <span class="sig-name descname"><span class="pre">action</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gradients</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/collaborative/fedavg/server.html#FedAvgServer.action"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.collaborative.fedavg.server.FedAvgServer.action" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Execute thr routine of each communication.</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="aijack.collaborative.fedavg.server.FedAvgServer.distribtue">
 <span class="sig-name descname"><span class="pre">distribtue</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/collaborative/fedavg/server.html#FedAvgServer.distribtue"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.collaborative.fedavg.server.FedAvgServer.distribtue" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Distribute the global model to each client.</p>
+</dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="aijack.collaborative.fedavg.server.FedAvgServer.training">
@@ -148,6 +156,12 @@
 <dd></dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="aijack.collaborative.fedavg.server.FedAvgServer.update">
+<span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gradients</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/collaborative/fedavg/server.html#FedAvgServer.update"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.collaborative.fedavg.server.FedAvgServer.update" title="Permalink to this definition"></a></dt>
+<dd><p>Update the global model.</p>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="aijack.collaborative.fedavg.server.FedAvgServer.update_from_parameters">
 <span class="sig-name descname"><span class="pre">update_from_parameters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/collaborative/fedavg/server.html#FedAvgServer.update_from_parameters"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.collaborative.fedavg.server.FedAvgServer.update_from_parameters" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
@@ -155,17 +169,14 @@
 </dd></dl>
 
 </section>
-<section id="module-aijack.collaborative.fedavg">
-<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-aijack.collaborative.fedavg" title="Permalink to this headline"></a></h2>
-</section>
 </section>
 
 
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="aijack.collaborative.core.html" class="btn btn-neutral float-left" title="aijack.collaborative.core package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="aijack.collaborative.fedkd.html" class="btn btn-neutral float-right" title="aijack.collaborative.fedkd package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="aijack.collaborative.dsfl.html" class="btn btn-neutral float-left" title="aijack.collaborative.dsfl package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="aijack.collaborative.fedgems.html" class="btn btn-neutral float-right" title="aijack.collaborative.fedgems package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

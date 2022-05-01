@@ -2,7 +2,16 @@ import torch
 
 
 class BaseServer(torch.nn.Module):
+    """Abstract class for the server of the collaborative learning."""
+
     def __init__(self, clients, server_model, server_id=0):
+        """Initialie BaseServer
+
+        Args:
+            clients (List[BaseClient]): a list of clients
+            server_model (torch.nn.Module): a global model
+            server_id (int, optional): the id of this server. Defaults to 0.
+        """
         super(BaseServer, self).__init__()
         self.clients = clients
         self.server_id = server_id
@@ -13,12 +22,15 @@ class BaseServer(torch.nn.Module):
         return self.server_model(x)
 
     def action(self):
+        """Execute thr routine of each communication."""
         pass
 
     def update(self):
+        """Update the global model."""
         pass
 
     def distribtue(self):
+        """Distribute the global model to each client."""
         pass
 
     def train(self):

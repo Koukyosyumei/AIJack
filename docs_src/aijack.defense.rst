@@ -1,6 +1,11 @@
 aijack.defense package
 ======================
 
+.. automodule:: aijack.defense
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Subpackages
 -----------
 
@@ -10,7 +15,7 @@ Subpackages
    aijack.defense.ckks
    aijack.defense.dp
    aijack.defense.mid
-   aijack.defense.setoria
+   aijack.defense.soteria
 
 Submodules
 ----------
@@ -19,14 +24,6 @@ aijack.defense.purifier module
 ------------------------------
 
 .. automodule:: aijack.defense.purifier
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-Module contents
----------------
-
-.. automodule:: aijack.defense
    :members:
    :undoc-members:
    :show-inheritance:

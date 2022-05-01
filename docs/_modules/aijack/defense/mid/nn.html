@@ -70,14 +70,17 @@
 <span></span><span class="kn">import</span> <span class="nn">torch</span>
 <span class="kn">from</span> <span class="nn">torch</span> <span class="kn">import</span> <span class="n">nn</span>
 
+<span class="kn">from</span> <span class="nn">.loss</span> <span class="kn">import</span> <span class="n">mib_loss</span>
+
 
 <div class="viewcode-block" id="VIB"><a class="viewcode-back" href="../../../../aijack.defense.mid.html#aijack.defense.mid.nn.VIB">[docs]</a><span class="k">class</span> <span class="nc">VIB</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">encoder</span><span class="p">,</span> <span class="n">decoder</span><span class="p">,</span> <span class="n">dim_z</span><span class="o">=</span><span class="mi">256</span><span class="p">,</span> <span class="n">num_samples</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">encoder</span><span class="p">,</span> <span class="n">decoder</span><span class="p">,</span> <span class="n">dim_z</span><span class="o">=</span><span class="mi">256</span><span class="p">,</span> <span class="n">num_samples</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">beta</span><span class="o">=</span><span class="mf">1e-3</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">VIB</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">dim_z</span> <span class="o">=</span> <span class="n">dim_z</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">num_samples</span> <span class="o">=</span> <span class="n">num_samples</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">encoder</span> <span class="o">=</span> <span class="n">encoder</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">decoder</span> <span class="o">=</span> <span class="n">decoder</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">beta</span> <span class="o">=</span> <span class="n">beta</span>
 
 <div class="viewcode-block" id="VIB.get_params_of_p_z_given_x"><a class="viewcode-back" href="../../../../aijack.defense.mid.html#aijack.defense.mid.nn.VIB.get_params_of_p_z_given_x">[docs]</a>    <span class="k">def</span> <span class="nf">get_params_of_p_z_given_x</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
         <span class="n">encoder_output</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">encoder</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
@@ -114,7 +117,27 @@
                 <span class="s2">&quot;p_z_given_x_sigma&quot;</span><span class="p">:</span> <span class="n">p_z_given_x_sigma</span><span class="p">,</span>
             <span class="p">}</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">outputs</span></div></div>
+            <span class="k">return</span> <span class="n">outputs</span></div>
+
+<div class="viewcode-block" id="VIB.loss"><a class="viewcode-back" href="../../../../aijack.defense.mid.html#aijack.defense.mid.nn.VIB.loss">[docs]</a>    <span class="k">def</span> <span class="nf">loss</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">result_dict</span><span class="p">):</span>
+        <span class="n">sampled_y_pred</span> <span class="o">=</span> <span class="n">result_dict</span><span class="p">[</span><span class="s2">&quot;sampled_decoded_outputs&quot;</span><span class="p">]</span>
+        <span class="n">p_z_given_x_mu</span> <span class="o">=</span> <span class="n">result_dict</span><span class="p">[</span><span class="s2">&quot;p_z_given_x_mu&quot;</span><span class="p">]</span>
+        <span class="n">p_z_given_x_sigma</span> <span class="o">=</span> <span class="n">result_dict</span><span class="p">[</span><span class="s2">&quot;p_z_given_x_sigma&quot;</span><span class="p">]</span>
+
+        <span class="n">approximated_z_mean</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">p_z_given_x_mu</span><span class="p">)</span>
+        <span class="n">approximated_z_sigma</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">p_z_given_x_sigma</span><span class="p">)</span>
+
+        <span class="n">loss</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">mib_loss</span><span class="p">(</span>
+            <span class="n">y</span><span class="p">,</span>
+            <span class="n">sampled_y_pred</span><span class="p">,</span>
+            <span class="n">p_z_given_x_mu</span><span class="p">,</span>
+            <span class="n">p_z_given_x_sigma</span><span class="p">,</span>
+            <span class="n">approximated_z_mean</span><span class="p">,</span>
+            <span class="n">approximated_z_sigma</span><span class="p">,</span>
+            <span class="n">beta</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">beta</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">loss</span></div></div>
 </pre></div>
 
            </div>

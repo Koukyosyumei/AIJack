@@ -80,11 +80,14 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">distribtue</span><span class="p">()</span>
 
 <div class="viewcode-block" id="FedAvgServer.action"><a class="viewcode-back" href="../../../../aijack.collaborative.fedavg.html#aijack.collaborative.fedavg.server.FedAvgServer.action">[docs]</a>    <span class="k">def</span> <span class="nf">action</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gradients</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">gradients</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">distribtue</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="FedAvgServer.update"><a class="viewcode-back" href="../../../../aijack.collaborative.fedavg.html#aijack.collaborative.fedavg.server.FedAvgServer.update">[docs]</a>    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gradients</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">gradients</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">updata_from_gradients</span><span class="p">()</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">update_from_parameters</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">distribtue</span><span class="p">()</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">update_from_parameters</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="FedAvgServer.updata_from_gradients"><a class="viewcode-back" href="../../../../aijack.collaborative.fedavg.html#aijack.collaborative.fedavg.server.FedAvgServer.updata_from_gradients">[docs]</a>    <span class="k">def</span> <span class="nf">updata_from_gradients</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">weight</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>

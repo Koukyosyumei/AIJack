@@ -6,6 +6,8 @@ from ..core import BaseClient
 
 
 class DSFLClient(BaseClient):
+    """Client of DS-FL."""
+
     def __init__(
         self,
         model,
@@ -15,6 +17,16 @@ class DSFLClient(BaseClient):
         device="cpu",
         user_id=0,
     ):
+        """Init DSFLClient.
+
+        Args:
+            model (torch.nn.Module): _description_
+            public_dataloader (torch.utils.data.DataLoader): a dataloader of the public dataset.
+            output_dim (int, optional): the dimension of the output. Defaults to 1.
+            round_decimal (int, optional): number of digits to round up. Defaults to None.
+            device (str, optional): device type. Defaults to "cpu".
+            user_id (int, optional): id of this client. Defaults to 0.
+        """
         super().__init__(model, user_id)
         self.public_dataloader = public_dataloader
         self.round_decimal = round_decimal
@@ -27,6 +39,11 @@ class DSFLClient(BaseClient):
         ) * float("inf")
 
     def upload(self):
+        """Upload the output logits on the public dataset to the server.
+
+        Returns:
+            torch.Tensor: the output logits of the public dataset.
+        """
         for data in self.public_dataloader:
             idx = data[0]
             x = data[1]
@@ -39,9 +56,23 @@ class DSFLClient(BaseClient):
             return torch_round_x_decimal(self.logit2server, self.round_decimal)
 
     def download(self, global_logit):
+        """Download the global logits from the server.
+
+        Args:
+            global_logit (torch.Tensor): the global logits from the server
+        """
         self.global_logit = global_logit
 
     def approach_consensus(self, consensus_optimizer):
+        """Train the own local model to minimize the distance between the global logits and
+        the output logits of the local model on the public dataset.
+
+        Args:
+            consensus_optimizer (torch.optim.Optimizer): an optimizer to train the local model.
+
+        Returns:
+            float: averaged loss.
+        """
         running_loss = 0
         for global_data in self.public_dataloader:
             idx = global_data[0]

@@ -1,6 +1,11 @@
 aijack.attack.inversion.utils package
 =====================================
 
+.. automodule:: aijack.attack.inversion.utils
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Submodules
 ----------
 
@@ -24,14 +29,6 @@ aijack.attack.inversion.utils.regularization module
 ---------------------------------------------------
 
 .. automodule:: aijack.attack.inversion.utils.regularization
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-Module contents
----------------
-
-.. automodule:: aijack.attack.inversion.utils
    :members:
    :undoc-members:
    :show-inheritance:

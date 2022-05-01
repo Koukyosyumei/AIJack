@@ -71,37 +71,26 @@
 
 <span class="kn">import</span> <span class="nn">torch</span>
 
-<span class="kn">from</span> <span class="nn">..base_attack</span> <span class="kn">import</span> <span class="n">BaseAttacker</span>
+<span class="kn">from</span> <span class="nn">...manager</span> <span class="kn">import</span> <span class="n">BaseManager</span>
 
 
-<div class="viewcode-block" id="GAN_Attack"><a class="viewcode-back" href="../../../../aijack.attack.inversion.html#aijack.attack.inversion.gan_attack.GAN_Attack">[docs]</a><span class="k">class</span> <span class="nc">GAN_Attack</span><span class="p">(</span><span class="n">BaseAttacker</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;GAN based model inversion attack (https://arxiv.org/abs/1702.07464)</span>
+<div class="viewcode-block" id="attach_ganattack_to_client"><a class="viewcode-back" href="../../../../aijack.attack.inversion.html#aijack.attack.inversion.gan_attack.attach_ganattack_to_client">[docs]</a><span class="k">def</span> <span class="nf">attach_ganattack_to_client</span><span class="p">(</span>
+    <span class="bp">cls</span><span class="p">,</span>
+    <span class="n">target_label</span><span class="p">,</span>
+    <span class="n">generator</span><span class="p">,</span>
+    <span class="n">generator_optimizer</span><span class="p">,</span>
+    <span class="n">generator_criterion</span><span class="p">,</span>
+    <span class="n">nz</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+    <span class="n">device</span><span class="o">=</span><span class="s2">&quot;cpu&quot;</span><span class="p">,</span>
+    <span class="n">gan_batch_size</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">gan_epoch</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">gan_log_interval</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+    <span class="n">ignore_first_download</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="p">):</span>
+    <span class="k">class</span> <span class="nc">GANAttackClientWrapper</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;GAN based model inversion attack (https://arxiv.org/abs/1702.07464)</span>
 
-<span class="sd">    Attributes:</span>
-<span class="sd">        model (torch.nn.Module):</span>
-<span class="sd">        target_label(int): index of target class</span>
-<span class="sd">        generator (torch.nn.Module): Generator</span>
-<span class="sd">        generator_optimizer (torch.optim.Optimizer): optimizer for the generator</span>
-<span class="sd">        generator_criterion (function): loss function for the generator</span>
-<span class="sd">        nz (int): dimension of latent space of the generator</span>
-<span class="sd">        user_id (int): user id</span>
-<span class="sd">        device (string): device type (cpu or cuda)</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-        <span class="n">client</span><span class="p">,</span>
-        <span class="n">target_label</span><span class="p">,</span>
-        <span class="n">generator</span><span class="p">,</span>
-        <span class="n">generator_optimizer</span><span class="p">,</span>
-        <span class="n">generator_criterion</span><span class="p">,</span>
-        <span class="n">nz</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
-        <span class="n">device</span><span class="o">=</span><span class="s2">&quot;cpu&quot;</span><span class="p">,</span>
-    <span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Inits the GAN_Attack</span>
-
-<span class="sd">        Args:</span>
-<span class="sd">            model (torch.nn.Module):</span>
+<span class="sd">        Attributes:</span>
 <span class="sd">            target_label(int): index of target class</span>
 <span class="sd">            generator (torch.nn.Module): Generator</span>
 <span class="sd">            generator_optimizer (torch.optim.Optimizer): optimizer for the generator</span>
@@ -110,69 +99,98 @@
 <span class="sd">            user_id (int): user id</span>
 <span class="sd">            device (string): device type (cpu or cuda)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">target_model</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">client</span> <span class="o">=</span> <span class="n">client</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">target_label</span> <span class="o">=</span> <span class="n">target_label</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">generator</span> <span class="o">=</span> <span class="n">generator</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">generator_optimizer</span> <span class="o">=</span> <span class="n">generator_optimizer</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">generator_criterion</span> <span class="o">=</span> <span class="n">generator_criterion</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">nz</span> <span class="o">=</span> <span class="n">nz</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">device</span> <span class="o">=</span> <span class="n">device</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">discriminator</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">model</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">discriminator</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
+        <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+            <span class="nb">super</span><span class="p">(</span><span class="n">GANAttackClientWrapper</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">noise</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nz</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">target_label</span> <span class="o">=</span> <span class="n">target_label</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">generator</span> <span class="o">=</span> <span class="n">generator</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">generator_optimizer</span> <span class="o">=</span> <span class="n">generator_optimizer</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">generator_criterion</span> <span class="o">=</span> <span class="n">generator_criterion</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">nz</span> <span class="o">=</span> <span class="n">nz</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">device</span> <span class="o">=</span> <span class="n">device</span>
 
-<div class="viewcode-block" id="GAN_Attack.update_generator"><a class="viewcode-back" href="../../../../aijack.attack.inversion.html#aijack.attack.inversion.gan_attack.GAN_Attack.update_generator">[docs]</a>    <span class="k">def</span> <span class="nf">update_generator</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">epoch</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">log_interval</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Updata the Generator</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">discriminator</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">discriminator</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
 
-<span class="sd">        Args:</span>
-<span class="sd">            batch_size (int): batch size</span>
-<span class="sd">            epoch (int): epoch</span>
-<span class="sd">            log_interval (int): interval of logging</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">noise</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nz</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">is_params_initialized</span> <span class="o">=</span> <span class="kc">False</span>
 
-        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">epoch</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
-            <span class="n">running_error</span> <span class="o">=</span> <span class="mi">0</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">generator</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
+        <span class="k">def</span> <span class="nf">update_generator</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">epoch</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">log_interval</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;Updata the Generator</span>
 
-            <span class="n">noise</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">batch_size</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nz</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
-            <span class="n">fake</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">generator</span><span class="p">(</span><span class="n">noise</span><span class="p">)</span>
-            <span class="n">output</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">discriminator</span><span class="p">(</span><span class="n">fake</span><span class="p">)</span>
+<span class="sd">            Args:</span>
+<span class="sd">                batch_size (int): batch size</span>
+<span class="sd">                epoch (int): epoch</span>
+<span class="sd">                log_interval (int): interval of logging</span>
+<span class="sd">            &quot;&quot;&quot;</span>
 
-            <span class="n">label</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">full</span><span class="p">(</span>
-                <span class="p">(</span><span class="n">batch_size</span><span class="p">,),</span> <span class="bp">self</span><span class="o">.</span><span class="n">target_label</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">int64</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">device</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">epoch</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+                <span class="n">running_error</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">generator</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
+
+                <span class="n">noise</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">batch_size</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nz</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
+                <span class="n">fake</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">generator</span><span class="p">(</span><span class="n">noise</span><span class="p">)</span>
+                <span class="n">output</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">discriminator</span><span class="p">(</span><span class="n">fake</span><span class="p">)</span>
+
+                <span class="n">label</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">full</span><span class="p">(</span>
+                    <span class="p">(</span><span class="n">batch_size</span><span class="p">,),</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">target_label</span><span class="p">,</span>
+                    <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">int64</span><span class="p">,</span>
+                    <span class="n">device</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="p">,</span>
+                <span class="p">)</span>
+                <span class="n">loss_generator</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">generator_criterion</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="n">label</span><span class="p">)</span>
+                <span class="n">loss_generator</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+
+                <span class="bp">self</span><span class="o">.</span><span class="n">generator_optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+
+                <span class="n">running_error</span> <span class="o">+=</span> <span class="n">loss_generator</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+
+                <span class="k">if</span> <span class="n">log_interval</span> <span class="o">!=</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">i</span> <span class="o">%</span> <span class="n">log_interval</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span>
+                        <span class="sa">f</span><span class="s2">&quot;updating generator - epoch </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">: generator loss is </span><span class="si">{</span><span class="n">running_error</span><span class="o">/</span><span class="n">batch_size</span><span class="si">}</span><span class="s2">&quot;</span>
+                    <span class="p">)</span>
+
+        <span class="k">def</span> <span class="nf">update_discriminator</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;Update the discriminator&quot;&quot;&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">discriminator</span><span class="o">.</span><span class="n">load_state_dict</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">state_dict</span><span class="p">())</span>
+
+        <span class="k">def</span> <span class="nf">download</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model_parameters</span><span class="p">):</span>
+            <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">download</span><span class="p">(</span><span class="n">model_parameters</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">ignore_first_download</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_params_initialized</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">is_params_initialized</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="k">return</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">update_discriminator</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">update_generator</span><span class="p">(</span>
+                <span class="n">batch_size</span><span class="o">=</span><span class="n">gan_batch_size</span><span class="p">,</span>
+                <span class="n">epoch</span><span class="o">=</span><span class="n">gan_epoch</span><span class="p">,</span>
+                <span class="n">log_interval</span><span class="o">=</span><span class="n">gan_log_interval</span><span class="p">,</span>
             <span class="p">)</span>
-            <span class="n">loss_generator</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">generator_criterion</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="n">label</span><span class="p">)</span>
-            <span class="n">loss_generator</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
 
-            <span class="bp">self</span><span class="o">.</span><span class="n">generator_optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+        <span class="k">def</span> <span class="nf">attack</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;Generate fake images</span>
 
-            <span class="n">running_error</span> <span class="o">+=</span> <span class="n">loss_generator</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+<span class="sd">            Args:</span>
+<span class="sd">                n (int): the number of fake images created by the Generator</span>
 
-            <span class="k">if</span> <span class="n">log_interval</span> <span class="o">!=</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">i</span> <span class="o">%</span> <span class="n">log_interval</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-                <span class="nb">print</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;updating generator - epoch </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">: generator loss is </span><span class="si">{</span><span class="n">running_error</span><span class="o">/</span><span class="n">batch_size</span><span class="si">}</span><span class="s2">&quot;</span>
-                <span class="p">)</span></div>
+<span class="sd">            Returns:</span>
+<span class="sd">                fake: generated fake images</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="n">noise</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nz</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
+            <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
+                <span class="n">fake</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">generator</span><span class="p">(</span><span class="n">noise</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">fake</span>
 
-<div class="viewcode-block" id="GAN_Attack.update_discriminator"><a class="viewcode-back" href="../../../../aijack.attack.inversion.html#aijack.attack.inversion.gan_attack.GAN_Attack.update_discriminator">[docs]</a>    <span class="k">def</span> <span class="nf">update_discriminator</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Update the discriminator&quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">discriminator</span><span class="o">.</span><span class="n">load_state_dict</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">state_dict</span><span class="p">())</span></div>
+    <span class="k">return</span> <span class="n">GANAttackClientWrapper</span></div>
 
-<div class="viewcode-block" id="GAN_Attack.attack"><a class="viewcode-back" href="../../../../aijack.attack.inversion.html#aijack.attack.inversion.gan_attack.GAN_Attack.attack">[docs]</a>    <span class="k">def</span> <span class="nf">attack</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Generate fake images</span>
 
-<span class="sd">        Args:</span>
-<span class="sd">            n (int): the number of fake images created by the Generator</span>
+<div class="viewcode-block" id="GANAttackManager"><a class="viewcode-back" href="../../../../aijack.attack.inversion.html#aijack.attack.inversion.gan_attack.GANAttackManager">[docs]</a><span class="k">class</span> <span class="nc">GANAttackManager</span><span class="p">(</span><span class="n">BaseManager</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">args</span> <span class="o">=</span> <span class="n">args</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">kwargs</span> <span class="o">=</span> <span class="n">kwargs</span>
 
-<span class="sd">        Returns:</span>
-<span class="sd">            fake: generated fake images</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">noise</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nz</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
-        <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
-            <span class="n">fake</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">generator</span><span class="p">(</span><span class="n">noise</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">fake</span></div></div>
+<div class="viewcode-block" id="GANAttackManager.attach"><a class="viewcode-back" href="../../../../aijack.attack.inversion.html#aijack.attack.inversion.gan_attack.GANAttackManager.attach">[docs]</a>    <span class="k">def</span> <span class="nf">attach</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">cls</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">attach_ganattack_to_client</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">kwargs</span><span class="p">)</span></div></div>
 </pre></div>
 
            </div>

@@ -1,6 +1,11 @@
 aijack.attack.inversion package
 ===============================
 
+.. automodule:: aijack.attack.inversion
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Subpackages
 -----------
 
@@ -40,14 +45,6 @@ aijack.attack.inversion.mi\_face module
 ---------------------------------------
 
 .. automodule:: aijack.attack.inversion.mi_face
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-Module contents
----------------
-
-.. automodule:: aijack.attack.inversion
    :members:
    :undoc-members:
    :show-inheritance:

@@ -1,6 +1,11 @@
 aijack.defense.dp package
 =========================
 
+.. automodule:: aijack.defense.dp
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Subpackages
 -----------
 
@@ -8,11 +13,3 @@ Subpackages
    :maxdepth: 4
 
    aijack.defense.dp.manager
-
-Module contents
----------------
-
-.. automodule:: aijack.defense.dp
-   :members:
-   :undoc-members:
-   :show-inheritance:

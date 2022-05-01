@@ -86,8 +86,11 @@
         <span class="n">adaptive_hidden_losses</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="n">gradient_compression_ratio</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
         <span class="n">user_id</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+        <span class="n">send_gradient</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="p">):</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">FedKDClient</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">student_model</span><span class="p">,</span> <span class="n">user_id</span><span class="o">=</span><span class="n">user_id</span><span class="p">,</span> <span class="n">lr</span><span class="o">=</span><span class="n">student_lr</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">FedKDClient</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="n">student_model</span><span class="p">,</span> <span class="n">user_id</span><span class="o">=</span><span class="n">user_id</span><span class="p">,</span> <span class="n">lr</span><span class="o">=</span><span class="n">student_lr</span><span class="p">,</span> <span class="n">send_gradient</span><span class="o">=</span><span class="n">send_gradient</span>
+        <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">student_model</span> <span class="o">=</span> <span class="n">student_model</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">teacher_model</span> <span class="o">=</span> <span class="n">teacher_model</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">teacher_lr</span> <span class="o">=</span> <span class="n">teacher_lr</span>

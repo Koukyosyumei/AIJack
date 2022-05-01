@@ -1,6 +1,11 @@
 aijack.defense.mid package
 ==========================
 
+.. automodule:: aijack.defense.mid
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Submodules
 ----------
 
@@ -16,14 +21,6 @@ aijack.defense.mid.nn module
 ----------------------------
 
 .. automodule:: aijack.defense.mid.nn
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-Module contents
----------------
-
-.. automodule:: aijack.defense.mid
    :members:
    :undoc-members:
    :show-inheritance:

@@ -67,7 +67,10 @@
            <div itemprop="articleBody">
 
   <h1>Source code for aijack.utils.utils</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">torch</span>
+<span></span><span class="kn">import</span> <span class="nn">random</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">torch</span>
 <span class="kn">from</span> <span class="nn">torch.utils.data.dataset</span> <span class="kn">import</span> <span class="n">Dataset</span>
 
 
@@ -85,6 +88,28 @@
     <span class="k">return</span> <span class="n">e</span></div>
 
 
+<div class="viewcode-block" id="worker_init_fn"><a class="viewcode-back" href="../../../aijack.utils.html#aijack.utils.utils.worker_init_fn">[docs]</a><span class="k">def</span> <span class="nf">worker_init_fn</span><span class="p">(</span><span class="n">worker_id</span><span class="p">):</span>
+    <span class="n">worker_seed</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">initial_seed</span><span class="p">()</span> <span class="o">%</span> <span class="mi">2</span><span class="o">**</span><span class="mi">32</span>
+    <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="n">worker_seed</span><span class="p">)</span>
+    <span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="n">worker_seed</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="RoundDecimal"><a class="viewcode-back" href="../../../aijack.utils.html#aijack.utils.utils.RoundDecimal">[docs]</a><span class="k">class</span> <span class="nc">RoundDecimal</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">autograd</span><span class="o">.</span><span class="n">Function</span><span class="p">):</span>
+<div class="viewcode-block" id="RoundDecimal.forward"><a class="viewcode-back" href="../../../aijack.utils.html#aijack.utils.utils.RoundDecimal.forward">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span> <span class="nb">input</span><span class="p">,</span> <span class="n">n_digits</span><span class="p">):</span>
+        <span class="n">ctx</span><span class="o">.</span><span class="n">save_for_backward</span><span class="p">(</span><span class="nb">input</span><span class="p">)</span>
+        <span class="n">ctx</span><span class="o">.</span><span class="n">n_digits</span> <span class="o">=</span> <span class="n">n_digits</span>
+        <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="nb">input</span> <span class="o">*</span> <span class="mi">10</span><span class="o">**</span><span class="n">n_digits</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">10</span><span class="o">**</span><span class="n">n_digits</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="RoundDecimal.backward"><a class="viewcode-back" href="../../../aijack.utils.html#aijack.utils.utils.RoundDecimal.backward">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">backward</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span> <span class="n">grad_output</span><span class="p">):</span>
+        <span class="n">grad_input</span> <span class="o">=</span> <span class="n">grad_output</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">grad_input</span> <span class="o">*</span> <span class="mi">10</span><span class="o">**</span><span class="n">ctx</span><span class="o">.</span><span class="n">n_digits</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">10</span><span class="o">**</span><span class="n">ctx</span><span class="o">.</span><span class="n">n_digits</span><span class="p">),</span> <span class="kc">None</span></div></div>
+
+
+<span class="n">torch_round_x_decimal</span> <span class="o">=</span> <span class="n">RoundDecimal</span><span class="o">.</span><span class="n">apply</span>
+
+
 <div class="viewcode-block" id="NumpyDataset"><a class="viewcode-back" href="../../../aijack.utils.html#aijack.utils.utils.NumpyDataset">[docs]</a><span class="k">class</span> <span class="nc">NumpyDataset</span><span class="p">(</span><span class="n">Dataset</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;This class allows you to convert numpy.array to torch.Dataset</span>
 
@@ -99,18 +124,30 @@
 <span class="sd">        transform (torch.transform):</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">return_idx</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">x</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">y</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">transform</span> <span class="o">=</span> <span class="n">transform</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">return_idx</span> <span class="o">=</span> <span class="n">return_idx</span>
 
     <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
         <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
-        <span class="n">y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">transform</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">return_idx</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">x</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">index</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">index</span><span class="p">,</span> <span class="n">x</span>
 
     <span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;get the number of rows of self.x&quot;&quot;&quot;</span>

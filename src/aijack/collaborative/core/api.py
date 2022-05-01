@@ -7,6 +7,8 @@ from ...utils import accuracy_torch_dataloader
 
 
 class BaseFLKnowledgeDistillationAPI:
+    """Abstract class for API of federated learning with knowledge distillation."""
+
     def __init__(
         self,
         server,
@@ -18,6 +20,18 @@ class BaseFLKnowledgeDistillationAPI:
         num_communication,
         device,
     ):
+        """Initialize BaseFLKnowledgeDistillationAPI
+
+        Args:
+            server (aijack.collaborative.core.BaseServer): the server
+            clients (List[aijack.collaborative.core.BaseClient]): a list of the clients
+            public_dataloader (torch.utils.data.DataLoader): a dataloader for the public dataset
+            local_dataloaders (List[torch.utils.data.DataLoader]): a list of local dataloaders
+            validation_dataloader (torch.utils.data.DataLoader): a dataloader for the validation dataset
+            criterion (function): a function to calculate the loss
+            num_communication (int): the number of communication
+            device (str): device type
+        """
         self.server = server
         self.clients = clients
         self.public_dataloader = public_dataloader
@@ -30,6 +44,15 @@ class BaseFLKnowledgeDistillationAPI:
         self.client_num = len(clients)
 
     def train_client(self, public=True):
+        """Train local models with the local datasets or the public dataset.
+
+        Args:
+            public (bool, optional): Train with the public dataset or the local datasets.
+                                     Defaults to True.
+
+        Returns:
+            List[float]: a list of average loss of each clients.
+        """
         loss_on_local_dataest = []
         for client_idx in range(self.client_num):
             client = self.clients[client_idx]
@@ -61,6 +84,14 @@ class BaseFLKnowledgeDistillationAPI:
         pass
 
     def score(self, dataloader):
+        """Returns the performance on the given dataset.
+
+        Args:
+            dataloader (torch.utils.data.DataLoader): a dataloader
+
+        Returns:
+            Dict[str, int]: performance of global model and local models
+        """
         server_score = accuracy_torch_dataloader(
             self.server, dataloader, device=self.device
         )
@@ -71,6 +102,11 @@ class BaseFLKnowledgeDistillationAPI:
         return {"server_score": server_score, "clients_score": clients_score}
 
     def local_score(self):
+        """Returns the local performance of each clients.
+
+        Returns:
+            Dict[str, int]: performance of global model and local models
+        """
         local_score_list = []
         for client, local_dataloader in zip(self.clients, self.local_dataloaders):
             temp_score = accuracy_torch_dataloader(

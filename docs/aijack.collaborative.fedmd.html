@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>aijack.collaborative.fedmd package &mdash; AIJack v1.0 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="aijack.collaborative.splitnn package" href="aijack.collaborative.splitnn.html" />
+    <link rel="prev" title="aijack.collaborative.fedkd package" href="aijack.collaborative.fedkd.html" />
+</head>
+
+<body class="wy-body-for-nav">
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> AIJack
+          </a>
+              <div class="version">
+                v1.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="aijack.html">aijack package</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="aijack.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="aijack.attack.html">aijack.attack package</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="aijack.collaborative.html">aijack.collaborative package</a><ul class="current">
+<li class="toctree-l4 current"><a class="reference internal" href="aijack.collaborative.html#subpackages">Subpackages</a></li>
+<li class="toctree-l4"><a class="reference internal" href="aijack.collaborative.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="aijack.collaborative.html#module-aijack.collaborative.utils">aijack.collaborative.utils module</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="aijack.defense.html">aijack.defense package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="aijack.manager.html">aijack.manager package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="aijack.utils.html">aijack.utils package</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">AIJack</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="aijack.html">aijack package</a> &raquo;</li>
+          <li><a href="aijack.collaborative.html">aijack.collaborative package</a> &raquo;</li>
+      <li>aijack.collaborative.fedmd package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/aijack.collaborative.fedmd.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+
+  <section id="module-aijack.collaborative.fedmd">
+<span id="aijack-collaborative-fedmd-package"></span><h1>aijack.collaborative.fedmd package<a class="headerlink" href="#module-aijack.collaborative.fedmd" title="Permalink to this headline"></a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline"></a></h2>
+</section>
+<section id="module-aijack.collaborative.fedmd.api">
+<span id="aijack-collaborative-fedmd-api-module"></span><h2>aijack.collaborative.fedmd.api module<a class="headerlink" href="#module-aijack.collaborative.fedmd.api" title="Permalink to this headline"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="aijack.collaborative.fedmd.api.FedMDAPI">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">aijack.collaborative.fedmd.api.</span></span><span class="sig-name descname"><span class="pre">FedMDAPI</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">server</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clients</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">public_dataloader</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">local_dataloaders</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">validation_dataloader</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">criterion</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">client_optimizers</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">server_optimizer=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_communication=1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device='cpu'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">consensus_epoch=1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">revisit_epoch=1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transfer_epoch_public=1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transfer_epoch_private=1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">server_training_epoch=1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">custom_action=&lt;function</span> <span class="pre">FedMDAPI.&lt;lambda&gt;&gt;</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/collaborative/fedmd/api.html#FedMDAPI"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.collaborative.fedmd.api.FedMDAPI" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="aijack.collaborative.core.html#aijack.collaborative.core.api.BaseFLKnowledgeDistillationAPI" title="aijack.collaborative.core.api.BaseFLKnowledgeDistillationAPI"><code class="xref py py-class docutils literal notranslate"><span class="pre">aijack.collaborative.core.api.BaseFLKnowledgeDistillationAPI</span></code></a></p>
+<p>Implementation of <cite>Fedmd: Heterogenous federated learning via model distillation</cite></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="aijack.collaborative.fedmd.api.FedMDAPI.run">
+<span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/collaborative/fedmd/api.html#FedMDAPI.run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.collaborative.fedmd.api.FedMDAPI.run" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="aijack.collaborative.fedmd.api.FedMDAPI.train_server">
+<span class="sig-name descname"><span class="pre">train_server</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/collaborative/fedmd/api.html#FedMDAPI.train_server"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.collaborative.fedmd.api.FedMDAPI.train_server" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-aijack.collaborative.fedmd.client">
+<span id="aijack-collaborative-fedmd-client-module"></span><h2>aijack.collaborative.fedmd.client module<a class="headerlink" href="#module-aijack.collaborative.fedmd.client" title="Permalink to this headline"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="aijack.collaborative.fedmd.client.FedMDClient">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">aijack.collaborative.fedmd.client.</span></span><span class="sig-name descname"><span class="pre">FedMDClient</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">public_dataloader</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_dim</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">8</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">base_loss_func</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">CrossEntropyLoss()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">consensus_loss_func</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">L1Loss()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">round_decimal</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'cpu'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/collaborative/fedmd/client.html#FedMDClient"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.collaborative.fedmd.client.FedMDClient" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="aijack.collaborative.core.html#aijack.collaborative.core.client.BaseClient" title="aijack.collaborative.core.client.BaseClient"><code class="xref py py-class docutils literal notranslate"><span class="pre">aijack.collaborative.core.client.BaseClient</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="aijack.collaborative.fedmd.client.FedMDClient.approach_consensus">
+<span class="sig-name descname"><span class="pre">approach_consensus</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">consensus_optimizer</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/collaborative/fedmd/client.html#FedMDClient.approach_consensus"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.collaborative.fedmd.client.FedMDClient.approach_consensus" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="aijack.collaborative.fedmd.client.FedMDClient.download">
+<span class="sig-name descname"><span class="pre">download</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">predicted_values_of_server</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/collaborative/fedmd/client.html#FedMDClient.download"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.collaborative.fedmd.client.FedMDClient.download" title="Permalink to this definition"></a></dt>
+<dd><p>Download the global model from the server.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="aijack.collaborative.fedmd.client.FedMDClient.training">
+<span class="sig-name descname"><span class="pre">training</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#aijack.collaborative.fedmd.client.FedMDClient.training" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="aijack.collaborative.fedmd.client.FedMDClient.upload">
+<span class="sig-name descname"><span class="pre">upload</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/collaborative/fedmd/client.html#FedMDClient.upload"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.collaborative.fedmd.client.FedMDClient.upload" title="Permalink to this definition"></a></dt>
+<dd><p>Upload the locally learned informatino to the server.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="aijack.collaborative.fedmd.client.torch_round_x_decimal">
+<span class="sig-prename descclassname"><span class="pre">aijack.collaborative.fedmd.client.</span></span><span class="sig-name descname"><span class="pre">torch_round_x_decimal</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#aijack.collaborative.fedmd.client.torch_round_x_decimal" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-aijack.collaborative.fedmd.nfdp">
+<span id="aijack-collaborative-fedmd-nfdp-module"></span><h2>aijack.collaborative.fedmd.nfdp module<a class="headerlink" href="#module-aijack.collaborative.fedmd.nfdp" title="Permalink to this headline"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="aijack.collaborative.fedmd.nfdp.get_delta_of_fedmd_nfdp">
+<span class="sig-prename descclassname"><span class="pre">aijack.collaborative.fedmd.nfdp.</span></span><span class="sig-name descname"><span class="pre">get_delta_of_fedmd_nfdp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">replacement</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/collaborative/fedmd/nfdp.html#get_delta_of_fedmd_nfdp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.collaborative.fedmd.nfdp.get_delta_of_fedmd_nfdp" title="Permalink to this definition"></a></dt>
+<dd><p>Return delta of FedMD-NFDP</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>n</strong> (<em>int</em>) – training set size</p></li>
+<li><p><strong>k</strong> (<em>int</em>) – sampling size</p></li>
+<li><p><strong>replacement</strong> (<em>bool</em><em>, </em><em>optional</em>) – sampling w/o replacement. Defaults to True.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>delta of FedMD-NFDP</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="aijack.collaborative.fedmd.nfdp.get_epsilon_of_fedmd_nfdp">
+<span class="sig-prename descclassname"><span class="pre">aijack.collaborative.fedmd.nfdp.</span></span><span class="sig-name descname"><span class="pre">get_epsilon_of_fedmd_nfdp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">replacement</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/collaborative/fedmd/nfdp.html#get_epsilon_of_fedmd_nfdp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.collaborative.fedmd.nfdp.get_epsilon_of_fedmd_nfdp" title="Permalink to this definition"></a></dt>
+<dd><p>Return epsilon of FedMD-NFDP</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>n</strong> (<em>int</em>) – training set size</p></li>
+<li><p><strong>k</strong> (<em>int</em>) – sampling size</p></li>
+<li><p><strong>replacement</strong> (<em>bool</em><em>, </em><em>optional</em>) – sampling w/o replacement. Defaults to True.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>epsilon of FedMD-NFDP</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="aijack.collaborative.fedmd.nfdp.get_k_of_fedmd_nfdp">
+<span class="sig-prename descclassname"><span class="pre">aijack.collaborative.fedmd.nfdp.</span></span><span class="sig-name descname"><span class="pre">get_k_of_fedmd_nfdp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">epsilon</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">replacement</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/collaborative/fedmd/nfdp.html#get_k_of_fedmd_nfdp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.collaborative.fedmd.nfdp.get_k_of_fedmd_nfdp" title="Permalink to this definition"></a></dt>
+<dd><p>Return k of FedMD-NFDP</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>epsilon</strong> (<em>float</em>) – epsilon</p></li>
+<li><p><strong>n</strong> (<em>int</em>) – training set size</p></li>
+<li><p><strong>replacement</strong> (<em>bool</em><em>, </em><em>optional</em>) – sampling w/o replacement. Defaults to True.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>k</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-aijack.collaborative.fedmd.server">
+<span id="aijack-collaborative-fedmd-server-module"></span><h2>aijack.collaborative.fedmd.server module<a class="headerlink" href="#module-aijack.collaborative.fedmd.server" title="Permalink to this headline"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="aijack.collaborative.fedmd.server.FedMDServer">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">aijack.collaborative.fedmd.server.</span></span><span class="sig-name descname"><span class="pre">FedMDServer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">clients</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">server_model</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">server_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'cpu'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/collaborative/fedmd/server.html#FedMDServer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.collaborative.fedmd.server.FedMDServer" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="aijack.collaborative.core.html#aijack.collaborative.core.server.BaseServer" title="aijack.collaborative.core.server.BaseServer"><code class="xref py py-class docutils literal notranslate"><span class="pre">aijack.collaborative.core.server.BaseServer</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="aijack.collaborative.fedmd.server.FedMDServer.action">
+<span class="sig-name descname"><span class="pre">action</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/collaborative/fedmd/server.html#FedMDServer.action"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.collaborative.fedmd.server.FedMDServer.action" title="Permalink to this definition"></a></dt>
+<dd><p>Execute thr routine of each communication.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="aijack.collaborative.fedmd.server.FedMDServer.distribute">
+<span class="sig-name descname"><span class="pre">distribute</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/collaborative/fedmd/server.html#FedMDServer.distribute"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.collaborative.fedmd.server.FedMDServer.distribute" title="Permalink to this definition"></a></dt>
+<dd><p>Distribute the logits of public dataset to each client.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="aijack.collaborative.fedmd.server.FedMDServer.forward">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/collaborative/fedmd/server.html#FedMDServer.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.collaborative.fedmd.server.FedMDServer.forward" title="Permalink to this definition"></a></dt>
+<dd><p>Defines the computation performed at every call.</p>
+<p>Should be overridden by all subclasses.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Although the recipe for forward pass needs to be defined within
+this function, one should call the <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code> instance afterwards
+instead of this since the former takes care of running the
+registered hooks while the latter silently ignores them.</p>
+</div>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="aijack.collaborative.fedmd.server.FedMDServer.training">
+<span class="sig-name descname"><span class="pre">training</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#aijack.collaborative.fedmd.server.FedMDServer.training" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="aijack.collaborative.fedmd.server.FedMDServer.update">
+<span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/collaborative/fedmd/server.html#FedMDServer.update"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.collaborative.fedmd.server.FedMDServer.update" title="Permalink to this definition"></a></dt>
+<dd><p>Update the global model.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="aijack.collaborative.fedkd.html" class="btn btn-neutral float-left" title="aijack.collaborative.fedkd package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="aijack.collaborative.splitnn.html" class="btn btn-neutral float-right" title="aijack.collaborative.splitnn package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Hideaki Takahashi.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+</body>
+</html>

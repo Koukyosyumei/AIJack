@@ -1,6 +1,11 @@
 aijack.defense.dp.manager package
 =================================
 
+.. automodule:: aijack.defense.dp.manager
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Submodules
 ----------
 
@@ -48,14 +53,6 @@ aijack.defense.dp.manager.utils module
 --------------------------------------
 
 .. automodule:: aijack.defense.dp.manager.utils
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-Module contents
----------------
-
-.. automodule:: aijack.defense.dp.manager
    :members:
    :undoc-members:
    :show-inheritance:
