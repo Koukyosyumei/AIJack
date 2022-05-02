@@ -35,7 +35,11 @@ pip install git+https://github.com/Koukyosyumei/AIJack
 
 ### Collaborative Learning
 
-- FedAVG
+AIJack allows you to simulate the collaborative learning, where multiple clients trains a single model without sharing their private datasets.
+
+- Federated Learning
+
+In Federated Learning, the clients communicates their locally trained models and the server aggregates the received local models and creates a global model.
 
 ```Python
 from aijack.collaborative import FedAvgClient, FedAvgServer
@@ -55,7 +59,10 @@ for client, local_trainloader, local_optimizer in zip(clients, trainloaders, opt
 server.action()
 ```
 
-- SplitNN
+- Split Learning
+
+In Split Learning, only one client has the label of the training dataset, and each client
+communicates the gradient of the intermidiate layer.
 
 ```Python
 from aijack.collaborative import SplitNN, SplitNNClient
@@ -75,7 +82,12 @@ for data dataloader:
 
 ### Attack against Federated Learning
 
+AIJack implements several attack algorithms to violate the safety of Federated Learning.
+You can attach the attack ability to the server or client classes with `attach` methods of `AttackManager` of each attack algorithms.
+
 - Gradient Inversion (server-side model inversion attack against federated learning)
+
+Gradients communicated between the server and the clients might leak private information, and the malicious server might be able to reconstruct the training data from the gradients.
 
 ```Python
 from aijack.attack import GradientInversion_Attack

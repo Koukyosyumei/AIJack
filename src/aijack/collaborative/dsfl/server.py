@@ -41,6 +41,15 @@ class DSFLServer(BaseServer):
         self._set_distillation_loss(distillation_loss_name)
 
     def _set_distillation_loss(self, name):
+        """Setup the loss function for distillation.
+        `crossentropy`, `L2` or `L1`.
+
+        Args:
+            name (str): type of the function
+
+        Raises:
+            NotImplementedError: Raises when `name` is not supported.
+        """
         if name == "crossentropy":
             self.distillation_loss = crossentropyloss_between_logits
         elif name == "L2":
@@ -55,6 +64,11 @@ class DSFLServer(BaseServer):
         self.distribute()
 
     def update(self):
+        """Update the aggregated consensus logits with the output logits received from the clients.
+
+        Raises:
+            NotImplementedError: Raises when the specified aggregation type is not supported.
+        """
         if self.aggregation == "ERA":
             self._entropy_reduction_aggregation()
         elif self.aggregation == "SA":
@@ -63,6 +77,14 @@ class DSFLServer(BaseServer):
             raise NotImplementedError(f"{self.aggregation} is not supported")
 
     def update_globalmodel(self, global_optimizer):
+        """Train the global model with the global consensus logits.
+
+        Args:
+            global_optimizer (torch.optim.Optimizer): an optimizer
+
+        Returns:
+            float: average loss
+        """
         running_loss = 0
         for global_data in self.public_dataloader:
             idx = global_data[0]
@@ -83,10 +105,12 @@ class DSFLServer(BaseServer):
             client.download(self.consensus)
 
     def _entropy_reduction_aggregation(self):
+        """Aggregate the received logits with ERA"""
         self._simple_aggregation()
         self.consensus = torch.softmax(self.consensus / self.era_temperature, dim=1)
 
     def _simple_aggregation(self):
+        """Aggregate the received logits with SA (calculating average)"""
         self.consensus = self.clients[0].upload() / len(self.clients)
         for client in self.clients[1:]:
             self.consensus += client.upload() / len(self.clients)
