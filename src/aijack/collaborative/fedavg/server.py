@@ -2,13 +2,39 @@ import numpy as np
 import torch
 
 from ..core import BaseServer
+from ..optimizer import AdamFLOptimizer, SGDFLOptimizer
 
 
 class FedAvgServer(BaseServer):
-    def __init__(self, clients, global_model, server_id=0, lr=0.1):
+    def __init__(
+        self,
+        clients,
+        global_model,
+        server_id=0,
+        lr=0.1,
+        optimizer_type="sgd",
+        optimizer_kwargs={},
+    ):
         super(FedAvgServer, self).__init__(clients, global_model, server_id=server_id)
         self.lr = lr
+        self._setup_optimizer(optimizer_type, **optimizer_kwargs)
         self.distribtue()
+
+    def _setup_optimizer(self, optimizer_type, **kwargs):
+        if optimizer_type == "sgd":
+            self.optimizer = SGDFLOptimizer(
+                self.server_model.parameters(), lr=self.lr, **kwargs
+            )
+        elif optimizer_type == "adam":
+            self.optimizer = AdamFLOptimizer(
+                self.server_model.parameters(), lr=self.lr, **kwargs
+            )
+        elif optimizer_type == "none":
+            self.optimizer = None
+        else:
+            raise NotImplementedError(
+                f"{optimizer_type} is not supported. You can specify `sgd`, `adam`, or `none`."
+            )
 
     def action(self, use_gradients=True):
         self.receive(use_gradients)
@@ -48,8 +74,9 @@ class FedAvgServer(BaseServer):
                     gradient_id
                 ]
 
-        for params, grads in zip(self.server_model.parameters(), aggregated_gradients):
-            params.data -= self.lr * grads
+        self.optimizer.step(aggregated_gradients)
+        # for params, grads in zip(self.server_model.parameters(), aggregated_gradients):
+        #    params.data -= self.lr * grads
 
     def update_from_parameters(self, weight=None):
         if weight is None:
