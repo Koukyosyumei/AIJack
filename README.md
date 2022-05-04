@@ -24,6 +24,9 @@
 
 This package implements algorithms for AI security such as Model Inversion, Poisoning Attack, Evasion Attack, Differential Privacy, and Homomorphic Encryption.
 
+[Official documentations](https://koukyosyumei.github.io/AIJack) \
+[Examples](https://github.com/Koukyosyumei/AIJack/tree/main/example)
+
 ## Install
 
 ```

@@ -39,6 +39,7 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../README.html">Quick Start</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../aijack.html">aijack package</a></li>
 </ul>
 
@@ -75,7 +76,32 @@
 
 
 <div class="viewcode-block" id="FedGEMSAPI"><a class="viewcode-back" href="../../../../aijack.collaborative.fedgems.html#aijack.collaborative.fedgems.api.FedGEMSAPI">[docs]</a><span class="k">class</span> <span class="nc">FedGEMSAPI</span><span class="p">(</span><span class="n">BaseFLKnowledgeDistillationAPI</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Implementation of `FedGEMS: Federated Learning of Larger Server Models via Selective Knowledge Fusion.`&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;API of FedGEMSAPI.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        server (FedGEMSServer): a server.</span>
+<span class="sd">        clients (List[FedGEMSClient]): a list of clients.</span>
+<span class="sd">        public_dataloader (torch.utils.data.DataLoader): a dataloader of the public dataset.</span>
+<span class="sd">        local_dataloaders (List[torch.utils.data.DataLoader]): a list of dataloaders of</span>
+<span class="sd">                                                               the local datasets.</span>
+<span class="sd">        validation_dataloader (torch.utils.data.DataLoader): a dataloader of the validation dataset.</span>
+<span class="sd">        criterion (function)): a loss function</span>
+<span class="sd">        server_optimizer (torch.optim.Optimizer): an optimizer for the global model</span>
+<span class="sd">        client_optimizers (List[torch.optim.Optimizer]): a list of optimizers for the local models</span>
+<span class="sd">        num_communication (int, optional): the number of communications. Defaults to 10.</span>
+<span class="sd">        epoch_client_on_localdataset (int, optional): the number of epochs of client-side</span>
+<span class="sd">                                                      training on the private datasets.</span>
+<span class="sd">                                                      Defaults to 10.</span>
+<span class="sd">        epoch_client_on_publicdataset (int, optional): the number of epochs of client-side</span>
+<span class="sd">                                                       training on the public datasets.</span>
+<span class="sd">                                                       Defaults to 10.</span>
+<span class="sd">        epoch_server_on_publicdataset (int, optional): the number of epochs of server-side training</span>
+<span class="sd">                                                       on the public dataset. Defaults to 10.</span>
+<span class="sd">        device (str, optional): device type. Defaults to &quot;cpu&quot;.</span>
+<span class="sd">        custom_action (function, optional): custom function which this api calls at</span>
+<span class="sd">                                            the end of every communication.</span>
+<span class="sd">                                            Defaults to lambda x:x.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -114,6 +140,11 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">custom_action</span> <span class="o">=</span> <span class="n">custom_action</span>
 
 <div class="viewcode-block" id="FedGEMSAPI.train_client_on_public_dataset"><a class="viewcode-back" href="../../../../aijack.collaborative.fedgems.html#aijack.collaborative.fedgems.api.FedGEMSAPI.train_client_on_public_dataset">[docs]</a>    <span class="k">def</span> <span class="nf">train_client_on_public_dataset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Train clients on the public dataset.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            List[float]: a list of average loss of each client.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">loss_on_public_dataset</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">client_idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">client_num</span><span class="p">):</span>
             <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">clients</span><span class="p">[</span><span class="n">client_idx</span><span class="p">]</span>
@@ -140,6 +171,11 @@
         <span class="k">return</span> <span class="n">loss_on_public_dataset</span></div>
 
 <div class="viewcode-block" id="FedGEMSAPI.train_server_on_public_dataset"><a class="viewcode-back" href="../../../../aijack.collaborative.fedgems.html#aijack.collaborative.fedgems.api.FedGEMSAPI.train_server_on_public_dataset">[docs]</a>    <span class="k">def</span> <span class="nf">train_server_on_public_dataset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Train the global model on the public dataset.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            float: average loss</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">server_running_loss</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="k">for</span> <span class="n">data</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">public_dataloader</span><span class="p">:</span>
             <span class="n">idx</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">data</span>
