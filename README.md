@@ -20,7 +20,7 @@
 <img src="https://badgen.net/github/forks/Koukyosyumei/AIjack">
 </div>
 
-# AIJack
+# Quick Start
 
 This package implements algorithms for AI security such as Model Inversion, Poisoning Attack, Evasion Attack, Differential Privacy, and Homomorphic Encryption.
 
