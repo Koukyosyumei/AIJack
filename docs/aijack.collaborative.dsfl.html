@@ -42,6 +42,7 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="README.html">Quick Start</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="aijack.html">aijack package</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="aijack.html#subpackages">Subpackages</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="aijack.attack.html">aijack.attack package</a></li>
@@ -245,13 +246,30 @@ Defaults to “crossentropy”.</p></li>
 <dl class="py method">
 <dt class="sig sig-object py" id="aijack.collaborative.dsfl.server.DSFLServer.update">
 <span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/collaborative/dsfl/server.html#DSFLServer.update"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.collaborative.dsfl.server.DSFLServer.update" title="Permalink to this definition"></a></dt>
-<dd><p>Update the global model.</p>
+<dd><p>Update the aggregated consensus logits with the output logits received from the clients.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><strong>NotImplementedError</strong> – Raises when the specified aggregation type is not supported.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="aijack.collaborative.dsfl.server.DSFLServer.update_globalmodel">
 <span class="sig-name descname"><span class="pre">update_globalmodel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">global_optimizer</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/collaborative/dsfl/server.html#DSFLServer.update_globalmodel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.collaborative.dsfl.server.DSFLServer.update_globalmodel" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Train the global model with the global consensus logits.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>global_optimizer</strong> (<em>torch.optim.Optimizer</em>) – an optimizer</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>average loss</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
 
 </dd></dl>
 

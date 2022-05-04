@@ -39,6 +39,7 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../README.html">Quick Start</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../aijack.html">aijack package</a></li>
 </ul>
 
@@ -110,6 +111,15 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_set_distillation_loss</span><span class="p">(</span><span class="n">distillation_loss_name</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_set_distillation_loss</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Setup the loss function for distillation.</span>
+<span class="sd">        `crossentropy`, `L2` or `L1`.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            name (str): type of the function</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            NotImplementedError: Raises when `name` is not supported.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;crossentropy&quot;</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">distillation_loss</span> <span class="o">=</span> <span class="n">crossentropyloss_between_logits</span>
         <span class="k">elif</span> <span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;L2&quot;</span><span class="p">:</span>
@@ -124,6 +134,11 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">distribute</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="DSFLServer.update"><a class="viewcode-back" href="../../../../aijack.collaborative.dsfl.html#aijack.collaborative.dsfl.server.DSFLServer.update">[docs]</a>    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Update the aggregated consensus logits with the output logits received from the clients.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            NotImplementedError: Raises when the specified aggregation type is not supported.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">aggregation</span> <span class="o">==</span> <span class="s2">&quot;ERA&quot;</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_entropy_reduction_aggregation</span><span class="p">()</span>
         <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">aggregation</span> <span class="o">==</span> <span class="s2">&quot;SA&quot;</span><span class="p">:</span>
@@ -132,6 +147,14 @@
             <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">aggregation</span><span class="si">}</span><span class="s2"> is not supported&quot;</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="DSFLServer.update_globalmodel"><a class="viewcode-back" href="../../../../aijack.collaborative.dsfl.html#aijack.collaborative.dsfl.server.DSFLServer.update_globalmodel">[docs]</a>    <span class="k">def</span> <span class="nf">update_globalmodel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">global_optimizer</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Train the global model with the global consensus logits.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            global_optimizer (torch.optim.Optimizer): an optimizer</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            float: average loss</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">running_loss</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="k">for</span> <span class="n">global_data</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">public_dataloader</span><span class="p">:</span>
             <span class="n">idx</span> <span class="o">=</span> <span class="n">global_data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
@@ -152,10 +175,12 @@
             <span class="n">client</span><span class="o">.</span><span class="n">download</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">consensus</span><span class="p">)</span></div>
 
     <span class="k">def</span> <span class="nf">_entropy_reduction_aggregation</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Aggregate the received logits with ERA&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_simple_aggregation</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">consensus</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">softmax</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">consensus</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">era_temperature</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_simple_aggregation</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Aggregate the received logits with SA (calculating average)&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">consensus</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">clients</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">upload</span><span class="p">()</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">clients</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">client</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">clients</span><span class="p">[</span><span class="mi">1</span><span class="p">:]:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">consensus</span> <span class="o">+=</span> <span class="n">client</span><span class="o">.</span><span class="n">upload</span><span class="p">()</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">clients</span><span class="p">)</span></div>

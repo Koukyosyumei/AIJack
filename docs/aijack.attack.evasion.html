@@ -42,6 +42,7 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="README.html">Quick Start</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="aijack.html">aijack package</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="aijack.html#subpackages">Subpackages</a><ul class="current">
 <li class="toctree-l3 current"><a class="reference internal" href="aijack.attack.html">aijack.attack package</a><ul class="current">
@@ -261,11 +262,9 @@ surrogate classifier f learnt on D</p>
 <dd class="field-odd"><p><strong>ValueError</strong> – if given distance is not supported.</p>
 </dd>
 </dl>
-<dl>
-<dt>Usage:</dt><dd><p>&gt;&gt;# datasets which contains only “3”
-&gt;&gt;X_minus_1 = X_train[np.where(y_train == “3”)]</p>
-<p>&gt;&gt;# Attack_sklearn automatically detect the type of the classifier
-&gt;&gt;attacker = Attack_sklearn(target_model = target_model,</p>
+<p class="rubric">Examples</p>
+<p>&gt;&gt;&gt;X_minus_1 = X_train[np.where(y_train == “3”)]
+&gt;&gt;&gt;attacker = Attack_sklearn(target_model = target_model,</p>
 <blockquote>
 <div><p>X_minus_1 = X_minus_1,
 dmax =  (5000 / 255) * 2.5,
@@ -276,10 +275,7 @@ gamma = 1 / (X_train.shape[1] *</p>
 </div></blockquote>
 <p>lam = 10, t = 0.5, h = 10)</p>
 </div></blockquote>
-<p>&gt;&gt;# x0 is the intial ponint (“7”)
-&gt;&gt;xm, log = attacker.attack(x0)</p>
-</dd>
-</dl>
+<p>&gt;&gt;&gt;xm, log = attacker.attack(x0)</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="aijack.attack.evasion.evasion_attack.Evasion_attack_sklearn.attack">
 <span class="sig-name descname"><span class="pre">attack</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/attack/evasion/evasion_attack.html#Evasion_attack_sklearn.attack"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.attack.evasion.evasion_attack.Evasion_attack_sklearn.attack" title="Permalink to this definition"></a></dt>

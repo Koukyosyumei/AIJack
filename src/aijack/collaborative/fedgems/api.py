@@ -6,7 +6,32 @@ from ..core.api import BaseFLKnowledgeDistillationAPI
 
 
 class FedGEMSAPI(BaseFLKnowledgeDistillationAPI):
-    """Implementation of `FedGEMS: Federated Learning of Larger Server Models via Selective Knowledge Fusion.`"""
+    """API of FedGEMSAPI.
+
+    Args:
+        server (FedGEMSServer): a server.
+        clients (List[FedGEMSClient]): a list of clients.
+        public_dataloader (torch.utils.data.DataLoader): a dataloader of the public dataset.
+        local_dataloaders (List[torch.utils.data.DataLoader]): a list of dataloaders of
+                                                               the local datasets.
+        validation_dataloader (torch.utils.data.DataLoader): a dataloader of the validation dataset.
+        criterion (function)): a loss function
+        server_optimizer (torch.optim.Optimizer): an optimizer for the global model
+        client_optimizers (List[torch.optim.Optimizer]): a list of optimizers for the local models
+        num_communication (int, optional): the number of communications. Defaults to 10.
+        epoch_client_on_localdataset (int, optional): the number of epochs of client-side
+                                                      training on the private datasets.
+                                                      Defaults to 10.
+        epoch_client_on_publicdataset (int, optional): the number of epochs of client-side
+                                                       training on the public datasets.
+                                                       Defaults to 10.
+        epoch_server_on_publicdataset (int, optional): the number of epochs of server-side training
+                                                       on the public dataset. Defaults to 10.
+        device (str, optional): device type. Defaults to "cpu".
+        custom_action (function, optional): custom function which this api calls at
+                                            the end of every communication.
+                                            Defaults to lambda x:x.
+    """
 
     def __init__(
         self,
@@ -45,6 +70,11 @@ class FedGEMSAPI(BaseFLKnowledgeDistillationAPI):
         self.custom_action = custom_action
 
     def train_client_on_public_dataset(self):
+        """Train clients on the public dataset.
+
+        Returns:
+            List[float]: a list of average loss of each client.
+        """
         loss_on_public_dataset = []
         for client_idx in range(self.client_num):
             client = self.clients[client_idx]
@@ -71,6 +101,11 @@ class FedGEMSAPI(BaseFLKnowledgeDistillationAPI):
         return loss_on_public_dataset
 
     def train_server_on_public_dataset(self):
+        """Train the global model on the public dataset.
+
+        Returns:
+            float: average loss
+        """
         server_running_loss = 0
         for data in self.public_dataloader:
             idx, x, y = data
