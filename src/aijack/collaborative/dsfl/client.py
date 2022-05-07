@@ -48,7 +48,7 @@ class DSFLClient(BaseClient):
             idx = data[0]
             x = data[1]
             x = x.to(self.device)
-            self.logit2server[idx, :] = self(x).detach()
+            self.logit2server[idx, :] = self(x).detach().softmax(dim=-1)
 
         if self.round_decimal is None:
             return self.logit2server
