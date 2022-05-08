@@ -16,10 +16,12 @@ def crossentropyloss_between_logits(y_pred_logit, y_true_labels, reduction="mean
     Args:
         y_pred_logit (torch.Tensor): predicted logits
         y_true_labels (torch.Tensor): ground-truth soft labels
+
     Returns:
         torch.Tensor: average cross entropy between y_pred_logit and y_true_labels2
     """
     results = -torch.sum(F.log_softmax(y_pred_logit, dim=1) * y_true_labels, dim=1)
+
     if reduction == "sum":
         return torch.sum(results)
     elif reduction == "mean":
