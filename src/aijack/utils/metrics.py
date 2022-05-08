@@ -10,10 +10,9 @@ def total_variance(x):
     return dx + dy
 
 
-def crossentropyloss_between_logits(y_pred_logit, y_true_labels, agg="sum"):
+def crossentropyloss_between_logits(y_pred_logit, y_true_labels, reduction="mean"):
     """Cross entropy loss for soft labels
     Based on https://discuss.pytorch.org/t/soft-cross-entropy-loss-tf-has-it-does-pytorch-have-it/69501/2
-
     Args:
         y_pred_logit (torch.Tensor): predicted logits
         y_true_labels (torch.Tensor): ground-truth soft labels
@@ -22,12 +21,13 @@ def crossentropyloss_between_logits(y_pred_logit, y_true_labels, agg="sum"):
         torch.Tensor: average cross entropy between y_pred_logit and y_true_labels2
     """
     results = -torch.sum(F.log_softmax(y_pred_logit, dim=1) * y_true_labels, dim=1)
-    if agg == "sum":
+
+    if reduction == "sum":
         return torch.sum(results)
-    elif agg == "mean":
+    elif reduction == "mean":
         return torch.mean(results)
     else:
-        raise NotImplementedError(f"`agg`={agg} is not supported.")
+        raise NotImplementedError(f"`reduction`={reduction} is not supported.")
 
 
 def accuracy_torch_dataloader(model, dataloader, device="cpu", xpos=1, ypos=2):
