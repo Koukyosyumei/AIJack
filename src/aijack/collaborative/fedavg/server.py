@@ -68,11 +68,9 @@ class FedAvgServer(BaseServer):
         ]
         len_gradients = len(aggregated_gradients)
 
-        for gradients in self.uploaded_gradients:
+        for i, gradients in enumerate(self.uploaded_gradients):
             for gradient_id in range(len_gradients):
-                aggregated_gradients[gradient_id] += (1 / self.num_clients) * gradients[
-                    gradient_id
-                ]
+                aggregated_gradients[gradient_id] += weight[i] * gradients[gradient_id]
 
         self.optimizer.step(aggregated_gradients)
         # for params, grads in zip(self.server_model.parameters(), aggregated_gradients):
