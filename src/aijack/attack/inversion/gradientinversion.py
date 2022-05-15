@@ -416,7 +416,14 @@ class GradientInversion_Attack(BaseAttacker):
         self.seed = seed
         torch.manual_seed(seed)
 
-    def attack(self, received_gradients, batch_size=1, init_x=None, labels=None):
+    def attack(
+        self,
+        received_gradients,
+        batch_size=1,
+        init_x=None,
+        labels=None,
+        return_best=True,
+    ):
         """Reconstruct the images from the gradients received from the client
 
         Args:
@@ -452,14 +459,15 @@ class GradientInversion_Attack(BaseAttacker):
             if self.save_loss:
                 self.log_loss.append(distance)
 
-            if best_distance > distance:
-                best_fake_x = copy.deepcopy(fake_x)
-                best_fake_label = copy.deepcopy(fake_label)
-                best_distance = distance
-                best_iteration = i
-                num_of_not_improve_round = 0
-            else:
-                num_of_not_improve_round += 1
+            if return_best:
+                if best_distance > distance:
+                    best_fake_x = copy.deepcopy(fake_x)
+                    best_fake_label = copy.deepcopy(fake_label)
+                    best_distance = distance
+                    best_iteration = i
+                    num_of_not_improve_round = 0
+                else:
+                    num_of_not_improve_round += 1
 
             if self.log_interval != 0 and i % self.log_interval == 0:
                 print(
@@ -472,7 +480,10 @@ class GradientInversion_Attack(BaseAttacker):
                 )
                 break
 
-        return best_fake_x, best_fake_label
+        if return_best:
+            return best_fake_x, best_fake_label
+        else:
+            return fake_x, fake_label
 
     def group_attack(self, received_gradients, batch_size=1):
         """Multiple simultaneous attacks with different random states
