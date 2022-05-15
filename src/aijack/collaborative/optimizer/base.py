@@ -11,7 +11,7 @@ class BaseFLOptimizer:
     """
 
     def __init__(self, parameters, lr=0.01, weight_decay=0.0001):
-        self.parameters = parameters
+        self.parameters = list(parameters)
         self.lr = lr
         self.weight_decay = weight_decay
         self.t = 1
