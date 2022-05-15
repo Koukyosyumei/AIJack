@@ -10,7 +10,7 @@ class SGDFLOptimizer(BaseFLOptimizer):
         weight_decay (float, optional): coefficient of weight decay. Defaults to 0.0001.
     """
 
-    def __init__(self, parameters, lr=0.01, weight_decay=0.0001):
+    def __init__(self, parameters, lr=0.01, weight_decay=0.0000):
         super().__init__(parameters, lr=lr, weight_decay=weight_decay)
 
     def step(self, grads):
