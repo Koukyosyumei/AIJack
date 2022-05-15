@@ -368,7 +368,7 @@ class GradientInversion_Attack(BaseAttacker):
                 received_gradients,
             )
 
-            distance.backward(retain_graph=False)
+            distance.backward(retain_graph=True)
             return distance
 
         return closure
