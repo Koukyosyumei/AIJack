@@ -459,15 +459,15 @@ class GradientInversion_Attack(BaseAttacker):
             if self.save_loss:
                 self.log_loss.append(distance)
 
-            if return_best:
-                if best_distance > distance:
+            if best_distance > distance:
+                if return_best:
                     best_fake_x = copy.deepcopy(fake_x)
                     best_fake_label = copy.deepcopy(fake_label)
-                    best_distance = distance
-                    best_iteration = i
-                    num_of_not_improve_round = 0
-                else:
-                    num_of_not_improve_round += 1
+                best_distance = distance
+                best_iteration = i
+                num_of_not_improve_round = 0
+            else:
+                num_of_not_improve_round += 1
 
             if self.log_interval != 0 and i % self.log_interval == 0:
                 print(
