@@ -11,13 +11,13 @@ using namespace std;
 
 struct Party
 {
-    vector<vector<double>> x; // partyが持つ特徴量
-    vector<int> feature_id;   // partyが持つ特徴量のidのベクトル
-    int party_id;             // partyのid
+    vector<vector<double>> x; // a feature vector of this party
+    vector<int> feature_id;   // id of the features
+    int party_id;             // id of this party
     int min_leaf;
-    double subsample_cols; // サンプリングされる特徴量の割合
+    double subsample_cols; // ratio of subsampled columuns
 
-    int col_count; // partyが持つ特徴量の種類の数
+    int col_count; // the number of columns
 
     unordered_map<int, pair<int, double>> lookup_table; // record_id: (feature_id, threshold)
     vector<vector<double>> temp_thresholds;             // feature_id->threshold
