@@ -18,7 +18,11 @@ ext_modules = [
     Pybind11Extension(
         "aijack_dp_core",
         ["src/aijack/defense/dp/core/main.cpp"],
-        # Example: passing in the version to the compiled code
+        define_macros=[("VERSION_INFO", __version__)],
+    ),
+    Pybind11Extension(
+        "aijack_secureboost",
+        ["src/aijack/collaborative/secureboost/core/main.cpp"],
         define_macros=[("VERSION_INFO", __version__)],
     ),
 ]
