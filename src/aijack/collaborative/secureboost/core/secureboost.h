@@ -45,6 +45,11 @@ struct SecureBoostBase
     virtual vector<double> get_hess(vector<double> y_pred, vector<double> y) = 0;
     virtual vector<double> get_init_pred(vector<double> y) = 0;
 
+    vector<XGBoostTree> get_estimators()
+    {
+        return estimators;
+    }
+
     void fit(vector<Party> parties, vector<double> y)
     {
         int row_count = y.size();

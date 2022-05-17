@@ -21,6 +21,11 @@ struct XGBoostTree
                      min_child_weight, lam, gamma, eps, depth);
     }
 
+    Node get_root_node()
+    {
+        return dtree;
+    }
+
     vector<double> predict(vector<vector<double>> X)
     {
         return dtree.predict(X);
