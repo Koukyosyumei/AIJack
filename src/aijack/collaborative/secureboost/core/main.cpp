@@ -20,16 +20,29 @@ PYBIND11_MODULE(aijack_secureboost, m)
     )pbdoc";
 
     py::class_<Party>(m, "Party")
-        .def(py::init<vector<vector<double>>, vector<int>, int, int, double>());
+        .def(py::init<vector<vector<double>>, vector<int>, int, int, double>())
+        .def("get_percentiles", &Party::get_percentiles)
+        .def("is_left", &Party::is_left)
+        .def("greedy_search_split", &Party::greedy_search_split)
+        .def("split_rows", &Party::split_rows)
+        .def("insert_lookup_table", &Party::insert_lookup_table);
 
-    py::class_<XGBoostClassifier>(m, "XGBoostClassifier")
+    /*
+    py::class_<Node>(m, "Node")
+        .def(py::init<vector<Party>, vector<double>, vector<double>,
+                      vector<double>, vector<int>,
+                      double, double, double, double,
+                      int>());
+    */
+
+    py::class_<SecureBoostClassifier>(m, "SecureBoostClassifier")
         .def(py::init<double, double, int, int, double, int, double, double, double>())
-        .def("fit", &XGBoostClassifier::fit)
-        .def("get_grad", &XGBoostClassifier::get_grad)
-        .def("get_hess", &XGBoostClassifier::get_hess)
-        .def("get_init_pred", &XGBoostClassifier::get_init_pred)
-        .def("predict_raw", &XGBoostClassifier::predict_raw)
-        .def("predict_proba", &XGBoostClassifier::predict_proba);
+        .def("fit", &SecureBoostClassifier::fit)
+        .def("get_grad", &SecureBoostClassifier::get_grad)
+        .def("get_hess", &SecureBoostClassifier::get_hess)
+        .def("get_init_pred", &SecureBoostClassifier::get_init_pred)
+        .def("predict_raw", &SecureBoostClassifier::predict_raw)
+        .def("predict_proba", &SecureBoostClassifier::predict_proba);
 
 #ifdef VERSION_INFO
     m.attr("__version__") = MACRO_STRINGIFY(VERSION_INFO);
