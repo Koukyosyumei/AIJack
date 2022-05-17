@@ -1,7 +1,7 @@
 numpy
 tqdm
 sklearn
-torch
+torch >= 1.11.0
 torchvision
 pybind11
 matplotlib
