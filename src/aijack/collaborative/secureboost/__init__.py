@@ -1,1 +1,1 @@
-from .wrapper import Party, SecureBoostClassifier  # noqa :F401
+from .wrapper import Node, Party, SecureBoostClassifier  # noqa :F401

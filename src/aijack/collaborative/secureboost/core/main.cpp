@@ -41,12 +41,16 @@ PYBIND11_MODULE(aijack_secureboost, m)
         .def("get_left", &Node::get_left)
         .def("get_right", &Node::get_right);
 
+    py::class_<XGBoostTree>(m, "XGBoostTree")
+        .def("get_root_node", &XGBoostTree::get_root_node);
+
     py::class_<SecureBoostClassifier>(m, "SecureBoostClassifier")
         .def(py::init<double, double, int, int, double, int, double, double, double>())
         .def("fit", &SecureBoostClassifier::fit)
         .def("get_grad", &SecureBoostClassifier::get_grad)
         .def("get_hess", &SecureBoostClassifier::get_hess)
         .def("get_init_pred", &SecureBoostClassifier::get_init_pred)
+        .def("get_estimators", &SecureBoostClassifier::get_estimators)
         .def("predict_raw", &SecureBoostClassifier::predict_raw)
         .def("predict_proba", &SecureBoostClassifier::predict_proba);
 
