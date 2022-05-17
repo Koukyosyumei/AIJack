@@ -35,6 +35,11 @@ struct Party
         col_count = x.at(0).size();
     }
 
+    unordered_map<int, pair<int, double>> get_lookup_table()
+    {
+        return lookup_table;
+    }
+
     vector<double> get_percentiles(vector<double> x_col)
     {
         vector<double> percentiles;
@@ -170,6 +175,41 @@ struct Node
             record_id = parties[party_id].insert_lookup_table(get<1>(best_split), get<2>(best_split));
             make_children_nodes(get<0>(best_split), get<1>(best_split), get<2>(best_split));
         }
+    }
+
+    vector<int> get_idxs()
+    {
+        return idxs;
+    }
+
+    int get_party_id()
+    {
+        return party_id;
+    }
+
+    int get_record_id()
+    {
+        return record_id;
+    }
+
+    double get_val()
+    {
+        return val;
+    }
+
+    double get_score()
+    {
+        return score;
+    }
+
+    Node get_left()
+    {
+        return *left;
+    }
+
+    Node get_right()
+    {
+        return *right;
     }
 
     double compute_weight()

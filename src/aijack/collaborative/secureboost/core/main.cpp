@@ -21,19 +21,25 @@ PYBIND11_MODULE(aijack_secureboost, m)
 
     py::class_<Party>(m, "Party")
         .def(py::init<vector<vector<double>>, vector<int>, int, int, double>())
+        .def("get_lookup_table", &Party::get_lookup_table)
         .def("get_percentiles", &Party::get_percentiles)
         .def("is_left", &Party::is_left)
         .def("greedy_search_split", &Party::greedy_search_split)
         .def("split_rows", &Party::split_rows)
         .def("insert_lookup_table", &Party::insert_lookup_table);
 
-    /*
     py::class_<Node>(m, "Node")
         .def(py::init<vector<Party>, vector<double>, vector<double>,
                       vector<double>, vector<int>,
                       double, double, double, double,
-                      int>());
-    */
+                      int>())
+        .def("get_idxs", &Node::get_idxs)
+        .def("get_party_id", &Node::get_party_id)
+        .def("get_record_id", &Node::get_record_id)
+        .def("get_val", &Node::get_val)
+        .def("get_score", &Node::get_score)
+        .def("get_left", &Node::get_left)
+        .def("get_right", &Node::get_right);
 
     py::class_<SecureBoostClassifier>(m, "SecureBoostClassifier")
         .def(py::init<double, double, int, int, double, int, double, double, double>())
