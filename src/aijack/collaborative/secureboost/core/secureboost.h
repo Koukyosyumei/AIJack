@@ -6,7 +6,7 @@
 #include "utils.h"
 using namespace std;
 
-struct XGBoostBase
+struct SecureBoostBase
 {
     double subsample_cols;
     double min_child_weight;
@@ -22,11 +22,11 @@ struct XGBoostBase
     vector<double> init_pred;
     vector<XGBoostTree> estimators;
 
-    XGBoostBase(double subsample_cols_ = 0.8,
-                double min_child_weight_ = -1 * numeric_limits<double>::infinity(),
-                int depth_ = 5, int min_leaf_ = 5,
-                double learning_rate_ = 0.4, int boosting_rounds_ = 5,
-                double lam_ = 1.5, double gamma_ = 1, double eps_ = 0.1)
+    SecureBoostBase(double subsample_cols_ = 0.8,
+                    double min_child_weight_ = -1 * numeric_limits<double>::infinity(),
+                    int depth_ = 5, int min_leaf_ = 5,
+                    double learning_rate_ = 0.4, int boosting_rounds_ = 5,
+                    double lam_ = 1.5, double gamma_ = 1, double eps_ = 0.1)
     {
         subsample_cols = subsample_cols_;
         min_child_weight = min_child_weight_;
@@ -84,9 +84,9 @@ struct XGBoostBase
     }
 };
 
-struct XGBoostClassifier : public XGBoostBase
+struct SecureBoostClassifier : public SecureBoostBase
 {
-    using XGBoostBase::XGBoostBase;
+    using SecureBoostBase::SecureBoostBase;
 
     vector<double> get_grad(vector<double> y_pred, vector<double> y)
     {

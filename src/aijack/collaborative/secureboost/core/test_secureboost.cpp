@@ -51,12 +51,12 @@ int main()
         cin >> y[j];
 
     // --- Check Initialization --- //
-    XGBoostClassifier clf = XGBoostClassifier(subsample_cols,
-                                              min_child_weight,
-                                              depth, min_leaf,
-                                              learning_rate,
-                                              boosting_rounds,
-                                              lam, gamma, eps);
+    SecureBoostClassifier clf = SecureBoostClassifier(subsample_cols,
+                                                      min_child_weight,
+                                                      depth, min_leaf,
+                                                      learning_rate,
+                                                      boosting_rounds,
+                                                      lam, gamma, eps);
 
     vector<double> test_init_pred = {1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0};
     vector<double> init_pred = clf.get_init_pred(y);
