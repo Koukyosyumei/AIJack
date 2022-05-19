@@ -45,6 +45,7 @@ class FedMDAPI(BaseFLKnowledgeDistillationAPI):
         self.transfer_epoch_private = transfer_epoch_private
         self.server_training_epoch = server_training_epoch
         self.custom_action = custom_action
+        self.epoch = 0
 
     def train_server(self):
         if self.server_optimizer is None:
@@ -90,6 +91,9 @@ class FedMDAPI(BaseFLKnowledgeDistillationAPI):
             logging["loss_client_local_dataset_transfer"].append(loss_local)
 
         for i in range(1, self.num_communication + 1):
+
+            self.epoch = i
+
             self.server.update()
             self.server.distribute()
 
