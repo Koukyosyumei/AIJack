@@ -68,6 +68,7 @@ class FedGEMSAPI(BaseFLKnowledgeDistillationAPI):
         self.epoch_server_on_publicdataset = epoch_server_on_publicdataset
 
         self.custom_action = custom_action
+        self.epoch = 0
 
     def train_client_on_public_dataset(self):
         """Train clients on the public dataset.
@@ -137,6 +138,9 @@ class FedGEMSAPI(BaseFLKnowledgeDistillationAPI):
 
         # train FedGEMS
         for epoch in range(1, self.num_communication + 1):
+
+            self.epoch = epoch
+
             for _ in range(self.epoch_client_on_localdataset):
                 loss_client_local_dataset = self.train_client(public=False)
             for _ in range(self.epoch_server_on_publicdataset):

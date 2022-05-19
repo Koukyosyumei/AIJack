@@ -57,6 +57,7 @@ class DSFLAPI(BaseFLKnowledgeDistillationAPI):
         self.epoch_local_distillation = epoch_local_distillation
 
         self.custom_action = custom_action
+        self.epoch = 0
 
     def run(self):
         logging = {
@@ -67,6 +68,9 @@ class DSFLAPI(BaseFLKnowledgeDistillationAPI):
             "acc_val": [],
         }
         for i in range(1, self.num_communication + 1):
+
+            self.epoch = i
+
             for _ in range(self.epoch_local_training):
                 loss_local = self.train_client(public=False)
             logging["loss_local"].append(loss_local)
