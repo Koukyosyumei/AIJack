@@ -6,6 +6,8 @@
 #include <algorithm>
 #include <set>
 #include <tuple>
+#include <random>
+#include <ctime>
 #include <unordered_map>
 using namespace std;
 
@@ -62,6 +64,9 @@ struct Party
         vector<int> column_subsample;
         column_subsample.resize(col_count);
         iota(column_subsample.begin(), column_subsample.end(), 0);
+        srand(time(NULL));
+        random_shuffle(column_subsample.begin(), column_subsample.end());
+        int subsample_col_count = subsample_cols * col_count;
 
         // feature_id -> [(grad hess)]
         // the threshold of split_candidates_grad_hess[i][j] = temp_thresholds[i][j]
@@ -71,7 +76,7 @@ struct Party
         int row_count = idxs.size();
         int recoed_id = 0;
 
-        for (int i = 0; i < column_subsample.size(); i++)
+        for (int i = 0; i < subsample_col_count; i++)
         {
             int k = column_subsample[i];
             vector<double> x_col(row_count);
