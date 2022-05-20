@@ -106,3 +106,5 @@ class DSFLAPI(BaseFLKnowledgeDistillationAPI):
                 logging["acc_val"].append(copy.deepcopy(acc_val))
 
             self.custom_action(self)
+
+        return logging
