@@ -39,7 +39,8 @@ PYBIND11_MODULE(aijack_secureboost, m)
         .def("get_val", &Node::get_val)
         .def("get_score", &Node::get_score)
         .def("get_left", &Node::get_left)
-        .def("get_right", &Node::get_right);
+        .def("get_right", &Node::get_right)
+        .def("is_leaf", &Node::is_leaf);
 
     py::class_<XGBoostTree>(m, "XGBoostTree")
         .def("get_root_node", &XGBoostTree::get_root_node);
