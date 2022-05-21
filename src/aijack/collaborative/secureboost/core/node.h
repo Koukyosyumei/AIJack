@@ -63,9 +63,9 @@ struct Party
         vector<int> column_subsample;
         column_subsample.resize(col_count);
         iota(column_subsample.begin(), column_subsample.end(), 0);
-        srand(seed);
+        mt19937 engine(seed);
         seed += 1;
-        random_shuffle(column_subsample.begin(), column_subsample.end());
+        shuffle(column_subsample.begin(), column_subsample.end(), engine);
         int subsample_col_count = subsample_cols * col_count;
 
         // feature_id -> [(grad hess)]
