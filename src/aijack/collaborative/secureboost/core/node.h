@@ -9,6 +9,7 @@
 #include <random>
 #include <ctime>
 #include <unordered_map>
+#include <stdexcept>
 using namespace std;
 
 struct Party
@@ -26,16 +27,57 @@ struct Party
     int seed = 0;
 
     Party() {}
-    Party(vector<vector<double>> x_, vector<int> feaure_id_, int party_id_,
-          int min_leaf_, double subsample_cols_ = 1.0)
+    Party(vector<vector<double>> x_, vector<int> feature_id_, int party_id_,
+          int min_leaf_, double subsample_cols_)
     {
+        validate_arguments(x_, feature_id_, party_id_, min_leaf_, subsample_cols_);
         x = x_;
-        feature_id = feaure_id_;
+        feature_id = feature_id_;
         party_id = party_id_;
         min_leaf = min_leaf_;
         subsample_cols = subsample_cols_;
 
         col_count = x.at(0).size();
+    }
+
+    void validate_arguments(vector<vector<double>> x_, vector<int> feature_id_, int party_id_,
+                            int min_leaf_, double subsample_cols_)
+    {
+        try
+        {
+            if (x_.size() == 0)
+            {
+                throw invalid_argument("x is empty");
+            }
+        }
+        catch (std::exception &e)
+        {
+            std::cout << e.what() << std::endl;
+        }
+
+        try
+        {
+            if (x_[0].size() != feature_id_.size())
+            {
+                throw invalid_argument("the number of columns of x is different from the size of feature_id");
+            }
+        }
+        catch (std::exception &e)
+        {
+            std::cout << e.what() << std::endl;
+        }
+
+        try
+        {
+            if (subsample_cols_ > 1 || subsample_cols_ < 0)
+            {
+                throw out_of_range("subsample_cols should be in [1, 0]");
+            }
+        }
+        catch (std::exception &e)
+        {
+            std::cout << e.what() << std::endl;
+        }
     }
 
     unordered_map<int, pair<int, double>> get_lookup_table()
