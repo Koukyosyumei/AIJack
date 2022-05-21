@@ -23,6 +23,7 @@ struct Party
 
     unordered_map<int, pair<int, double>> lookup_table; // record_id: (feature_id, threshold)
     vector<vector<double>> temp_thresholds;             // feature_id->threshold
+    int seed = 0;
 
     Party() {}
     Party(vector<vector<double>> x_, vector<int> feaure_id_, int party_id_,
@@ -44,11 +45,9 @@ struct Party
 
     vector<double> get_percentiles(vector<double> x_col)
     {
-        vector<double> percentiles;
-        copy(x_col.begin(), x_col.end(), back_inserter(percentiles));
-        sort(percentiles.begin(), percentiles.end(),
-             [&percentiles](size_t i1, size_t i2)
-             { return percentiles[i1] < percentiles[i2]; });
+        vector<double> percentiles(x_col.size());
+        copy(x_col.begin(), x_col.end(), percentiles.begin());
+        sort(percentiles.begin(), percentiles.end());
         return percentiles;
     }
 
@@ -64,7 +63,8 @@ struct Party
         vector<int> column_subsample;
         column_subsample.resize(col_count);
         iota(column_subsample.begin(), column_subsample.end(), 0);
-        srand(time(NULL));
+        srand(seed);
+        seed += 1;
         random_shuffle(column_subsample.begin(), column_subsample.end());
         int subsample_col_count = subsample_cols * col_count;
 
@@ -80,28 +80,44 @@ struct Party
         {
             int k = column_subsample[i];
             vector<double> x_col(row_count);
+            vector<int> x_col_idxs(row_count);
+
             for (int r = 0; r < row_count; r++)
                 x_col[r] = x[idxs[r]][k];
 
             vector<double> percentiles = get_percentiles(x_col);
 
+            iota(x_col_idxs.begin(), x_col_idxs.end(), 0);
+            sort(x_col_idxs.begin(), x_col_idxs.end(), [&x_col](size_t i1, size_t i2)
+                 { return x_col[i1] < x_col[i2]; });
+
+            sort(x_col.begin(), x_col.end());
+
+            int current_min_idx = 0;
+            int cumulative_left_size = 0;
             for (int p = 0; p < percentiles.size(); p++)
             {
                 double temp_grad = 0;
                 double temp_hess = 0;
                 int temp_left_size = 0;
-                for (int r = 0; r < row_count; r++)
+
+                for (int r = current_min_idx; r < row_count; r++)
                 {
                     if (x_col[r] <= percentiles[p])
                     {
-                        temp_grad += gradient[idxs[r]];
-                        temp_hess += hessian[idxs[r]];
-                        temp_left_size += 1;
+                        temp_grad += gradient[idxs[x_col_idxs[r]]];
+                        temp_hess += hessian[idxs[x_col_idxs[r]]];
+                        cumulative_left_size += 1;
+                    }
+                    else
+                    {
+                        current_min_idx = r;
+                        break;
                     }
                 }
 
-                if (temp_left_size >= min_leaf &&
-                    row_count - temp_left_size >= min_leaf)
+                if (cumulative_left_size >= min_leaf &&
+                    row_count - cumulative_left_size >= min_leaf)
                 {
                     split_candidates_grad_hess[i].push_back(make_pair(temp_grad, temp_hess));
                     temp_thresholds[i].push_back(percentiles[p]);
@@ -258,10 +274,12 @@ struct Node
 
             for (int j = 0; j < search_results.size(); j++)
             {
+                double temp_left_grad = 0;
+                double temp_left_hess = 0;
                 for (int k = 0; k < search_results[j].size(); k++)
                 {
-                    temp_left_grad = search_results[j][k].first;
-                    temp_left_hess = search_results[j][k].second;
+                    temp_left_grad += search_results[j][k].first;
+                    temp_left_hess += search_results[j][k].second;
 
                     if (temp_left_hess < min_child_weight ||
                         sum_hess - temp_left_hess < min_child_weight)
