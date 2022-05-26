@@ -8,6 +8,7 @@
 #include <tuple>
 #include <random>
 #include <ctime>
+#include <string>
 #include <unordered_map>
 #include <stdexcept>
 using namespace std;
@@ -393,5 +394,79 @@ struct Node
             else
                 return right->predict_row(xi);
         }
+    }
+
+    string print(bool binary_color = true)
+    {
+        return recursive_print("", false, binary_color);
+    }
+
+    string recursive_print(string prefix, bool isleft, bool binary_color = false)
+    {
+        string node_info;
+        if (is_leaf())
+        {
+            node_info += to_string(get_val());
+            node_info += ", [";
+            vector<int> temp_idxs = get_idxs();
+            int temp_id;
+            for (int i = 0; i < temp_idxs.size(); i++)
+            {
+                temp_id = temp_idxs[i];
+                if (binary_color)
+                {
+                    if (y[temp_id] == 0)
+                    {
+                        node_info += "\033[32m";
+                        node_info += to_string(temp_id);
+                        node_info += "\033[0m";
+                    }
+                    else
+                    {
+                        node_info += to_string(temp_id);
+                    }
+                }
+                else
+                {
+                    node_info += to_string(temp_id);
+                }
+                node_info += ", ";
+            }
+            node_info += "]";
+        }
+        else
+        {
+            node_info += to_string(get_party_id());
+            node_info += ", ";
+            node_info += to_string(get_record_id());
+        }
+
+        if (isleft)
+        {
+            node_info = prefix + "├──" + node_info;
+            node_info += "\n";
+        }
+        else
+        {
+            node_info = prefix + "└──" + node_info;
+            node_info += "\n";
+        }
+
+        if (!is_leaf())
+        {
+            string next_prefix = "";
+            if (isleft)
+            {
+                next_prefix += "|    ";
+            }
+            else
+            {
+                next_prefix += "     ";
+            }
+            node_info += get_left().recursive_print(prefix + next_prefix, true, binary_color);
+            node_info += get_right().recursive_print(prefix + next_prefix, false, binary_color);
+        }
+
+        return node_info;
     }
 };
