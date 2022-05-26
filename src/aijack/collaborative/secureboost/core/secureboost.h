@@ -53,7 +53,7 @@ struct SecureBoostBase
         return estimators;
     }
 
-    void fit(vector<Party> parties, vector<double> y)
+    void fit(vector<Party> &parties, vector<double> y)
     {
         int row_count = y.size();
         vector<double> base_pred;

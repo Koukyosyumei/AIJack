@@ -211,7 +211,7 @@ struct Node
     Node *left, *right;
 
     Node() {}
-    Node(vector<Party> parties_, vector<double> y_, vector<double> gradient_,
+    Node(vector<Party> &parties_, vector<double> y_, vector<double> gradient_,
          vector<double> hessian_, vector<int> idxs_,
          double min_child_weight_, double lam_, double gamma_, double eps_,
          int depth_)
@@ -274,6 +274,11 @@ struct Node
     Node get_right()
     {
         return *right;
+    }
+
+    vector<Party> get_parties()
+    {
+        return parties;
     }
 
     double compute_weight()

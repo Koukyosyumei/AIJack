@@ -29,7 +29,7 @@ PYBIND11_MODULE(aijack_secureboost, m)
         .def("insert_lookup_table", &Party::insert_lookup_table);
 
     py::class_<Node>(m, "Node")
-        .def(py::init<vector<Party>, vector<double>, vector<double>,
+        .def(py::init<vector<Party> &, vector<double>, vector<double>,
                       vector<double>, vector<int>,
                       double, double, double, double,
                       int>())
@@ -40,6 +40,7 @@ PYBIND11_MODULE(aijack_secureboost, m)
         .def("get_score", &Node::get_score)
         .def("get_left", &Node::get_left)
         .def("get_right", &Node::get_right)
+        .def("get_parties", &Node::get_parties)
         .def("is_leaf", &Node::is_leaf)
         .def("print", &Node::print, py::arg("binary_color") = true);
 
