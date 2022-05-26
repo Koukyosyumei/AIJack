@@ -51,6 +51,7 @@ PYBIND11_MODULE(aijack_secureboost, m)
         .def("get_grad", &SecureBoostClassifier::get_grad)
         .def("get_hess", &SecureBoostClassifier::get_hess)
         .def("get_init_pred", &SecureBoostClassifier::get_init_pred)
+        .def("load_estimators", &SecureBoostClassifier::load_estimators)
         .def("get_estimators", &SecureBoostClassifier::get_estimators)
         .def("predict_raw", &SecureBoostClassifier::predict_raw)
         .def("predict_proba", &SecureBoostClassifier::predict_proba);
