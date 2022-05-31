@@ -35,7 +35,7 @@ pip install git+https://github.com/Koukyosyumei/AIJack
 
 ### 1. Collaborative Learning
 
->> Train a single model without sharing the private datasets of multiple clients.
+>>:globe_with_meridians: Train a single model without sharing the private datasets of multiple clients.
 
 #### 1.1. NN
 
