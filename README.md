@@ -41,7 +41,7 @@ pip install git+https://github.com/Koukyosyumei/AIJack
 
 - FedAVG ([example](example/model_inversion/soteria.py))
 - FedProx
-- FedKD
+- FedKD ([example](test/collaborative/fedkd/test_fedkd.py))
 - FedMD
 - FedGEMS
 - DSFL
@@ -49,7 +49,7 @@ pip install git+https://github.com/Koukyosyumei/AIJack
 
 #### 1.2. Tree
 
-- [WIP] SecureBoost
+- [WIP] SecureBoost ([example](test/collaborative/secureboost/test_secureboost.py))
 
 ### 2. Attack
 
@@ -85,7 +85,7 @@ pip install git+https://github.com/Koukyosyumei/AIJack
 
 #### 2.5. Poisoning Attack
 
->> Inject malicious data to the training dataset to control the behaviour of the trained models.
+>> Inject malicious data into the training dataset to control the behavior of the trained models.
 
 - Poisoning attack against support vector machines ([example](example/adversarial_example/example_poison_attack.ipynb))
 
