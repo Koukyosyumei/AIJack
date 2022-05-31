@@ -40,7 +40,7 @@ pip install git+https://github.com/Koukyosyumei/AIJack
 #### 1.1. NN
 
 - FedAVG ([example](example/model_inversion/soteria.py)) ([paper](https://arxiv.org/abs/1602.05629))
-- FedProx
+- FedProx ([paper](https://arxiv.org/abs/1812.06127))
 - FedKD ([example](test/collaborative/fedkd/test_fedkd.py)) ([paper](https://arxiv.org/abs/2108.13323))
 - FedMD ([paper](https://arxiv.org/abs/1910.03581))
 - FedGEMS ([paper](https://arxiv.org/abs/2110.11027))

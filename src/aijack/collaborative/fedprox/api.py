@@ -4,6 +4,8 @@ from ..fedavg import FedAVGAPI
 
 
 class FedProxAPI(FedAVGAPI):
+    """Implementation of FedProx (https://arxiv.org/abs/1812.06127)"""
+
     def __init__(self, *args, mu=0.01, **kwargs):
         super().__init__(**args, **kwargs)
         self.mu = mu
