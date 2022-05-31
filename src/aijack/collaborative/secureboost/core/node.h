@@ -6,7 +6,11 @@
 #include <algorithm>
 #include <set>
 #include <tuple>
+#include <random>
+#include <ctime>
+#include <string>
 #include <unordered_map>
+#include <stdexcept>
 using namespace std;
 
 struct Party
@@ -21,18 +25,60 @@ struct Party
 
     unordered_map<int, pair<int, double>> lookup_table; // record_id: (feature_id, threshold)
     vector<vector<double>> temp_thresholds;             // feature_id->threshold
+    int seed = 0;
 
     Party() {}
-    Party(vector<vector<double>> x_, vector<int> feaure_id_, int party_id_,
-          int min_leaf_, double subsample_cols_ = 1.0)
+    Party(vector<vector<double>> x_, vector<int> feature_id_, int party_id_,
+          int min_leaf_, double subsample_cols_)
     {
+        validate_arguments(x_, feature_id_, party_id_, min_leaf_, subsample_cols_);
         x = x_;
-        feature_id = feaure_id_;
+        feature_id = feature_id_;
         party_id = party_id_;
         min_leaf = min_leaf_;
         subsample_cols = subsample_cols_;
 
         col_count = x.at(0).size();
+    }
+
+    void validate_arguments(vector<vector<double>> x_, vector<int> feature_id_, int party_id_,
+                            int min_leaf_, double subsample_cols_)
+    {
+        try
+        {
+            if (x_.size() == 0)
+            {
+                throw invalid_argument("x is empty");
+            }
+        }
+        catch (std::exception &e)
+        {
+            std::cout << e.what() << std::endl;
+        }
+
+        try
+        {
+            if (x_[0].size() != feature_id_.size())
+            {
+                throw invalid_argument("the number of columns of x is different from the size of feature_id");
+            }
+        }
+        catch (std::exception &e)
+        {
+            std::cout << e.what() << std::endl;
+        }
+
+        try
+        {
+            if (subsample_cols_ > 1 || subsample_cols_ < 0)
+            {
+                throw out_of_range("subsample_cols should be in [1, 0]");
+            }
+        }
+        catch (std::exception &e)
+        {
+            std::cout << e.what() << std::endl;
+        }
     }
 
     unordered_map<int, pair<int, double>> get_lookup_table()
@@ -42,11 +88,9 @@ struct Party
 
     vector<double> get_percentiles(vector<double> x_col)
     {
-        vector<double> percentiles;
-        copy(x_col.begin(), x_col.end(), back_inserter(percentiles));
-        sort(percentiles.begin(), percentiles.end(),
-             [&percentiles](size_t i1, size_t i2)
-             { return percentiles[i1] < percentiles[i2]; });
+        vector<double> percentiles(x_col.size());
+        copy(x_col.begin(), x_col.end(), percentiles.begin());
+        sort(percentiles.begin(), percentiles.end());
         return percentiles;
     }
 
@@ -62,6 +106,10 @@ struct Party
         vector<int> column_subsample;
         column_subsample.resize(col_count);
         iota(column_subsample.begin(), column_subsample.end(), 0);
+        mt19937 engine(seed);
+        seed += 1;
+        shuffle(column_subsample.begin(), column_subsample.end(), engine);
+        int subsample_col_count = subsample_cols * col_count;
 
         // feature_id -> [(grad hess)]
         // the threshold of split_candidates_grad_hess[i][j] = temp_thresholds[i][j]
@@ -71,32 +119,48 @@ struct Party
         int row_count = idxs.size();
         int recoed_id = 0;
 
-        for (int i = 0; i < column_subsample.size(); i++)
+        for (int i = 0; i < subsample_col_count; i++)
         {
             int k = column_subsample[i];
             vector<double> x_col(row_count);
+            vector<int> x_col_idxs(row_count);
+
             for (int r = 0; r < row_count; r++)
                 x_col[r] = x[idxs[r]][k];
 
             vector<double> percentiles = get_percentiles(x_col);
 
+            iota(x_col_idxs.begin(), x_col_idxs.end(), 0);
+            sort(x_col_idxs.begin(), x_col_idxs.end(), [&x_col](size_t i1, size_t i2)
+                 { return x_col[i1] < x_col[i2]; });
+
+            sort(x_col.begin(), x_col.end());
+
+            int current_min_idx = 0;
+            int cumulative_left_size = 0;
             for (int p = 0; p < percentiles.size(); p++)
             {
                 double temp_grad = 0;
                 double temp_hess = 0;
                 int temp_left_size = 0;
-                for (int r = 0; r < row_count; r++)
+
+                for (int r = current_min_idx; r < row_count; r++)
                 {
                     if (x_col[r] <= percentiles[p])
                     {
-                        temp_grad += gradient[idxs[r]];
-                        temp_hess += hessian[idxs[r]];
-                        temp_left_size += 1;
+                        temp_grad += gradient[idxs[x_col_idxs[r]]];
+                        temp_hess += hessian[idxs[x_col_idxs[r]]];
+                        cumulative_left_size += 1;
+                    }
+                    else
+                    {
+                        current_min_idx = r;
+                        break;
                     }
                 }
 
-                if (temp_left_size >= min_leaf &&
-                    row_count - temp_left_size >= min_leaf)
+                if (cumulative_left_size >= min_leaf &&
+                    row_count - cumulative_left_size >= min_leaf)
                 {
                     split_candidates_grad_hess[i].push_back(make_pair(temp_grad, temp_hess));
                     temp_thresholds[i].push_back(percentiles[p]);
@@ -147,7 +211,7 @@ struct Node
     Node *left, *right;
 
     Node() {}
-    Node(vector<Party> parties_, vector<double> y_, vector<double> gradient_,
+    Node(vector<Party> &parties_, vector<double> y_, vector<double> gradient_,
          vector<double> hessian_, vector<int> idxs_,
          double min_child_weight_, double lam_, double gamma_, double eps_,
          int depth_)
@@ -212,6 +276,11 @@ struct Node
         return *right;
     }
 
+    vector<Party> get_parties()
+    {
+        return parties;
+    }
+
     double compute_weight()
     {
         double sum_grad = 0;
@@ -253,10 +322,12 @@ struct Node
 
             for (int j = 0; j < search_results.size(); j++)
             {
+                double temp_left_grad = 0;
+                double temp_left_hess = 0;
                 for (int k = 0; k < search_results[j].size(); k++)
                 {
-                    temp_left_grad = search_results[j][k].first;
-                    temp_left_hess = search_results[j][k].second;
+                    temp_left_grad += search_results[j][k].first;
+                    temp_left_hess += search_results[j][k].second;
 
                     if (temp_left_hess < min_child_weight ||
                         sum_hess - temp_left_hess < min_child_weight)
@@ -328,5 +399,79 @@ struct Node
             else
                 return right->predict_row(xi);
         }
+    }
+
+    string print(bool binary_color = true)
+    {
+        return recursive_print("", false, binary_color);
+    }
+
+    string recursive_print(string prefix, bool isleft, bool binary_color = false)
+    {
+        string node_info;
+        if (is_leaf())
+        {
+            node_info += to_string(get_val());
+            node_info += ", [";
+            vector<int> temp_idxs = get_idxs();
+            int temp_id;
+            for (int i = 0; i < temp_idxs.size(); i++)
+            {
+                temp_id = temp_idxs[i];
+                if (binary_color)
+                {
+                    if (y[temp_id] == 0)
+                    {
+                        node_info += "\033[32m";
+                        node_info += to_string(temp_id);
+                        node_info += "\033[0m";
+                    }
+                    else
+                    {
+                        node_info += to_string(temp_id);
+                    }
+                }
+                else
+                {
+                    node_info += to_string(temp_id);
+                }
+                node_info += ", ";
+            }
+            node_info += "]";
+        }
+        else
+        {
+            node_info += to_string(get_party_id());
+            node_info += ", ";
+            node_info += to_string(get_record_id());
+        }
+
+        if (isleft)
+        {
+            node_info = prefix + "├──" + node_info;
+            node_info += "\n";
+        }
+        else
+        {
+            node_info = prefix + "└──" + node_info;
+            node_info += "\n";
+        }
+
+        if (!is_leaf())
+        {
+            string next_prefix = "";
+            if (isleft)
+            {
+                next_prefix += "|    ";
+            }
+            else
+            {
+                next_prefix += "     ";
+            }
+            node_info += get_left().recursive_print(prefix + next_prefix, true, binary_color);
+            node_info += get_right().recursive_print(prefix + next_prefix, false, binary_color);
+        }
+
+        return node_info;
     }
 };

@@ -37,25 +37,44 @@ struct SecureBoostBase
         lam = lam_;
         gamma = gamma_;
         eps = eps_;
-
-        estimators.resize(boosting_rounds);
     }
 
     virtual vector<double> get_grad(vector<double> y_pred, vector<double> y) = 0;
     virtual vector<double> get_hess(vector<double> y_pred, vector<double> y) = 0;
     virtual vector<double> get_init_pred(vector<double> y) = 0;
 
+    void load_estimators(vector<XGBoostTree> _estimators)
+    {
+        estimators = _estimators;
+    }
+
     vector<XGBoostTree> get_estimators()
     {
         return estimators;
     }
 
-    void fit(vector<Party> parties, vector<double> y)
+    void fit(vector<Party> &parties, vector<double> y)
     {
         int row_count = y.size();
-        init_pred = get_init_pred(y);
         vector<double> base_pred;
-        copy(init_pred.begin(), init_pred.end(), back_inserter(base_pred));
+        if (estimators.size() == 0)
+        {
+            init_pred = get_init_pred(y);
+            copy(init_pred.begin(), init_pred.end(), back_inserter(base_pred));
+        }
+        else
+        {
+            base_pred.resize(row_count);
+            for (int j = 0; j < row_count; j++)
+                base_pred[j] = 0;
+
+            for (int i = 0; i < estimators.size(); i++)
+            {
+                vector<double> pred_temp = estimators[i].get_train_prediction();
+                for (int j = 0; j < row_count; j++)
+                    base_pred[j] += learning_rate * pred_temp[j];
+            }
+        }
 
         for (int i = 0; i < boosting_rounds; i++)
         {
@@ -68,7 +87,7 @@ struct SecureBoostBase
             for (int j = 0; j < row_count; j++)
                 base_pred[j] += learning_rate * pred_temp[j];
 
-            estimators[i] = boosting_tree;
+            estimators.push_back(boosting_tree);
         }
     }
 
