@@ -93,9 +93,13 @@ pip install git+https://github.com/Koukyosyumei/AIJack
 
 #### 3.1. Differential Privacy
 
+>>:closed_lock_with_key: Provide statistical privacy guarantee.
+
 - DPSGD ([example](example/model_inversion/mi_face_differential_privacy.py)) ([paper](https://arxiv.org/abs/1607.00133))
 
 #### 3.2 Homomorphic Encryption
+
+>>:closed_lock_with_key: Perform mathematical operations on encrypted data
 
 - [WIP] CKKS ([example](test/defense/ckks/test_core.py))
 
