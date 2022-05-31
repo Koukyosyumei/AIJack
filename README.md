@@ -55,7 +55,7 @@ pip install git+https://github.com/Koukyosyumei/AIJack
 
 #### 2.1. Model Inversion Attack
 
->> Reconstruct the private training dataset from the victim's model.
+>>:zap: Reconstruct the private training dataset from the victim's model.
 
 - MI-FACE ([example](example/model_inversion/mi_face.py)) ([paper](https://dl.acm.org/doi/pdf/10.1145/2810103.2813677))
 - DLG ([example](example/model_inversion/gradient_inversion_attack.md)) ([paper](https://papers.nips.cc/paper/2019/hash/60a6c4002cc7b29142def8871531281a-Abstract.html))
@@ -67,25 +67,25 @@ pip install git+https://github.com/Koukyosyumei/AIJack
 
 #### 2.2. Membership Inference Attack
 
->> Determine whether the model’s training dataset contains the target record.
+>>:zap: Determine whether the model’s training dataset contains the target record.
 
 - Blak-box attack with shadow models ([example](example/membership_inference/membership_inference_CIFAR10.ipynb)) ([paper](https://arxiv.org/abs/1610.05820))
 
 #### 2.3. Label Leakage Attack
 
->> Infer the label information of the dataset.
+>>:zap: Infer the label information of the dataset.
 
 - Norm attack ([example](example/label_leakage/label_leakage.py)) ([paper](https://arxiv.org/abs/2102.08504))
 
 #### 2.4. Evasion Attack
 
->> Generate data that the victim model cannot classify correctly.
+>>:zap: Generate data that the victim model cannot classify correctly.
 
 - Gradient descent attacks ([example](example/adversarial_example/example_evasion_attack_svm.ipynb)) ([paper](https://arxiv.org/abs/1708.06131))
 
 #### 2.5. Poisoning Attack
 
->> Inject malicious data into the training dataset to control the behavior of the trained models.
+>>:zap: Inject malicious data into the training dataset to control the behavior of the trained models.
 
 - Poisoning attack against support vector machines ([example](example/adversarial_example/example_poison_attack.ipynb)) ([paper](https://arxiv.org/abs/1206.6389))
 
