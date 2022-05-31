@@ -39,17 +39,17 @@ pip install git+https://github.com/Koukyosyumei/AIJack
 
 #### 1.1. NN
 
-- FedAVG ([example](example/model_inversion/soteria.py))
+- FedAVG ([example](example/model_inversion/soteria.py)) ([paper](https://arxiv.org/abs/1602.05629))
 - FedProx
-- FedKD ([example](test/collaborative/fedkd/test_fedkd.py))
-- FedMD
-- FedGEMS
-- DSFL
-- SplitNN ([example](example/label_leakage/label_leakage.py))
+- FedKD ([example](test/collaborative/fedkd/test_fedkd.py)) ([paper](https://arxiv.org/abs/2108.13323))
+- FedMD ([paper](https://arxiv.org/abs/1910.03581))
+- FedGEMS ([paper](https://arxiv.org/abs/2110.11027))
+- DSFL ([paper](https://arxiv.org/abs/2008.06180))
+- SplitNN ([example](example/label_leakage/label_leakage.py)) ([paper](https://arxiv.org/abs/1812.00564))
 
 #### 1.2. Tree
 
-- [WIP] SecureBoost ([example](test/collaborative/secureboost/test_secureboost.py))
+- [WIP] SecureBoost ([example](test/collaborative/secureboost/test_secureboost.py)) ([paper](https://arxiv.org/abs/1901.08755))
 
 ### 2. Attack
 
@@ -57,43 +57,43 @@ pip install git+https://github.com/Koukyosyumei/AIJack
 
 >> Reconstruct the private training dataset from the victim's model.
 
-- MI-FACE ([example](example/model_inversion/mi_face.py))
-- DLG ([example](example/model_inversion/gradient_inversion_attack.md))
-- iDLG ([example](example/model_inversion/gradient_inversion_attack.md))
-- GS ([example](example/model_inversion/gradient_inversion_attack.md))
-- CPL ([example](example/model_inversion/gradient_inversion_attack.md))
-- GradInversion ([example](example/model_inversion/gradient_inversion_attack.md))
-- GAN attack ([example](example/model_inversion/gan_attack.py))
+- MI-FACE ([example](example/model_inversion/mi_face.py)) ([paper](https://dl.acm.org/doi/pdf/10.1145/2810103.2813677))
+- DLG ([example](example/model_inversion/gradient_inversion_attack.md)) ([paper](https://papers.nips.cc/paper/2019/hash/60a6c4002cc7b29142def8871531281a-Abstract.html))
+- iDLG ([example](example/model_inversion/gradient_inversion_attack.md)) ([paper](https://arxiv.org/abs/2001.02610))
+- GS ([example](example/model_inversion/gradient_inversion_attack.md)) ([paper](https://proceedings.neurips.cc/paper/2020/hash/c4ede56bbd98819ae6112b20ac6bf145-Abstract.html))
+- CPL ([example](example/model_inversion/gradient_inversion_attack.md)) ([paper](https://arxiv.org/abs/2004.10397))
+- GradInversion ([example](example/model_inversion/gradient_inversion_attack.md)) ([paper](https://openaccess.thecvf.com/content/CVPR2021/papers/Yin_See_Through_Gradients_Image_Batch_Recovery_via_GradInversion_CVPR_2021_paper.pdf))
+- GAN attack ([example](example/model_inversion/gan_attack.py)) ([paper](https://arxiv.org/abs/1702.07464))
 
 #### 2.2. Membership Inference Attack
 
 >> Determine whether the model’s training dataset contains the target record.
 
-- Blak-box attack with shadow models ([example](example/membership_inference/membership_inference_CIFAR10.ipynb))
+- Blak-box attack with shadow models ([example](example/membership_inference/membership_inference_CIFAR10.ipynb)) ([paper](https://arxiv.org/abs/1610.05820))
 
 #### 2.3. Label Leakage Attack
 
 >> Infer the label information of the dataset.
 
-- Norm attack ([example](example/label_leakage/label_leakage.py))
+- Norm attack ([example](example/label_leakage/label_leakage.py)) ([paper](https://arxiv.org/abs/2102.08504))
 
 #### 2.4. Evasion Attack
 
 >> Generate data that the victim model cannot classify correctly.
 
-- Gradient descent attacks ([example](example/adversarial_example/example_evasion_attack_svm.ipynb))
+- Gradient descent attacks ([example](example/adversarial_example/example_evasion_attack_svm.ipynb)) ([paper](https://arxiv.org/abs/1708.06131))
 
 #### 2.5. Poisoning Attack
 
 >> Inject malicious data into the training dataset to control the behavior of the trained models.
 
-- Poisoning attack against support vector machines ([example](example/adversarial_example/example_poison_attack.ipynb))
+- Poisoning attack against support vector machines ([example](example/adversarial_example/example_poison_attack.ipynb)) ([paper](https://arxiv.org/abs/1206.6389))
 
 ### 3. Defense
 
 #### 3.1. Differential Privacy
 
-- DPSGD ([example](example/model_inversion/mi_face_differential_privacy.py))
+- DPSGD ([example](example/model_inversion/mi_face_differential_privacy.py)) ([paper](https://arxiv.org/abs/1607.00133))
 
 #### 3.2 Homomorphic Encryption
 
@@ -101,13 +101,15 @@ pip install git+https://github.com/Koukyosyumei/AIJack
 
 #### 3.3. Others
 
-- Soteria ([example](example/model_inversion/soteria.py))
-- MID ([example](example/model_inversion/mid.ipynb))
+- Soteria ([example](example/model_inversion/soteria.py)) ([paper](https://openaccess.thecvf.com/content/CVPR2021/papers/Sun_Soteria_Provable_Defense_Against_Privacy_Leakage_in_Federated_Learning_From_CVPR_2021_paper.pdf))
+- MID ([example](example/model_inversion/mid.ipynb)) ([paper](https://arxiv.org/abs/2009.05241))
 
 ## Resources
 
 [Official documentations](https://koukyosyumei.github.io/AIJack) \
 [Examples](https://github.com/Koukyosyumei/AIJack/tree/main/example)
+
+-----------------------------------------------------------------------
 
 ## Examples of Usage
 
