@@ -110,8 +110,12 @@ pip install git+https://github.com/Koukyosyumei/AIJack
 
 ## Resources
 
-[Official documentations](https://koukyosyumei.github.io/AIJack) \
-[Examples](https://github.com/Koukyosyumei/AIJack/tree/main/example)
+[WIP] [Official documentations (https://koukyosyumei.github.io/AIJack)](https://koukyosyumei.github.io/AIJack) \
+[WIP] [Examples](https://github.com/Koukyosyumei/AIJack/tree/main/example)
+
+## Contact
+
+welcome2aijack[@]gmail.com
 
 -----------------------------------------------------------------------
 
