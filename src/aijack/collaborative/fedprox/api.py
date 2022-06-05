@@ -21,7 +21,7 @@ class FedProxAPI(FedAVGAPI):
                     running_loss = 0.0
                     running_data_num = 0
                     for _, data in enumerate(trainloader, 0):
-                        _, inputs, labels = data
+                        inputs, labels = data
                         inputs = inputs.to(self.device)
                         inputs.requires_grad = True
                         labels = labels.to(self.device)
