@@ -39,7 +39,7 @@ class FedAVGAPI:
             for client_idx in range(self.client_num):
                 client = self.clients[client_idx]
                 trainloader = self.local_dataloaders[client_idx]
-                optimizer = self.client_optimizers[client_idx]
+                optimizer = self.local_optimizers[client_idx]
 
                 for i in range(self.local_epoch):
                     running_loss = 0.0
