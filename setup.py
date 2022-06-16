@@ -33,7 +33,7 @@ setup(
     name="aijack",
     version=__version__,
     description="package to implemet attack and defense method for machine learning",
-    author="Hideaki Takahashi",
+    author="Koukyosyumei",
     author_email="koukyosyumei@hotmail.com",
     license="MIT",
     install_requires=read_requirements(),
