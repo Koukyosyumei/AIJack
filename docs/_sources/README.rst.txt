@@ -25,9 +25,6 @@ This package implements algorithms for AI security such as Model
 Inversion, Poisoning Attack, Evasion Attack, Differential Privacy, and
 Homomorphic Encryption.
 
-| `Official documentations <https://koukyosyumei.github.io/AIJack>`__
-| `Examples <https://github.com/Koukyosyumei/AIJack/tree/main/example>`__
-
 Install
 -------
 
@@ -36,20 +33,155 @@ Install
    # pip install pybind11 (uncomment if necessary)
    pip install git+https://github.com/Koukyosyumei/AIJack
 
-Usage
------
+Supported Algorithms
+--------------------
+
+1. Collaborative Learning
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+      :globe_with_meridians: Train a single model without sharing the
+      private datasets of multiple clients.
+
+1.1. NN
+^^^^^^^
+
+-  FedAVG (`example <example/model_inversion/soteria.py>`__)
+   (`paper <https://arxiv.org/abs/1602.05629>`__)
+-  FedProx (`paper <https://arxiv.org/abs/1812.06127>`__)
+-  FedKD (`example <test/collaborative/fedkd/test_fedkd.py>`__)
+   (`paper <https://arxiv.org/abs/2108.13323>`__)
+-  FedMD (`paper <https://arxiv.org/abs/1910.03581>`__)
+-  FedGEMS (`paper <https://arxiv.org/abs/2110.11027>`__)
+-  DSFL (`paper <https://arxiv.org/abs/2008.06180>`__)
+-  SplitNN (`example <example/label_leakage/label_leakage.py>`__)
+   (`paper <https://arxiv.org/abs/1812.00564>`__)
+
+1.2. Tree
+^^^^^^^^^
+
+-  [WIP] SecureBoost
+   (`example <test/collaborative/secureboost/test_secureboost.py>`__)
+   (`paper <https://arxiv.org/abs/1901.08755>`__)
+
+2. Attack
+~~~~~~~~~
+
+2.1. Model Inversion Attack
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+      :zap: Reconstruct the private training dataset from the victim’s
+      model.
+
+-  MI-FACE (`example <example/model_inversion/mi_face.py>`__)
+   (`paper <https://dl.acm.org/doi/pdf/10.1145/2810103.2813677>`__)
+-  DLG
+   (`example <example/model_inversion/gradient_inversion_attack.md>`__)
+   (`paper <https://papers.nips.cc/paper/2019/hash/60a6c4002cc7b29142def8871531281a-Abstract.html>`__)
+-  iDLG
+   (`example <example/model_inversion/gradient_inversion_attack.md>`__)
+   (`paper <https://arxiv.org/abs/2001.02610>`__)
+-  GS
+   (`example <example/model_inversion/gradient_inversion_attack.md>`__)
+   (`paper <https://proceedings.neurips.cc/paper/2020/hash/c4ede56bbd98819ae6112b20ac6bf145-Abstract.html>`__)
+-  CPL
+   (`example <example/model_inversion/gradient_inversion_attack.md>`__)
+   (`paper <https://arxiv.org/abs/2004.10397>`__)
+-  GradInversion
+   (`example <example/model_inversion/gradient_inversion_attack.md>`__)
+   (`paper <https://openaccess.thecvf.com/content/CVPR2021/papers/Yin_See_Through_Gradients_Image_Batch_Recovery_via_GradInversion_CVPR_2021_paper.pdf>`__)
+-  GAN attack (`example <example/model_inversion/gan_attack.py>`__)
+   (`paper <https://arxiv.org/abs/1702.07464>`__)
+
+2.2. Membership Inference Attack
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+      :zap: Determine whether the model’s training dataset contains the
+      target record.
+
+-  Blak-box attack with shadow models
+   (`example <example/membership_inference/membership_inference_CIFAR10.ipynb>`__)
+   (`paper <https://arxiv.org/abs/1610.05820>`__)
+
+2.3. Label Leakage Attack
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+      :zap: Infer the label information of the dataset.
+
+-  Norm attack (`example <example/label_leakage/label_leakage.py>`__)
+   (`paper <https://arxiv.org/abs/2102.08504>`__)
+
+2.4. Evasion Attack
+^^^^^^^^^^^^^^^^^^^
+
+      :zap: Generate data that the victim model cannot classify
+      correctly.
+
+-  Gradient descent attacks
+   (`example <example/adversarial_example/example_evasion_attack_svm.ipynb>`__)
+   (`paper <https://arxiv.org/abs/1708.06131>`__)
+
+2.5. Poisoning Attack
+^^^^^^^^^^^^^^^^^^^^^
+
+      :zap: Inject malicious data into the training dataset to control
+      the behavior of the trained models.
+
+-  Poisoning attack against support vector machines
+   (`example <example/adversarial_example/example_poison_attack.ipynb>`__)
+   (`paper <https://arxiv.org/abs/1206.6389>`__)
+
+3. Defense
+~~~~~~~~~~
+
+3.1. Differential Privacy
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+      :closed_lock_with_key: Provide statistical privacy guarantee.
+
+-  DPSGD
+   (`example <example/model_inversion/mi_face_differential_privacy.py>`__)
+   (`paper <https://arxiv.org/abs/1607.00133>`__)
+
+3.2 Homomorphic Encryption
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+      :closed_lock_with_key: Perform mathematical operations on
+      encrypted data
+
+-  [WIP] CKKS (`example <test/defense/ckks/test_core.py>`__)
+
+3.3. Others
+^^^^^^^^^^^
+
+-  Soteria (`example <example/model_inversion/soteria.py>`__)
+   (`paper <https://openaccess.thecvf.com/content/CVPR2021/papers/Sun_Soteria_Provable_Defense_Against_Privacy_Leakage_in_Federated_Learning_From_CVPR_2021_paper.pdf>`__)
+-  MID (`example <example/model_inversion/mid.ipynb>`__)
+   (`paper <https://arxiv.org/abs/2009.05241>`__)
+
+Resources
+---------
+
+| [WIP] `Official documentations
+  (https://koukyosyumei.github.io/AIJack) <https://koukyosyumei.github.io/AIJack>`__
+| [WIP]
+  `Examples <https://github.com/Koukyosyumei/AIJack/tree/main/example>`__
+
+Contact
+-------
+
+welcome2aijack[@]gmail.com
+
+--------------
+
+Examples of Usage
+-----------------
+
+.. _collaborative-learning-1:
 
 Collaborative Learning
 ~~~~~~~~~~~~~~~~~~~~~~
 
-AIJack allows you to simulate the collaborative learning, where multiple
-clients trains a single model without sharing their private datasets.
-
--  Federated Learning
-
-In Federated Learning, the clients communicates their locally trained
-models and the server aggregates the received local models and creates a
-global model.
+-  FedAVG
 
 .. code:: python
 
@@ -69,11 +201,7 @@ global model.
            optimizer.step()
    server.action()
 
--  Split Learning
-
-In Split Learning, only one client has the label of the training
-dataset, and each client communicates the gradient of the intermidiate
-layer.
+-  SplitNN
 
 .. code:: python
 
@@ -93,18 +221,6 @@ layer.
 
 Attack against Federated Learning
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-AIJack implements several attack algorithms to violate the safety of
-Federated Learning. You can attach the attack ability to the server or
-client classes with ``attach`` methods of ``AttackManager`` of each
-attack algorithms.
-
--  Gradient Inversion (server-side model inversion attack against
-   federated learning)
-
-Gradients communicated between the server and the clients might leak
-private information, and the malicious server might be able to
-reconstruct the training data from the gradients.
 
 .. code:: python
 
@@ -140,9 +256,6 @@ reconstruct the training data from the gradients.
 -  GAN Attack (client-side model inversion attack against federated
    learning)
 
-The malicious client might be able to reconstruct the private training
-data of other clients with GAN Attack.
-
 .. code:: python
 
    # Hitaj, Briland, Giuseppe Ateniese, and Fernando Perez-Cruz. "Deep models under the GAN: information leakage from collaborative deep learning." Proceedings of the # 2017 ACM SIGSAC Conference on Computer and Communications Security. 2017.
@@ -166,10 +279,6 @@ Defense for Federated Learning
 
 -  Soteria
 
-Soteria prevents information leakage from the gradients by adding noise
-to the gradients. You can apply Soteria to any clients with ``attach``
-method of ``SoteriaManager``.
-
 .. code:: python
 
    # Sun, Jingwei, et al. "Soteria: Provable defense against privacy leakage in federated learning from representation perspective." Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition. 2021.
@@ -185,9 +294,6 @@ Attack against Split Learning
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 -  Label Leakage Attack
-
-Label leakage attack is one of the known vulnerabilities of SplitNN, and
-AIJack currently supports the norm-based label leakage attack.
 
 .. code:: python
 
@@ -239,9 +345,6 @@ Other Defences
 
 -  DPSGD (Differential Privacy)
 
-AIJack natively supports differential privacy, including moment
-accountant and DPSGD.
-
 .. code:: python
 
    #  Abadi, Martin, et al. "Deep learning with differential privacy." Proceedings of the 2016 ACM SIGSAC conference on computer and communications security. 2016.
@@ -263,14 +366,7 @@ accountant and DPSGD.
            optimizer.update_accum_grads()
        optimizer.step()
 
--  MID (Defense against model inversion attak)
-
-MID is a defense technique to prevent information leakage from the
-output logits, and it minimizes the mutual information between output
-logits and input data. AIJack currently supports VIB, a neural network
-with MID. If you want to apply VIB to your network, you should split
-your model into a first-half part (``encoder``) and a second-half part
-(``decoder``).
+-  MID
 
 .. code:: python
 

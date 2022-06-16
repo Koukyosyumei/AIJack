@@ -39,6 +39,7 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../README.html">Quick Start</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../aijack.html">aijack package</a></li>
 </ul>
 
@@ -79,12 +80,24 @@
     <span class="k">return</span> <span class="n">dx</span> <span class="o">+</span> <span class="n">dy</span></div>
 
 
-<div class="viewcode-block" id="crossentropyloss_between_logits"><a class="viewcode-back" href="../../../aijack.utils.html#aijack.utils.metrics.crossentropyloss_between_logits">[docs]</a><span class="k">def</span> <span class="nf">crossentropyloss_between_logits</span><span class="p">(</span><span class="n">y_pred_logit</span><span class="p">,</span> <span class="n">y_true_logit</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span>
-        <span class="o">-</span><span class="n">torch</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span>
-            <span class="n">F</span><span class="o">.</span><span class="n">log_softmax</span><span class="p">(</span><span class="n">y_pred_logit</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">F</span><span class="o">.</span><span class="n">softmax</span><span class="p">(</span><span class="n">y_true_logit</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span>
-        <span class="p">)</span>
-    <span class="p">)</span></div>
+<div class="viewcode-block" id="crossentropyloss_between_logits"><a class="viewcode-back" href="../../../aijack.utils.html#aijack.utils.metrics.crossentropyloss_between_logits">[docs]</a><span class="k">def</span> <span class="nf">crossentropyloss_between_logits</span><span class="p">(</span><span class="n">y_pred_logit</span><span class="p">,</span> <span class="n">y_true_labels</span><span class="p">,</span> <span class="n">reduction</span><span class="o">=</span><span class="s2">&quot;mean&quot;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Cross entropy loss for soft labels</span>
+<span class="sd">    Based on https://discuss.pytorch.org/t/soft-cross-entropy-loss-tf-has-it-does-pytorch-have-it/69501/2</span>
+<span class="sd">    Args:</span>
+<span class="sd">        y_pred_logit (torch.Tensor): predicted logits</span>
+<span class="sd">        y_true_labels (torch.Tensor): ground-truth soft labels</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        torch.Tensor: average cross entropy between y_pred_logit and y_true_labels2</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="o">-</span><span class="n">torch</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">log_softmax</span><span class="p">(</span><span class="n">y_pred_logit</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">y_true_labels</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">reduction</span> <span class="o">==</span> <span class="s2">&quot;sum&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">reduction</span> <span class="o">==</span> <span class="s2">&quot;mean&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;`reduction`=</span><span class="si">{</span><span class="n">reduction</span><span class="si">}</span><span class="s2"> is not supported.&quot;</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="accuracy_torch_dataloader"><a class="viewcode-back" href="../../../aijack.utils.html#aijack.utils.metrics.accuracy_torch_dataloader">[docs]</a><span class="k">def</span> <span class="nf">accuracy_torch_dataloader</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">dataloader</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="s2">&quot;cpu&quot;</span><span class="p">,</span> <span class="n">xpos</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">ypos</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>

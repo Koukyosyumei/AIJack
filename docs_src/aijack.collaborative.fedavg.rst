@@ -9,6 +9,14 @@ aijack.collaborative.fedavg package
 Submodules
 ----------
 
+aijack.collaborative.fedavg.api module
+--------------------------------------
+
+.. automodule:: aijack.collaborative.fedavg.api
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 aijack.collaborative.fedavg.client module
 -----------------------------------------
 

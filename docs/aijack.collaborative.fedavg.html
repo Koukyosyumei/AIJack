@@ -92,6 +92,20 @@
 <section id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline"></a></h2>
 </section>
+<section id="module-aijack.collaborative.fedavg.api">
+<span id="aijack-collaborative-fedavg-api-module"></span><h2>aijack.collaborative.fedavg.api module<a class="headerlink" href="#module-aijack.collaborative.fedavg.api" title="Permalink to this headline"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="aijack.collaborative.fedavg.api.FedAVGAPI">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">aijack.collaborative.fedavg.api.</span></span><span class="sig-name descname"><span class="pre">FedAVGAPI</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">server</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clients</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">criterion</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">local_optimizers</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">local_dataloaders</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_communication=1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">local_epoch=1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_gradients=True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">custom_action=&lt;function</span> <span class="pre">FedAVGAPI.&lt;lambda&gt;&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device='cpu'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/collaborative/fedavg/api.html#FedAVGAPI"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.collaborative.fedavg.api.FedAVGAPI" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="aijack.collaborative.fedavg.api.FedAVGAPI.run">
+<span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/collaborative/fedavg/api.html#FedAVGAPI.run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.collaborative.fedavg.api.FedAVGAPI.run" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
 <section id="module-aijack.collaborative.fedavg.client">
 <span id="aijack-collaborative-fedavg-client-module"></span><h2>aijack.collaborative.fedavg.client module<a class="headerlink" href="#module-aijack.collaborative.fedavg.client" title="Permalink to this headline"></a></h2>
 <dl class="py class">
@@ -132,11 +146,11 @@
 <span id="aijack-collaborative-fedavg-server-module"></span><h2>aijack.collaborative.fedavg.server module<a class="headerlink" href="#module-aijack.collaborative.fedavg.server" title="Permalink to this headline"></a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="aijack.collaborative.fedavg.server.FedAvgServer">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">aijack.collaborative.fedavg.server.</span></span><span class="sig-name descname"><span class="pre">FedAvgServer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">clients</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">global_model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">server_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/collaborative/fedavg/server.html#FedAvgServer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.collaborative.fedavg.server.FedAvgServer" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">aijack.collaborative.fedavg.server.</span></span><span class="sig-name descname"><span class="pre">FedAvgServer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">clients</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">global_model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">server_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">optimizer_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'sgd'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">optimizer_kwargs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{}</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/collaborative/fedavg/server.html#FedAvgServer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.collaborative.fedavg.server.FedAvgServer" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="aijack.collaborative.core.html#aijack.collaborative.core.server.BaseServer" title="aijack.collaborative.core.server.BaseServer"><code class="xref py py-class docutils literal notranslate"><span class="pre">aijack.collaborative.core.server.BaseServer</span></code></a></p>
 <dl class="py method">
 <dt class="sig sig-object py" id="aijack.collaborative.fedavg.server.FedAvgServer.action">
-<span class="sig-name descname"><span class="pre">action</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gradients</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/collaborative/fedavg/server.html#FedAvgServer.action"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.collaborative.fedavg.server.FedAvgServer.action" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">action</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">use_gradients</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/collaborative/fedavg/server.html#FedAvgServer.action"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.collaborative.fedavg.server.FedAvgServer.action" title="Permalink to this definition"></a></dt>
 <dd><p>Execute thr routine of each communication.</p>
 </dd></dl>
 
@@ -145,6 +159,21 @@
 <span class="sig-name descname"><span class="pre">distribtue</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/collaborative/fedavg/server.html#FedAvgServer.distribtue"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.collaborative.fedavg.server.FedAvgServer.distribtue" title="Permalink to this definition"></a></dt>
 <dd><p>Distribute the global model to each client.</p>
 </dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="aijack.collaborative.fedavg.server.FedAvgServer.receive">
+<span class="sig-name descname"><span class="pre">receive</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">use_gradients</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/collaborative/fedavg/server.html#FedAvgServer.receive"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.collaborative.fedavg.server.FedAvgServer.receive" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="aijack.collaborative.fedavg.server.FedAvgServer.receive_local_gradients">
+<span class="sig-name descname"><span class="pre">receive_local_gradients</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/collaborative/fedavg/server.html#FedAvgServer.receive_local_gradients"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.collaborative.fedavg.server.FedAvgServer.receive_local_gradients" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="aijack.collaborative.fedavg.server.FedAvgServer.receive_local_parameters">
+<span class="sig-name descname"><span class="pre">receive_local_parameters</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/collaborative/fedavg/server.html#FedAvgServer.receive_local_parameters"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.collaborative.fedavg.server.FedAvgServer.receive_local_parameters" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="aijack.collaborative.fedavg.server.FedAvgServer.training">
@@ -158,7 +187,7 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="aijack.collaborative.fedavg.server.FedAvgServer.update">
-<span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gradients</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/collaborative/fedavg/server.html#FedAvgServer.update"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.collaborative.fedavg.server.FedAvgServer.update" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">use_gradients</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/collaborative/fedavg/server.html#FedAvgServer.update"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.collaborative.fedavg.server.FedAvgServer.update" title="Permalink to this definition"></a></dt>
 <dd><p>Update the global model.</p>
 </dd></dl>
 

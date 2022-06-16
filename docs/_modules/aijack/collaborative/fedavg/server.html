@@ -72,53 +72,89 @@
 <span class="kn">import</span> <span class="nn">torch</span>
 
 <span class="kn">from</span> <span class="nn">..core</span> <span class="kn">import</span> <span class="n">BaseServer</span>
+<span class="kn">from</span> <span class="nn">..optimizer</span> <span class="kn">import</span> <span class="n">AdamFLOptimizer</span><span class="p">,</span> <span class="n">SGDFLOptimizer</span>
 
 
 <div class="viewcode-block" id="FedAvgServer"><a class="viewcode-back" href="../../../../aijack.collaborative.fedavg.html#aijack.collaborative.fedavg.server.FedAvgServer">[docs]</a><span class="k">class</span> <span class="nc">FedAvgServer</span><span class="p">(</span><span class="n">BaseServer</span><span class="p">):</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">clients</span><span class="p">,</span> <span class="n">global_model</span><span class="p">,</span> <span class="n">server_id</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">lr</span><span class="o">=</span><span class="mf">0.1</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">clients</span><span class="p">,</span>
+        <span class="n">global_model</span><span class="p">,</span>
+        <span class="n">server_id</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+        <span class="n">lr</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
+        <span class="n">optimizer_type</span><span class="o">=</span><span class="s2">&quot;sgd&quot;</span><span class="p">,</span>
+        <span class="n">optimizer_kwargs</span><span class="o">=</span><span class="p">{},</span>
+    <span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">FedAvgServer</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">clients</span><span class="p">,</span> <span class="n">global_model</span><span class="p">,</span> <span class="n">server_id</span><span class="o">=</span><span class="n">server_id</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">lr</span> <span class="o">=</span> <span class="n">lr</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_setup_optimizer</span><span class="p">(</span><span class="n">optimizer_type</span><span class="p">,</span> <span class="o">**</span><span class="n">optimizer_kwargs</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">distribtue</span><span class="p">()</span>
 
-<div class="viewcode-block" id="FedAvgServer.action"><a class="viewcode-back" href="../../../../aijack.collaborative.fedavg.html#aijack.collaborative.fedavg.server.FedAvgServer.action">[docs]</a>    <span class="k">def</span> <span class="nf">action</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gradients</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">gradients</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">_setup_optimizer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">optimizer_type</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">optimizer_type</span> <span class="o">==</span> <span class="s2">&quot;sgd&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">optimizer</span> <span class="o">=</span> <span class="n">SGDFLOptimizer</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">server_model</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">lr</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+            <span class="p">)</span>
+        <span class="k">elif</span> <span class="n">optimizer_type</span> <span class="o">==</span> <span class="s2">&quot;adam&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">optimizer</span> <span class="o">=</span> <span class="n">AdamFLOptimizer</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">server_model</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">lr</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+            <span class="p">)</span>
+        <span class="k">elif</span> <span class="n">optimizer_type</span> <span class="o">==</span> <span class="s2">&quot;none&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">optimizer</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">optimizer_type</span><span class="si">}</span><span class="s2"> is not supported. You can specify `sgd`, `adam`, or `none`.&quot;</span>
+            <span class="p">)</span>
+
+<div class="viewcode-block" id="FedAvgServer.action"><a class="viewcode-back" href="../../../../aijack.collaborative.fedavg.html#aijack.collaborative.fedavg.server.FedAvgServer.action">[docs]</a>    <span class="k">def</span> <span class="nf">action</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">use_gradients</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">receive</span><span class="p">(</span><span class="n">use_gradients</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">use_gradients</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">distribtue</span><span class="p">()</span></div>
 
-<div class="viewcode-block" id="FedAvgServer.update"><a class="viewcode-back" href="../../../../aijack.collaborative.fedavg.html#aijack.collaborative.fedavg.server.FedAvgServer.update">[docs]</a>    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gradients</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">gradients</span><span class="p">:</span>
+<div class="viewcode-block" id="FedAvgServer.receive"><a class="viewcode-back" href="../../../../aijack.collaborative.fedavg.html#aijack.collaborative.fedavg.server.FedAvgServer.receive">[docs]</a>    <span class="k">def</span> <span class="nf">receive</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">use_gradients</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">use_gradients</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">receive_local_gradients</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">receive_local_parameters</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="FedAvgServer.update"><a class="viewcode-back" href="../../../../aijack.collaborative.fedavg.html#aijack.collaborative.fedavg.server.FedAvgServer.update">[docs]</a>    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">use_gradients</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">use_gradients</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">updata_from_gradients</span><span class="p">()</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">update_from_parameters</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="FedAvgServer.receive_local_gradients"><a class="viewcode-back" href="../../../../aijack.collaborative.fedavg.html#aijack.collaborative.fedavg.server.FedAvgServer.receive_local_gradients">[docs]</a>    <span class="k">def</span> <span class="nf">receive_local_gradients</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">uploaded_gradients</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span><span class="o">.</span><span class="n">upload_gradients</span><span class="p">()</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">clients</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="FedAvgServer.receive_local_parameters"><a class="viewcode-back" href="../../../../aijack.collaborative.fedavg.html#aijack.collaborative.fedavg.server.FedAvgServer.receive_local_parameters">[docs]</a>    <span class="k">def</span> <span class="nf">receive_local_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">uploaded_parameters</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span><span class="o">.</span><span class="n">upload_parameters</span><span class="p">()</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">clients</span><span class="p">]</span></div>
 
 <div class="viewcode-block" id="FedAvgServer.updata_from_gradients"><a class="viewcode-back" href="../../../../aijack.collaborative.fedavg.html#aijack.collaborative.fedavg.server.FedAvgServer.updata_from_gradients">[docs]</a>    <span class="k">def</span> <span class="nf">updata_from_gradients</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">weight</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">weight</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_clients</span><span class="p">)</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_clients</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">uploaded_gradients</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span><span class="o">.</span><span class="n">upload_gradients</span><span class="p">()</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">clients</span><span class="p">]</span>
         <span class="n">aggregated_gradients</span> <span class="o">=</span> <span class="p">[</span>
             <span class="n">torch</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">params</span><span class="p">)</span> <span class="k">for</span> <span class="n">params</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">server_model</span><span class="o">.</span><span class="n">parameters</span><span class="p">()</span>
         <span class="p">]</span>
         <span class="n">len_gradients</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">aggregated_gradients</span><span class="p">)</span>
 
-        <span class="k">for</span> <span class="n">gradients</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">uploaded_gradients</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">gradients</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">uploaded_gradients</span><span class="p">):</span>
             <span class="k">for</span> <span class="n">gradient_id</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">len_gradients</span><span class="p">):</span>
-                <span class="n">aggregated_gradients</span><span class="p">[</span><span class="n">gradient_id</span><span class="p">]</span> <span class="o">+=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_clients</span><span class="p">)</span> <span class="o">*</span> <span class="n">gradients</span><span class="p">[</span>
-                    <span class="n">gradient_id</span>
-                <span class="p">]</span>
+                <span class="n">aggregated_gradients</span><span class="p">[</span><span class="n">gradient_id</span><span class="p">]</span> <span class="o">+=</span> <span class="n">weight</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">gradients</span><span class="p">[</span><span class="n">gradient_id</span><span class="p">]</span>
 
-        <span class="k">for</span> <span class="n">params</span><span class="p">,</span> <span class="n">grads</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">server_model</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">aggregated_gradients</span><span class="p">):</span>
-            <span class="n">params</span><span class="o">.</span><span class="n">data</span> <span class="o">-=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lr</span> <span class="o">*</span> <span class="n">grads</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">aggregated_gradients</span><span class="p">)</span></div>
+        <span class="c1"># for params, grads in zip(self.server_model.parameters(), aggregated_gradients):</span>
+        <span class="c1">#    params.data -= self.lr * grads</span>
 
 <div class="viewcode-block" id="FedAvgServer.update_from_parameters"><a class="viewcode-back" href="../../../../aijack.collaborative.fedavg.html#aijack.collaborative.fedavg.server.FedAvgServer.update_from_parameters">[docs]</a>    <span class="k">def</span> <span class="nf">update_from_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">weight</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">weight</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_clients</span><span class="p">)</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_clients</span>
 
-        <span class="n">uploaded_parameters</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span><span class="o">.</span><span class="n">upload_parameters</span><span class="p">()</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">clients</span><span class="p">]</span>
-        <span class="n">averaged_params</span> <span class="o">=</span> <span class="n">uploaded_parameters</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">averaged_params</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">uploaded_parameters</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
         <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">averaged_params</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
-            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">uploaded_parameters</span><span class="p">)):</span>
-                <span class="n">local_model_params</span> <span class="o">=</span> <span class="n">uploaded_parameters</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">uploaded_parameters</span><span class="p">)):</span>
+                <span class="n">local_model_params</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">uploaded_parameters</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
                 <span class="n">w</span> <span class="o">=</span> <span class="n">weight</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
                 <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
                     <span class="n">averaged_params</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">local_model_params</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">*</span> <span class="n">w</span>
