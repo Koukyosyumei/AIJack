@@ -113,8 +113,22 @@
 
 <dl class="py function">
 <dt class="sig sig-object py" id="aijack.utils.metrics.crossentropyloss_between_logits">
-<span class="sig-prename descclassname"><span class="pre">aijack.utils.metrics.</span></span><span class="sig-name descname"><span class="pre">crossentropyloss_between_logits</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_pred_logit</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_true_logit</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/utils/metrics.html#crossentropyloss_between_logits"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.utils.metrics.crossentropyloss_between_logits" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<span class="sig-prename descclassname"><span class="pre">aijack.utils.metrics.</span></span><span class="sig-name descname"><span class="pre">crossentropyloss_between_logits</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_pred_logit</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_true_labels</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reduction</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'mean'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/utils/metrics.html#crossentropyloss_between_logits"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.utils.metrics.crossentropyloss_between_logits" title="Permalink to this definition"></a></dt>
+<dd><p>Cross entropy loss for soft labels
+Based on <a class="reference external" href="https://discuss.pytorch.org/t/soft-cross-entropy-loss-tf-has-it-does-pytorch-have-it/69501/2">https://discuss.pytorch.org/t/soft-cross-entropy-loss-tf-has-it-does-pytorch-have-it/69501/2</a>
+:param y_pred_logit: predicted logits
+:type y_pred_logit: torch.Tensor
+:param y_true_labels: ground-truth soft labels
+:type y_true_labels: torch.Tensor</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>average cross entropy between y_pred_logit and y_true_labels2</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>torch.Tensor</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="aijack.utils.metrics.total_variance">
@@ -154,7 +168,7 @@ transform (torch.transform):</p>
 <dt class="sig sig-object py" id="aijack.utils.utils.RoundDecimal.backward">
 <em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">backward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ctx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grad_output</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/utils/utils.html#RoundDecimal.backward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.utils.utils.RoundDecimal.backward" title="Permalink to this definition"></a></dt>
 <dd><p>Defines a formula for differentiating the operation with backward mode
-automatic differentiation.</p>
+automatic differentiation (alias to the vjp function).</p>
 <p>This function is to be overridden by all subclasses.</p>
 <p>It must accept a context <code class="xref py py-attr docutils literal notranslate"><span class="pre">ctx</span></code> as the first argument, followed by
 as many outputs as the <a class="reference internal" href="#aijack.utils.utils.RoundDecimal.forward" title="aijack.utils.utils.RoundDecimal.forward"><code class="xref py py-func docutils literal notranslate"><span class="pre">forward()</span></code></a> returned (None will be passed in
@@ -180,7 +194,12 @@ output.</p>
 <p>It must accept a context ctx as the first argument, followed by any
 number of arguments (tensors or other types).</p>
 <p>The context can be used to store arbitrary data that can be then
-retrieved during the backward pass.</p>
+retrieved during the backward pass. Tensors should not be stored
+directly on <cite>ctx</cite> (though this is not currently enforced for
+backward compatibility). Instead, tensors should be saved either with
+<code class="xref py py-func docutils literal notranslate"><span class="pre">ctx.save_for_backward()</span></code> if they are intended to be used in
+<code class="docutils literal notranslate"><span class="pre">backward</span></code> (equivalently, <code class="docutils literal notranslate"><span class="pre">vjp</span></code>) or <code class="xref py py-func docutils literal notranslate"><span class="pre">ctx.save_for_forward()</span></code>
+if they are intended to be used for in <code class="docutils literal notranslate"><span class="pre">jvp</span></code>.</p>
 </dd></dl>
 
 </dd></dl>

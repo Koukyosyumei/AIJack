@@ -18,6 +18,9 @@ Subpackages
    aijack.collaborative.fedgems
    aijack.collaborative.fedkd
    aijack.collaborative.fedmd
+   aijack.collaborative.fedprox
+   aijack.collaborative.optimizer
+   aijack.collaborative.secureboost
    aijack.collaborative.splitnn
 
 Submodules

@@ -109,10 +109,10 @@
         <span class="n">clients</span><span class="p">,</span>
         <span class="n">public_dataloader</span><span class="p">,</span>
         <span class="n">local_dataloaders</span><span class="p">,</span>
-        <span class="n">validation_dataloader</span><span class="p">,</span>
         <span class="n">criterion</span><span class="p">,</span>
         <span class="n">server_optimizer</span><span class="p">,</span>
         <span class="n">client_optimizers</span><span class="p">,</span>
+        <span class="n">validation_dataloader</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">num_communication</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
         <span class="n">epoch_client_on_localdataset</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
         <span class="n">epoch_client_on_publicdataset</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
@@ -138,6 +138,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">epoch_server_on_publicdataset</span> <span class="o">=</span> <span class="n">epoch_server_on_publicdataset</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">custom_action</span> <span class="o">=</span> <span class="n">custom_action</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">epoch</span> <span class="o">=</span> <span class="mi">0</span>
 
 <div class="viewcode-block" id="FedGEMSAPI.train_client_on_public_dataset"><a class="viewcode-back" href="../../../../aijack.collaborative.fedgems.html#aijack.collaborative.fedgems.api.FedGEMSAPI.train_client_on_public_dataset">[docs]</a>    <span class="k">def</span> <span class="nf">train_client_on_public_dataset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Train clients on the public dataset.</span>
@@ -207,6 +208,9 @@
 
         <span class="c1"># train FedGEMS</span>
         <span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_communication</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">epoch</span> <span class="o">=</span> <span class="n">epoch</span>
+
             <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">epoch_client_on_localdataset</span><span class="p">):</span>
                 <span class="n">loss_client_local_dataset</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">train_client</span><span class="p">(</span><span class="n">public</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
             <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">epoch_server_on_publicdataset</span><span class="p">):</span>

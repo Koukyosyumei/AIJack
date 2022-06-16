@@ -44,8 +44,32 @@
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Quick Start</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#install">Install</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#usage">Usage</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#collaborative-learning">Collaborative Learning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#supported-algorithms">Supported Algorithms</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#collaborative-learning">1. Collaborative Learning</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#nn">1.1. NN</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#tree">1.2. Tree</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#attack">2. Attack</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#model-inversion-attack">2.1. Model Inversion Attack</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#membership-inference-attack">2.2. Membership Inference Attack</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#label-leakage-attack">2.3. Label Leakage Attack</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#evasion-attack">2.4. Evasion Attack</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#poisoning-attack">2.5. Poisoning Attack</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#defense">3. Defense</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#differential-privacy">3.1. Differential Privacy</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#homomorphic-encryption">3.2 Homomorphic Encryption</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#others">3.3. Others</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#resources">Resources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#contact">Contact</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#examples-of-usage">Examples of Usage</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#collaborative-learning-1">Collaborative Learning</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#attack-against-federated-learning">Attack against Federated Learning</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#defense-for-federated-learning">Defense for Federated Learning</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#attack-against-split-learning">Attack against Split Learning</a></li>
@@ -92,10 +116,6 @@
 <p>This package implements algorithms for AI security such as Model
 Inversion, Poisoning Attack, Evasion Attack, Differential Privacy, and
 Homomorphic Encryption.</p>
-<div class="line-block">
-<div class="line"><a class="reference external" href="https://koukyosyumei.github.io/AIJack">Official documentations</a></div>
-<div class="line"><a class="reference external" href="https://github.com/Koukyosyumei/AIJack/tree/main/example">Examples</a></div>
-</div>
 <section id="install">
 <h2>Install<a class="headerlink" href="#install" title="Permalink to this headline"></a></h2>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># pip install pybind11 (uncomment if necessary)</span>
@@ -103,18 +123,202 @@ Homomorphic Encryption.</p>
 </pre></div>
 </div>
 </section>
-<section id="usage">
-<h2>Usage<a class="headerlink" href="#usage" title="Permalink to this headline"></a></h2>
+<section id="supported-algorithms">
+<h2>Supported Algorithms<a class="headerlink" href="#supported-algorithms" title="Permalink to this headline"></a></h2>
 <section id="collaborative-learning">
-<h3>Collaborative Learning<a class="headerlink" href="#collaborative-learning" title="Permalink to this headline"></a></h3>
-<p>AIJack allows you to simulate the collaborative learning, where multiple
-clients trains a single model without sharing their private datasets.</p>
+<h3>1. Collaborative Learning<a class="headerlink" href="#collaborative-learning" title="Permalink to this headline"></a></h3>
+<blockquote>
+<div><dl class="field-list simple">
+<dt class="field-odd">globe_with_meridians</dt>
+<dd class="field-odd"><p>Train a single model without sharing the</p>
+</dd>
+</dl>
+<p>private datasets of multiple clients.</p>
+</div></blockquote>
+<section id="nn">
+<h4>1.1. NN<a class="headerlink" href="#nn" title="Permalink to this headline"></a></h4>
 <ul class="simple">
-<li><p>Federated Learning</p></li>
+<li><p>FedAVG (<a class="reference external" href="example/model_inversion/soteria.py">example</a>)
+(<a class="reference external" href="https://arxiv.org/abs/1602.05629">paper</a>)</p></li>
+<li><p>FedProx (<a class="reference external" href="https://arxiv.org/abs/1812.06127">paper</a>)</p></li>
+<li><p>FedKD (<a class="reference external" href="test/collaborative/fedkd/test_fedkd.py">example</a>)
+(<a class="reference external" href="https://arxiv.org/abs/2108.13323">paper</a>)</p></li>
+<li><p>FedMD (<a class="reference external" href="https://arxiv.org/abs/1910.03581">paper</a>)</p></li>
+<li><p>FedGEMS (<a class="reference external" href="https://arxiv.org/abs/2110.11027">paper</a>)</p></li>
+<li><p>DSFL (<a class="reference external" href="https://arxiv.org/abs/2008.06180">paper</a>)</p></li>
+<li><p>SplitNN (<a class="reference external" href="example/label_leakage/label_leakage.py">example</a>)
+(<a class="reference external" href="https://arxiv.org/abs/1812.00564">paper</a>)</p></li>
 </ul>
-<p>In Federated Learning, the clients communicates their locally trained
-models and the server aggregates the received local models and creates a
-global model.</p>
+</section>
+<section id="tree">
+<h4>1.2. Tree<a class="headerlink" href="#tree" title="Permalink to this headline"></a></h4>
+<ul class="simple">
+<li><p>[WIP] SecureBoost
+(<a class="reference external" href="test/collaborative/secureboost/test_secureboost.py">example</a>)
+(<a class="reference external" href="https://arxiv.org/abs/1901.08755">paper</a>)</p></li>
+</ul>
+</section>
+</section>
+<section id="attack">
+<h3>2. Attack<a class="headerlink" href="#attack" title="Permalink to this headline"></a></h3>
+<section id="model-inversion-attack">
+<h4>2.1. Model Inversion Attack<a class="headerlink" href="#model-inversion-attack" title="Permalink to this headline"></a></h4>
+<blockquote>
+<div><dl class="field-list simple">
+<dt class="field-odd">zap</dt>
+<dd class="field-odd"><p>Reconstruct the private training dataset from the victim’s</p>
+</dd>
+</dl>
+<p>model.</p>
+</div></blockquote>
+<ul class="simple">
+<li><p>MI-FACE (<a class="reference external" href="example/model_inversion/mi_face.py">example</a>)
+(<a class="reference external" href="https://dl.acm.org/doi/pdf/10.1145/2810103.2813677">paper</a>)</p></li>
+<li><p>DLG
+(<a class="reference external" href="example/model_inversion/gradient_inversion_attack.md">example</a>)
+(<a class="reference external" href="https://papers.nips.cc/paper/2019/hash/60a6c4002cc7b29142def8871531281a-Abstract.html">paper</a>)</p></li>
+<li><p>iDLG
+(<a class="reference external" href="example/model_inversion/gradient_inversion_attack.md">example</a>)
+(<a class="reference external" href="https://arxiv.org/abs/2001.02610">paper</a>)</p></li>
+<li><p>GS
+(<a class="reference external" href="example/model_inversion/gradient_inversion_attack.md">example</a>)
+(<a class="reference external" href="https://proceedings.neurips.cc/paper/2020/hash/c4ede56bbd98819ae6112b20ac6bf145-Abstract.html">paper</a>)</p></li>
+<li><p>CPL
+(<a class="reference external" href="example/model_inversion/gradient_inversion_attack.md">example</a>)
+(<a class="reference external" href="https://arxiv.org/abs/2004.10397">paper</a>)</p></li>
+<li><p>GradInversion
+(<a class="reference external" href="example/model_inversion/gradient_inversion_attack.md">example</a>)
+(<a class="reference external" href="https://openaccess.thecvf.com/content/CVPR2021/papers/Yin_See_Through_Gradients_Image_Batch_Recovery_via_GradInversion_CVPR_2021_paper.pdf">paper</a>)</p></li>
+<li><p>GAN attack (<a class="reference external" href="example/model_inversion/gan_attack.py">example</a>)
+(<a class="reference external" href="https://arxiv.org/abs/1702.07464">paper</a>)</p></li>
+</ul>
+</section>
+<section id="membership-inference-attack">
+<h4>2.2. Membership Inference Attack<a class="headerlink" href="#membership-inference-attack" title="Permalink to this headline"></a></h4>
+<blockquote>
+<div><dl class="field-list simple">
+<dt class="field-odd">zap</dt>
+<dd class="field-odd"><p>Determine whether the model’s training dataset contains the</p>
+</dd>
+</dl>
+<p>target record.</p>
+</div></blockquote>
+<ul class="simple">
+<li><p>Blak-box attack with shadow models
+(<a class="reference external" href="example/membership_inference/membership_inference_CIFAR10.ipynb">example</a>)
+(<a class="reference external" href="https://arxiv.org/abs/1610.05820">paper</a>)</p></li>
+</ul>
+</section>
+<section id="label-leakage-attack">
+<h4>2.3. Label Leakage Attack<a class="headerlink" href="#label-leakage-attack" title="Permalink to this headline"></a></h4>
+<blockquote>
+<div><dl class="field-list simple">
+<dt class="field-odd">zap</dt>
+<dd class="field-odd"><p>Infer the label information of the dataset.</p>
+</dd>
+</dl>
+</div></blockquote>
+<ul class="simple">
+<li><p>Norm attack (<a class="reference external" href="example/label_leakage/label_leakage.py">example</a>)
+(<a class="reference external" href="https://arxiv.org/abs/2102.08504">paper</a>)</p></li>
+</ul>
+</section>
+<section id="evasion-attack">
+<h4>2.4. Evasion Attack<a class="headerlink" href="#evasion-attack" title="Permalink to this headline"></a></h4>
+<blockquote>
+<div><dl class="field-list simple">
+<dt class="field-odd">zap</dt>
+<dd class="field-odd"><p>Generate data that the victim model cannot classify</p>
+</dd>
+</dl>
+<p>correctly.</p>
+</div></blockquote>
+<ul class="simple">
+<li><p>Gradient descent attacks
+(<a class="reference external" href="example/adversarial_example/example_evasion_attack_svm.ipynb">example</a>)
+(<a class="reference external" href="https://arxiv.org/abs/1708.06131">paper</a>)</p></li>
+</ul>
+</section>
+<section id="poisoning-attack">
+<h4>2.5. Poisoning Attack<a class="headerlink" href="#poisoning-attack" title="Permalink to this headline"></a></h4>
+<blockquote>
+<div><dl class="field-list simple">
+<dt class="field-odd">zap</dt>
+<dd class="field-odd"><p>Inject malicious data into the training dataset to control</p>
+</dd>
+</dl>
+<p>the behavior of the trained models.</p>
+</div></blockquote>
+<ul class="simple">
+<li><p>Poisoning attack against support vector machines
+(<a class="reference external" href="example/adversarial_example/example_poison_attack.ipynb">example</a>)
+(<a class="reference external" href="https://arxiv.org/abs/1206.6389">paper</a>)</p></li>
+</ul>
+</section>
+</section>
+<section id="defense">
+<h3>3. Defense<a class="headerlink" href="#defense" title="Permalink to this headline"></a></h3>
+<section id="differential-privacy">
+<h4>3.1. Differential Privacy<a class="headerlink" href="#differential-privacy" title="Permalink to this headline"></a></h4>
+<blockquote>
+<div><dl class="field-list simple">
+<dt class="field-odd">closed_lock_with_key</dt>
+<dd class="field-odd"><p>Provide statistical privacy guarantee.</p>
+</dd>
+</dl>
+</div></blockquote>
+<ul class="simple">
+<li><p>DPSGD
+(<a class="reference external" href="example/model_inversion/mi_face_differential_privacy.py">example</a>)
+(<a class="reference external" href="https://arxiv.org/abs/1607.00133">paper</a>)</p></li>
+</ul>
+</section>
+<section id="homomorphic-encryption">
+<h4>3.2 Homomorphic Encryption<a class="headerlink" href="#homomorphic-encryption" title="Permalink to this headline"></a></h4>
+<blockquote>
+<div><dl class="field-list simple">
+<dt class="field-odd">closed_lock_with_key</dt>
+<dd class="field-odd"><p>Perform mathematical operations on</p>
+</dd>
+</dl>
+<p>encrypted data</p>
+</div></blockquote>
+<ul class="simple">
+<li><p>[WIP] CKKS (<a class="reference external" href="test/defense/ckks/test_core.py">example</a>)</p></li>
+</ul>
+</section>
+<section id="others">
+<h4>3.3. Others<a class="headerlink" href="#others" title="Permalink to this headline"></a></h4>
+<ul class="simple">
+<li><p>Soteria (<a class="reference external" href="example/model_inversion/soteria.py">example</a>)
+(<a class="reference external" href="https://openaccess.thecvf.com/content/CVPR2021/papers/Sun_Soteria_Provable_Defense_Against_Privacy_Leakage_in_Federated_Learning_From_CVPR_2021_paper.pdf">paper</a>)</p></li>
+<li><p>MID (<a class="reference external" href="example/model_inversion/mid.ipynb">example</a>)
+(<a class="reference external" href="https://arxiv.org/abs/2009.05241">paper</a>)</p></li>
+</ul>
+</section>
+</section>
+</section>
+<section id="resources">
+<h2>Resources<a class="headerlink" href="#resources" title="Permalink to this headline"></a></h2>
+<div class="line-block">
+<div class="line">[WIP] <a class="reference external" href="https://koukyosyumei.github.io/AIJack">Official documentations
+(https://koukyosyumei.github.io/AIJack)</a></div>
+<div class="line">[WIP]
+<a class="reference external" href="https://github.com/Koukyosyumei/AIJack/tree/main/example">Examples</a></div>
+</div>
+</section>
+<section id="contact">
+<h2>Contact<a class="headerlink" href="#contact" title="Permalink to this headline"></a></h2>
+<p>welcome2aijack[&#64;]gmail.com</p>
+</section>
+<hr class="docutils" />
+<section id="examples-of-usage">
+<h2>Examples of Usage<a class="headerlink" href="#examples-of-usage" title="Permalink to this headline"></a></h2>
+<section id="collaborative-learning-1">
+<span id="id1"></span><h3>Collaborative Learning<a class="headerlink" href="#collaborative-learning-1" title="Permalink to this headline"></a></h3>
+<ul class="simple">
+<li><p>FedAVG</p></li>
+</ul>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">aijack.collaborative</span> <span class="kn">import</span> <span class="n">FedAvgClient</span><span class="p">,</span> <span class="n">FedAvgServer</span>
 
 <span class="n">clients</span> <span class="o">=</span> <span class="p">[</span><span class="n">FedAvgClient</span><span class="p">(</span><span class="n">local_model_1</span><span class="p">,</span> <span class="n">user_id</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span> <span class="n">FedAvgClient</span><span class="p">(</span><span class="n">local_model_2</span><span class="p">,</span> <span class="n">user_id</span><span class="o">=</span><span class="mi">1</span><span class="p">)]</span>
@@ -133,11 +337,8 @@ global model.</p>
 </pre></div>
 </div>
 <ul class="simple">
-<li><p>Split Learning</p></li>
+<li><p>SplitNN</p></li>
 </ul>
-<p>In Split Learning, only one client has the label of the training
-dataset, and each client communicates the gradient of the intermidiate
-layer.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">aijack.collaborative</span> <span class="kn">import</span> <span class="n">SplitNN</span><span class="p">,</span> <span class="n">SplitNNClient</span>
 
 <span class="n">clients</span> <span class="o">=</span> <span class="p">[</span><span class="n">SplitNNClient</span><span class="p">(</span><span class="n">model_1</span><span class="p">,</span> <span class="n">user_id</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span> <span class="n">SplitNNClient</span><span class="p">(</span><span class="n">model_2</span><span class="p">,</span> <span class="n">user_id</span><span class="o">=</span><span class="mi">1</span><span class="p">)]</span>
@@ -156,17 +357,6 @@ layer.</p>
 </section>
 <section id="attack-against-federated-learning">
 <h3>Attack against Federated Learning<a class="headerlink" href="#attack-against-federated-learning" title="Permalink to this headline"></a></h3>
-<p>AIJack implements several attack algorithms to violate the safety of
-Federated Learning. You can attach the attack ability to the server or
-client classes with <code class="docutils literal notranslate"><span class="pre">attach</span></code> methods of <code class="docutils literal notranslate"><span class="pre">AttackManager</span></code> of each
-attack algorithms.</p>
-<ul class="simple">
-<li><p>Gradient Inversion (server-side model inversion attack against
-federated learning)</p></li>
-</ul>
-<p>Gradients communicated between the server and the clients might leak
-private information, and the malicious server might be able to
-reconstruct the training data from the gradients.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">aijack.attack</span> <span class="kn">import</span> <span class="n">GradientInversion_Attack</span>
 
 <span class="c1"># DLG Attack (Zhu, Ligeng, Zhijian Liu, and Song Han. &quot;Deep leakage from gradients.&quot; Advances in Neural Information Processing Systems 32 (2019).)</span>
@@ -201,8 +391,6 @@ reconstruct the training data from the gradients.</p>
 <li><p>GAN Attack (client-side model inversion attack against federated
 learning)</p></li>
 </ul>
-<p>The malicious client might be able to reconstruct the private training
-data of other clients with GAN Attack.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Hitaj, Briland, Giuseppe Ateniese, and Fernando Perez-Cruz. &quot;Deep models under the GAN: information leakage from collaborative deep learning.&quot; Proceedings of the # 2017 ACM SIGSAC Conference on Computer and Communications Security. 2017.</span>
 <span class="kn">from</span> <span class="nn">aijack.attack</span> <span class="kn">import</span> <span class="n">GANAttackManager</span>
 <span class="kn">from</span> <span class="nn">aijack.collaborative</span> <span class="kn">import</span> <span class="n">FedAvgClient</span>
@@ -226,9 +414,6 @@ data of other clients with GAN Attack.</p>
 <ul class="simple">
 <li><p>Soteria</p></li>
 </ul>
-<p>Soteria prevents information leakage from the gradients by adding noise
-to the gradients. You can apply Soteria to any clients with <code class="docutils literal notranslate"><span class="pre">attach</span></code>
-method of <code class="docutils literal notranslate"><span class="pre">SoteriaManager</span></code>.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Sun, Jingwei, et al. &quot;Soteria: Provable defense against privacy leakage in federated learning from representation perspective.&quot; Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition. 2021.</span>
 <span class="kn">from</span> <span class="nn">aijack.collaborative</span> <span class="kn">import</span> <span class="n">FedAvgClient</span>
 <span class="kn">from</span> <span class="nn">aijack.defense</span> <span class="kn">import</span> <span class="n">SoteriaManager</span>
@@ -245,8 +430,6 @@ method of <code class="docutils literal notranslate"><span class="pre">SoteriaMa
 <ul class="simple">
 <li><p>Label Leakage Attack</p></li>
 </ul>
-<p>Label leakage attack is one of the known vulnerabilities of SplitNN, and
-AIJack currently supports the norm-based label leakage attack.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Li, Oscar, et al. &quot;Label leakage and protection in two-party split learning.&quot; arXiv preprint arXiv:2102.08504 (2021).</span>
 <span class="kn">from</span> <span class="nn">aijack.attack</span> <span class="kn">import</span> <span class="n">NormAttackManager</span>
 <span class="kn">from</span> <span class="nn">aijack.collaborative</span> <span class="kn">import</span> <span class="n">SplitNN</span>
@@ -297,8 +480,6 @@ AIJack currently supports the norm-based label leakage attack.</p>
 <ul class="simple">
 <li><p>DPSGD (Differential Privacy)</p></li>
 </ul>
-<p>AIJack natively supports differential privacy, including moment
-accountant and DPSGD.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1">#  Abadi, Martin, et al. &quot;Deep learning with differential privacy.&quot; Proceedings of the 2016 ACM SIGSAC conference on computer and communications security. 2016.</span>
 <span class="kn">from</span> <span class="nn">aijack.defense</span> <span class="kn">import</span> <span class="n">GeneralMomentAccountant</span>
 <span class="kn">from</span> <span class="nn">aijack.defense</span> <span class="kn">import</span> <span class="n">PrivacyManager</span>
@@ -320,14 +501,8 @@ accountant and DPSGD.</p>
 </pre></div>
 </div>
 <ul class="simple">
-<li><p>MID (Defense against model inversion attak)</p></li>
+<li><p>MID</p></li>
 </ul>
-<p>MID is a defense technique to prevent information leakage from the
-output logits, and it minimizes the mutual information between output
-logits and input data. AIJack currently supports VIB, a neural network
-with MID. If you want to apply VIB to your network, you should split
-your model into a first-half part (<code class="docutils literal notranslate"><span class="pre">encoder</span></code>) and a second-half part
-(<code class="docutils literal notranslate"><span class="pre">decoder</span></code>).</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Wang, Tianhao, Yuheng Zhang, and Ruoxi Jia. &quot;Improving robustness to model inversion attacks via mutual information regularization.&quot; arXiv preprint arXiv:2009.05241 (2020).</span>
 <span class="kn">from</span> <span class="nn">aijack.defense</span> <span class="kn">import</span> <span class="n">VIB</span><span class="p">,</span> <span class="n">mib_loss</span>
 

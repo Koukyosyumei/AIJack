@@ -39,6 +39,7 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../README.html">Quick Start</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../aijack.html">aijack package</a></li>
 </ul>
 
@@ -83,9 +84,9 @@
         <span class="n">clients</span><span class="p">,</span>
         <span class="n">public_dataloader</span><span class="p">,</span>
         <span class="n">local_dataloaders</span><span class="p">,</span>
-        <span class="n">validation_dataloader</span><span class="p">,</span>
         <span class="n">criterion</span><span class="p">,</span>
         <span class="n">client_optimizers</span><span class="p">,</span>
+        <span class="n">validation_dataloader</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">server_optimizer</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">num_communication</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
         <span class="n">device</span><span class="o">=</span><span class="s2">&quot;cpu&quot;</span><span class="p">,</span>
@@ -114,6 +115,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">transfer_epoch_private</span> <span class="o">=</span> <span class="n">transfer_epoch_private</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">server_training_epoch</span> <span class="o">=</span> <span class="n">server_training_epoch</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">custom_action</span> <span class="o">=</span> <span class="n">custom_action</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">epoch</span> <span class="o">=</span> <span class="mi">0</span>
 
 <div class="viewcode-block" id="FedMDAPI.train_server"><a class="viewcode-back" href="../../../../aijack.collaborative.fedmd.html#aijack.collaborative.fedmd.api.FedMDAPI.train_server">[docs]</a>    <span class="k">def</span> <span class="nf">train_server</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">server_optimizer</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -159,6 +161,9 @@
             <span class="n">logging</span><span class="p">[</span><span class="s2">&quot;loss_client_local_dataset_transfer&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">loss_local</span><span class="p">)</span>
 
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_communication</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">epoch</span> <span class="o">=</span> <span class="n">i</span>
+
             <span class="bp">self</span><span class="o">.</span><span class="n">server</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">server</span><span class="o">.</span><span class="n">distribute</span><span class="p">()</span>
 
