@@ -19,8 +19,8 @@ sys.path.insert(0, "../src/aijack")
 # -- Project information -----------------------------------------------------
 
 project = "AIJack"
-copyright = "2022, Hideaki Takahashi"
-author = "Hideaki Takahashi"
+copyright = "2022, Koukyosyumei"
+author = "Koukyosyumei"
 
 # The short X.Y version
 version = "v1.0"
