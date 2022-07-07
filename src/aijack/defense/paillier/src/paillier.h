@@ -74,6 +74,11 @@ struct PaillierPublicKey
         return (n != pk2.n) || (g != pk2.g);
     }
 
+    pair<string, string> get_publickeyvalues()
+    {
+        return make_pair(n.str(), g.str());
+    }
+
     Bint raw_encrypt(Bint m, Bint r);
     Bint raw_encrypt(Bint m);
 
@@ -112,6 +117,16 @@ struct PaillierSecretKey
         lam = lam_;
         mu = mu_;
         precision = precision_;
+    }
+
+    pair<string, string> get_publickeyvalues()
+    {
+        return make_pair(n.str(), g.str());
+    }
+
+    pair<string, string> get_secretkeyvalues()
+    {
+        return make_pair(p.str(), q.str());
     }
 
     template <typename T>
@@ -366,6 +381,11 @@ struct PaillierCipherText
         Bint mul_with_encoded_pt = _mul(encoding.encoding);
         int new_exponent = exponent + encoding.exponent;
         return PaillierCipherText(pk, mul_with_encoded_pt, new_exponent);
+    }
+
+    string get_value()
+    {
+        return c.str();
     }
 };
 
