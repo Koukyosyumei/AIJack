@@ -50,7 +50,7 @@ struct PaillierPublicKey
         n2 = n * n;
         g = g_;
         max_val = (n / Bint(3)) - Bint(1);
-        distr = boost::random::uniform_int_distribution<Bint>(0, n - 1);
+        distr = boost::random::uniform_int_distribution<Bint>(1, n - 1);
         precision = precision_;
     }
 
@@ -60,7 +60,7 @@ struct PaillierPublicKey
         n2 = n2_;
         g = g_;
         max_val = (n / Bint(3)) - Bint(1);
-        distr = boost::random::uniform_int_distribution<Bint>(0, n - 1);
+        distr = boost::random::uniform_int_distribution<Bint>(1, n - 1);
         precision = precision_;
     }
 
