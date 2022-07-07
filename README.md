@@ -101,6 +101,7 @@ pip install git+https://github.com/Koukyosyumei/AIJack
 
 >>:closed_lock_with_key: Perform mathematical operations on encrypted data
 
+- Paillier ([README](src/aijack/defense/paillier/README.md))
 - [WIP] CKKS ([example](test/defense/ckks/test_core.py))
 
 #### 3.3. Others
@@ -318,4 +319,42 @@ for x_batch, y_batch in tqdm(train_loader):
     loss = net.loss(y_batch, result_dict)
     loss.backward()
     optimizer.step()
+```
+
+- Paillier
+
+Key generation
+
+```Python
+>>> from aijack_paillier import PaillierKeyGenerator
+>>> keygenerator = PaillierKeyGenerator(512)
+>>> pk, sk = keygenerator.generate_keypair()
+
+>>> pk.get_publickeyvalues()
+('88227558341633487968602031548884474473159932637542421321125729261006034700025348204644005240122191376832590701931729414754607546418236854601939515234119196121342390460128908962474840402676824539316895354970651799849034208946592214675397708295317235925162498035034951208255290311663747050727479504325436699623', '88227558341633487968602031548884474473159932637542421321125729261006034700025348204644005240122191376832590701931729414754607546418236854601939515234119196121342390460128908962474840402676824539316895354970651799849034208946592214675397708295317235925162498035034951208255290311663747050727479504325436699624')
+```
+
+Encrypt & Decrypt
+
+```Python
+>>> ct_1 = pk.encrypt(13)
+>>> pk.decrypt4int(ct_1)
+13
+```
+
+Arithmetic operation
+
+```Python
+>>> ct_2 = ct_1 * 2
+>>> pk.decrypt4int(ct_2)
+26
+
+>>> ct_3 = ct_1 + 5.6
+>>> sk.decrypt2float(ct_3)
+18.6
+
+>>> ct_4 = pk.encrypt(18)
+>>> ct_5 = ct_1 + ct_4
+>>> sk.decrypt2int(ct_5)
+31
 ```
