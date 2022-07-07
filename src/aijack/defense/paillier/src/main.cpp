@@ -24,7 +24,7 @@ PYBIND11_MODULE(aijack_paillier, m)
     )pbdoc";
 
     py::class_<PaillierKeyGenerator>(m, "PaillierKeyGenerator")
-        .def(py::init<>())
+        .def(py::init<int>())
         .def("generate_keypair", &PaillierKeyGenerator::generate_keypair);
 
     py::class_<PaillierPublicKey>(m, "PaillierPublicKey")
