@@ -346,7 +346,7 @@ struct XGBoostNode : Node<XGBoostParty>
             return val;
         else
         {
-            if (parties->at(party_id)->is_left(record_id, xi))
+            if (parties->at(party_id).is_left(record_id, xi))
                 return left->predict_row(xi);
             else
                 return right->predict_row(xi);
