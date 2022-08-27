@@ -6,7 +6,6 @@
 #include <exception>
 #include <stdexcept>
 #include <cassert>
-#include <boost/integer/mod_inverse.hpp>
 #include <boost/math/special_functions/round.hpp>
 #include "paillier.h"
 #include "prime.h"
