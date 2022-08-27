@@ -136,7 +136,7 @@ struct XGBoostBase : TreeModelBase<XGBoostParty>
         }
     }
 
-    vector<vector<float>> predict_raw(vector<vector<float>> &X)
+    vector<vector<float>> predict_raw(vector<vector<float>> X)
     {
         int pred_dim;
         if (num_classes == 2)
@@ -178,7 +178,7 @@ struct XGBoostClassifier : public XGBoostBase
         return init_pred;
     }
 
-    vector<vector<float>> predict_proba(vector<vector<float>> &x)
+    vector<vector<float>> predict_proba(vector<vector<float>> x)
     {
         vector<vector<float>> raw_score = predict_raw(x);
         int row_count = x.size();
