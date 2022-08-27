@@ -9,7 +9,7 @@
 struct XGBoostTree : Tree<XGBoostNode>
 {
     XGBoostTree() {}
-    void fit(vector<XGBoostParty> *parties, vector<float> &y, int num_classes,
+    void fit(vector<XGBoostParty> &parties, vector<float> &y, int num_classes,
              vector<vector<float>> &gradient, vector<vector<float>> &hessian,
              float min_child_weight, float lam,
              float gamma, float eps, int min_leaf, int depth,

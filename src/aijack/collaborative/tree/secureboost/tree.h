@@ -9,7 +9,7 @@
 struct SecureBoostTree : Tree<SecureBoostNode>
 {
     SecureBoostTree() {}
-    void fit(vector<SecureBoostParty> *parties, vector<float> y,
+    void fit(vector<SecureBoostParty> &parties, vector<float> y,
              int num_classes,
              vector<vector<PaillierCipherText>> &gradient,
              vector<vector<PaillierCipherText>> &hessian,
