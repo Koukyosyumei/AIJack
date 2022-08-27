@@ -141,6 +141,7 @@ struct SecureBoostBase : TreeModelBase<SecureBoostParty>
                     hess[j][c] = parties[active_party_id].pk.encrypt<float>(vanila_hess[j][c]);
                 }
             }
+            /*
 
             SecureBoostTree boosting_tree = SecureBoostTree();
             boosting_tree.fit(parties, y, num_classes, grad, hess, vanila_grad, vanila_hess, min_child_weight,
@@ -157,6 +158,7 @@ struct SecureBoostBase : TreeModelBase<SecureBoostParty>
             {
                 logging_loss.push_back(lossfunc_obj->get_loss(base_pred, y));
             }
+            */
         }
     }
 
