@@ -132,7 +132,7 @@ struct SecureBoostBase : TreeModelBase<SecureBoostParty>
 
             vector<vector<PaillierCipherText>> grad(row_count, vector<PaillierCipherText>(grad_dim));
             vector<vector<PaillierCipherText>> hess(row_count, vector<PaillierCipherText>(grad_dim));
-            /*
+
             for (int j = 0; j < row_count; j++)
             {
                 for (int c = 0; c < grad_dim; c++)
@@ -141,9 +141,7 @@ struct SecureBoostBase : TreeModelBase<SecureBoostParty>
                     hess[j][c] = parties[active_party_id].pk.encrypt<float>(vanila_hess[j][c]);
                 }
             }
-            */
 
-            /*
             SecureBoostTree boosting_tree = SecureBoostTree();
             boosting_tree.fit(parties, y, num_classes, grad, hess, vanila_grad, vanila_hess, min_child_weight,
                               lam, gamma, eps, min_leaf, depth, active_party_id, (completelly_secure_round > i), n_job);
@@ -159,7 +157,6 @@ struct SecureBoostBase : TreeModelBase<SecureBoostParty>
             {
                 logging_loss.push_back(lossfunc_obj->get_loss(base_pred, y));
             }
-            */
         }
     }
 
