@@ -331,30 +331,6 @@ struct XGBoostNode : Node<XGBoostParty>
         }
     }
 
-    /*
-    vector<vector<float>> predict(vector<vector<float>> x_new)
-    {
-        int x_new_size = x_new.size();
-        vector<vector<float>> y_pred(x_new_size);
-        for (int i = 0; i < x_new_size; i++)
-            y_pred[i] = predict_row(x_new[i]);
-        return y_pred;
-    }
-
-    vector<float> predict_row(vector<float> xi)
-    {
-        if (is_leaf())
-            return val;
-        else
-        {
-            if (parties[party_id].is_left(record_id, xi))
-                return left->predict_row(xi);
-            else
-                return right->predict_row(xi);
-        }
-    }
-    */
-
     bool is_leaf()
     {
         if (is_leaf_flag == -1)
