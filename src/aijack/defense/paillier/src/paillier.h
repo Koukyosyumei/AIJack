@@ -6,8 +6,8 @@
 #include <exception>
 #include <stdexcept>
 #include <cassert>
-#include <boost/integer/mod_inverse.hpp>
 #include <boost/math/special_functions/round.hpp>
+#include "mod_inverse.h"
 #include "prime.h"
 using namespace std;
 
