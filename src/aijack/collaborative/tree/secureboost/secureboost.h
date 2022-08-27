@@ -130,10 +130,9 @@ struct SecureBoostBase : TreeModelBase<SecureBoostParty>
             vector<vector<float>> vanila_hess = lossfunc_obj->get_hess(base_pred, y);
             int grad_dim = vanila_grad[0].size();
 
-            /*
             vector<vector<PaillierCipherText>> grad(row_count, vector<PaillierCipherText>(grad_dim));
             vector<vector<PaillierCipherText>> hess(row_count, vector<PaillierCipherText>(grad_dim));
-
+            /*
             for (int j = 0; j < row_count; j++)
             {
                 for (int c = 0; c < grad_dim; c++)
