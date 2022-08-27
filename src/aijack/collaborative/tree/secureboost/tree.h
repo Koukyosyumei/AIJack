@@ -22,7 +22,7 @@ struct SecureBoostTree : Tree<SecureBoostNode>
         iota(idxs.begin(), idxs.end(), 0);
         for (int i = 0; i < parties.size(); i++)
         {
-            parties->at(i).subsample_columns();
+            parties[i].subsample_columns();
         }
         dtree = SecureBoostNode(parties, y, num_classes, gradient, hessian, vanila_gradient,
                                 vanila_hessian, idxs, min_child_weight,
