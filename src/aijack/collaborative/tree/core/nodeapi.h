@@ -203,7 +203,7 @@ struct NodeAPI
         return make_pair(node_info, skip_flag);
     }
 
-    vector<float> predict_row(NodeType *node, vector<float> &xi)
+    vector<float> predict_row(NodeType *node, vector<float> xi)
     {
         queue<NodeType *> que;
         que.push(node);
@@ -235,7 +235,7 @@ struct NodeAPI
         return nan_vec;
     }
 
-    vector<vector<float>> predict(NodeType *node, vector<vector<float>> &x_new)
+    vector<vector<float>> predict(NodeType *node, vector<vector<float>> x_new)
     {
         int x_new_size = x_new.size();
         vector<vector<float>> y_pred(x_new_size);
