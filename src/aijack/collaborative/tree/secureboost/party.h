@@ -9,8 +9,8 @@ struct SecureBoostParty : XGBoostParty
     PaillierSecretKey sk;
 
     SecureBoostParty() {}
-    SecureBoostParty(vector<vector<float>> &x_, int num_classes_,
-                     vector<int> &feature_id_, int &party_id_,
+    SecureBoostParty(vector<vector<float>> x_, int num_classes_,
+                     vector<int> feature_id_, int party_id_,
                      int min_leaf_, float subsample_cols_,
                      int num_precentile_bin_ = 256,
                      bool use_missing_value_ = false,

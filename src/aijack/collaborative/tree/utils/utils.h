@@ -103,35 +103,3 @@ inline vector<int> get_num_parties_per_process(int n_job, int num_parties)
     }
     return num_parties_per_thread;
 }
-
-inline bool is_satisfied_with_mi_bound_cond(vector<float> &prior, float mi_delta,
-                                            vector<float> &temp_left_class_cnt,
-                                            vector<float> &temp_right_class_cnt,
-                                            vector<float> &entire_class_cnt,
-                                            float temp_left_size,
-                                            float temp_right_size,
-                                            float entire_datasetsize)
-{
-    int num_classes = temp_left_class_cnt.size();
-    if (mi_delta > 0)
-    {
-        float left_in_diff = 0;
-        float left_out_diff = 0;
-        float right_in_diff = 0;
-        float right_out_diff = 0;
-        for (int c = 0; c < num_classes; c++)
-        {
-            left_in_diff = max(left_in_diff, abs(temp_left_class_cnt[c] / temp_left_size - prior[c]));
-            left_out_diff = max(left_out_diff, (entire_class_cnt[c] - temp_left_class_cnt[c]) / (entire_datasetsize - temp_left_size));
-            right_in_diff = max(right_in_diff, abs(temp_right_class_cnt[c] / temp_right_size - prior[c]));
-            right_out_diff = max(right_out_diff, (entire_class_cnt[c] - temp_right_class_cnt[c]) / (entire_datasetsize - temp_right_size));
-        }
-
-        return ((left_in_diff > mi_delta) | (left_out_diff > mi_delta) |
-                (right_in_diff > mi_delta) | (right_out_diff > mi_delta));
-    }
-    else
-    {
-        return false;
-    }
-}

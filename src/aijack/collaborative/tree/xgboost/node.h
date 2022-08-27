@@ -24,9 +24,8 @@ using namespace std;
 struct XGBoostNode : Node<XGBoostParty>
 {
     vector<XGBoostParty> *parties;
-    vector<float> prior;
     vector<vector<float>> gradient, hessian;
-    float min_child_weight, lam, gamma, eps, mi_delta;
+    float min_child_weight, lam, gamma, eps;
     float best_entropy;
     bool use_only_active_party;
     XGBoostNode *left, *right;
@@ -39,8 +38,8 @@ struct XGBoostNode : Node<XGBoostParty>
     XGBoostNode() {}
     XGBoostNode(vector<XGBoostParty> *parties_, vector<float> &y_, int num_classes_,
                 vector<vector<float>> &gradient_,
-                vector<vector<float>> &hessian_, vector<int> &idxs_, vector<float> &prior_,
-                float min_child_weight_, float lam_, float gamma_, float eps_, int depth_, float mi_delta_,
+                vector<vector<float>> &hessian_, vector<int> &idxs_,
+                float min_child_weight_, float lam_, float gamma_, float eps_, int depth_,
                 int active_party_id_ = -1, bool use_only_active_party_ = false, int n_job_ = 1)
     {
         parties = parties_;
@@ -49,9 +48,7 @@ struct XGBoostNode : Node<XGBoostParty>
         gradient = gradient_;
         hessian = hessian_;
         idxs = idxs_;
-        prior = prior_;
         min_child_weight = min_child_weight_;
-        mi_delta = mi_delta_;
         lam = lam_;
         gamma = gamma_;
         eps = eps_;
@@ -231,17 +228,6 @@ struct XGBoostNode : Node<XGBoostParty>
                         continue;
                     }
 
-                    if (is_satisfied_with_mi_bound_cond(prior, mi_delta,
-                                                        temp_left_class_cnt,
-                                                        temp_right_class_cnt,
-                                                        entire_class_cnt,
-                                                        temp_left_size,
-                                                        temp_right_size,
-                                                        entire_datasetsize))
-                    {
-                        continue;
-                    }
-
                     for (int c = 0; c < grad_dim; c++)
                     {
                         temp_right_grad[c] = sum_grad[c] - temp_left_grad[c];
@@ -331,14 +317,14 @@ struct XGBoostNode : Node<XGBoostParty>
                         { return x == idxs[i]; }))
                 right_idxs.push_back(idxs[i]);
 
-        left = new XGBoostNode(parties, y, num_classes, gradient, hessian, left_idxs, prior, min_child_weight,
-                               lam, gamma, eps, depth - 1, mi_delta, active_party_id, use_only_active_party, n_job);
+        left = new XGBoostNode(parties, y, num_classes, gradient, hessian, left_idxs, min_child_weight,
+                               lam, gamma, eps, depth - 1, active_party_id, use_only_active_party, n_job);
         if (left->is_leaf_flag == 1)
         {
             left->party_id = party_id;
         }
-        right = new XGBoostNode(parties, y, num_classes, gradient, hessian, right_idxs, prior, min_child_weight,
-                                lam, gamma, eps, depth - 1, mi_delta, active_party_id, use_only_active_party, n_job);
+        right = new XGBoostNode(parties, y, num_classes, gradient, hessian, right_idxs, min_child_weight,
+                                lam, gamma, eps, depth - 1, active_party_id, use_only_active_party, n_job);
         if (right->is_leaf_flag == 1)
         {
             right->party_id = party_id;
