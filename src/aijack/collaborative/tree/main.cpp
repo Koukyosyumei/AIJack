@@ -58,6 +58,11 @@ PYBIND11_MODULE(aijack_secureboost, m)
         .def("print", &XGBoostTree::print)
         .def("predict", &XGBoostTree::predict);
 
+    py::class_<XGBoostTree>(m, "SecureBoostTree")
+        .def("get_root_xgboost_node", &SecureBoostTree::get_root_xgboost_node)
+        .def("print", &SecureBoostTree::print)
+        .def("predict", &SecureBoostTree::predict);
+
     py::class_<XGBoostClassifier>(m, "XGBoostClassifier")
         .def(py::init<int, float, float, int, int, float, int, float, float, float,
                       int, int, float, int, bool>())

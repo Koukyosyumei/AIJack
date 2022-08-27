@@ -29,5 +29,5 @@ struct TreeModelBase
      * @param X The feature matrix.
      * @return vector<float> The vector of predicted raw scores.
      */
-    virtual vector<vector<float>> predict_raw(vector<vector<float>> X) = 0;
+    virtual vector<vector<float>> predict_raw(vector<vector<float>> &X) = 0;
 };

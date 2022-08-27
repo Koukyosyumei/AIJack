@@ -30,7 +30,7 @@ struct Tree
      * @param X the new sample to be predicted
      * @return vector<vector<float>>
      */
-    vector<vector<float>> predict(vector<vector<float>> X)
+    vector<vector<float>> predict(vector<vector<float>> &X)
     {
         return nodeapi.predict(&dtree, X);
     }
