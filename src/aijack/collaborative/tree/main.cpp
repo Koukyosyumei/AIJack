@@ -22,7 +22,7 @@ PYBIND11_MODULE(aijack_secureboost, m)
         core of XGBoost
     )pbdoc";
 
-    py::class_<Party>(m, "XGBoostParty")
+    py::class_<XGBoostParty>(m, "XGBoostParty")
         .def(py::init<vector<vector<float>>, int, vector<int>, int,
                       int, float, int, bool, int>())
         .def("get_lookup_table", &XGBoostParty::get_lookup_table);
