@@ -26,4 +26,9 @@ struct XGBoostTree : Tree<XGBoostNode>
                             min_child_weight, lam, gamma, eps, depth, mi_delta,
                             active_party_id, use_only_active_party, n_job);
     }
+
+    XGBoostNode get_root_xgboost_node()
+    {
+        return dtree;
+    }
 };
