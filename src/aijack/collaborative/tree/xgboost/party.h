@@ -1,7 +1,7 @@
 #pragma once
 #include <tuple>
 #include "../core/party.h"
-#include "../paillier/paillier.h"
+#include "../../../defense/paillier/src/paillier.h"
 using namespace std;
 
 struct XGBoostParty : Party
