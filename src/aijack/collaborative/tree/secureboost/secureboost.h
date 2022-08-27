@@ -88,6 +88,7 @@ struct SecureBoostBase : TreeModelBase<SecureBoostParty>
 
     void fit(vector<SecureBoostParty> &parties, vector<float> &y)
     {
+        cout << "Start fitting" << endl;
         try
         {
             if ((active_party_id < 0) || (active_party_id > parties.size()))
@@ -132,6 +133,7 @@ struct SecureBoostBase : TreeModelBase<SecureBoostParty>
             vector<vector<PaillierCipherText>> grad(row_count, vector<PaillierCipherText>(grad_dim));
             vector<vector<PaillierCipherText>> hess(row_count, vector<PaillierCipherText>(grad_dim));
 
+            cout << " start encrypting" << endl;
             for (int j = 0; j < row_count; j++)
             {
                 for (int c = 0; c < grad_dim; c++)
@@ -140,6 +142,7 @@ struct SecureBoostBase : TreeModelBase<SecureBoostParty>
                     hess[j][c] = parties[active_party_id].pk.encrypt<float>(vanila_hess[j][c]);
                 }
             }
+            cout << " end encrypting" << endl;
 
             SecureBoostTree boosting_tree = SecureBoostTree();
             boosting_tree.fit(parties, y, num_classes, grad, hess, vanila_grad, vanila_hess, min_child_weight,
