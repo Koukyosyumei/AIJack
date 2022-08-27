@@ -19,12 +19,7 @@ ext_modules = [
         "aijack_dp_core",
         ["src/aijack/defense/dp/core/main.cpp"],
         define_macros=[("VERSION_INFO", __version__)],
-    ),
-    Pybind11Extension(
-        "aijack_secureboost",
-        ["src/aijack/collaborative/secureboost/core/main.cpp"],
-        define_macros=[("VERSION_INFO", __version__)],
-    ),
+    )
 ]
 
 console_scripts = []
