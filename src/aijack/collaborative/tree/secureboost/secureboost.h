@@ -144,6 +144,7 @@ struct SecureBoostBase : TreeModelBase<SecureBoostParty>
             }
             cout << " end encrypting" << endl;
 
+            /*
             SecureBoostTree boosting_tree = SecureBoostTree();
             boosting_tree.fit(parties, y, num_classes, grad, hess, vanila_grad, vanila_hess, min_child_weight,
                               lam, gamma, eps, min_leaf, depth, active_party_id, (completelly_secure_round > i), n_job);
@@ -159,6 +160,7 @@ struct SecureBoostBase : TreeModelBase<SecureBoostParty>
             {
                 logging_loss.push_back(lossfunc_obj->get_loss(base_pred, y));
             }
+            */
         }
     }
 
