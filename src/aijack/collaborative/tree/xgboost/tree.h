@@ -32,8 +32,8 @@ struct XGBoostTree : Tree<XGBoostNode>
         return dtree;
     }
 
-    vector<vector<float>> predict(vector<vector<float>> X)
-    {
-        return dtree.predict(X);
-    }
+    // vector<vector<float>> predict(vector<vector<float>> X)
+    //{
+    //     return dtree.predict(X);
+    // }
 };

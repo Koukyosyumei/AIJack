@@ -331,6 +331,7 @@ struct XGBoostNode : Node<XGBoostParty>
         }
     }
 
+    /*
     vector<vector<float>> predict(vector<vector<float>> x_new)
     {
         int x_new_size = x_new.size();
@@ -352,6 +353,7 @@ struct XGBoostNode : Node<XGBoostParty>
                 return right->predict_row(xi);
         }
     }
+    */
 
     bool is_leaf()
     {
