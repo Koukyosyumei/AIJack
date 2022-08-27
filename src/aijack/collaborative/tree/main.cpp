@@ -6,6 +6,7 @@
 #include <vector>
 
 #include "xgboost/xgboost.h"
+#include "secureboost/secureboost.h"
 
 #define STRINGIFY(x) #x
 #define MACRO_STRINGIFY(x) STRINGIFY(x)
