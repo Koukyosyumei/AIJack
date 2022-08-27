@@ -37,7 +37,7 @@ struct Party
     vector<vector<float>> temp_thresholds; // feature_id->threshold
 
     Party() {}
-    Party(vector<vector<float>> &x_, int num_classes_, vector<int> &feature_id_, int &party_id_,
+    Party(vector<vector<float>> x_, int num_classes_, vector<int> feature_id_, int party_id_,
           int min_leaf_, float subsample_cols_,
           bool use_missing_value_ = false, int seed_ = 0)
     {

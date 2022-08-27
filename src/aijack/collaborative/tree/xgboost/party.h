@@ -9,7 +9,7 @@ struct XGBoostParty : Party
     int num_percentile_bin;
 
     XGBoostParty() {}
-    XGBoostParty(vector<vector<float>> &x_, int num_classes_, vector<int> &feature_id_, int &party_id_,
+    XGBoostParty(vector<vector<float>> x_, int num_classes_, vector<int> feature_id_, int party_id_,
                  int min_leaf_, float subsample_cols_, int num_precentile_bin_ = 256,
                  bool use_missing_value_ = false, int seed_ = 0) : Party(x_, num_classes_, feature_id_, party_id_,
                                                                          min_leaf_, subsample_cols_,
