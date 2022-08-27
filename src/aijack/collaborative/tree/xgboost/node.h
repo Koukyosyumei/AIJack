@@ -23,7 +23,7 @@ using namespace std;
 
 struct XGBoostNode : Node<XGBoostParty>
 {
-    vector<XGBoostParty> *parties;
+    vector<XGBoostParty> parties;
     vector<vector<float>> gradient, hessian;
     float min_child_weight, lam, gamma, eps;
     float best_entropy;
@@ -36,7 +36,7 @@ struct XGBoostNode : Node<XGBoostParty>
     vector<float> entire_class_cnt;
 
     XGBoostNode() {}
-    XGBoostNode(vector<XGBoostParty> *parties_, vector<float> &y_, int num_classes_,
+    XGBoostNode(vector<XGBoostParty> &parties_, vector<float> &y_, int num_classes_,
                 vector<vector<float>> &gradient_,
                 vector<vector<float>> &hessian_, vector<int> &idxs_,
                 float min_child_weight_, float lam_, float gamma_, float eps_, int depth_,
@@ -58,7 +58,7 @@ struct XGBoostNode : Node<XGBoostParty>
         n_job = n_job_;
 
         row_count = idxs.size();
-        num_parties = parties->size();
+        num_parties = parties.size();
 
         entire_class_cnt.resize(num_classes, 0);
         entire_datasetsize = y.size();
@@ -69,7 +69,7 @@ struct XGBoostNode : Node<XGBoostParty>
 
         try
         {
-            if (use_only_active_party && active_party_id > parties->size())
+            if (use_only_active_party && active_party_id > parties.size())
             {
                 throw invalid_argument("invalid active_party_id");
             }
@@ -96,7 +96,7 @@ struct XGBoostNode : Node<XGBoostParty>
             party_id = get<0>(best_split);
             if (party_id != -1)
             {
-                record_id = parties->at(party_id).insert_lookup_table(get<1>(best_split), get<2>(best_split));
+                record_id = parties[party_id].insert_lookup_table(get<1>(best_split), get<2>(best_split));
                 make_children_nodes(get<0>(best_split), get<1>(best_split), get<2>(best_split));
             }
             else
@@ -143,7 +143,7 @@ struct XGBoostNode : Node<XGBoostParty>
 
     int get_num_parties()
     {
-        return parties->size();
+        return parties.size();
     }
 
     vector<float> compute_weight()
@@ -169,7 +169,7 @@ struct XGBoostNode : Node<XGBoostParty>
         {
 
             vector<vector<tuple<vector<float>, vector<float>, float, vector<float>>>> search_results =
-                parties->at(temp_party_id).greedy_search_split(gradient, hessian, y, idxs);
+                parties[temp_party_id].greedy_search_split(gradient, hessian, y, idxs);
 
             float temp_score, temp_entropy;
             vector<float> temp_left_grad(grad_dim, 0);
@@ -310,7 +310,7 @@ struct XGBoostNode : Node<XGBoostParty>
     void make_children_nodes(int best_party_id, int best_col_id, int best_threshold_id)
     {
         // TODO: remove idx with nan values from right_idxs;
-        vector<int> left_idxs = parties->at(best_party_id).split_rows(idxs, best_col_id, best_threshold_id);
+        vector<int> left_idxs = parties[best_party_id].split_rows(idxs, best_col_id, best_threshold_id);
         vector<int> right_idxs;
         for (int i = 0; i < row_count; i++)
             if (!any_of(left_idxs.begin(), left_idxs.end(), [&](float x)
@@ -346,7 +346,7 @@ struct XGBoostNode : Node<XGBoostParty>
             return val;
         else
         {
-            if (parties->at(party_id).is_left(record_id, xi))
+            if (parties[party_id].is_left(record_id, xi))
                 return left->predict_row(xi);
             else
                 return right->predict_row(xi);

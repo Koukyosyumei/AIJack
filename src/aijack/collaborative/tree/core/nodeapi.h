@@ -220,7 +220,7 @@ struct NodeAPI
             }
             else
             {
-                if (node->parties->at(temp_node->party_id).is_left(temp_node->record_id, xi))
+                if (node->parties[temp_node->party_id].is_left(temp_node->record_id, xi))
                 {
                     que.push(temp_node->left);
                 }

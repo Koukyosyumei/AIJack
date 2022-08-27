@@ -17,7 +17,7 @@ using namespace std;
 template <typename PartyType>
 struct Node
 {
-    vector<PartyType> *parties;
+    vector<PartyType> parties;
     vector<float> y;
     vector<int> idxs;
 
