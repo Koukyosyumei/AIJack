@@ -17,7 +17,7 @@ struct XGBoostTree : Tree<XGBoostNode>
     {
         vector<int> idxs(y.size());
         iota(idxs.begin(), idxs.end(), 0);
-        for (int i = 0; i < parties->size(); i++)
+        for (int i = 0; i < parties.size(); i++)
         {
             parties->at(i).subsample_columns();
         }
