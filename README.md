@@ -49,7 +49,7 @@ pip install git+https://github.com/Koukyosyumei/AIJack
 
 #### 1.2. Tree
 
-- [WIP] SecureBoost ([example](test/collaborative/secureboost/test_secureboost.py)) ([paper](https://arxiv.org/abs/1901.08755))
+- SecureBoost ([example](src/aijack/collaborative/tree/README.md)) ([paper](https://arxiv.org/abs/1901.08755))
 
 ### 2. Attack
 
