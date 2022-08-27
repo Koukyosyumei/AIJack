@@ -159,7 +159,7 @@ struct SecureBoostBase : TreeModelBase<SecureBoostParty>
         }
     }
 
-    vector<vector<float>> predict_raw(vector<vector<float>> &X)
+    vector<vector<float>> predict_raw(vector<vector<float>> X)
     {
         int pred_dim;
         if (num_classes == 2)
