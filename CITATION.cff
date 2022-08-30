@@ -1,9 +1,0 @@
-cff-version: 1.2.0
-message: "If you use this software, please cite it as below."
-authors:
-- family-names: "Takahashi"
-  given-names: "Hideaki"
-title: "AIJack"
-version: 0.0.0
-date-released: 2022-08-27
-url: "https://github.com/Koukyosyumei/AIJack"
