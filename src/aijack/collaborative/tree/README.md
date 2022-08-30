@@ -1,5 +1,15 @@
 ## Federated Tree-based Learning
 
+
+### Install
+
+```
+cd tree
+plt install -e .
+```
+
+### Import
+
 ```Python
 from aijack_secureboost import (  # noqa: F401
     XGBoostParty,
