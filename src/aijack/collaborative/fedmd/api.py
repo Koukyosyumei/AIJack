@@ -85,10 +85,20 @@ class FedMDAPI(BaseFLKnowledgeDistillationAPI):
             print(f"epoch {i} (public - pretrain): {loss_public}")
             logging["loss_client_public_dataset_transfer"].append(loss_public)
 
+        if self.validation_dataloader is not None:
+            acc_val = self.score(self.validation_dataloader)
+            print("acc on validation dataset: ", acc_val)
+            logging["acc_val"].append(copy.deepcopy(acc_val))
+
         for i in range(1, self.transfer_epoch_private + 1):
             loss_local = self.train_client(public=False)
             print(f"epoch {i} (local - pretrain): {loss_local}")
             logging["loss_client_local_dataset_transfer"].append(loss_local)
+
+        if self.validation_dataloader is not None:
+            acc_val = self.score(self.validation_dataloader)
+            print("acc on validation dataset: ", acc_val)
+            logging["acc_val"].append(copy.deepcopy(acc_val))
 
         for i in range(1, self.num_communication + 1):
 
