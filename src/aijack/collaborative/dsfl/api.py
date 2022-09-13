@@ -79,12 +79,13 @@ class DSFLAPI(BaseFLKnowledgeDistillationAPI):
 
             # distillation
             temp_consensus_loss = []
-            for j, client in enumerate(self.clients):
-                for _ in range(self.epoch_local_distillation):
-                    consensus_loss = client.approach_consensus(
-                        self.client_optimizers[j]
-                    )
-                temp_consensus_loss.append(consensus_loss)
+            if len(self.clients) > 1:
+                for j, client in enumerate(self.clients):
+                    for _ in range(self.epoch_local_distillation):
+                        consensus_loss = client.approach_consensus(
+                            self.client_optimizers[j]
+                        )
+                    temp_consensus_loss.append(consensus_loss)
             logging["loss_client_consensus"].append(temp_consensus_loss)
 
             for _ in range(self.epoch_global_distillation):
