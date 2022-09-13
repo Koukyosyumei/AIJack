@@ -109,13 +109,14 @@ class FedMDAPI(BaseFLKnowledgeDistillationAPI):
 
             # Digest
             temp_consensus_loss = []
-            for j, client in enumerate(self.clients):
-                for _ in range(self.consensus_epoch):
-                    consensus_loss = client.approach_consensus(
-                        self.client_optimizers[j]
-                    )
-                print(f"epoch {i}, client {j}: {consensus_loss}")
-                temp_consensus_loss.append(consensus_loss)
+            if len(self.clients) > 1:
+                for j, client in enumerate(self.clients):
+                    for _ in range(self.consensus_epoch):
+                        consensus_loss = client.approach_consensus(
+                            self.client_optimizers[j]
+                        )
+                    print(f"epoch {i}, client {j}: {consensus_loss}")
+                    temp_consensus_loss.append(consensus_loss)
             logging["loss_client_consensus"].append(temp_consensus_loss)
 
             # Revisit
