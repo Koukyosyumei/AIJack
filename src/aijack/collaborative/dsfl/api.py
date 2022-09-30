@@ -76,6 +76,7 @@ class DSFLAPI(BaseFLKnowledgeDistillationAPI):
             logging["loss_local"].append(loss_local)
 
             self.server.action()
+            self.custom_action(self)
 
             # distillation
             temp_consensus_loss = []
@@ -105,7 +106,5 @@ class DSFLAPI(BaseFLKnowledgeDistillationAPI):
                 acc_val = self.score(self.validation_dataloader)
                 print(f"epoch={i} acc on validation dataset: ", acc_val)
                 logging["acc_val"].append(copy.deepcopy(acc_val))
-
-            self.custom_action(self)
 
         return logging
