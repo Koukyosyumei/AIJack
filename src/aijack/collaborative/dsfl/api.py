@@ -76,13 +76,18 @@ class DSFLAPI(BaseFLKnowledgeDistillationAPI):
             logging["loss_local"].append(loss_local)
 
             self.server.action()
-            self.custom_action(self)
 
             acc_on_local_dataset = self.local_score()
             print(f"epoch={i} acc on local datasets: ", acc_on_local_dataset)
             logging["acc_local"].append(acc_on_local_dataset)
 
             # distillation
+            for _ in range(self.epoch_global_distillation):
+                loss_global = self.server.update_globalmodel(self.server_optimizer)
+            logging["loss_server_consensus"].append(loss_global)
+            
+            self.custom_action(self)
+            
             temp_consensus_loss = []
             if len(self.clients) > 1:
                 for j, client in enumerate(self.clients):
@@ -92,10 +97,6 @@ class DSFLAPI(BaseFLKnowledgeDistillationAPI):
                         )
                     temp_consensus_loss.append(consensus_loss)
             logging["loss_client_consensus"].append(temp_consensus_loss)
-
-            for _ in range(self.epoch_global_distillation):
-                loss_global = self.server.update_globalmodel(self.server_optimizer)
-            logging["loss_server_consensus"].append(loss_global)
 
             print(f"epoch {i}: loss_local", loss_local)
             print(f"epoch {i}: loss_client_consensus", temp_consensus_loss)
