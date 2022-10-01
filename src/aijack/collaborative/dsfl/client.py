@@ -23,7 +23,7 @@ class DSFLClient(BaseClient):
         public_dataloader,
         output_dim=1,
         round_decimal=None,
-        consensus_scale=0.1,
+        consensus_scale=1.0,
         device="cpu",
         user_id=0,
     ):
