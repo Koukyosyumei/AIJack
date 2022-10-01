@@ -23,6 +23,7 @@ class DSFLClient(BaseClient):
         public_dataloader,
         output_dim=1,
         round_decimal=None,
+        consensus_scale=0.1,
         device="cpu",
         user_id=0,
     ):
@@ -32,6 +33,7 @@ class DSFLClient(BaseClient):
         self.round_decimal = round_decimal
         self.device = device
         self.global_logit = None
+        self.consensus_scale = consensus_scale
 
         len_public_dataloader = len(self.public_dataloader.dataset)
         self.logit2server = torch.ones((len_public_dataloader, output_dim)).to(
@@ -80,7 +82,9 @@ class DSFLClient(BaseClient):
             y_global = self.global_logit[idx, :].to(self.device).detach()
             consensus_optimizer.zero_grad()
             y_local = self(x)
-            loss_consensus = crossentropyloss_between_logits(y_local, y_global)
+            loss_consensus = self.consensus_scale * crossentropyloss_between_logits(
+                y_local, y_global
+            )
             loss_consensus.backward()
             consensus_optimizer.step()
             running_loss += loss_consensus.item()
