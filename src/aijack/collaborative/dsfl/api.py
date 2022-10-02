@@ -85,9 +85,9 @@ class DSFLAPI(BaseFLKnowledgeDistillationAPI):
             for _ in range(self.epoch_global_distillation):
                 loss_global = self.server.update_globalmodel(self.server_optimizer)
             logging["loss_server_consensus"].append(loss_global)
-            
+
             self.custom_action(self)
-            
+
             temp_consensus_loss = []
             if len(self.clients) > 1:
                 for j, client in enumerate(self.clients):
