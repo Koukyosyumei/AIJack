@@ -39,14 +39,12 @@ def prepare_dataloader(num_clients, myid, train=True, path=""):
         idx = np.array_split(idxs, num_clients, 0)[myid - 1]
         dataset.data = dataset.data[idx]
         dataset.targets = dataset.targets[idx]
-        print(f"the size of training dataset (myid={myid}) is {len(idx)}")
         train_loader = torch.utils.data.DataLoader(
             dataset, batch_size=training_batch_size
         )
         return train_loader
     else:
         dataset = datasets.MNIST(path, train=False, download=True, transform=transform)
-        print(f"the size of test dataset is {len(dataset.targets)}")
         test_loader = torch.utils.data.DataLoader(dataset, batch_size=test_batch_size)
         return test_loader
 
@@ -137,7 +135,7 @@ def main():
     t0[0] = t2 - t1
     comm.Reduce(t0, t_w, op=MPI.MAX, root=0)
     if myid == 0:
-        print("  execution time = : ", t_w[0], "  [sec.] \n")
+        print("Execution time = : ", t_w[0], "  [sec.] \n")
 
 
 if __name__ == "__main__":
