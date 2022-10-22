@@ -20,7 +20,9 @@
 <img src="https://badgen.net/github/forks/Koukyosyumei/AIjack">
 </div>
 
-*❤️ If you like AIJack, please consider [becoming a GitHub Sponsor](https://github.com/sponsors/Koukyosyumei) ❤️*
+<center>
+❤️ <i>If you like AIJack, please consider <a href="https://github.com/sponsors/Koukyosyumei">becoming a GitHub Sponsor</a>)</i> ❤️
+</center>
 
 # What is AIJack?
 
