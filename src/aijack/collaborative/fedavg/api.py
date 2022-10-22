@@ -1,3 +1,6 @@
+import copy
+
+
 class FedAVGAPI:
     def __init__(
         self,
@@ -75,3 +78,56 @@ class FedAVGAPI:
             self.server.distribtue()
 
             self.custom_action(self)
+
+
+class MPIFedAVGAPI:
+    def __init__(
+        self,
+        comm,
+        party,
+        is_server,
+        criterion,
+        local_optimizer=None,
+        local_dataloader=None,
+        num_communication=1,
+        local_epoch=1,
+        custom_action=lambda x: x,
+        device="cpu",
+    ):
+        self.comm = comm
+        self.party = party
+        self.is_server = is_server
+        self.criterion = criterion
+        self.local_optimizer = local_optimizer
+        self.local_dataloader = local_dataloader
+        self.num_communication = num_communication
+        self.local_epoch = local_epoch
+        self.custom_action = custom_action
+        self.device = device
+
+    def run(self):
+        for _ in range(self.num_communication):
+            if self.is_server:
+                self.party.action()
+                self.comm.Barrier()
+            else:
+                self.party.download()
+                self.local_train()
+                self.party.upload()
+                self.party.model.zero_grad()
+                self.comm.Barrier()
+
+    def local_train(self):
+        self.party.prev_parameters = []
+        for param in self.party.model.parameters():
+            self.party.prev_parameters.append(copy.deepcopy(param))
+
+        for _ in range(self.local_epoch):
+            for (data, target) in self.local_dataloader:
+                self.party.optimizer.zero_grad()
+                data = data.to(self.party.device)
+                target = target.to(self.party.device)
+                output = self.party.model(data)
+                loss = self.criterion(output, target)
+                loss.backward()
+                self.local_optimizer.step()
