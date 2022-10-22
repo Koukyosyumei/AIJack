@@ -113,19 +113,22 @@ class MPIFedAVGServer(BaseServer):
         lr=0.1,
         optimizer_type="sgd",
         optimizer_kwargs={},
+        device="cpu",
     ):
-        super(MPIFedAVGServer, self).__init__(None, global_model, server_id=server_id)
+        super(MPIFedAVGServer, self).__init__(
+            client_ids, global_model, server_id=server_id
+        )
         self.comm = comm
         self.myid = myid
         self.client_ids = client_ids
 
         self.lr = lr
 
-        self.round = 1
+        self.round = 0
         self.num_clients = len(client_ids)
+        self.device = device
 
         self._setup_optimizer(optimizer_type, **optimizer_kwargs)
-        self.send_parameters()
 
     def _setup_optimizer(self, optimizer_type, **kwargs):
         if optimizer_type == "sgd":
@@ -145,7 +148,7 @@ class MPIFedAVGServer(BaseServer):
 
     def send_parameters(self):
         global_parameters = []
-        for params in self.model.parameters():
+        for params in self.server_model.parameters():
             global_parameters.append(copy.copy(params).reshape(-1).tolist())
 
         for client_id in self.client_ids:
@@ -153,8 +156,9 @@ class MPIFedAVGServer(BaseServer):
 
     def action(self):
         self.receive()
-        self.updata()
+        self.update()
         self.send_parameters()
+        self.round += 1
 
     def receive(self):
         self.receive_local_gradients()
@@ -165,7 +169,7 @@ class MPIFedAVGServer(BaseServer):
         while len(self.received_gradients) < self.num_clients:
             gradients_flattend = self.comm.recv(tag=GRADIENTS_TAG)
             gradients_reshaped = []
-            for params, grad in zip(self.model.parameters(), gradients_flattend):
+            for params, grad in zip(self.server_model.parameters(), gradients_flattend):
                 gradients_reshaped.append(
                     torch.Tensor(grad).to(self.device).reshape(params.shape)
                 )
@@ -180,7 +184,7 @@ class MPIFedAVGServer(BaseServer):
 
     def _aggregate(self):
         self.aggregated_gradients = [
-            torch.zeros_like(params) for params in self.model.parameters()
+            torch.zeros_like(params) for params in self.server_model.parameters()
         ]
         len_gradients = len(self.aggregated_gradients)
 

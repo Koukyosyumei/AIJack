@@ -106,16 +106,23 @@ class MPIFedAVGAPI:
         self.device = device
 
     def run(self):
+        if self.is_server:
+            self.party.send_parameters()
+        else:
+            self.party.download()
+        self.comm.Barrier()
+
         for _ in range(self.num_communication):
             if self.is_server:
                 self.party.action()
-                self.comm.Barrier()
             else:
-                self.party.download()
                 self.local_train()
                 self.party.upload()
                 self.party.model.zero_grad()
-                self.comm.Barrier()
+                self.party.download()
+
+            self.custom_action(self)
+            self.comm.Barrier()
 
     def local_train(self):
         self.party.prev_parameters = []
@@ -123,11 +130,13 @@ class MPIFedAVGAPI:
             self.party.prev_parameters.append(copy.deepcopy(param))
 
         for _ in range(self.local_epoch):
+            running_loss = 0
             for (data, target) in self.local_dataloader:
-                self.party.optimizer.zero_grad()
-                data = data.to(self.party.device)
-                target = target.to(self.party.device)
+                self.local_optimizer.zero_grad()
+                data = data.to(self.device)
+                target = target.to(self.device)
                 output = self.party.model(data)
                 loss = self.criterion(output, target)
                 loss.backward()
                 self.local_optimizer.step()
+                running_loss += loss.item()
