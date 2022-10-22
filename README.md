@@ -1,6 +1,6 @@
 <!--
   Title: AIJack
-  Description: AIJack is a fantastic framework to demonstrate security risks of machine learning and deep learning, such as model inversion attack, poisoning attack, and membership inference attack.
+  Description: AIJack is a fantastic framework demonstrating the security risks of machine learning and deep learning, such as Model Inversion, poisoning attack, and membership inference attack.
   Author: Hideaki Takahashi
   -->
 
@@ -9,7 +9,7 @@
   <br>
   <img src="logo/logo_small.png" alt="AIJack" width="200"></a>
   <br>
-  Try to hijack AI!
+  Hijack AI!
   <br>
 
 </h1>
@@ -20,111 +20,92 @@
 <img src="https://badgen.net/github/forks/Koukyosyumei/AIjack">
 </div>
 
-# Quick Start
+*❤️ If you like AIJack, please consider [becoming a GitHub Sponsor](https://github.com/sponsors/Koukyosyumei) ❤️*
 
-This python package implements algorithms for AI security such as Model Inversion, Poisoning Attack, Evasion Attack, Differential Privacy, and Homomorphic Encryption.
+# What is AIJack?
 
-## Install
+AIJack allows you to assess the privacy and security risks of machine learning algorithms such as *Model Inversion*, *Poisoning Attack* and *Evasion Attack*. AIJack also provides various defense techniques like *Federated Learning*, *Split Learning*, *Differential Privacy*, *Homomorphic Encryption*, and other heuristic approaches. We currently support more than 20 state-of-arts methods.
+
+# Table of Contents
+
+
+- [What is AIJack?](#what-is-aijack)
+- [Table of Contents](#table-of-contents)
+- [Installation](#installation)
+- [Supported Algorithms](#supported-algorithms)
+  - [Distributed Learning](#distributed-learning)
+  - [Attack](#attack)
+  - [Defense](#defense)
+- [Quick Start](#quick-start)
+  - [Federated Learning and Model Inversion Attack](#federated-learning-and-model-inversion-attack)
+  - [Split Learning and Label Leakage Attack](#split-learning-and-label-leakage-attack)
+  - [DPSGD (SGD with Differential Privacy)](#dpsgd-sgd-with-differential-privacy)
+  - [SecureBoost (XGBoost with Homomorphic Encryption)](#secureboost-xgboost-with-homomorphic-encryption)
+  - [Evasion Attack](#evasion-attack)
+  - [Poisoning Attack](#poisoning-attack)
+- [Contact](#contact)
+
+# Installation
 
 ```
 # pip install pybind11 (uncomment if necessary)
 pip install git+https://github.com/Koukyosyumei/AIJack
 ```
 
-## Supported Algorithms
+# Supported Algorithms
 
-### 1. Collaborative Learning
+## Distributed Learning
 
->>:globe_with_meridians: Train a single model without sharing the private datasets of multiple clients.
+|             | Example                                            | Paper                                     |
+| ----------- | -------------------------------------------------- | ----------------------------------------- |
+| FedAVG      | [example](example/model_inversion/soteria.py)      | [paper](https://arxiv.org/abs/1602.05629) |
+| FedProx     | WIP                                                | [paper](https://arxiv.org/abs/1812.06127) |
+| FedKD       | [example](test/collaborative/fedkd/test_fedkd.py)  | [paper](https://arxiv.org/abs/2108.13323) |
+| FedMD       | WIP                                                | [paper](https://arxiv.org/abs/1910.03581) |
+| FedGEMS     | WIP                                                | [paper](https://arxiv.org/abs/2110.11027) |
+| DSFL        | WIP                                                | [paper](https://arxiv.org/abs/2008.06180) |
+| SplitNN     | [example](example/label_leakage/label_leakage.py)  | [paper](https://arxiv.org/abs/1812.00564) |
+| SecureBoost | [example](src/aijack/collaborative/tree/README.md) | [paper](https://arxiv.org/abs/1901.08755) |
 
-#### 1.1. NN
+## Attack
 
-- FedAVG ([example](example/model_inversion/soteria.py)) ([paper](https://arxiv.org/abs/1602.05629))
-- FedProx ([paper](https://arxiv.org/abs/1812.06127))
-- FedKD ([example](test/collaborative/fedkd/test_fedkd.py)) ([paper](https://arxiv.org/abs/2108.13323))
-- FedMD ([paper](https://arxiv.org/abs/1910.03581))
-- FedGEMS ([paper](https://arxiv.org/abs/2110.11027))
-- DSFL ([paper](https://arxiv.org/abs/2008.06180))
-- SplitNN ([example](example/label_leakage/label_leakage.py)) ([paper](https://arxiv.org/abs/1812.00564))
+|                          | Attack Type          | Example                                                                    | Paper                                                                                                                                               |
+| ------------------------ | -------------------- | -------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- |
+| MI-FACE                  | Model Inversion      | [example](example/model_inversion/mi_face.py)                              | [paper](https://dl.acm.org/doi/pdf/10.1145/2810103.2813677)                                                                                         |
+| DLG                      | Model Inversion      | [example](example/model_inversion/gradient_inversion_attack.md)            | [paper](https://papers.nips.cc/paper/2019/hash/60a6c4002cc7b29142def8871531281a-Abstract.html)                                                      |
+| iDLG                     | Model Inversion      | [example](example/model_inversion/gradient_inversion_attack.md)            | [paper](https://arxiv.org/abs/2001.02610)                                                                                                           |
+| GS                       | Model Inversion      | [example](example/model_inversion/gradient_inversion_attack.md)            | [paper](https://proceedings.neurips.cc/paper/2020/hash/c4ede56bbd98819ae6112b20ac6bf145-Abstract.html)                                              |
+| CPL                      | Model Inversion      | [example](example/model_inversion/gradient_inversion_attack.md)            | [paper](https://arxiv.org/abs/2004.10397)                                                                                                           |
+| GradInversion            | Model Inversion      | [example](example/model_inversion/gradient_inversion_attack.md)            | [paper](https://openaccess.thecvf.com/content/CVPR2021/papers/Yin_See_Through_Gradients_Image_Batch_Recovery_via_GradInversion_CVPR_2021_paper.pdf) |
+| GAN Attack               | Model Inversion      | [example](example/model_inversion/gan_attack.py)                           | [paper](https://arxiv.org/abs/1702.07464)                                                                                                           |
+| Shadow Attack            | Membership Inference | [example](example/membership_inference/membership_inference_CIFAR10.ipynb) | [paper](https://arxiv.org/abs/1610.05820)                                                                                                           |
+| Norm attack              | Label Leakage        | [example](example/label_leakage/label_leakage.py)                          | [paper](https://arxiv.org/abs/2102.08504)                                                                                                           |
+| Gradient descent attacks | Evasion Attack       | [example](example/adversarial_example/example_evasion_attack_svm.ipynb)    | [paper](https://arxiv.org/abs/1708.06131)                                                                                                           |
+| SVM Poisoning            | Poisoning Attack     | [example](example/adversarial_example/example_poison_attack.ipynb)         | [paper](https://arxiv.org/abs/1206.6389)                                                                                                            |
 
-#### 1.2. Tree
 
-- SecureBoost ([example](src/aijack/collaborative/tree/README.md)) ([paper](https://arxiv.org/abs/1901.08755))
+## Defense
 
-### 2. Attack
+|          | Defense Type           | Example                                                            | Paper                                                                                                                                                              |
+| -------- | ---------------------- | ------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| DPSGD    | Differential Privacy   | [example](example/model_inversion/mi_face_differential_privacy.py) | [paper](https://arxiv.org/abs/1607.00133)                                                                                                                          |
+| Paillier | Homomorphic Encryption | [README](src/aijack/defense/paillier/README.md)                    | [paper](https://link.springer.com/chapter/10.1007/3-540-48910-X_16)                                                                                                |  |
+| CKKS     | Homomorphic Encryption | [example](test/defense/ckks/test_core.py)                          | [paper](https://eprint.iacr.org/2016/421.pdf)                                                                                                                      |  |
+| Soteria  | Others                 | [example](example/model_inversion/soteria.py)                      | [paper](https://openaccess.thecvf.com/content/CVPR2021/papers/Sun_Soteria_Provable_Defense_Against_Privacy_Leakage_in_Federated_Learning_From_CVPR_2021_paper.pdf) |
+| MID      | Others                 | [example](example/model_inversion/mid.ipynb)                       | [paper](https://arxiv.org/abs/2009.05241)                                                                                                                          |
 
-#### 2.1. Model Inversion Attack
 
->>:zap: Reconstruct the private training dataset from the victim's model.
+# Quick Start
 
-- MI-FACE ([example](example/model_inversion/mi_face.py)) ([paper](https://dl.acm.org/doi/pdf/10.1145/2810103.2813677))
-- DLG ([example](example/model_inversion/gradient_inversion_attack.md)) ([paper](https://papers.nips.cc/paper/2019/hash/60a6c4002cc7b29142def8871531281a-Abstract.html))
-- iDLG ([example](example/model_inversion/gradient_inversion_attack.md)) ([paper](https://arxiv.org/abs/2001.02610))
-- GS ([example](example/model_inversion/gradient_inversion_attack.md)) ([paper](https://proceedings.neurips.cc/paper/2020/hash/c4ede56bbd98819ae6112b20ac6bf145-Abstract.html))
-- CPL ([example](example/model_inversion/gradient_inversion_attack.md)) ([paper](https://arxiv.org/abs/2004.10397))
-- GradInversion ([example](example/model_inversion/gradient_inversion_attack.md)) ([paper](https://openaccess.thecvf.com/content/CVPR2021/papers/Yin_See_Through_Gradients_Image_Batch_Recovery_via_GradInversion_CVPR_2021_paper.pdf))
-- GAN attack ([example](example/model_inversion/gan_attack.py)) ([paper](https://arxiv.org/abs/1702.07464))
+We briefly introduce some example usages. You can also find more examples in [`example`](example).
 
-#### 2.2. Membership Inference Attack
+## Federated Learning and Model Inversion Attack
 
->>:zap: Determine whether the model’s training dataset contains the target record.
+FedAVG is the most representative algorithm of Federated Learning, where multiple clients jointly train a single model without sharing their local datasets.
 
-- Blak-box attack with shadow models ([example](example/membership_inference/membership_inference_CIFAR10.ipynb)) ([paper](https://arxiv.org/abs/1610.05820))
+- Base
 
-#### 2.3. Label Leakage Attack
-
->>:zap: Infer the label information of the dataset.
-
-- Norm attack ([example](example/label_leakage/label_leakage.py)) ([paper](https://arxiv.org/abs/2102.08504))
-
-#### 2.4. Evasion Attack
-
->>:zap: Generate data that the victim model cannot classify correctly.
-
-- Gradient descent attacks ([example](example/adversarial_example/example_evasion_attack_svm.ipynb)) ([paper](https://arxiv.org/abs/1708.06131))
-
-#### 2.5. Poisoning Attack
-
->>:zap: Inject malicious data into the training dataset to control the behavior of the trained models.
-
-- Poisoning attack against support vector machines ([example](example/adversarial_example/example_poison_attack.ipynb)) ([paper](https://arxiv.org/abs/1206.6389))
-
-### 3. Defense
-
-#### 3.1. Differential Privacy
-
->>:closed_lock_with_key: Provide statistical privacy guarantee.
-
-- DPSGD ([example](example/model_inversion/mi_face_differential_privacy.py)) ([paper](https://arxiv.org/abs/1607.00133))
-
-#### 3.2 Homomorphic Encryption
-
->>:closed_lock_with_key: Perform mathematical operations on encrypted data
-
-- Paillier ([README](src/aijack/defense/paillier/README.md))
-- [WIP] CKKS ([example](test/defense/ckks/test_core.py))
-
-#### 3.3. Others
-
-- Soteria ([example](example/model_inversion/soteria.py)) ([paper](https://openaccess.thecvf.com/content/CVPR2021/papers/Sun_Soteria_Provable_Defense_Against_Privacy_Leakage_in_Federated_Learning_From_CVPR_2021_paper.pdf))
-- MID ([example](example/model_inversion/mid.ipynb)) ([paper](https://arxiv.org/abs/2009.05241))
-
-## Resources
-
-[WIP] [Official documentations (https://koukyosyumei.github.io/AIJack)](https://koukyosyumei.github.io/AIJack) \
-[WIP] [Examples](https://github.com/Koukyosyumei/AIJack/tree/main/example)
-
-## Contact
-
-welcome2aijack[@]gmail.com
-
------------------------------------------------------------------------
-
-## Examples of Usage
-
-### Collaborative Learning
-
-- FedAVG
+You can write the process of FedAVG like the standard training with Pytorch.
 
 ```Python
 from aijack.collaborative import FedAvgClient, FedAvgServer
@@ -144,7 +125,38 @@ for client, local_trainloader, local_optimizer in zip(clients, trainloaders, opt
 server.action()
 ```
 
-- SplitNN
+- Attack
+
+You can simulate the model inversion attack against FedAVG.
+
+```Python
+from aijack.attack import GradientInversion_Attack
+
+dlg_manager = GradientInversionAttackManager(input_shape, distancename="l2")
+FedAvgServer_DLG = dlg.attach(FedAvgServer)
+server = FedAvgServer_DLG(clients, global_model, lr=lr)
+
+reconstructed_image, reconstructed_label = server.attack()
+```
+
+- Defense
+
+One possible defense for clients of FedAVG is Soteria, and you need only two additional lines to implement Soteria.
+
+```Python
+from aijack.collaborative import FedAvgClient
+from aijack.defense import SoteriaManager
+
+manager = SoteriaManager("conv", "lin", target_layer_name="lin.0.weight")
+SoteriaFedAvgClient = manager.attach(FedAvgClient)
+client = SoteriaFedAvgClient(Net(), user_id=i, lr=lr)
+```
+
+## Split Learning and Label Leakage Attack
+
+You can use split learning, where only one party has the ground-truth labels.
+
+- Base
 
 ```Python
 from aijack.collaborative import SplitNN, SplitNNClient
@@ -162,129 +174,25 @@ for data dataloader:
     splitnn.step()
 ```
 
-### Attack against Federated Learning
+- Attack
+
+We support norm-based label leakage attack against Split Learning.
 
 ```Python
-from aijack.attack import GradientInversion_Attack
-
-# DLG Attack (Zhu, Ligeng, Zhijian Liu, and Song Han. "Deep leakage from gradients." Advances in Neural Information Processing Systems 32 (2019).)
-dlg_manager = GradientInversionAttackManager(input_shape, distancename="l2")
-FedAvgServer_DLG = dlg.attach(FedAvgServer)
-
-"""
-# GS Attack (Geiping, Jonas, et al. "Inverting gradients-how easy is it to break privacy in federated learning?." Advances in Neural Information Processing Systems 33 (2020): 16937-16947.)
-gs_manager = GradientInversionAttackManager(input_shape, distancename="cossim", tv_reg_coef=0.01)
-FedAvgServer_GS = gs.attach(FedAvgServer)
-
-# iDLG (Zhao, Bo, Konda Reddy Mopuri, and Hakan Bilen. "idlg: Improved deep leakage from gradients." arXiv preprint arXiv:2001.02610 (2020).)
-idlg_manager = GradientInversionAttackManager(input_shape, distancename="l2", optimize_label=False)
-FedAvgServer_iDLG = idlg.attach(FedAvgServer)
-
-# CPL (Wei, Wenqi, et al. "A framework for evaluating gradient leakage attacks in federated learning." arXiv preprint arXiv:2004.10397 (2020).)
-cpl_manager = GradientInversionAttackManager(input_shape, distancename="l2", optimize_label=False, lm_reg_coef=0.01)
-FedAvgServer_CPL = cpl.attach(FedAvgServer)
-
-# GradInversion (Yin, Hongxu, et al. "See through gradients: Image batch recovery via gradinversion." Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition. 2021.)
-gi_manager = GradientInversionAttackManager(input_shape, distancename="l2", optimize_label=False, bn_reg_layers=[net.body[1], net.body[4], net.body[7]],
-                                    group_num = 5, tv_reg_coef=0.00, l2_reg_coef=0.0001, bn_reg_coef=0.001, gc_reg_coef=0.001)
-FedAvgServer_GI = gi.attach(FedAvgServer)
-"""
-
-server = FedAvgServer_DLG(clients, global_model, lr=lr)
-# --- normal federated learning --- #
-reconstructed_image, reconstructed_label = server.attack()
-```
-
-- GAN Attack (client-side model inversion attack against federated learning)
-
-```Python
-# Hitaj, Briland, Giuseppe Ateniese, and Fernando Perez-Cruz. "Deep models under the GAN: information leakage from collaborative deep learning." Proceedings of the # 2017 ACM SIGSAC Conference on Computer and Communications Security. 2017.
-from aijack.attack import GANAttackManager
-from aijack.collaborative import FedAvgClient
-
-manager = GANAttackManager(
-    target_label,
-    generator,
-    optimizer_g,
-    criterion,
-    nz=nz,
-)
-GANAttackFedAvgClient = manager.attach(FedAvgClient)
-client = GANAttackFedAvgClient(client)
-# --- normal federated learning --- #
-reconstructed_image = client.attack(1)
-```
-
-### Defense for Federated Learning
-
-- Soteria
-
-```Python
-# Sun, Jingwei, et al. "Soteria: Provable defense against privacy leakage in federated learning from representation perspective." Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition. 2021.
-from aijack.collaborative import FedAvgClient
-from aijack.defense import SoteriaManager
-
-manager = SoteriaManager("conv", "lin", target_layer_name="lin.0.weight")
-SoteriaFedAvgClient = manager.attach(FedAvgClient)
-client = SoteriaFedAvgClient(Net(), user_id=i, lr=lr)
-# --- normal FL training ---
-```
-
-### Attack against Split Learning
-
-- Label Leakage Attack
-
-```Python
-# Li, Oscar, et al. "Label leakage and protection in two-party split learning." arXiv preprint arXiv:2102.08504 (2021).
 from aijack.attack import NormAttackManager
 from aijack.collaborative import SplitNN
 
 manager = NormAttackManager(criterion, device="cpu")
 NormAttackSplitNN = manager.attach(SplitNN)
 normattacksplitnn = NormAttackSplitNN(clients, optimizers)
-# --- normal split learning --- #
 leak_auc = normattacksplitnn.attack(target_dataloader)
 ```
 
-### Other Attacks
+## DPSGD (SGD with Differential Privacy)
 
-- MI-FACE (model inversion attack)
-
-```Python
-# Fredrikson, Matt, Somesh Jha, and Thomas Ristenpart. "Model inversion attacks that exploit confidence information and basic countermeasures." Proceedings of the 22nd # ACM SIGSAC conference on computer and communications security. 2015.
-from aijack.attack import MI_FACE
-
-mi = MI_FACE(target_torch_net, input_shape)
-reconstructed_data, _ = mi.attack(target_label, lam, num_itr)
-```
-
-- Evasion Attack
-
-```python
-# Biggio, Battista, et al. "Evasion attacks against machine learning at test time." Joint European conference on machine learning and knowledge discovery in databases. Springer, Berlin, Heidelberg, 2013.
-from aijack.attack import Evasion_attack_sklearn
-
-attacker = Evasion_attack_sklearn(target_model=clf, X_minus_1=attackers_dataset)
-result, log = attacker.attack(initial_datapoint)
-```
-
-- Poisoning Attack
-
-```python
-# Biggio, Battista, Blaine Nelson, and Pavel Laskov. "Poisoning attacks against support vector machines." arXiv preprint arXiv:1206.6389 (2012).
-from aijack.attack import Poison_attack_sklearn
-
-attacker = Poison_attack_sklearn(clf, X_train_, y_train_, t=0.5)
-xc_attacked, log = attacker.attack(xc, 1, X_valid, y_valid)
-```
-
-### Other Defences
-
-
-- DPSGD (Differential Privacy)
+DPSGD is an optimizer based on Differential Privacy and theoretically privatizes your deep learning model. We implement the core of differential privacy mechanisms with C++, which is faster than many other libraries purely implemented with Python.
 
 ```Python
-#  Abadi, Martin, et al. "Deep learning with differential privacy." Proceedings of the 2016 ACM SIGSAC conference on computer and communications security. 2016.
 from aijack.defense import GeneralMomentAccountant
 from aijack.defense import PrivacyManager
 
@@ -304,57 +212,64 @@ for data in lot_loader(trainset):
     optimizer.step()
 ```
 
-- MID
+## SecureBoost (XGBoost with Homomorphic Encryption)
 
-```Python
-# Wang, Tianhao, Yuheng Zhang, and Ruoxi Jia. "Improving robustness to model inversion attacks via mutual information regularization." arXiv preprint arXiv:2009.05241 (2020).
-from aijack.defense import VIB, mib_loss
+SecureBoost is a vertically federated version of XGBoost, where each party encrypts sensitive information with Paillier Encryption. You need additional compile to use secureboost, which requires Boost 1.65 or later.
 
-net = VIB(encoder, decoder, dim_of_latent_space, num_samples=samples_amount)
-optimizer = torch.optim.Adam(net.parameters(), lr=1e-4)
-
-for x_batch, y_batch in tqdm(train_loader):
-    optimizer.zero_grad()
-    y_pred, result_dict = net(x_batch)
-    loss = net.loss(y_batch, result_dict)
-    loss.backward()
-    optimizer.step()
+```
+cd src/aijack/collaborative/tree
+pip install -e .
 ```
 
-- Paillier
-
-Key generation
 
 ```Python
->>> from aijack_paillier import PaillierKeyGenerator
->>> keygenerator = PaillierKeyGenerator(512)
->>> pk, sk = keygenerator.generate_keypair()
+from aijack_secureboost import SecureBoostParty, SecureBoostClassifier, PaillierKeyGenerator
 
->>> pk.get_publickeyvalues()
-('88227558341633487968602031548884474473159932637542421321125729261006034700025348204644005240122191376832590701931729414754607546418236854601939515234119196121342390460128908962474840402676824539316895354970651799849034208946592214675397708295317235925162498035034951208255290311663747050727479504325436699623', '88227558341633487968602031548884474473159932637542421321125729261006034700025348204644005240122191376832590701931729414754607546418236854601939515234119196121342390460128908962474840402676824539316895354970651799849034208946592214675397708295317235925162498035034951208255290311663747050727479504325436699624')
+keygenerator = PaillierKeyGenerator(512)
+pk, sk = keygenerator.generate_keypair()
+
+sclf = SecureBoostClassifier(2,subsample_cols,min_child_weight,depth,min_leaf,
+                  learning_rate,boosting_rounds,lam,gamma,eps,0,0,1.0,1,True)
+
+sp1 = SecureBoostParty(x1, 2, [0], 0, min_leaf, subsample_cols, 256, False, 0)
+sp2 = SecureBoostParty(x2, 2, [1], 1, min_leaf, subsample_cols, 256, False, 0)
+
+sparties = [sp1, sp2]
+
+sparties[0].set_publickey(pk)
+sparties[1].set_publickey(pk)
+sparties[0].set_secretkey(sk)
+
+sclf.fit(sparties, y)
+
+sclf.predict_proba(X)
+
 ```
 
-Encrypt & Decrypt
+## Evasion Attack
+
+Evasion Attack generates data that the victim model cannot classify correctly.
 
 ```Python
->>> ct_1 = pk.encrypt(13)
->>> pk.decrypt4int(ct_1)
-13
+from aijack.attack import Evasion_attack_sklearn
+
+attacker = Evasion_attack_sklearn(target_model=clf, X_minus_1=attackers_dataset)
+result, log = attacker.attack(initial_datapoint)
 ```
 
-Arithmetic operation
+## Poisoning Attack
+
+Poisoning Attack injects malicious data into the training dataset to control the behavior of the trained models.
 
 ```Python
->>> ct_2 = ct_1 * 2
->>> pk.decrypt4int(ct_2)
-26
+from aijack.attack import Poison_attack_sklearn
 
->>> ct_3 = ct_1 + 5.6
->>> sk.decrypt2float(ct_3)
-18.6
-
->>> ct_4 = pk.encrypt(18)
->>> ct_5 = ct_1 + ct_4
->>> sk.decrypt2int(ct_5)
-31
+attacker = Poison_attack_sklearn(clf, X_train_, y_train_, t=0.5)
+xc_attacked, log = attacker.attack(xc, 1, X_valid, y_valid)
 ```
+
+-----------------------------------------------------------------------
+
+# Contact
+
+welcome2aijack[@]gmail.com
