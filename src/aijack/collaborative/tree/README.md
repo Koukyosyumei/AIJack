@@ -5,7 +5,7 @@
 
 ```
 cd tree
-plt install -e .
+pip install -e .
 ```
 
 ### Import

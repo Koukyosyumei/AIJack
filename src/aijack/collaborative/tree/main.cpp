@@ -69,6 +69,13 @@ PYBIND11_MODULE(aijack_secureboost, m)
         .def("set_publickey", &SecureBoostParty::set_publickey)
         .def("set_secretkey", &SecureBoostParty::set_secretkey);
 
+    py::class_<SecureBoostParty>(m, "MPISecureBoostParty")
+        .def(py::init<vector<vector<float>>, int, vector<int>, int,
+                      int, float, int, bool, int>())
+        .def("get_lookup_table", &MPISecureBoostParty::get_lookup_table)
+        .def("set_publickey", &MPISecureBoostParty::set_publickey)
+        .def("set_secretkey", &MPISecureBoostParty::set_secretkey);
+
     py::class_<XGBoostNode>(m, "XGBoostNode")
         .def("get_idxs", &XGBoostNode::get_idxs)
         .def("get_party_id", &XGBoostNode::get_party_id)
