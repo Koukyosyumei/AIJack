@@ -9,7 +9,6 @@
 
 #include "xgboost/xgboost.h"
 #include "secureboost/secureboost.h"
-#include "secureboost/mpisecureboost.h"
 #include "../../defense/paillier/src/paillier.h"
 #include "../../defense/paillier/src/keygenerator.h"
 
@@ -121,8 +120,6 @@ PYBIND11_MODULE(aijack_secureboost, m)
         .def("set_publickey", &SecureBoostParty::set_publickey)
         .def("set_secretkey", &SecureBoostParty::set_secretkey);
 
-    py::class_<MPISecureBoostParty>(m, "MPISecureBoostParty");
-
     py::class_<XGBoostNode>(m, "XGBoostNode")
         .def("get_idxs", &XGBoostNode::get_idxs)
         .def("get_party_id", &XGBoostNode::get_party_id)
@@ -171,8 +168,6 @@ PYBIND11_MODULE(aijack_secureboost, m)
         .def("get_estimators", &SecureBoostClassifier::get_estimators)
         .def("predict_raw", &SecureBoostClassifier::predict_raw)
         .def("predict_proba", &SecureBoostClassifier::predict_proba);
-
-    py::class_<MPISecureBoostClassifier>(m, "MPISecureBoostClassifier");
 
 #ifdef VERSION_INFO
     m.attr("__version__") = MACRO_STRINGIFY(VERSION_INFO);
