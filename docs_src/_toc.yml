@@ -1,0 +1,20 @@
+# Table of contents
+# Learn more at https://jupyterbook.org/customize/toc.html
+
+format: jb-book
+root: intro
+parts:
+  - caption: Model Inversion
+    numbered: true
+    chapters:
+      - file: aijack_miface
+      - file: aijack_gradient_inversion_attack
+  - caption: Adversarial Examples
+    numbered: true
+    chapters:
+      - file: aijack_evasion_attack
+      - file: aijack_poison_attack
+  - caption: Others
+    numbered: true
+    chapters:
+      - file: aijack_dp
