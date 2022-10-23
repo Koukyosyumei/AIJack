@@ -20,11 +20,13 @@
 <img src="https://badgen.net/github/forks/Koukyosyumei/AIjack">
 </div>
 
-*❤️ If you like AIJack, please consider [becoming a GitHub Sponsor](https://github.com/sponsors/Koukyosyumei) ❤️*
+<div align="center">
+❤️ <i>If you like AIJack, please consider <a href="https://github.com/sponsors/Koukyosyumei">becoming a GitHub Sponsor</a>)</i> ❤️
+</div>
 
 # What is AIJack?
 
-AIJack allows you to assess the privacy and security risks of machine learning algorithms such as *Model Inversion*, *Poisoning Attack* and *Evasion Attack*. AIJack also provides various defense techniques like *Federated Learning*, *Split Learning*, *Differential Privacy*, *Homomorphic Encryption*, and other heuristic approaches. We currently support more than 20 state-of-arts methods.
+AIJack allows you to assess the privacy and security risks of machine learning algorithms such as *Model Inversion*, *Poisoning Attack* and *Evasion Attack*. AIJack also provides various defense techniques like *Federated Learning*, *Split Learning*, *Differential Privacy*, *Homomorphic Encryption*, and other heuristic approaches. We currently implement more than 20 state-of-arts methods. We also support MPI for some of the distributed algorithms.
 
 # Table of Contents
 
@@ -56,16 +58,16 @@ pip install git+https://github.com/Koukyosyumei/AIJack
 
 ## Distributed Learning
 
-|             | Example                                            | Paper                                     |
-| ----------- | -------------------------------------------------- | ----------------------------------------- |
-| FedAVG      | [example](example/model_inversion/soteria.py)      | [paper](https://arxiv.org/abs/1602.05629) |
-| FedProx     | WIP                                                | [paper](https://arxiv.org/abs/1812.06127) |
-| FedKD       | [example](test/collaborative/fedkd/test_fedkd.py)  | [paper](https://arxiv.org/abs/2108.13323) |
-| FedMD       | WIP                                                | [paper](https://arxiv.org/abs/1910.03581) |
-| FedGEMS     | WIP                                                | [paper](https://arxiv.org/abs/2110.11027) |
-| DSFL        | WIP                                                | [paper](https://arxiv.org/abs/2008.06180) |
-| SplitNN     | [example](example/label_leakage/label_leakage.py)  | [paper](https://arxiv.org/abs/1812.00564) |
-| SecureBoost | [example](src/aijack/collaborative/tree/README.md) | [paper](https://arxiv.org/abs/1901.08755) |
+|             | Example                                                  | Paper                                     |
+| ----------- | -------------------------------------------------------- | ----------------------------------------- |
+| FedAVG      | [example](example/collaborative_learning/mpi_fedavg.py)  | [paper](https://arxiv.org/abs/1602.05629) |
+| FedProx     | [example](example/collaborative_learning/mpi_fedprox.py) | [paper](https://arxiv.org/abs/1812.06127) |
+| FedKD       | [example](test/collaborative/fedkd/test_fedkd.py)        | [paper](https://arxiv.org/abs/2108.13323) |
+| FedMD       | WIP                                                      | [paper](https://arxiv.org/abs/1910.03581) |
+| FedGEMS     | WIP                                                      | [paper](https://arxiv.org/abs/2110.11027) |
+| DSFL        | WIP                                                      | [paper](https://arxiv.org/abs/2008.06180) |
+| SplitNN     | [example](example/label_leakage/label_leakage.py)        | [paper](https://arxiv.org/abs/1812.00564) |
+| SecureBoost | [example](src/aijack/collaborative/tree/README.md)       | [paper](https://arxiv.org/abs/1901.08755) |
 
 ## Attack
 

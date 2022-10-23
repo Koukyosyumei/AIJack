@@ -1,3 +1,6 @@
+import copy
+
+
 class FedAVGAPI:
     def __init__(
         self,
@@ -75,3 +78,65 @@ class FedAVGAPI:
             self.server.distribtue()
 
             self.custom_action(self)
+
+
+class MPIFedAVGAPI:
+    def __init__(
+        self,
+        comm,
+        party,
+        is_server,
+        criterion,
+        local_optimizer=None,
+        local_dataloader=None,
+        num_communication=1,
+        local_epoch=1,
+        custom_action=lambda x: x,
+        device="cpu",
+    ):
+        self.comm = comm
+        self.party = party
+        self.is_server = is_server
+        self.criterion = criterion
+        self.local_optimizer = local_optimizer
+        self.local_dataloader = local_dataloader
+        self.num_communication = num_communication
+        self.local_epoch = local_epoch
+        self.custom_action = custom_action
+        self.device = device
+
+    def run(self):
+        if self.is_server:
+            self.party.send_parameters()
+        else:
+            self.party.download()
+        self.comm.Barrier()
+
+        for _ in range(self.num_communication):
+            if self.is_server:
+                self.party.action()
+            else:
+                self.local_train()
+                self.party.upload()
+                self.party.model.zero_grad()
+                self.party.download()
+
+            self.custom_action(self)
+            self.comm.Barrier()
+
+    def local_train(self):
+        self.party.prev_parameters = []
+        for param in self.party.model.parameters():
+            self.party.prev_parameters.append(copy.deepcopy(param))
+
+        for _ in range(self.local_epoch):
+            running_loss = 0
+            for (data, target) in self.local_dataloader:
+                self.local_optimizer.zero_grad()
+                data = data.to(self.device)
+                target = target.to(self.device)
+                output = self.party.model(data)
+                loss = self.criterion(output, target)
+                loss.backward()
+                self.local_optimizer.step()
+                running_loss += loss.item()

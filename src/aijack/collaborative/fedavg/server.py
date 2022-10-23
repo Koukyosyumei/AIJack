@@ -1,7 +1,11 @@
+import copy
+
 import numpy as np
 import torch
+from mpi4py import MPI
 
 from ..core import BaseServer
+from ..core.utils import GRADIENTS_TAG, PARAMETERS_TAG, RECEIVE_NAN_CODE
 from ..optimizer import AdamFLOptimizer, SGDFLOptimizer
 
 
@@ -96,3 +100,100 @@ class FedAvgServer(BaseServer):
     def distribtue(self):
         for client in self.clients:
             client.download(self.server_model.state_dict())
+
+
+class MPIFedAVGServer(BaseServer):
+    def __init__(
+        self,
+        comm,
+        global_model,
+        myid,
+        client_ids,
+        server_id=0,
+        lr=0.1,
+        optimizer_type="sgd",
+        optimizer_kwargs={},
+        device="cpu",
+    ):
+        super(MPIFedAVGServer, self).__init__(
+            client_ids, global_model, server_id=server_id
+        )
+        self.comm = comm
+        self.myid = myid
+        self.client_ids = client_ids
+
+        self.lr = lr
+
+        self.round = 0
+        self.num_clients = len(client_ids)
+        self.device = device
+
+        self._setup_optimizer(optimizer_type, **optimizer_kwargs)
+
+    def _setup_optimizer(self, optimizer_type, **kwargs):
+        if optimizer_type == "sgd":
+            self.optimizer = SGDFLOptimizer(
+                self.server_model.parameters(), lr=self.lr, **kwargs
+            )
+        elif optimizer_type == "adam":
+            self.optimizer = AdamFLOptimizer(
+                self.server_model.parameters(), lr=self.lr, **kwargs
+            )
+        elif optimizer_type == "none":
+            self.optimizer = None
+        else:
+            raise NotImplementedError(
+                f"{optimizer_type} is not supported. You can specify `sgd`, `adam`, or `none`."
+            )
+
+    def send_parameters(self):
+        global_parameters = []
+        for params in self.server_model.parameters():
+            global_parameters.append(copy.copy(params).reshape(-1).tolist())
+
+        for client_id in self.client_ids:
+            self.comm.send(global_parameters, dest=client_id, tag=PARAMETERS_TAG)
+
+    def action(self):
+        self.receive()
+        self.update()
+        self.send_parameters()
+        self.round += 1
+
+    def receive(self):
+        self.receive_local_gradients()
+
+    def receive_local_gradients(self):
+        self.received_gradients = []
+
+        while len(self.received_gradients) < self.num_clients:
+            gradients_flattend = self.comm.recv(tag=GRADIENTS_TAG)
+            gradients_reshaped = []
+            for params, grad in zip(self.server_model.parameters(), gradients_flattend):
+                gradients_reshaped.append(
+                    torch.Tensor(grad).to(self.device).reshape(params.shape)
+                )
+                if torch.sum(torch.isnan(gradients_reshaped[-1])):
+                    print("the received gradients contains nan")
+                    MPI.COMM_WORLD.Abort(RECEIVE_NAN_CODE)
+
+            self.received_gradients.append(gradients_reshaped)
+
+    def update(self):
+        self.updata_from_gradients()
+
+    def _aggregate(self):
+        self.aggregated_gradients = [
+            torch.zeros_like(params) for params in self.server_model.parameters()
+        ]
+        len_gradients = len(self.aggregated_gradients)
+
+        for gradients in self.received_gradients:
+            for gradient_id in range(len_gradients):
+                self.aggregated_gradients[gradient_id] += (
+                    1 / self.num_clients
+                ) * gradients[gradient_id]
+
+    def updata_from_gradients(self):
+        self._aggregate()
+        self.optimizer.step(self.aggregated_gradients)

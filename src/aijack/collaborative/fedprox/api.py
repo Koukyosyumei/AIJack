@@ -1,6 +1,8 @@
+import copy
+
 import torch
 
-from ..fedavg import FedAVGAPI
+from ..fedavg import FedAVGAPI, MPIFedAVGAPI
 
 
 class FedProxAPI(FedAVGAPI):
@@ -62,3 +64,38 @@ class FedProxAPI(FedAVGAPI):
                 self.server.update_from_parameters(weight=self.clients_weight)
 
             self.custom_action(self)
+
+
+class MPIFedProxAPI(MPIFedAVGAPI):
+    def __init__(self, *args, mu=0.01, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.mu = mu
+
+    def local_train(self):
+        self.party.prev_parameters = []
+        for param in self.party.model.parameters():
+            self.party.prev_parameters.append(copy.deepcopy(param))
+
+        for _ in range(self.local_epoch):
+            running_loss = 0
+            for (data, target) in self.local_dataloader:
+                self.local_optimizer.zero_grad()
+                data = data.to(self.device)
+                target = target.to(self.device)
+                output = self.party.model(data)
+
+                loss = self.criterion(output, target)
+                loss.backward()
+
+                for local_param, global_param in zip(
+                    self.party.model.parameters(), self.party.prev_parameters
+                ):
+                    loss += (
+                        self.mu / 2 * torch.norm(local_param.data - global_param.data)
+                    )
+                    local_param.grad.data += self.mu * (
+                        local_param.data - global_param.data
+                    )
+
+                self.local_optimizer.step()
+                running_loss += loss.item()

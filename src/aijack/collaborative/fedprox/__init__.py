@@ -1,1 +1,1 @@
-from .api import FedProxAPI  # noqa:F401
+from .api import FedProxAPI, MPIFedProxAPI  # noqa:F401
