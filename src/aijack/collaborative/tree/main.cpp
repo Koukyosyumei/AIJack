@@ -69,12 +69,7 @@ PYBIND11_MODULE(aijack_secureboost, m)
         .def("set_publickey", &SecureBoostParty::set_publickey)
         .def("set_secretkey", &SecureBoostParty::set_secretkey);
 
-    py::class_<SecureBoostParty>(m, "MPISecureBoostParty")
-        .def(py::init<vector<vector<float>>, int, vector<int>, int,
-                      int, float, int, bool, int>())
-        .def("get_lookup_table", &MPISecureBoostParty::get_lookup_table)
-        .def("set_publickey", &MPISecureBoostParty::set_publickey)
-        .def("set_secretkey", &MPISecureBoostParty::set_secretkey);
+    py::class_<MPISecureBoostParty>(m, "MPISecureBoostParty");
 
     py::class_<XGBoostNode>(m, "XGBoostNode")
         .def("get_idxs", &XGBoostNode::get_idxs)
@@ -96,16 +91,6 @@ PYBIND11_MODULE(aijack_secureboost, m)
         .def("get_right", &SecureBoostNode::get_right)
         .def("is_leaf", &SecureBoostNode::is_leaf);
 
-    py::class_<SecureBoostNode>(m, "MPISecureBoostNode")
-        .def("get_idxs", &MPISecureBoostNode::get_idxs)
-        .def("get_party_id", &MPISecureBoostNode::get_party_id)
-        .def("get_record_id", &MPISecureBoostNode::get_record_id)
-        .def("get_val", &MPISecureBoostNode::get_val)
-        .def("get_score", &MPISecureBoostNode::get_score)
-        .def("get_left", &MPISecureBoostNode::get_left)
-        .def("get_right", &MPISecureBoostNode::get_right)
-        .def("is_leaf", &MPISecureBoostNode::is_leaf);
-
     py::class_<XGBoostTree>(m, "XGBoostTree")
         .def("get_root_xgboost_node", &XGBoostTree::get_root_xgboost_node)
         .def("print", &XGBoostTree::print)
@@ -114,10 +99,6 @@ PYBIND11_MODULE(aijack_secureboost, m)
     py::class_<SecureBoostTree>(m, "SecureBoostTree")
         .def("print", &SecureBoostTree::print)
         .def("predict", &SecureBoostTree::predict);
-
-    py::class_<SecureBoostTree>(m, "MPISecureBoostTree")
-        .def("print", &MPISecureBoostTree::print)
-        .def("predict", &MPISecureBoostTree::predict);
 
     py::class_<XGBoostClassifier>(m, "XGBoostClassifier")
         .def(py::init<int, float, float, int, int, float, int, float, float, float,
@@ -139,15 +120,7 @@ PYBIND11_MODULE(aijack_secureboost, m)
         .def("predict_raw", &SecureBoostClassifier::predict_raw)
         .def("predict_proba", &SecureBoostClassifier::predict_proba);
 
-    py::class_<SecureBoostClassifier>(m, "MPISecureBoostClassifier")
-        .def(py::init<int, float, float, int, int, float, int, float, float, float,
-                      int, int, float, int, bool>())
-        .def("fit", &MPISecureBoostClassifier::fit)
-        .def("get_init_pred", &MPISecureBoostClassifier::get_init_pred)
-        .def("load_estimators", &MPISecureBoostClassifier::load_estimators)
-        .def("get_estimators", &MPISecureBoostClassifier::get_estimators)
-        .def("predict_raw", &MPISecureBoostClassifier::predict_raw)
-        .def("predict_proba", &MPISecureBoostClassifier::predict_proba);
+    py::class_<MPISecureBoostClassifier>(m, "MPISecureBoostClassifier");
 
 #ifdef VERSION_INFO
     m.attr("__version__") = MACRO_STRINGIFY(VERSION_INFO);
