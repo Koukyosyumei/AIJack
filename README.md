@@ -26,7 +26,7 @@
 
 # What is AIJack?
 
-AIJack allows you to assess the privacy and security risks of machine learning algorithms such as *Model Inversion*, *Poisoning Attack* and *Evasion Attack*. AIJack also provides various defense techniques like *Federated Learning*, *Split Learning*, *Differential Privacy*, *Homomorphic Encryption*, and other heuristic approaches. We currently support more than 20 state-of-arts methods.
+AIJack allows you to assess the privacy and security risks of machine learning algorithms such as *Model Inversion*, *Poisoning Attack* and *Evasion Attack*. AIJack also provides various defense techniques like *Federated Learning*, *Split Learning*, *Differential Privacy*, *Homomorphic Encryption*, and other heuristic approaches. We currently implement more than 20 state-of-arts methods. We also support MPI for some of the distributed algorithms.
 
 # Table of Contents
 
