@@ -6,3 +6,4 @@ torchvision
 pybind11
 pybind11[global]
 matplotlib
+mpi4py
