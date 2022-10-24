@@ -373,7 +373,8 @@ const thebe_selector_output = ".output, .cell_output"
 <span class="kn">from</span> <span class="nn">aijack.utils</span> <span class="kn">import</span> <span class="n">NumpyDataset</span>
 
 <span class="kn">import</span> <span class="nn">warnings</span>
-<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span>
+
+<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -395,9 +396,7 @@ const thebe_selector_output = ".output, .cell_output"
             <span class="n">nn</span><span class="o">.</span><span class="n">BatchNorm2d</span><span class="p">(</span><span class="mi">12</span><span class="p">),</span>
             <span class="n">act</span><span class="p">(),</span>
         <span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">fc</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span>
-            <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">hideen</span><span class="p">,</span> <span class="n">num_classes</span><span class="p">)</span>
-        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fc</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">hideen</span><span class="p">,</span> <span class="n">num_classes</span><span class="p">))</span>
 
     <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
         <span class="n">out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">body</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
@@ -410,7 +409,7 @@ const thebe_selector_output = ".output, .cell_output"
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">prepare_dataloader</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s2">&quot;MNIST/.&quot;</span><span class="p">,</span> <span class="n">batch_size</span> <span class="o">=</span> <span class="mi">64</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">prepare_dataloader</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s2">&quot;MNIST/.&quot;</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">64</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
     <span class="n">at_t_dataset_train</span> <span class="o">=</span> <span class="n">torchvision</span><span class="o">.</span><span class="n">datasets</span><span class="o">.</span><span class="n">MNIST</span><span class="p">(</span>
         <span class="n">root</span><span class="o">=</span><span class="n">path</span><span class="p">,</span> <span class="n">train</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">download</span><span class="o">=</span><span class="kc">True</span>
     <span class="p">)</span>
@@ -436,18 +435,18 @@ const thebe_selector_output = ".output, .cell_output"
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">attack_and_show</span><span class="p">(</span><span class="n">attacker</span><span class="p">,</span> <span class="n">received_gradients</span><span class="p">,</span> <span class="n">num_seeds</span><span class="p">):</span>
-  <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
-  <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_seeds</span><span class="p">):</span>
-      <span class="n">attacker</span><span class="o">.</span><span class="n">reset_seed</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
-      <span class="k">try</span><span class="p">:</span>
-        <span class="n">result</span> <span class="o">=</span> <span class="n">attacker</span><span class="o">.</span><span class="n">attack</span><span class="p">(</span><span class="n">received_gradients</span><span class="p">)</span>
-        <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">num_seeds</span><span class="p">,</span> <span class="n">s</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
-        <span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;gray&quot;</span><span class="p">)</span>
-        <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">&quot;off&quot;</span><span class="p">)</span>
-      <span class="k">except</span><span class="p">:</span>
-        <span class="k">continue</span>
-  <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
-  <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+    <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_seeds</span><span class="p">):</span>
+        <span class="n">attacker</span><span class="o">.</span><span class="n">reset_seed</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">attacker</span><span class="o">.</span><span class="n">attack</span><span class="p">(</span><span class="n">received_gradients</span><span class="p">)</span>
+            <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">num_seeds</span><span class="p">,</span> <span class="n">s</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;gray&quot;</span><span class="p">)</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">&quot;off&quot;</span><span class="p">)</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="k">continue</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -461,7 +460,7 @@ const thebe_selector_output = ".output, .cell_output"
 <span class="n">channel</span> <span class="o">=</span> <span class="mi">1</span>
 <span class="n">hidden</span> <span class="o">=</span> <span class="mi">588</span>
 
-<span class="n">num_seeds</span><span class="o">=</span><span class="mi">5</span>
+<span class="n">num_seeds</span> <span class="o">=</span> <span class="mi">5</span>
 </pre></div>
 </div>
 </div>
@@ -512,8 +511,9 @@ const thebe_selector_output = ".output, .cell_output"
 </ul>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">dlg_attacker</span> <span class="o">=</span> <span class="n">GradientInversion_Attack</span><span class="p">(</span><span class="n">net</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">28</span><span class="p">,</span> <span class="mi">28</span><span class="p">),</span> <span class="n">lr</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">log_interval</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-                                        <span class="n">num_iteration</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">distancename</span><span class="o">=</span><span class="s2">&quot;l2&quot;</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">dlg_attacker</span> <span class="o">=</span> <span class="n">GradientInversion_Attack</span><span class="p">(</span>
+    <span class="n">net</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">28</span><span class="p">,</span> <span class="mi">28</span><span class="p">),</span> <span class="n">lr</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">log_interval</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">num_iteration</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">distancename</span><span class="o">=</span><span class="s2">&quot;l2&quot;</span>
+<span class="p">)</span>
 <span class="n">attack_and_show</span><span class="p">(</span><span class="n">dlg_attacker</span><span class="p">,</span> <span class="n">received_gradients</span><span class="p">,</span> <span class="n">num_seeds</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -540,10 +540,15 @@ iter=69: loss did not improve in the last 50 rounds.
 </ul>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">gs_attacker</span> <span class="o">=</span> <span class="n">GradientInversion_Attack</span><span class="p">(</span><span class="n">net</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">28</span><span class="p">,</span> <span class="mi">28</span><span class="p">),</span> <span class="n">lr</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">log_interval</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-                                    <span class="n">num_iteration</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
-                                    <span class="n">tv_reg_coef</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span>
-                                    <span class="n">distancename</span><span class="o">=</span><span class="s2">&quot;cossim&quot;</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">gs_attacker</span> <span class="o">=</span> <span class="n">GradientInversion_Attack</span><span class="p">(</span>
+    <span class="n">net</span><span class="p">,</span>
+    <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">28</span><span class="p">,</span> <span class="mi">28</span><span class="p">),</span>
+    <span class="n">lr</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
+    <span class="n">log_interval</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+    <span class="n">num_iteration</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+    <span class="n">tv_reg_coef</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span>
+    <span class="n">distancename</span><span class="o">=</span><span class="s2">&quot;cossim&quot;</span><span class="p">,</span>
+<span class="p">)</span>
 <span class="n">attack_and_show</span><span class="p">(</span><span class="n">gs_attacker</span><span class="p">,</span> <span class="n">received_gradients</span><span class="p">,</span> <span class="n">num_seeds</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -566,10 +571,16 @@ iter=87: loss did not improve in the last 50 rounds.
 </ul>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">idlg_attacker</span> <span class="o">=</span> <span class="n">GradientInversion_Attack</span><span class="p">(</span><span class="n">net</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">28</span><span class="p">,</span> <span class="mi">28</span><span class="p">),</span> <span class="n">lr</span><span class="o">=</span><span class="mf">10e2</span><span class="p">,</span> <span class="n">log_interval</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-                                    <span class="n">optimizer_class</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">SGD</span><span class="p">,</span>
-                                    <span class="n">distancename</span><span class="o">=</span><span class="s2">&quot;l2&quot;</span><span class="p">,</span> <span class="n">optimize_label</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-                                    <span class="n">num_iteration</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">idlg_attacker</span> <span class="o">=</span> <span class="n">GradientInversion_Attack</span><span class="p">(</span>
+    <span class="n">net</span><span class="p">,</span>
+    <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">28</span><span class="p">,</span> <span class="mi">28</span><span class="p">),</span>
+    <span class="n">lr</span><span class="o">=</span><span class="mf">10e2</span><span class="p">,</span>
+    <span class="n">log_interval</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+    <span class="n">optimizer_class</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">SGD</span><span class="p">,</span>
+    <span class="n">distancename</span><span class="o">=</span><span class="s2">&quot;l2&quot;</span><span class="p">,</span>
+    <span class="n">optimize_label</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">num_iteration</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
+<span class="p">)</span>
 <span class="n">attack_and_show</span><span class="p">(</span><span class="n">idlg_attacker</span><span class="p">,</span> <span class="n">received_gradients</span><span class="p">,</span> <span class="n">num_seeds</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -589,11 +600,17 @@ iter=87: loss did not improve in the last 50 rounds.
 </ul>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">cpl_attacker</span> <span class="o">=</span> <span class="n">GradientInversion_Attack</span><span class="p">(</span><span class="n">net</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">28</span><span class="p">,</span> <span class="mi">28</span><span class="p">),</span> <span class="n">lr</span><span class="o">=</span><span class="mf">10e2</span><span class="p">,</span> <span class="n">log_interval</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-                                    <span class="n">optimizer_class</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">SGD</span><span class="p">,</span>
-                                    <span class="n">distancename</span><span class="o">=</span><span class="s2">&quot;l2&quot;</span><span class="p">,</span> <span class="n">optimize_label</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-                                    <span class="n">num_iteration</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
-                                    <span class="n">lm_reg_coef</span><span class="o">=</span><span class="mf">0.01</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">cpl_attacker</span> <span class="o">=</span> <span class="n">GradientInversion_Attack</span><span class="p">(</span>
+    <span class="n">net</span><span class="p">,</span>
+    <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">28</span><span class="p">,</span> <span class="mi">28</span><span class="p">),</span>
+    <span class="n">lr</span><span class="o">=</span><span class="mf">10e2</span><span class="p">,</span>
+    <span class="n">log_interval</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+    <span class="n">optimizer_class</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">SGD</span><span class="p">,</span>
+    <span class="n">distancename</span><span class="o">=</span><span class="s2">&quot;l2&quot;</span><span class="p">,</span>
+    <span class="n">optimize_label</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">num_iteration</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
+    <span class="n">lm_reg_coef</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span>
+<span class="p">)</span>
 <span class="n">attack_and_show</span><span class="p">(</span><span class="n">cpl_attacker</span><span class="p">,</span> <span class="n">received_gradients</span><span class="p">,</span> <span class="n">num_seeds</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -615,7 +632,7 @@ iter=87: loss did not improve in the last 50 rounds.
 
 <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
 <span class="k">for</span> <span class="n">bi</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">batch_size</span><span class="p">):</span>
-    <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">,</span> <span class="n">bi</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">,</span> <span class="n">bi</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">x_batch</span><span class="p">[</span><span class="n">bi</span><span class="p">]</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()[</span><span class="mi">0</span><span class="p">],</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;gray&quot;</span><span class="p">)</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">&quot;off&quot;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
@@ -643,20 +660,28 @@ iter=87: loss did not improve in the last 50 rounds.
 <span class="n">received_gradients</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">autograd</span><span class="o">.</span><span class="n">grad</span><span class="p">(</span><span class="n">loss</span><span class="p">,</span> <span class="n">net</span><span class="o">.</span><span class="n">parameters</span><span class="p">())</span>
 <span class="n">received_gradients</span> <span class="o">=</span> <span class="p">[</span><span class="n">cg</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span> <span class="k">for</span> <span class="n">cg</span> <span class="ow">in</span> <span class="n">received_gradients</span><span class="p">]</span>
 
-<span class="n">gradinversion</span> <span class="o">=</span> <span class="n">GradientInversion_Attack</span><span class="p">(</span><span class="n">net</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">28</span><span class="p">,</span> <span class="mi">28</span><span class="p">),</span> <span class="n">num_iteration</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
-                                    <span class="n">lr</span><span class="o">=</span><span class="mf">1e2</span><span class="p">,</span> <span class="n">log_interval</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-                                    <span class="n">optimizer_class</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">SGD</span><span class="p">,</span>
-                                    <span class="n">distancename</span><span class="o">=</span><span class="s2">&quot;l2&quot;</span><span class="p">,</span> <span class="n">optimize_label</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-                                    <span class="n">bn_reg_layers</span><span class="o">=</span><span class="p">[</span><span class="n">net</span><span class="o">.</span><span class="n">body</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">net</span><span class="o">.</span><span class="n">body</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span> <span class="n">net</span><span class="o">.</span><span class="n">body</span><span class="p">[</span><span class="mi">7</span><span class="p">]],</span>
-                                    <span class="n">group_num</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span>
-                                    <span class="n">tv_reg_coef</span><span class="o">=</span><span class="mf">0.00</span><span class="p">,</span> <span class="n">l2_reg_coef</span><span class="o">=</span><span class="mf">0.0001</span><span class="p">,</span>
-                                    <span class="n">bn_reg_coef</span><span class="o">=</span><span class="mf">0.001</span><span class="p">,</span> <span class="n">gc_reg_coef</span><span class="o">=</span><span class="mf">0.001</span><span class="p">)</span>
+<span class="n">gradinversion</span> <span class="o">=</span> <span class="n">GradientInversion_Attack</span><span class="p">(</span>
+    <span class="n">net</span><span class="p">,</span>
+    <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">28</span><span class="p">,</span> <span class="mi">28</span><span class="p">),</span>
+    <span class="n">num_iteration</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
+    <span class="n">lr</span><span class="o">=</span><span class="mf">1e2</span><span class="p">,</span>
+    <span class="n">log_interval</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+    <span class="n">optimizer_class</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">SGD</span><span class="p">,</span>
+    <span class="n">distancename</span><span class="o">=</span><span class="s2">&quot;l2&quot;</span><span class="p">,</span>
+    <span class="n">optimize_label</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">bn_reg_layers</span><span class="o">=</span><span class="p">[</span><span class="n">net</span><span class="o">.</span><span class="n">body</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">net</span><span class="o">.</span><span class="n">body</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span> <span class="n">net</span><span class="o">.</span><span class="n">body</span><span class="p">[</span><span class="mi">7</span><span class="p">]],</span>
+    <span class="n">group_num</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+    <span class="n">tv_reg_coef</span><span class="o">=</span><span class="mf">0.00</span><span class="p">,</span>
+    <span class="n">l2_reg_coef</span><span class="o">=</span><span class="mf">0.0001</span><span class="p">,</span>
+    <span class="n">bn_reg_coef</span><span class="o">=</span><span class="mf">0.001</span><span class="p">,</span>
+    <span class="n">gc_reg_coef</span><span class="o">=</span><span class="mf">0.001</span><span class="p">,</span>
+<span class="p">)</span>
 
 <span class="n">result</span> <span class="o">=</span> <span class="n">gradinversion</span><span class="o">.</span><span class="n">group_attack</span><span class="p">(</span><span class="n">received_gradients</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">)</span>
 
 <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
 <span class="k">for</span> <span class="n">bid</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">batch_size</span><span class="p">):</span>
-    <span class="n">ax1</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">,</span> <span class="n">bid</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">ax1</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">,</span> <span class="n">bid</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
     <span class="n">ax1</span><span class="o">.</span><span class="n">imshow</span><span class="p">((</span><span class="nb">sum</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()[</span><span class="n">bid</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;gray&quot;</span><span class="p">)</span>
     <span class="n">ax1</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">&quot;off&quot;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
