@@ -224,11 +224,11 @@ const thebe_selector_output = ".output, .cell_output"
         aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
     <div class="dropdown-buttons sourcebuttons">
         <a class="repository-button"
-            href="https://github.com/executablebooks/jupyter-book"><button type="button" class="btn btn-secondary topbarbtn"
+            href="https://github.com/Koukyosyumei/AIJack"><button type="button" class="btn btn-secondary topbarbtn"
                 data-toggle="tooltip" data-placement="left" title="Source repository"><i
                     class="fab fa-github"></i>repository</button></a>
         <a class="issues-button"
-            href="https://github.com/executablebooks/jupyter-book/issues/new?title=Issue%20on%20page%20%2Faijack_secureboost.html&body=Your%20issue%20content%20here."><button
+            href="https://github.com/Koukyosyumei/AIJack/issues/new?title=Issue%20on%20page%20%2Faijack_secureboost.html&body=Your%20issue%20content%20here."><button
                 type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
                 title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
         
@@ -249,7 +249,7 @@ const thebe_selector_output = ".output, .cell_output"
         aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
     <div class="dropdown-buttons">
         
-        <a class="binder-button" href="https://mybinder.org/v2/gh/executablebooks/jupyter-book/master?urlpath=tree/docs/aijack_secureboost.ipynb"><button type="button"
+        <a class="binder-button" href="https://mybinder.org/v2/gh/Koukyosyumei/AIJack/main?urlpath=tree/docs/aijack_secureboost.ipynb"><button type="button"
                 class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
                 data-placement="left"><img class="binder-button-logo"
                     src="_static/images/logo_binder.svg"
@@ -351,7 +351,7 @@ Successfully installed aijack-secureboost-0.0.1
     <span class="n">XGBoostClassifier</span><span class="p">,</span>
     <span class="n">SecureBoostParty</span><span class="p">,</span>
     <span class="n">SecureBoostClassifier</span><span class="p">,</span>
-    <span class="n">PaillierKeyGenerator</span>
+    <span class="n">PaillierKeyGenerator</span><span class="p">,</span>
 <span class="p">)</span>
 </pre></div>
 </div>
@@ -433,8 +433,23 @@ ct_1 + ct_3 =  31.600000381469727
 <span class="n">p2</span> <span class="o">=</span> <span class="n">XGBoostParty</span><span class="p">(</span><span class="n">x2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">1</span><span class="p">,</span> <span class="n">min_leaf</span><span class="p">,</span> <span class="n">subsample_cols</span><span class="p">,</span> <span class="mi">256</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
 <span class="n">parties</span> <span class="o">=</span> <span class="p">[</span><span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">]</span>
 
-<span class="n">clf</span> <span class="o">=</span> <span class="n">XGBoostClassifier</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="n">subsample_cols</span><span class="p">,</span><span class="n">min_child_weight</span><span class="p">,</span><span class="n">depth</span><span class="p">,</span><span class="n">min_leaf</span><span class="p">,</span>
-                  <span class="n">learning_rate</span><span class="p">,</span><span class="n">boosting_rounds</span><span class="p">,</span><span class="n">lam</span><span class="p">,</span><span class="n">gamma</span><span class="p">,</span><span class="n">eps</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mf">1.0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">clf</span> <span class="o">=</span> <span class="n">XGBoostClassifier</span><span class="p">(</span>
+    <span class="mi">2</span><span class="p">,</span>
+    <span class="n">subsample_cols</span><span class="p">,</span>
+    <span class="n">min_child_weight</span><span class="p">,</span>
+    <span class="n">depth</span><span class="p">,</span>
+    <span class="n">min_leaf</span><span class="p">,</span>
+    <span class="n">learning_rate</span><span class="p">,</span>
+    <span class="n">boosting_rounds</span><span class="p">,</span>
+    <span class="n">lam</span><span class="p">,</span>
+    <span class="n">gamma</span><span class="p">,</span>
+    <span class="n">eps</span><span class="p">,</span>
+    <span class="o">-</span><span class="mi">1</span><span class="p">,</span>
+    <span class="mi">0</span><span class="p">,</span>
+    <span class="mf">1.0</span><span class="p">,</span>
+    <span class="mi">1</span><span class="p">,</span>
+    <span class="kc">True</span><span class="p">,</span>
+<span class="p">)</span>
 <span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">parties</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
 <span class="n">clf</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">x3</span><span class="p">)</span>
 </pre></div>
@@ -466,8 +481,23 @@ ct_1 + ct_3 =  31.600000381469727
 <span class="n">sparties</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_publickey</span><span class="p">(</span><span class="n">pk</span><span class="p">)</span>
 <span class="n">sparties</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_secretkey</span><span class="p">(</span><span class="n">sk</span><span class="p">)</span>
 
-<span class="n">sclf</span> <span class="o">=</span> <span class="n">SecureBoostClassifier</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="n">subsample_cols</span><span class="p">,</span><span class="n">min_child_weight</span><span class="p">,</span><span class="n">depth</span><span class="p">,</span><span class="n">min_leaf</span><span class="p">,</span>
-                  <span class="n">learning_rate</span><span class="p">,</span><span class="n">boosting_rounds</span><span class="p">,</span><span class="n">lam</span><span class="p">,</span><span class="n">gamma</span><span class="p">,</span><span class="n">eps</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mf">1.0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">sclf</span> <span class="o">=</span> <span class="n">SecureBoostClassifier</span><span class="p">(</span>
+    <span class="mi">2</span><span class="p">,</span>
+    <span class="n">subsample_cols</span><span class="p">,</span>
+    <span class="n">min_child_weight</span><span class="p">,</span>
+    <span class="n">depth</span><span class="p">,</span>
+    <span class="n">min_leaf</span><span class="p">,</span>
+    <span class="n">learning_rate</span><span class="p">,</span>
+    <span class="n">boosting_rounds</span><span class="p">,</span>
+    <span class="n">lam</span><span class="p">,</span>
+    <span class="n">gamma</span><span class="p">,</span>
+    <span class="n">eps</span><span class="p">,</span>
+    <span class="mi">0</span><span class="p">,</span>
+    <span class="mi">0</span><span class="p">,</span>
+    <span class="mf">1.0</span><span class="p">,</span>
+    <span class="mi">1</span><span class="p">,</span>
+    <span class="kc">True</span><span class="p">,</span>
+<span class="p">)</span>
 <span class="n">sclf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">sparties</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
 <span class="n">sclf</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">x3</span><span class="p">)</span>
 </pre></div>
