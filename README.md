@@ -9,7 +9,7 @@
   <br>
   <img src="logo/logo_small.png" alt="AIJack" width="200"></a>
   <br>
-  Hijack AI!
+  Let's hijack AI!
   <br>
 
 </h1>
