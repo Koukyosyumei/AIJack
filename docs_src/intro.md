@@ -6,7 +6,7 @@
 
 # Welcom to AIJack: Security and Privacy Risk Simulator for Machine Learning
 
-AIJack allows you to assess the privacy and security risks of machine learning algorithms such as *Model Inversion*, *Poisoning Attack* and *Evasion Attack*. AIJack also provides various defense techniques like *Federated Learning*, *Split Learning*, *Differential Privacy*, *Homomorphic Encryption*, and other heuristic approaches. We currently implement more than 20 state-of-arts methods. We also support MPI for some of the distributed algorithms.If you like AIJack, please consider becoming a GitHub [Sponsor](https://github.com/sponsors/Koukyosyumei)
+AIJack allows you to assess the privacy and security risks of machine learning algorithms such as *Model Inversion*, *Poisoning Attack* and *Evasion Attack*. AIJack also provides various defense techniques like *Federated Learning*, *Split Learning*, *Differential Privacy*, *Homomorphic Encryption*, and other heuristic approaches. We currently implement more than 20 state-of-arts methods. We also support MPI for some of the distributed algorithms.If you like AIJack, please consider becoming a GitHub [Sponsor](https://github.com/sponsors/Koukyosyumei).
 
 ## Table of Contents
 

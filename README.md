@@ -21,7 +21,7 @@
 </div>
 
 <div align="center">
-❤️ <i>If you like AIJack, please consider <a href="https://github.com/sponsors/Koukyosyumei">becoming a GitHub Sponsor</a>)</i> ❤️
+❤️ <i>If you like AIJack, please consider <a href="https://github.com/sponsors/Koukyosyumei">becoming a GitHub Sponsor</a></i> ❤️
 </div>
 
 # What is AIJack?
