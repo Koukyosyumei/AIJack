@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>4. Poisoning Attack against SVM &#8212; AIJack</title>
+    <title>6. Poisoning Attack against SVM &#8212; AIJack</title>
     
   <link href="_static/css/theme.css" rel="stylesheet">
   <link href="_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
@@ -53,8 +53,8 @@ const thebe_selector_output = ".output, .cell_output"
     <script async="async" src="_static/sphinx-thebe.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="5. Differential Privacy and Moment Accountant" href="aijack_dp.html" />
-    <link rel="prev" title="3. Evasion Attack against SVM" href="aijack_evasion_attack.html" />
+    <link rel="next" title="7. Differential Privacy and Moment Accountant" href="aijack_dp.html" />
+    <link rel="prev" title="5. Evasion Attack against SVM" href="aijack_evasion_attack.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
     
@@ -94,7 +94,19 @@ const thebe_selector_output = ".output, .cell_output"
         <ul class="nav bd-sidenav">
  <li class="toctree-l1">
   <a class="reference internal" href="intro.html">
-   Welcom to AIJack
+   Welcom to AIJack: Security and Privacy Risk Simulator for Machine Learning
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Federated Learning
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="aijack_secureboost.html">
+   1. SecureBoost: Vertically Federated XGBoost with Paillier Encryption
   </a>
  </li>
 </ul>
@@ -106,12 +118,24 @@ const thebe_selector_output = ".output, .cell_output"
 <ul class="nav bd-sidenav">
  <li class="toctree-l1">
   <a class="reference internal" href="aijack_miface.html">
-   1. MI-FACE Model Inversion Attack vs Differentially Private SGD
+   2. MI-FACE Model Inversion Attack vs Differentially Private SGD
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="aijack_gradient_inversion_attack.html">
-   2. Gradient-based Model Inversion Attack against Federated Learning
+   3. Gradient-based Model Inversion Attack against Federated Learning
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Label Leakage
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="aijack_split_learning.html">
+   4. Split Learning and Label Leakage
   </a>
  </li>
 </ul>
@@ -123,12 +147,12 @@ const thebe_selector_output = ".output, .cell_output"
 <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
   <a class="reference internal" href="aijack_evasion_attack.html">
-   3. Evasion Attack against SVM
+   5. Evasion Attack against SVM
   </a>
  </li>
  <li class="toctree-l1 current active">
   <a class="current reference internal" href="#">
-   4. Poisoning Attack against SVM
+   6. Poisoning Attack against SVM
   </a>
  </li>
 </ul>
@@ -140,7 +164,7 @@ const thebe_selector_output = ".output, .cell_output"
 <ul class="nav bd-sidenav">
  <li class="toctree-l1">
   <a class="reference internal" href="aijack_dp.html">
-   5. Differential Privacy and Moment Accountant
+   7. Differential Privacy and Moment Accountant
   </a>
  </li>
 </ul>
@@ -249,22 +273,22 @@ const thebe_selector_output = ".output, .cell_output"
                 <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#prepare-dataset">
-   4.1. Prepare Dataset
+   6.1. Prepare Dataset
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#train-the-target-classification-model">
-   4.2. Train the target classification model
+   6.2. Train the target classification model
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#poisoning-attack">
-   4.3. Poisoning Attack
+   6.3. Poisoning Attack
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#performance-of-pisoned-model">
-   4.4. Performance of Pisoned Model
+   6.4. Performance of Pisoned Model
   </a>
  </li>
 </ul>
@@ -289,22 +313,22 @@ const thebe_selector_output = ".output, .cell_output"
                             <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#prepare-dataset">
-   4.1. Prepare Dataset
+   6.1. Prepare Dataset
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#train-the-target-classification-model">
-   4.2. Train the target classification model
+   6.2. Train the target classification model
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#poisoning-attack">
-   4.3. Poisoning Attack
+   6.3. Poisoning Attack
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#performance-of-pisoned-model">
-   4.4. Performance of Pisoned Model
+   6.4. Performance of Pisoned Model
   </a>
  </li>
 </ul>
@@ -317,7 +341,7 @@ const thebe_selector_output = ".output, .cell_output"
               <div>
                 
   <div class="tex2jax_ignore mathjax_ignore section" id="poisoning-attack-against-svm">
-<h1><span class="section-number">4. </span>Poisoning Attack against SVM<a class="headerlink" href="#poisoning-attack-against-svm" title="Permalink to this headline">¶</a></h1>
+<h1><span class="section-number">6. </span>Poisoning Attack against SVM<a class="headerlink" href="#poisoning-attack-against-svm" title="Permalink to this headline">¶</a></h1>
 <p>In this tutorial, we will create poisoned data, which declines the performance of the model when the poisoned data is injected into the training dataset.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -351,7 +375,7 @@ const thebe_selector_output = ".output, .cell_output"
 </div>
 </div>
 <div class="section" id="prepare-dataset">
-<h2><span class="section-number">4.1. </span>Prepare Dataset<a class="headerlink" href="#prepare-dataset" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">6.1. </span>Prepare Dataset<a class="headerlink" href="#prepare-dataset" title="Permalink to this headline">¶</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">mnist</span> <span class="o">=</span> <span class="n">datasets</span><span class="o">.</span><span class="n">fetch_openml</span><span class="p">(</span><span class="s2">&quot;mnist_784&quot;</span><span class="p">,</span> <span class="n">version</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">data_home</span><span class="o">=</span><span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="n">return_X_y</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -382,7 +406,7 @@ const thebe_selector_output = ".output, .cell_output"
 </div>
 </div>
 <div class="section" id="train-the-target-classification-model">
-<h2><span class="section-number">4.2. </span>Train the target classification model<a class="headerlink" href="#train-the-target-classification-model" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">6.2. </span>Train the target classification model<a class="headerlink" href="#train-the-target-classification-model" title="Permalink to this headline">¶</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">clf</span> <span class="o">=</span> <span class="n">SVC</span><span class="p">(</span><span class="n">kernel</span><span class="o">=</span><span class="s2">&quot;linear&quot;</span><span class="p">)</span>
@@ -411,7 +435,7 @@ weighted avg       0.98      0.98      0.98       500
 </div>
 </div>
 <div class="section" id="poisoning-attack">
-<h2><span class="section-number">4.3. </span>Poisoning Attack<a class="headerlink" href="#poisoning-attack" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">6.3. </span>Poisoning Attack<a class="headerlink" href="#poisoning-attack" title="Permalink to this headline">¶</a></h2>
 <p>We pick one training image and add poisoning noise to it.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -467,7 +491,7 @@ weighted avg       0.98      0.98      0.98       500
 </div>
 </div>
 <div class="section" id="performance-of-pisoned-model">
-<h2><span class="section-number">4.4. </span>Performance of Pisoned Model<a class="headerlink" href="#performance-of-pisoned-model" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">6.4. </span>Performance of Pisoned Model<a class="headerlink" href="#performance-of-pisoned-model" title="Permalink to this headline">¶</a></h2>
 <p>You can see that adding only one poisoned example to 6000 training images dramatically decreases the accuracy of the model.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -524,13 +548,13 @@ after attack:  0.846
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
             <p class="prev-next-subtitle">previous</p>
-            <p class="prev-next-title"><span class="section-number">3. </span>Evasion Attack against SVM</p>
+            <p class="prev-next-title"><span class="section-number">5. </span>Evasion Attack against SVM</p>
         </div>
     </a>
     <a class='right-next' id="next-link" href="aijack_dp.html" title="next page">
     <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title"><span class="section-number">5. </span>Differential Privacy and Moment Accountant</p>
+        <p class="prev-next-title"><span class="section-number">7. </span>Differential Privacy and Moment Accountant</p>
     </div>
     <i class="fas fa-angle-right"></i>
     </a>

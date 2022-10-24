@@ -4,14 +4,14 @@
   Author: Hideaki Takahashi
   -->
 
-# Welcom to AIJack: Easy-to use security and privacy risk simulator for Machine Learning
+# Welcom to AIJack: Security and Privacy Risk Simulator for Machine Learning
 
 AIJack allows you to assess the privacy and security risks of machine learning algorithms such as *Model Inversion*, *Poisoning Attack* and *Evasion Attack*. AIJack also provides various defense techniques like *Federated Learning*, *Split Learning*, *Differential Privacy*, *Homomorphic Encryption*, and other heuristic approaches. We currently implement more than 20 state-of-arts methods. We also support MPI for some of the distributed algorithms.If you like AIJack, please consider becoming a GitHub [Sponsor](https://github.com/sponsors/Koukyosyumei)
 
 ## Table of Contents
 
 
-- [Welcom to AIJack: Easy-to use security and privacy risk simulator for Machine Learning](#welcom-to-aijack-easy-to-use-security-and-privacy-risk-simulator-for-machine-learning)
+- [Welcom to AIJack: Security and Privacy Risk Simulator for Machine Learning](#welcom-to-aijack-security-and-privacy-risk-simulator-for-machine-learning)
   - [Table of Contents](#table-of-contents)
   - [Installation](#installation)
   - [Supported Algorithms](#supported-algorithms)

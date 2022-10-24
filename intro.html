@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Welcom to AIJack: Easy-to use security and privacy risk simulator for Machine Learning &#8212; AIJack</title>
+    <title>Welcom to AIJack: Security and Privacy Risk Simulator for Machine Learning &#8212; AIJack</title>
     
   <link href="_static/css/theme.css" rel="stylesheet">
   <link href="_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
@@ -53,7 +53,7 @@ const thebe_selector_output = ".output, .cell_output"
     <script async="async" src="_static/sphinx-thebe.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="1. MI-FACE Model Inversion Attack vs Differentially Private SGD" href="aijack_miface.html" />
+    <link rel="next" title="1. SecureBoost: Vertically Federated XGBoost with Paillier Encryption" href="aijack_secureboost.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
     
@@ -93,7 +93,19 @@ const thebe_selector_output = ".output, .cell_output"
         <ul class="nav bd-sidenav">
  <li class="toctree-l1 current">
   <a class="reference internal" href="#">
-   Welcom to AIJack: Easy-to use security and privacy risk simulator for Machine Learning
+   Welcom to AIJack: Security and Privacy Risk Simulator for Machine Learning
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Federated Learning
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="aijack_secureboost.html">
+   1. SecureBoost: Vertically Federated XGBoost with Paillier Encryption
   </a>
  </li>
 </ul>
@@ -105,12 +117,24 @@ const thebe_selector_output = ".output, .cell_output"
 <ul class="nav bd-sidenav">
  <li class="toctree-l1">
   <a class="reference internal" href="aijack_miface.html">
-   1. MI-FACE Model Inversion Attack vs Differentially Private SGD
+   2. MI-FACE Model Inversion Attack vs Differentially Private SGD
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="aijack_gradient_inversion_attack.html">
-   2. Gradient-based Model Inversion Attack against Federated Learning
+   3. Gradient-based Model Inversion Attack against Federated Learning
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Label Leakage
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="aijack_split_learning.html">
+   4. Split Learning and Label Leakage
   </a>
  </li>
 </ul>
@@ -122,12 +146,12 @@ const thebe_selector_output = ".output, .cell_output"
 <ul class="nav bd-sidenav">
  <li class="toctree-l1">
   <a class="reference internal" href="aijack_evasion_attack.html">
-   3. Evasion Attack against SVM
+   5. Evasion Attack against SVM
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="aijack_poison_attack.html">
-   4. Poisoning Attack against SVM
+   6. Poisoning Attack against SVM
   </a>
  </li>
 </ul>
@@ -139,7 +163,7 @@ const thebe_selector_output = ".output, .cell_output"
 <ul class="nav bd-sidenav">
  <li class="toctree-l1">
   <a class="reference internal" href="aijack_dp.html">
-   5. Differential Privacy and Moment Accountant
+   7. Differential Privacy and Moment Accountant
   </a>
  </li>
 </ul>
@@ -313,7 +337,7 @@ const thebe_selector_output = ".output, .cell_output"
         <div class="col-12 col-md-9 pl-md-3 pr-md-0">
             <!-- Table of contents that is only displayed when printing the page -->
             <div id="jb-print-docs-body" class="onlyprint">
-                <h1>Welcom to AIJack: Easy-to use security and privacy risk simulator for Machine Learning</h1>
+                <h1>Welcom to AIJack: Security and Privacy Risk Simulator for Machine Learning</h1>
                 <!-- Table of contents -->
                 <div id="print-main-content">
                     <div id="jb-print-toc">
@@ -411,13 +435,13 @@ const thebe_selector_output = ".output, .cell_output"
   Description: AIJack is a fantastic framework demonstrating the security risks of machine learning and deep learning, such as Model Inversion, poisoning attack, and membership inference attack.
   Author: Hideaki Takahashi
   -->
-<div class="tex2jax_ignore mathjax_ignore section" id="welcom-to-aijack-easy-to-use-security-and-privacy-risk-simulator-for-machine-learning">
-<h1>Welcom to AIJack: Easy-to use security and privacy risk simulator for Machine Learning<a class="headerlink" href="#welcom-to-aijack-easy-to-use-security-and-privacy-risk-simulator-for-machine-learning" title="Permalink to this headline">¶</a></h1>
+<div class="tex2jax_ignore mathjax_ignore section" id="welcom-to-aijack-security-and-privacy-risk-simulator-for-machine-learning">
+<h1>Welcom to AIJack: Security and Privacy Risk Simulator for Machine Learning<a class="headerlink" href="#welcom-to-aijack-security-and-privacy-risk-simulator-for-machine-learning" title="Permalink to this headline">¶</a></h1>
 <p>AIJack allows you to assess the privacy and security risks of machine learning algorithms such as <em>Model Inversion</em>, <em>Poisoning Attack</em> and <em>Evasion Attack</em>. AIJack also provides various defense techniques like <em>Federated Learning</em>, <em>Split Learning</em>, <em>Differential Privacy</em>, <em>Homomorphic Encryption</em>, and other heuristic approaches. We currently implement more than 20 state-of-arts methods. We also support MPI for some of the distributed algorithms.If you like AIJack, please consider becoming a GitHub <a class="reference external" href="https://github.com/sponsors/Koukyosyumei">Sponsor</a></p>
 <div class="section" id="table-of-contents">
 <h2>Table of Contents<a class="headerlink" href="#table-of-contents" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li><p><a class="reference external" href="#welcom-to-aijack-easy-to-use-security-and-privacy-risk-simulator-for-machine-learning">Welcom to AIJack: Easy-to use security and privacy risk simulator for Machine Learning</a></p>
+<li><p><a class="reference external" href="#welcom-to-aijack-security-and-privacy-risk-simulator-for-machine-learning">Welcom to AIJack: Security and Privacy Risk Simulator for Machine Learning</a></p>
 <ul>
 <li><p><a class="reference external" href="#table-of-contents">Table of Contents</a></p></li>
 <li><p><a class="reference external" href="#installation">Installation</a></p></li>
@@ -779,6 +803,10 @@ const thebe_selector_output = ".output, .cell_output"
 </div>
 <div class="toctree-wrapper compound">
 </div>
+<div class="toctree-wrapper compound">
+</div>
+<div class="toctree-wrapper compound">
+</div>
 </div>
 
     <script type="text/x-thebe-config">
@@ -806,10 +834,10 @@ const thebe_selector_output = ".output, .cell_output"
             
                 <!-- Previous / next buttons -->
 <div class='prev-next-area'>
-    <a class='right-next' id="next-link" href="aijack_miface.html" title="next page">
+    <a class='right-next' id="next-link" href="aijack_secureboost.html" title="next page">
     <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title"><span class="section-number">1. </span>MI-FACE Model Inversion Attack vs Differentially Private SGD</p>
+        <p class="prev-next-title"><span class="section-number">1. </span>SecureBoost: Vertically Federated XGBoost with Paillier Encryption</p>
     </div>
     <i class="fas fa-angle-right"></i>
     </a>

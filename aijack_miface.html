@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>1. MI-FACE Model Inversion Attack vs Differentially Private SGD &#8212; AIJack</title>
+    <title>2. MI-FACE Model Inversion Attack vs Differentially Private SGD &#8212; AIJack</title>
     
   <link href="_static/css/theme.css" rel="stylesheet">
   <link href="_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
@@ -53,8 +53,8 @@ const thebe_selector_output = ".output, .cell_output"
     <script async="async" src="_static/sphinx-thebe.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="2. Gradient-based Model Inversion Attack against Federated Learning" href="aijack_gradient_inversion_attack.html" />
-    <link rel="prev" title="Welcom to AIJack" href="intro.html" />
+    <link rel="next" title="3. Gradient-based Model Inversion Attack against Federated Learning" href="aijack_gradient_inversion_attack.html" />
+    <link rel="prev" title="1. SecureBoost: Vertically Federated XGBoost with Paillier Encryption" href="aijack_secureboost.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
     
@@ -94,7 +94,19 @@ const thebe_selector_output = ".output, .cell_output"
         <ul class="nav bd-sidenav">
  <li class="toctree-l1">
   <a class="reference internal" href="intro.html">
-   Welcom to AIJack
+   Welcom to AIJack: Security and Privacy Risk Simulator for Machine Learning
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Federated Learning
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="aijack_secureboost.html">
+   1. SecureBoost: Vertically Federated XGBoost with Paillier Encryption
   </a>
  </li>
 </ul>
@@ -106,12 +118,24 @@ const thebe_selector_output = ".output, .cell_output"
 <ul class="current nav bd-sidenav">
  <li class="toctree-l1 current active">
   <a class="current reference internal" href="#">
-   1. MI-FACE Model Inversion Attack vs Differentially Private SGD
+   2. MI-FACE Model Inversion Attack vs Differentially Private SGD
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="aijack_gradient_inversion_attack.html">
-   2. Gradient-based Model Inversion Attack against Federated Learning
+   3. Gradient-based Model Inversion Attack against Federated Learning
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Label Leakage
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="aijack_split_learning.html">
+   4. Split Learning and Label Leakage
   </a>
  </li>
 </ul>
@@ -123,12 +147,12 @@ const thebe_selector_output = ".output, .cell_output"
 <ul class="nav bd-sidenav">
  <li class="toctree-l1">
   <a class="reference internal" href="aijack_evasion_attack.html">
-   3. Evasion Attack against SVM
+   5. Evasion Attack against SVM
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="aijack_poison_attack.html">
-   4. Poisoning Attack against SVM
+   6. Poisoning Attack against SVM
   </a>
  </li>
 </ul>
@@ -140,7 +164,7 @@ const thebe_selector_output = ".output, .cell_output"
 <ul class="nav bd-sidenav">
  <li class="toctree-l1">
   <a class="reference internal" href="aijack_dp.html">
-   5. Differential Privacy and Moment Accountant
+   7. Differential Privacy and Moment Accountant
   </a>
  </li>
 </ul>
@@ -249,24 +273,24 @@ const thebe_selector_output = ".output, .cell_output"
                 <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#no-defense">
-   1.1. No defense
+   2.1. No defense
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#setup">
-     1.1.1. Setup
+     2.1.1. Setup
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#training-the-target-model">
-     1.1.2. Training the target model
+     2.1.2. Training the target model
     </a>
    </li>
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#with-dpsgd">
-   1.2. With DPSGD
+   2.2. With DPSGD
   </a>
  </li>
 </ul>
@@ -291,24 +315,24 @@ const thebe_selector_output = ".output, .cell_output"
                             <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#no-defense">
-   1.1. No defense
+   2.1. No defense
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#setup">
-     1.1.1. Setup
+     2.1.1. Setup
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#training-the-target-model">
-     1.1.2. Training the target model
+     2.1.2. Training the target model
     </a>
    </li>
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#with-dpsgd">
-   1.2. With DPSGD
+   2.2. With DPSGD
   </a>
  </li>
 </ul>
@@ -321,7 +345,7 @@ const thebe_selector_output = ".output, .cell_output"
               <div>
                 
   <div class="tex2jax_ignore mathjax_ignore section" id="mi-face-model-inversion-attack-vs-differentially-private-sgd">
-<h1><span class="section-number">1. </span>MI-FACE Model Inversion Attack vs Differentially Private SGD<a class="headerlink" href="#mi-face-model-inversion-attack-vs-differentially-private-sgd" title="Permalink to this headline">¶</a></h1>
+<h1><span class="section-number">2. </span>MI-FACE Model Inversion Attack vs Differentially Private SGD<a class="headerlink" href="#mi-face-model-inversion-attack-vs-differentially-private-sgd" title="Permalink to this headline">¶</a></h1>
 <p>In this tutorial, we introduce the basic model inversion algorithm MI-FACE and the popular privatization tool DPSGD, which makes the trained model differentially private. DPSGD injects noise into the gradients and prevents information leakage.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -373,9 +397,9 @@ const thebe_selector_output = ".output, .cell_output"
 </div>
 </div>
 <div class="section" id="no-defense">
-<h2><span class="section-number">1.1. </span>No defense<a class="headerlink" href="#no-defense" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">2.1. </span>No defense<a class="headerlink" href="#no-defense" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="setup">
-<h3><span class="section-number">1.1.1. </span>Setup<a class="headerlink" href="#setup" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">2.1.1. </span>Setup<a class="headerlink" href="#setup" title="Permalink to this headline">¶</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">imgs</span> <span class="o">=</span> <span class="p">[]</span>
@@ -407,7 +431,7 @@ const thebe_selector_output = ".output, .cell_output"
 </div>
 </div>
 <div class="section" id="training-the-target-model">
-<h3><span class="section-number">1.1.2. </span>Training the target model<a class="headerlink" href="#training-the-target-model" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">2.1.2. </span>Training the target model<a class="headerlink" href="#training-the-target-model" title="Permalink to this headline">¶</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>  <span class="c1"># loop over the dataset multiple times</span>
@@ -506,7 +530,7 @@ Test Accuracy is:  0.825
 </div>
 </div>
 <div class="section" id="with-dpsgd">
-<h2><span class="section-number">1.2. </span>With DPSGD<a class="headerlink" href="#with-dpsgd" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">2.2. </span>With DPSGD<a class="headerlink" href="#with-dpsgd" title="Permalink to this headline">¶</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">lot_size</span> <span class="o">=</span> <span class="mi">40</span>
@@ -691,17 +715,17 @@ final epsilon is 35.14997033525883
             
                 <!-- Previous / next buttons -->
 <div class='prev-next-area'> 
-    <a class='left-prev' id="prev-link" href="intro.html" title="previous page">
+    <a class='left-prev' id="prev-link" href="aijack_secureboost.html" title="previous page">
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
             <p class="prev-next-subtitle">previous</p>
-            <p class="prev-next-title">Welcom to AIJack</p>
+            <p class="prev-next-title"><span class="section-number">1. </span>SecureBoost: Vertically Federated XGBoost with Paillier Encryption</p>
         </div>
     </a>
     <a class='right-next' id="next-link" href="aijack_gradient_inversion_attack.html" title="next page">
     <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title"><span class="section-number">2. </span>Gradient-based Model Inversion Attack against Federated Learning</p>
+        <p class="prev-next-title"><span class="section-number">3. </span>Gradient-based Model Inversion Attack against Federated Learning</p>
     </div>
     <i class="fas fa-angle-right"></i>
     </a>
