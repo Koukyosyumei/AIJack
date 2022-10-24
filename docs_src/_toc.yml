@@ -4,11 +4,20 @@
 format: jb-book
 root: intro
 parts:
+  - caption: Federated Learning
+    numbered: true
+    chapters:
+      - file: aijack_fedavg
+      - file: aijack_secureboost
   - caption: Model Inversion
     numbered: true
     chapters:
       - file: aijack_miface
       - file: aijack_gradient_inversion_attack
+  - caption: Label Leakage
+    numbered: true
+    chapters:
+      - file: aijack_split_learning
   - caption: Adversarial Examples
     numbered: true
     chapters:

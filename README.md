@@ -9,7 +9,7 @@
   <br>
   <img src="logo/logo_small.png" alt="AIJack" width="200"></a>
   <br>
-  Hijack AI!
+  Let's hijack AI!
   <br>
 
 </h1>
@@ -21,12 +21,12 @@
 </div>
 
 <div align="center">
-❤️ <i>If you like AIJack, please consider <a href="https://github.com/sponsors/Koukyosyumei">becoming a GitHub Sponsor</a>)</i> ❤️
+❤️ <i>If you like AIJack, please consider <a href="https://github.com/sponsors/Koukyosyumei">becoming a GitHub Sponsor</a></i> ❤️
 </div>
 
 # What is AIJack?
 
-AIJack allows you to assess the privacy and security risks of machine learning algorithms such as *Model Inversion*, *Poisoning Attack* and *Evasion Attack*. AIJack also provides various defense techniques like *Federated Learning*, *Split Learning*, *Differential Privacy*, *Homomorphic Encryption*, and other heuristic approaches. We currently implement more than 20 state-of-arts methods. We also support MPI for some of the distributed algorithms.
+AIJack allows you to assess the privacy and security risks of machine learning algorithms such as *Model Inversion*, *Poisoning Attack* and *Evasion Attack*. AIJack also provides various defense techniques like *Federated Learning*, *Split Learning*, *Differential Privacy*, *Homomorphic Encryption*, and other heuristic approaches. We currently implement more than 20 state-of-arts methods. We also support MPI for some of the distributed algorithms. For more information, see the [documentation](https://koukyosyumei.github.io/AIJack/intro.html).
 
 # Table of Contents
 

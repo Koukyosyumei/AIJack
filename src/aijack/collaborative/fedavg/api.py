@@ -29,7 +29,7 @@ class FedAVGAPI:
         self.client_num = len(self.clients)
 
         local_dataset_sizes = [
-            dataloader.dataset.x.shape[0] for dataloader in self.local_dataloaders
+            len(dataloader.dataset) for dataloader in self.local_dataloaders
         ]
         sum_local_dataset_sizes = sum(local_dataset_sizes)
         self.clients_weight = [
