@@ -6,37 +6,37 @@
 
 # Welcom to AIJack
 
-AIJack allows you to assess the privacy and security risks of machine learning algorithms such as *Model Inversion*, *Poisoning Attack* and *Evasion Attack*. AIJack also provides various defense techniques like *Federated Learning*, *Split Learning*, *Differential Privacy*, *Homomorphic Encryption*, and other heuristic approaches. We currently implement more than 20 state-of-arts methods. We also support MPI for some of the distributed algorithms.If you like AIJack, please consider <a href="https://github.com/sponsors/Koukyosyumei">becoming a GitHub Sponsor
+AIJack allows you to assess the privacy and security risks of machine learning algorithms such as *Model Inversion*, *Poisoning Attack* and *Evasion Attack*. AIJack also provides various defense techniques like *Federated Learning*, *Split Learning*, *Differential Privacy*, *Homomorphic Encryption*, and other heuristic approaches. We currently implement more than 20 state-of-arts methods. We also support MPI for some of the distributed algorithms.If you like AIJack, please consider becoming a GitHub [Sponsor](https://github.com/sponsors/Koukyosyumei)
 
-# Table of Contents
+## Table of Contents
 
 
 - [Welcom to AIJack](#welcom-to-aijack)
-- [Table of Contents](#table-of-contents)
-- [Installation](#installation)
-- [Supported Algorithms](#supported-algorithms)
-  - [Distributed Learning](#distributed-learning)
-  - [Attack](#attack)
-  - [Defense](#defense)
-- [Quick Start](#quick-start)
-  - [Federated Learning and Model Inversion Attack](#federated-learning-and-model-inversion-attack)
-  - [Split Learning and Label Leakage Attack](#split-learning-and-label-leakage-attack)
-  - [DPSGD (SGD with Differential Privacy)](#dpsgd-sgd-with-differential-privacy)
-  - [SecureBoost (XGBoost with Homomorphic Encryption)](#secureboost-xgboost-with-homomorphic-encryption)
-  - [Evasion Attack](#evasion-attack)
-  - [Poisoning Attack](#poisoning-attack)
-- [Contact](#contact)
+  - [Table of Contents](#table-of-contents)
+  - [Installation](#installation)
+  - [Supported Algorithms](#supported-algorithms)
+    - [Distributed Learning](#distributed-learning)
+    - [Attack](#attack)
+    - [Defense](#defense)
+  - [Quick Start](#quick-start)
+    - [Federated Learning and Model Inversion Attack](#federated-learning-and-model-inversion-attack)
+    - [Split Learning and Label Leakage Attack](#split-learning-and-label-leakage-attack)
+    - [DPSGD (SGD with Differential Privacy)](#dpsgd-sgd-with-differential-privacy)
+    - [SecureBoost (XGBoost with Homomorphic Encryption)](#secureboost-xgboost-with-homomorphic-encryption)
+    - [Evasion Attack](#evasion-attack)
+    - [Poisoning Attack](#poisoning-attack)
+  - [Contact](#contact)
 
-# Installation
+## Installation
 
 ```
 # pip install pybind11 (uncomment if necessary)
 pip install git+https://github.com/Koukyosyumei/AIJack
 ```
 
-# Supported Algorithms
+## Supported Algorithms
 
-## Distributed Learning
+### Distributed Learning
 
 |             | Example                                                                                                                         | Paper                                                                            |
 | ----------- | ------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- |
@@ -49,7 +49,7 @@ pip install git+https://github.com/Koukyosyumei/AIJack
 | SplitNN     | [example](https://github.com/Koukyosyumei/AIJack/example/label_leakage/label_leakage.py)                                        | [paper](https://github.com/Koukyosyumei/AIJack/https://arxiv.org/abs/1812.00564) |
 | SecureBoost | [example](https://github.com/Koukyosyumei/AIJack/src/aijack/collaborative/tree/README.md)                                       | [paper](https://github.com/Koukyosyumei/AIJack/https://arxiv.org/abs/1901.08755) |
 
-## Attack
+### Attack
 
 |                          | Attack Type          | Example                                                                                                           | Paper                                                                                                                                                                                      |
 | ------------------------ | -------------------- | ----------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
@@ -66,7 +66,7 @@ pip install git+https://github.com/Koukyosyumei/AIJack
 | SVM Poisoning            | Poisoning Attack     | [example](https://github.com/Koukyosyumei/AIJack/example/adversarial_example/example_poison_attack.ipynb)         | [paper](https://github.com/Koukyosyumei/AIJack/https://arxiv.org/abs/1206.6389)                                                                                                            |
 
 
-## Defense
+### Defense
 
 |          | Defense Type           | Example                                                                                                   | Paper                                                                                                                                                                                                     |
 | -------- | ---------------------- | --------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -77,11 +77,11 @@ pip install git+https://github.com/Koukyosyumei/AIJack
 | MID      | Others                 | [example](https://github.com/Koukyosyumei/AIJack/example/model_inversion/mid.ipynb)                       | [paper](https://github.com/Koukyosyumei/AIJack/https://arxiv.org/abs/2009.05241)                                                                                                                          |
 
 
-# Quick Start
+## Quick Start
 
 We briefly introduce some example usages. You can also find more examples in [`example`](example).
 
-## Federated Learning and Model Inversion Attack
+### Federated Learning and Model Inversion Attack
 
 FedAVG is the most representative algorithm of Federated Learning, where multiple clients jointly train a single model without sharing their local datasets.
 
@@ -134,7 +134,7 @@ SoteriaFedAvgClient = manager.attach(FedAvgClient)
 client = SoteriaFedAvgClient(Net(), user_id=i, lr=lr)
 ```
 
-## Split Learning and Label Leakage Attack
+### Split Learning and Label Leakage Attack
 
 You can use split learning, where only one party has the ground-truth labels.
 
@@ -170,7 +170,7 @@ normattacksplitnn = NormAttackSplitNN(clients, optimizers)
 leak_auc = normattacksplitnn.attack(target_dataloader)
 ```
 
-## DPSGD (SGD with Differential Privacy)
+### DPSGD (SGD with Differential Privacy)
 
 DPSGD is an optimizer based on Differential Privacy and theoretically privatizes your deep learning model. We implement the core of differential privacy mechanisms with C++, which is faster than many other libraries purely implemented with Python.
 
@@ -194,7 +194,7 @@ for data in lot_loader(trainset):
     optimizer.step()
 ```
 
-## SecureBoost (XGBoost with Homomorphic Encryption)
+### SecureBoost (XGBoost with Homomorphic Encryption)
 
 SecureBoost is a vertically federated version of XGBoost, where each party encrypts sensitive information with Paillier Encryption. You need additional compile to use secureboost, which requires Boost 1.65 or later.
 
@@ -228,7 +228,7 @@ sclf.predict_proba(X)
 
 ```
 
-## Evasion Attack
+### Evasion Attack
 
 Evasion Attack generates data that the victim model cannot classify correctly.
 
@@ -239,7 +239,7 @@ attacker = Evasion_attack_sklearn(target_model=clf, X_minus_1=attackers_dataset)
 result, log = attacker.attack(initial_datapoint)
 ```
 
-## Poisoning Attack
+### Poisoning Attack
 
 Poisoning Attack injects malicious data into the training dataset to control the behavior of the trained models.
 
@@ -252,6 +252,6 @@ xc_attacked, log = attacker.attack(xc, 1, X_valid, y_valid)
 
 -----------------------------------------------------------------------
 
-# Contact
+## Contact
 
 welcome2aijack[@]gmail.com
