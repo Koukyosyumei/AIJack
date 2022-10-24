@@ -40,7 +40,7 @@ pip install git+https://github.com/Koukyosyumei/AIJack
 
 |             | Example                                                                                                                         | Paper                                                                            |
 | ----------- | ------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- |
-| FedAVG      | [example](https://github.com/Koukyosyumei/AIJack/tree/main/example/collaborative_learning/mpi_fedavg.py)                        | [paper](https://github.com/Koukyosyumei/AIJack/https://arxiv.org/abs/1602.05629) |
+| FedAVG      | [example](aijack_fedavg.ipynb)                                                                                                  | [paper](https://github.com/Koukyosyumei/AIJack/https://arxiv.org/abs/1602.05629) |
 | FedProx     | [example](https://github.com/Koukyosyumei/AIJack/tree/main/example/collaborative_learning/mpi_fedprox.py)                       | [paper](https://github.com/Koukyosyumei/AIJack/https://arxiv.org/abs/1812.06127) |
 | FedKD       | [example](https://github.com/Koukyosyumei/AIJack/https://github.com/Koukyosyumei/AIJack/test/collaborative/fedkd/test_fedkd.py) | [paper](https://github.com/Koukyosyumei/AIJack/https://arxiv.org/abs/2108.13323) |
 | FedMD       | WIP                                                                                                                             | [paper](https://github.com/Koukyosyumei/AIJack/https://arxiv.org/abs/1910.03581) |

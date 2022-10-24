@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>1. SecureBoost: Vertically Federated XGBoost with Paillier Encryption &#8212; AIJack</title>
+    <title>2. SecureBoost: Vertically Federated XGBoost with Paillier Encryption &#8212; AIJack</title>
     
   <link href="_static/css/theme.css" rel="stylesheet">
   <link href="_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
@@ -53,8 +53,8 @@ const thebe_selector_output = ".output, .cell_output"
     <script async="async" src="_static/sphinx-thebe.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="2. MI-FACE Model Inversion Attack vs Differentially Private SGD" href="aijack_miface.html" />
-    <link rel="prev" title="Welcom to AIJack: Security and Privacy Risk Simulator for Machine Learning" href="intro.html" />
+    <link rel="next" title="3. MI-FACE Model Inversion Attack vs Differentially Private SGD" href="aijack_miface.html" />
+    <link rel="prev" title="1. FedAVG" href="aijack_fedavg.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
     
@@ -104,9 +104,14 @@ const thebe_selector_output = ".output, .cell_output"
  </span>
 </p>
 <ul class="current nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="aijack_fedavg.html">
+   1. FedAVG
+  </a>
+ </li>
  <li class="toctree-l1 current active">
   <a class="current reference internal" href="#">
-   1. SecureBoost: Vertically Federated XGBoost with Paillier Encryption
+   2. SecureBoost: Vertically Federated XGBoost with Paillier Encryption
   </a>
  </li>
 </ul>
@@ -118,12 +123,12 @@ const thebe_selector_output = ".output, .cell_output"
 <ul class="nav bd-sidenav">
  <li class="toctree-l1">
   <a class="reference internal" href="aijack_miface.html">
-   2. MI-FACE Model Inversion Attack vs Differentially Private SGD
+   3. MI-FACE Model Inversion Attack vs Differentially Private SGD
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="aijack_gradient_inversion_attack.html">
-   3. Gradient-based Model Inversion Attack against Federated Learning
+   4. Gradient-based Model Inversion Attack against Federated Learning
   </a>
  </li>
 </ul>
@@ -135,7 +140,7 @@ const thebe_selector_output = ".output, .cell_output"
 <ul class="nav bd-sidenav">
  <li class="toctree-l1">
   <a class="reference internal" href="aijack_split_learning.html">
-   4. Split Learning and Label Leakage
+   5. Split Learning and Label Leakage
   </a>
  </li>
 </ul>
@@ -147,12 +152,12 @@ const thebe_selector_output = ".output, .cell_output"
 <ul class="nav bd-sidenav">
  <li class="toctree-l1">
   <a class="reference internal" href="aijack_evasion_attack.html">
-   5. Evasion Attack against SVM
+   6. Evasion Attack against SVM
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="aijack_poison_attack.html">
-   6. Poisoning Attack against SVM
+   7. Poisoning Attack against SVM
   </a>
  </li>
 </ul>
@@ -164,7 +169,7 @@ const thebe_selector_output = ".output, .cell_output"
 <ul class="nav bd-sidenav">
  <li class="toctree-l1">
   <a class="reference internal" href="aijack_dp.html">
-   7. Differential Privacy and Moment Accountant
+   8. Differential Privacy and Moment Accountant
   </a>
  </li>
 </ul>
@@ -273,12 +278,12 @@ const thebe_selector_output = ".output, .cell_output"
                 <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#paillier-encryption">
-   1.1. Paillier Encryption
+   2.1. Paillier Encryption
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#secureboost">
-   1.2. SecureBoost
+   2.2. SecureBoost
   </a>
  </li>
 </ul>
@@ -303,12 +308,12 @@ const thebe_selector_output = ".output, .cell_output"
                             <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#paillier-encryption">
-   1.1. Paillier Encryption
+   2.1. Paillier Encryption
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#secureboost">
-   1.2. SecureBoost
+   2.2. SecureBoost
   </a>
  </li>
 </ul>
@@ -321,7 +326,7 @@ const thebe_selector_output = ".output, .cell_output"
               <div>
                 
   <div class="tex2jax_ignore mathjax_ignore section" id="secureboost-vertically-federated-xgboost-with-paillier-encryption">
-<h1><span class="section-number">1. </span>SecureBoost: Vertically Federated XGBoost with Paillier Encryption<a class="headerlink" href="#secureboost-vertically-federated-xgboost-with-paillier-encryption" title="Permalink to this headline">¶</a></h1>
+<h1><span class="section-number">2. </span>SecureBoost: Vertically Federated XGBoost with Paillier Encryption<a class="headerlink" href="#secureboost-vertically-federated-xgboost-with-paillier-encryption" title="Permalink to this headline">¶</a></h1>
 <p>original paper: <a class="reference external" href="https://arxiv.org/abs/1901.08755">https://arxiv.org/abs/1901.08755</a></p>
 <p>SecureBoost allows multiple parties to train the same model as normal XGBoost without disclosing their local datasets.</p>
 <div class="cell docutils container">
@@ -358,7 +363,7 @@ Successfully installed aijack-secureboost-0.0.1
 </div>
 </div>
 <div class="section" id="paillier-encryption">
-<h2><span class="section-number">1.1. </span>Paillier Encryption<a class="headerlink" href="#paillier-encryption" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">2.1. </span>Paillier Encryption<a class="headerlink" href="#paillier-encryption" title="Permalink to this headline">¶</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">keygenerator</span> <span class="o">=</span> <span class="n">PaillierKeyGenerator</span><span class="p">(</span><span class="mi">512</span><span class="p">)</span>
@@ -401,7 +406,7 @@ ct_1 + ct_3 =  31.600000381469727
 </div>
 </div>
 <div class="section" id="secureboost">
-<h2><span class="section-number">1.2. </span>SecureBoost<a class="headerlink" href="#secureboost" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">2.2. </span>SecureBoost<a class="headerlink" href="#secureboost" title="Permalink to this headline">¶</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">min_leaf</span> <span class="o">=</span> <span class="mi">1</span>
@@ -544,17 +549,17 @@ ct_1 + ct_3 =  31.600000381469727
             
                 <!-- Previous / next buttons -->
 <div class='prev-next-area'> 
-    <a class='left-prev' id="prev-link" href="intro.html" title="previous page">
+    <a class='left-prev' id="prev-link" href="aijack_fedavg.html" title="previous page">
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
             <p class="prev-next-subtitle">previous</p>
-            <p class="prev-next-title">Welcom to AIJack: Security and Privacy Risk Simulator for Machine Learning</p>
+            <p class="prev-next-title"><span class="section-number">1. </span>FedAVG</p>
         </div>
     </a>
     <a class='right-next' id="next-link" href="aijack_miface.html" title="next page">
     <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title"><span class="section-number">2. </span>MI-FACE Model Inversion Attack vs Differentially Private SGD</p>
+        <p class="prev-next-title"><span class="section-number">3. </span>MI-FACE Model Inversion Attack vs Differentially Private SGD</p>
     </div>
     <i class="fas fa-angle-right"></i>
     </a>

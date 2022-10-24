@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>7. Differential Privacy and Moment Accountant &#8212; AIJack</title>
+    <title>8. Differential Privacy and Moment Accountant &#8212; AIJack</title>
     
   <link href="_static/css/theme.css" rel="stylesheet">
   <link href="_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
@@ -55,7 +55,7 @@ const thebe_selector_output = ".output, .cell_output"
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="prev" title="6. Poisoning Attack against SVM" href="aijack_poison_attack.html" />
+    <link rel="prev" title="7. Poisoning Attack against SVM" href="aijack_poison_attack.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
     
@@ -106,8 +106,13 @@ const thebe_selector_output = ".output, .cell_output"
 </p>
 <ul class="nav bd-sidenav">
  <li class="toctree-l1">
+  <a class="reference internal" href="aijack_fedavg.html">
+   1. FedAVG
+  </a>
+ </li>
+ <li class="toctree-l1">
   <a class="reference internal" href="aijack_secureboost.html">
-   1. SecureBoost: Vertically Federated XGBoost with Paillier Encryption
+   2. SecureBoost: Vertically Federated XGBoost with Paillier Encryption
   </a>
  </li>
 </ul>
@@ -119,12 +124,12 @@ const thebe_selector_output = ".output, .cell_output"
 <ul class="nav bd-sidenav">
  <li class="toctree-l1">
   <a class="reference internal" href="aijack_miface.html">
-   2. MI-FACE Model Inversion Attack vs Differentially Private SGD
+   3. MI-FACE Model Inversion Attack vs Differentially Private SGD
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="aijack_gradient_inversion_attack.html">
-   3. Gradient-based Model Inversion Attack against Federated Learning
+   4. Gradient-based Model Inversion Attack against Federated Learning
   </a>
  </li>
 </ul>
@@ -136,7 +141,7 @@ const thebe_selector_output = ".output, .cell_output"
 <ul class="nav bd-sidenav">
  <li class="toctree-l1">
   <a class="reference internal" href="aijack_split_learning.html">
-   4. Split Learning and Label Leakage
+   5. Split Learning and Label Leakage
   </a>
  </li>
 </ul>
@@ -148,12 +153,12 @@ const thebe_selector_output = ".output, .cell_output"
 <ul class="nav bd-sidenav">
  <li class="toctree-l1">
   <a class="reference internal" href="aijack_evasion_attack.html">
-   5. Evasion Attack against SVM
+   6. Evasion Attack against SVM
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="aijack_poison_attack.html">
-   6. Poisoning Attack against SVM
+   7. Poisoning Attack against SVM
   </a>
  </li>
 </ul>
@@ -165,7 +170,7 @@ const thebe_selector_output = ".output, .cell_output"
 <ul class="current nav bd-sidenav">
  <li class="toctree-l1 current active">
   <a class="current reference internal" href="#">
-   7. Differential Privacy and Moment Accountant
+   8. Differential Privacy and Moment Accountant
   </a>
  </li>
 </ul>
@@ -274,7 +279,7 @@ const thebe_selector_output = ".output, .cell_output"
                 <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#get">
-   7.1. Get
+   8.1. Get
    <span class="math notranslate nohighlight">
     \(ϵ\)
    </span>
@@ -282,7 +287,7 @@ const thebe_selector_output = ".output, .cell_output"
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#id1">
-   7.2. Get
+   8.2. Get
    <span class="math notranslate nohighlight">
     \(σ\)
    </span>
@@ -310,7 +315,7 @@ const thebe_selector_output = ".output, .cell_output"
                             <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#get">
-   7.1. Get
+   8.1. Get
    <span class="math notranslate nohighlight">
     \(ϵ\)
    </span>
@@ -318,7 +323,7 @@ const thebe_selector_output = ".output, .cell_output"
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#id1">
-   7.2. Get
+   8.2. Get
    <span class="math notranslate nohighlight">
     \(σ\)
    </span>
@@ -334,7 +339,7 @@ const thebe_selector_output = ".output, .cell_output"
               <div>
                 
   <div class="tex2jax_ignore mathjax_ignore section" id="differential-privacy-and-moment-accountant">
-<h1><span class="section-number">7. </span>Differential Privacy and Moment Accountant<a class="headerlink" href="#differential-privacy-and-moment-accountant" title="Permalink to this headline">¶</a></h1>
+<h1><span class="section-number">8. </span>Differential Privacy and Moment Accountant<a class="headerlink" href="#differential-privacy-and-moment-accountant" title="Permalink to this headline">¶</a></h1>
 <p>AIJack supports Moment Accountant for Differential Privacy with python or c++ backend. C++ backend is much faster but numerically unstable. We will improve these imeplementations as soon as possible.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -354,7 +359,7 @@ const thebe_selector_output = ".output, .cell_output"
 </div>
 </div>
 <div class="section" id="get">
-<h2><span class="section-number">7.1. </span>Get <span class="math notranslate nohighlight">\(ϵ\)</span><a class="headerlink" href="#get" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">8.1. </span>Get <span class="math notranslate nohighlight">\(ϵ\)</span><a class="headerlink" href="#get" title="Permalink to this headline">¶</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># get epsilon</span>
@@ -443,7 +448,7 @@ const thebe_selector_output = ".output, .cell_output"
 </div>
 </div>
 <div class="section" id="id1">
-<h2><span class="section-number">7.2. </span>Get <span class="math notranslate nohighlight">\(σ\)</span><a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">8.2. </span>Get <span class="math notranslate nohighlight">\(σ\)</span><a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">ga</span> <span class="o">=</span> <span class="n">GeneralMomentAccountant</span><span class="p">(</span>
@@ -507,7 +512,7 @@ const thebe_selector_output = ".output, .cell_output"
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
             <p class="prev-next-subtitle">previous</p>
-            <p class="prev-next-title"><span class="section-number">6. </span>Poisoning Attack against SVM</p>
+            <p class="prev-next-title"><span class="section-number">7. </span>Poisoning Attack against SVM</p>
         </div>
     </a>
 </div>
