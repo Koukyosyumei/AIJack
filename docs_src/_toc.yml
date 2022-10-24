@@ -7,6 +7,7 @@ parts:
   - caption: Federated Learning
     numbered: true
     chapters:
+      - file: aijack_fedavg
       - file: aijack_secureboost
   - caption: Model Inversion
     numbered: true
