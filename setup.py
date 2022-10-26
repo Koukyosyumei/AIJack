@@ -30,7 +30,7 @@ setup(
     description="package to implemet attack and defense method for machine learning",
     author="Koukyosyumei",
     author_email="koukyosyumei@hotmail.com",
-    license="MIT",
+    license="Apache-2.0",
     install_requires=read_requirements(),
     url="https://github.com/Koukyosyumei/AIJack",
     package_dir={"": "src"},
