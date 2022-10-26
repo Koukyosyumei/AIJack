@@ -14,10 +14,17 @@ parts:
     chapters:
       - file: aijack_miface
       - file: aijack_gradient_inversion_attack
+      - file: aijack_ganattack
+      - file: aijack_soteria
+      - file: aijack_mid
   - caption: Label Leakage
     numbered: true
     chapters:
       - file: aijack_split_learning
+  - caption: Membership Inference
+    numbered: true
+    chapters:
+      - file: aijack_membership_inference
   - caption: Adversarial Examples
     numbered: true
     chapters:
