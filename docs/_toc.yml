@@ -14,6 +14,8 @@ parts:
     chapters:
       - file: aijack_miface
       - file: aijack_gradient_inversion_attack
+      - file: aijack_ganattack
+      - file: aijack_soteria
       - file: aijack_mid
   - caption: Label Leakage
     numbered: true
