@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.13...3.18)
-project(aijack_secureboost VERSION 0.0.0)
+project(aijack_cpp_core VERSION 0.0.0)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -mtune=native -march=native")
 
@@ -8,8 +8,8 @@ find_package(Boost REQUIRED)
 
 find_package(Python COMPONENTS Interpreter Development)
 find_package(pybind11 CONFIG)
-pybind11_add_module(aijack_secureboost main.cpp)
+pybind11_add_module(aijack_cpp_core main.cpp)
 
 # EXAMPLE_VERSION_INFO is defined by setup.py and passed into the C++ code as a
 # define (VERSION_INFO) here.
-target_link_libraries(aijack_secureboost PRIVATE boost_random)
+target_link_libraries(aijack_cpp_core PRIVATE boost_random)

@@ -2,6 +2,7 @@
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
 #include <pybind11/functional.h>
+#include <boost/math/special_functions/beta.hpp>
 #include <cmath>
 #include <vector>
 #include <limits>
@@ -55,7 +56,7 @@ double binom(double n, double k)
 
     if ((n >= 1e10 * k) && (k > 0))
     {
-        return std::exp(-std::log(std::beta(1 + n - k, 1 + k))) - std::log(n + 1);
+        return std::exp(-std::log(boost::math::beta(1 + n - k, 1 + k))) - std::log(n + 1);
     }
     else if (k > 1e8 * std::fabs(n))
     {
@@ -98,7 +99,7 @@ double binom(double n, double k)
     }
     else
     {
-        return 1 / (n + 1) / std::beta(1 + n - k, 1 + k);
+        return 1 / (n + 1) / boost::math::beta(1 + n - k, 1 + k);
     }
 }
 
