@@ -3,6 +3,7 @@
 #include <pybind11/stl.h>
 #include <pybind11/functional.h>
 #include <boost/math/special_functions/beta.hpp>
+#include <boost/math/special_functions/gamma.hpp>
 #include <cmath>
 #include <vector>
 #include <limits>
@@ -60,7 +61,7 @@ double binom(double n, double k)
     }
     else if (k > 1e8 * std::fabs(n))
     {
-        num = std::tgamma(1 + n) / std::fabs(k) + std::tgamma(1 + n) * n / (2 * (k * k));
+        num = boost::math::tgamma(1 + n) / std::fabs(k) + boost::math::tgamma(1 + n) * n / (2 * (k * k));
         num /= pi * pow(std::fabs(k), n);
         if (k > 0)
         {

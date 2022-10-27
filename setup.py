@@ -135,7 +135,7 @@ console_scripts = []
 setup(
     name="aijack",
     version=__version__,
-    description="package to implemet attack and defense method for machine learning",
+    description="Security and Privacy Risk Simulator for Machine Learning",
     author="Koukyosyumei",
     author_email="koukyosyumei@hotmail.com",
     license="Apache-2.0",
