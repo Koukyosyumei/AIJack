@@ -77,8 +77,6 @@ class FedAvgServer(BaseServer):
                 aggregated_gradients[gradient_id] += weight[i] * gradients[gradient_id]
 
         self.optimizer.step(aggregated_gradients)
-        # for params, grads in zip(self.server_model.parameters(), aggregated_gradients):
-        #    params.data -= self.lr * grads
 
     def update_from_parameters(self, weight=None):
         if weight is None:

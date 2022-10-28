@@ -6,6 +6,18 @@ import torch
 from ...utils import accuracy_torch_dataloader
 
 
+class BaseFedAPI:
+    """Abstract class for Federated Learning API"""
+
+    @abstractmethod
+    def local_train(self):
+        pass
+
+    @abstractmethod
+    def run(self):
+        pass
+
+
 class BaseFLKnowledgeDistillationAPI:
     """Abstract class for API of federated learning with knowledge distillation.
 
