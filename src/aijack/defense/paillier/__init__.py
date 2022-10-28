@@ -4,3 +4,5 @@ from aijack_cpp_core import (  # noqa: F401
     PaillierPublicKey,
     PaillierSecretKey,
 )
+
+from .torch_wrapper import PaillierTensor  # noqa: F401
