@@ -8,6 +8,19 @@ from ..optimizer import AdamFLOptimizer, SGDFLOptimizer
 
 
 class FedAvgClient(BaseClient):
+    """Client of FedAVG for single process simulation
+
+    Args:
+        model (torch.nn.Module): local model
+        user_id (int, optional): if of this client. Defaults to 0.
+        lr (float, optional): learning rate. Defaults to 0.1.
+        send_gradient (bool, optional): if True, communicate gradient to the server. otherwise, communicates model parameters. Defaults to True.
+        optimizer_type_for_global_grad (str, optional): type of optimizer for model update with global gradient. sgd|adam. Defaults to "sgd".
+        server_side_update (bool, optional): If True, the global model update is conducted in the server side. Defaults to True.
+        optimizer_kwargs_for_global_grad (dict, optional): kwargs for the optimizer for global gradients. Defaults to {}.
+        device (str, optional): device type. Defaults to "cpu".
+    """
+
     def __init__(
         self,
         model,
@@ -53,24 +66,37 @@ class FedAvgClient(BaseClient):
             )
 
     def upload(self):
+        """Upload the current local model state"""
         if self.send_gradient:
             return self.upload_gradients()
         else:
             return self.upload_parameters()
 
     def upload_parameters(self):
+        """Upload the model parameters"""
         return self.model.state_dict()
 
     def upload_gradients(self):
+        """Upload the local gradients"""
         gradients = []
         for param, prev_param in zip(self.model.parameters(), self.prev_parameters):
             gradients.append((prev_param - param) / self.lr)
         return gradients
 
+    def revert(self):
+        """Revert the local model state to the previous global model"""
+        for param, prev_param in zip(self.model.parameters(), self.prev_parameters):
+            if param is not None:
+                param = prev_param
+
     def download(self, new_global_model):
+        """Download the new global model"""
         if self.server_side_update or (not self.initialized):
+            # receive the new global model as the model state
             self.model.load_state_dict(new_global_model)
         else:
+            # receive the new global model as the global gradients
+            self.revert()
             self.optimizer_for_gloal_grad.step(new_global_model)
 
         if not self.initialized:
@@ -82,6 +108,8 @@ class FedAvgClient(BaseClient):
 
 
 class MPIFedAVGClient(BaseClient):
+    """Client of FedAVG for mpi-backend simulation"""
+
     def __init__(self, comm, model, user_id=0, lr=0.1, device="cpu"):
         super(MPIFedAVGClient, self).__init__(model, user_id=user_id)
         self.comm = comm

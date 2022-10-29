@@ -4,6 +4,21 @@ from ..core.api import BaseFedAPI
 
 
 class FedAVGAPI(BaseFedAPI):
+    """Implementation of FedAVG (McMahan, Brendan, et al. 'Communication-efficient learning of deep networks from decentralized data.' Artificial intelligence and statistics. PMLR, 2017.)
+
+    Args:
+        server (FedAvgServer): FedAVG server.
+        clients ([FedAvgClient]): a list of FedAVG clients.
+        criterion (function): loss function.
+        local_optimizers ([torch.optimizer]): a list of local optimizers for clients
+        local_dataloaders ([toch.dataloader]): a list of local dataloaders for clients
+        num_communication (int, optional): number of communication. Defaults to 1.
+        local_epoch (int, optional): number of epochs for local training within each communication. Defaults to 1.
+        use_gradients (bool, optional): communicate gradients if True. Otherwise communicate parameters. Defaults to True.
+        custom_action (function, optional): arbitrary function that takes this instance itself. Defaults to lambdax:x.
+        device (str, optional): device type. Defaults to "cpu".
+    """
+
     def __init__(
         self,
         server,

@@ -5,11 +5,20 @@ from .torch_wrapper import PaillierTensor
 
 
 def attach_paillier_to_client_for_encrypted_grad(cls, pk, sk):
+    """Make the client class communicate the encrypted gradients with paillier encryption scheme.
+
+    Args:
+        cls: client class
+        pk: public key
+        sk: secret key
+    """
+
     class PaillierClientWrapper(cls):
         def __init__(self, *args, **kwargs):
             super(PaillierClientWrapper, self).__init__(*args, **kwargs)
 
         def upload_gradients(self):
+            """Upload encrypted gradients"""
             pt_grads = super().upload_gradients()
             return [
                 PaillierTensor(
@@ -19,7 +28,9 @@ def attach_paillier_to_client_for_encrypted_grad(cls, pk, sk):
             ]
 
         def download(self, global_grad):
+            """Download and decrypt the received global gradients"""
             if not self.initialized:
+                # initial parameters are not encrypted
                 return super().download(global_grad)
             else:
                 decrypted_global_grad = []
@@ -34,6 +45,8 @@ def attach_paillier_to_client_for_encrypted_grad(cls, pk, sk):
 
 
 class PaillierGradientClientManager(BaseManager):
+    """Client Manager for secure aggregation with Paillier Encryption"""
+
     def __init__(self, *args, **kwargs):
         self.args = args
         self.kwargs = kwargs

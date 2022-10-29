@@ -7,7 +7,7 @@ HANDLED_FUNCTIONS = {}
 
 
 def implements(torch_function):
-    """Register a torch function override for ScalarTensor"""
+    """Register a torch function override for PaillierTensor"""
 
     @functools.wraps(torch_function)
     def decorator(func):
@@ -18,6 +18,8 @@ def implements(torch_function):
 
 
 class PaillierTensor(object):
+    """torch.Tensor-like object for Paillier Encryption"""
+
     def __init__(self, paillier_array):
         if type(paillier_array) == list:
             self._paillier_np_array = np.array(paillier_array)
