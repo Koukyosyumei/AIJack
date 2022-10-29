@@ -25,7 +25,7 @@ def attach_paillier_to_client_for_encrypted_grad(cls, pk, sk):
                 decrypted_global_grad = []
                 for grad in global_grad:
                     if type(grad) == PaillierTensor:
-                        decrypted_global_grad.append(grad.decrypt(sk))
+                        decrypted_global_grad.append(grad.decrypt(sk, self.device))
                     else:
                         decrypted_global_grad.append(grad)
                 return super().download(decrypted_global_grad)

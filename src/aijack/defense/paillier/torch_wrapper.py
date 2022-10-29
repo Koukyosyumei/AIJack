@@ -29,10 +29,10 @@ class PaillierTensor(object):
     def __repr__(self):
         return "PaillierTensor"
 
-    def decrypt(self, sk):
+    def decrypt(self, sk, device="cpu"):
         return torch.Tensor(
             np.vectorize(lambda x: sk.decrypt2float(x))(self._paillier_np_array)
-        )
+        ).to(device)
 
     def tensor(self, sk=None):
         if sk is not None:
@@ -44,6 +44,9 @@ class PaillierTensor(object):
         return self._paillier_np_array
 
     def detach(self):
+        return self
+
+    def cpu(self):
         return self
 
     @classmethod
@@ -61,7 +64,9 @@ class PaillierTensor(object):
         if type(other) in [int, float]:
             return PaillierTensor(input._paillier_np_array + other)
         elif type(other) in [torch.Tensor, PaillierTensor]:
-            return PaillierTensor(input._paillier_np_array + other.detach().numpy())
+            return PaillierTensor(
+                input._paillier_np_array + other.detach().cpu().numpy()
+            )
         else:
             raise NotImplementedError(f"{type(other)} is not supported.")
 
@@ -71,7 +76,7 @@ class PaillierTensor(object):
             return PaillierTensor(input._paillier_np_array + (-1) * other)
         elif type(other) in [torch.Tensor, PaillierTensor]:
             return PaillierTensor(
-                input._paillier_np_array + (-1) * other.detach().numpy()
+                input._paillier_np_array + (-1) * other.detach().cpu().numpy()
             )
         else:
             raise NotImplementedError(f"{type(other)} is not supported.")
@@ -81,7 +86,9 @@ class PaillierTensor(object):
         if type(other) in [int, float]:
             return PaillierTensor(input._paillier_np_array * other)
         elif type(other) in [torch.Tensor, PaillierTensor]:
-            return PaillierTensor(input._paillier_np_array * other.detach().numpy())
+            return PaillierTensor(
+                input._paillier_np_array * other.detach().cpu().numpy()
+            )
         else:
             raise NotImplementedError(f"{type(other)} is not supported.")
 

@@ -17,11 +17,13 @@ class FedAvgClient(BaseClient):
         optimizer_type_for_global_grad="sgd",
         server_side_update=True,
         optimizer_kwargs_for_global_grad={},
+        device="cpu",
     ):
         super(FedAvgClient, self).__init__(model, user_id=user_id)
         self.lr = lr
         self.send_gradient = send_gradient
         self.server_side_update = server_side_update
+        self.device = device
 
         if not self.server_side_update:
             self._setup_optimizer_for_global_grad(
