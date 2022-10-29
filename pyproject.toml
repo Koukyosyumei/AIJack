@@ -15,7 +15,6 @@ authors = [
   { name="Hideaki Takahashi" },
 ]
 description = "Security and Privacy Risk Simulator for Machine Learning"
-repository = "https://github.com/Koukyosyumei/AIJack"
 readme = "README.md"
 license = {file = "LICENSE"}
 

@@ -1,9 +1,0 @@
-numpy
-tqdm
-sklearn
-torch >= 1.11.0
-torchvision
-pybind11
-pybind11[global]
-matplotlib
-mpi4py
