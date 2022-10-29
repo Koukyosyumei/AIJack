@@ -1,0 +1,9 @@
+black
+black[jupyter]
+flake8
+pytest
+isort
+pre-commit
+pandas
+sphinx
+sphinx_rtd_theme
