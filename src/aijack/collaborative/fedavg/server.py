@@ -17,12 +17,14 @@ class FedAvgServer(BaseServer):
         server_id=0,
         lr=0.1,
         optimizer_type="sgd",
+        server_side_update=True,
         optimizer_kwargs={},
     ):
         super(FedAvgServer, self).__init__(clients, global_model, server_id=server_id)
         self.lr = lr
         self._setup_optimizer(optimizer_type, **optimizer_kwargs)
-        self.distribtue()
+        self.server_side_update = server_side_update
+        self.distribtue(force_send_model_state_dict=True)
 
     def _setup_optimizer(self, optimizer_type, **kwargs):
         if optimizer_type == "sgd":
@@ -66,17 +68,22 @@ class FedAvgServer(BaseServer):
     def updata_from_gradients(self, weight=None):
         if weight is None:
             weight = np.ones(self.num_clients) / self.num_clients
+            weight = weight.tolist()
 
-        aggregated_gradients = [
+        self.aggregated_gradients = [
             torch.zeros_like(params) for params in self.server_model.parameters()
         ]
-        len_gradients = len(aggregated_gradients)
+        len_gradients = len(self.aggregated_gradients)
 
         for i, gradients in enumerate(self.uploaded_gradients):
             for gradient_id in range(len_gradients):
-                aggregated_gradients[gradient_id] += weight[i] * gradients[gradient_id]
+                self.aggregated_gradients[gradient_id] = (
+                    gradients[gradient_id] * weight[i]
+                    + self.aggregated_gradients[gradient_id]
+                )
 
-        self.optimizer.step(aggregated_gradients)
+        if self.server_side_update:
+            self.optimizer.step(self.aggregated_gradients)
 
     def update_from_parameters(self, weight=None):
         if weight is None:
@@ -95,9 +102,12 @@ class FedAvgServer(BaseServer):
 
         self.server_model.load_state_dict(averaged_params)
 
-    def distribtue(self):
+    def distribtue(self, force_send_model_state_dict=False):
         for client in self.clients:
-            client.download(self.server_model.state_dict())
+            if self.server_side_update or force_send_model_state_dict:
+                client.download(self.server_model.state_dict())
+            else:
+                client.download(self.aggregated_gradients)
 
 
 class MPIFedAVGServer(BaseServer):

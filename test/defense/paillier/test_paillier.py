@@ -36,28 +36,28 @@ def test_paillier_torch():
     ct_3 = ct_1 + ct_2
 
     pt_1 = PaillierTensor([ct_1, ct_2, ct_3])
-    torch.testing.assert_allclose(
-        pt_1.decypt(sk), torch.Tensor([13, 0.5, 13.5]), atol=1e-5, rtol=1
+    torch.testing.assert_close(
+        pt_1.decrypt(sk), torch.Tensor([13, 0.5, 13.5]), atol=1e-5, rtol=1
     )
 
     pt_2 = pt_1 + torch.Tensor([0.4, 0.1, 0.2])
-    torch.testing.assert_allclose(
-        pt_2.decypt(sk), torch.Tensor([13.4, 0.6, 13.7]), atol=1e-5, rtol=1
+    torch.testing.assert_close(
+        pt_2.decrypt(sk), torch.Tensor([13.4, 0.6, 13.7]), atol=1e-5, rtol=1
     )
 
     pt_3 = pt_1 * torch.Tensor([1, 2.5, 0.5])
-    torch.testing.assert_allclose(
-        pt_3.decypt(sk), torch.Tensor([13, 1.25, 6.75]), atol=1e-5, rtol=1
+    torch.testing.assert_close(
+        pt_3.decrypt(sk), torch.Tensor([13, 1.25, 6.75]), atol=1e-5, rtol=1
     )
 
     pt_4 = pt_1 - torch.Tensor([0.7, 0.3, 0.6])
-    torch.testing.assert_allclose(
-        pt_4.decypt(sk), torch.Tensor([14.3, 0.2, 12.9]), atol=1e-5, rtol=1
+    torch.testing.assert_close(
+        pt_4.decrypt(sk), torch.Tensor([14.3, 0.2, 12.9]), atol=1e-5, rtol=1
     )
 
     pt_5 = pt_1 * 2
-    torch.testing.assert_allclose(
-        pt_5.decypt(sk), torch.Tensor([26, 1, 27]), atol=1e-5, rtol=1
+    torch.testing.assert_close(
+        pt_5.decrypt(sk), torch.Tensor([26, 1, 27]), atol=1e-5, rtol=1
     )
 
 
@@ -78,20 +78,10 @@ def test_pailier_fedavg():
     class Net(nn.Module):
         def __init__(self):
             super(Net, self).__init__()
-            self.conv = nn.Sequential(
-                nn.Conv2d(1, 32, 5),
-                nn.Sigmoid(),
-                nn.MaxPool2d(3, 3, 1),
-                nn.Conv2d(32, 64, 5),
-                nn.Sigmoid(),
-                nn.MaxPool2d(3, 3, 1),
-            )
-
-            self.lin = nn.Sequential(nn.Linear(256, 10))
+            self.lin = nn.Sequential(nn.Linear(28 * 28, 10))
 
         def forward(self, x):
-            x = self.conv(x)
-            x = x.reshape((-1, 256))
+            x = x.reshape((-1, 28 * 28))
             x = self.lin(x)
             return x
 
@@ -106,17 +96,13 @@ def test_pailier_fedavg():
     PaillierGradFedAvgClient = manager.attach(FedAvgClient)
 
     clients = [
-        PaillierGradFedAvgClient(
-            Net(),
-            user_id=i,
-            lr=lr,
-        )
+        PaillierGradFedAvgClient(Net(), user_id=i, lr=lr, server_side_update=False)
         for i in range(client_num)
     ]
     optimizers = [optim.SGD(client.parameters(), lr=lr) for client in clients]
 
     global_model = Net()
-    server = FedAvgServer(clients, global_model, lr=lr)
+    server = FedAvgServer(clients, global_model, lr=lr, server_side_update=False)
 
     criterion = nn.CrossEntropyLoss()
 

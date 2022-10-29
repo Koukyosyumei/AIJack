@@ -29,7 +29,7 @@ class PaillierTensor(object):
     def __repr__(self):
         return "PaillierTensor"
 
-    def decypt(self, sk):
+    def decrypt(self, sk):
         return torch.Tensor(
             np.vectorize(lambda x: sk.decrypt2float(x))(self._paillier_np_array)
         )
@@ -42,6 +42,9 @@ class PaillierTensor(object):
 
     def numpy(self):
         return self._paillier_np_array
+
+    def detach(self):
+        return self
 
     @classmethod
     def __torch_function__(cls, func, types, args=(), kwargs=None):
@@ -58,7 +61,7 @@ class PaillierTensor(object):
         if type(other) in [int, float]:
             return PaillierTensor(input._paillier_np_array + other)
         elif type(other) in [torch.Tensor, PaillierTensor]:
-            return PaillierTensor(input._paillier_np_array + other.numpy())
+            return PaillierTensor(input._paillier_np_array + other.detach().numpy())
         else:
             raise NotImplementedError(f"{type(other)} is not supported.")
 
@@ -67,7 +70,9 @@ class PaillierTensor(object):
         if type(other) in [int, float]:
             return PaillierTensor(input._paillier_np_array + (-1) * other)
         elif type(other) in [torch.Tensor, PaillierTensor]:
-            return PaillierTensor(input._paillier_np_array + (-1) * other.numpy())
+            return PaillierTensor(
+                input._paillier_np_array + (-1) * other.detach().numpy()
+            )
         else:
             raise NotImplementedError(f"{type(other)} is not supported.")
 
@@ -76,15 +81,30 @@ class PaillierTensor(object):
         if type(other) in [int, float]:
             return PaillierTensor(input._paillier_np_array * other)
         elif type(other) in [torch.Tensor, PaillierTensor]:
-            return PaillierTensor(input._paillier_np_array * other.numpy())
+            return PaillierTensor(input._paillier_np_array * other.detach().numpy())
         else:
             raise NotImplementedError(f"{type(other)} is not supported.")
 
     def __add__(self, other):
         return torch.add(self, other)
 
+    def __iadd__(self, other):
+        self = torch.add(self, other)
+
+    def __radd__(self, other):
+        return self.__add__(other)
+
     def __sub__(self, other):
         return torch.sub(self, other)
 
+    def __isub__(self, other):
+        self = torch.sub(self, other)
+
+    def __rsub__(self, other):
+        return self.__sub__(other)
+
     def __mul__(self, other):
         return torch.mul(self, other)
+
+    def __rmul__(self, other):
+        return self.__mul__(other)
