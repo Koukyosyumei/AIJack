@@ -126,9 +126,7 @@ class MPIFedAVGClient(BaseClient):
     def upload_gradient(self, destination_id=0):
         self.gradients = []
         for param, prev_param in zip(self.model.parameters(), self.prev_parameters):
-            self.gradients.append(
-                ((prev_param.reshape(-1) - param.reshape(-1)) / self.lr).tolist()
-            )
+            self.gradients.append((prev_param - param) / self.lr)
         self.comm.send(self.gradients, dest=destination_id, tag=GRADIENTS_TAG)
 
     def download(self):

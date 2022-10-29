@@ -217,9 +217,7 @@ class MPIFedAVGServer(BaseServer):
             gradients_flattend = self.comm.recv(tag=GRADIENTS_TAG)
             gradients_reshaped = []
             for params, grad in zip(self.server_model.parameters(), gradients_flattend):
-                gradients_reshaped.append(
-                    torch.Tensor(grad).to(self.device).reshape(params.shape)
-                )
+                gradients_reshaped.append(grad.to(self.device))
                 if torch.sum(torch.isnan(gradients_reshaped[-1])):
                     print("the received gradients contains nan")
                     MPI.COMM_WORLD.Abort(RECEIVE_NAN_CODE)
