@@ -18,17 +18,25 @@ def implements(torch_function):
 
 
 class PaillierTensor(object):
-    def __init__(self, paillier_np_array):
-        self._paillier_np_array = paillier_np_array
+    def __init__(self, paillier_array):
+        if type(paillier_array) == list:
+            self._paillier_np_array = np.array(paillier_array)
+        elif type(paillier_array) == np.ndarray:
+            self._paillier_np_array = paillier_array
+        else:
+            raise TypeError(f"{type(paillier_array)} is not supported.")
 
     def __repr__(self):
         return "PaillierTensor"
 
+    def decypt(self, sk):
+        return torch.Tensor(
+            np.vectorize(lambda x: sk.decrypt2float(x))(self._paillier_np_array)
+        )
+
     def tensor(self, sk=None):
         if sk is not None:
-            return torch.Tensor(
-                np.vectorize(lambda x: sk.decrypt2float(x))(self._paillier_np_array)
-            )
+            return self.decypt(sk)
         else:
             return torch.zeros(self._paillier_np_array.shape)
 
@@ -57,9 +65,9 @@ class PaillierTensor(object):
     @implements(torch.sub)
     def sub(input, other):
         if type(other) in [int, float]:
-            return PaillierTensor(input._paillier_np_array - other)
+            return PaillierTensor(input._paillier_np_array + (-1 * other))
         elif type(other) in [torch.Tensor, PaillierTensor]:
-            return PaillierTensor(input._paillier_np_array - other.numpy())
+            return PaillierTensor(input._paillier_np_array + (-1 * other.numpy()))
         else:
             raise NotImplementedError(f"{type(other)} is not supported.")
 
@@ -73,10 +81,10 @@ class PaillierTensor(object):
             raise NotImplementedError(f"{type(other)} is not supported.")
 
     def __add__(self, other):
-        return self.add(self, other)
+        return torch.add(self, other)
 
     def __sub__(self, other):
-        return self.sub(self, other)
+        return torch.sub(self, other)
 
     def __mul__(self, other):
-        return self.mul(self, other)
+        return torch.mul(self, other)
