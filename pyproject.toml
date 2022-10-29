@@ -30,6 +30,19 @@ dependencies = [
     'mpi4py'
 ]
 
+[project.optional-dependencies]
+dev = [
+    'black'
+    'black[jupyter]'
+    'flake8'
+    'pytest'
+    'isort'
+    'pre-commit'
+    'pandas'
+    'sphinx'
+    'sphinx_rtd_theme'
+]
+
 [tool.setuptools]
 package-dir = {"" = "src"}
 
