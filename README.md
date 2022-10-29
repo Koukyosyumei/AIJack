@@ -49,8 +49,11 @@ AIJack allows you to assess the privacy and security risks of machine learning a
 
 # Installation
 
+AIJack requires Boost and pybind11.
+
 ```
-# pip install pybind11 (uncomment if necessary)
+# apt install -y libboost-all-dev
+# pip install pybind11
 pip install git+https://github.com/Koukyosyumei/AIJack
 ```
 
