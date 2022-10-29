@@ -131,6 +131,8 @@ ext_modules = [CMakeExtension("aijack_cpp_core")]
 console_scripts = []
 
 setup(
+    name="aijack",
+    version="0.0.0",
     ext_modules=ext_modules,
     entry_points={"console_scripts": console_scripts},
     cmdclass={"build_ext": CMakeBuild},
