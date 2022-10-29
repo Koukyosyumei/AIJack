@@ -20,5 +20,8 @@ class SGDFLOptimizer(BaseFLOptimizer):
             grads (List[torch.Tensor]): list of gradients
         """
         for param, grad in zip(self.parameters, grads):
-            param.data -= self.lr * (grad + self.weight_decay * param.data)
+            if self.weight_decay == 0.0:
+                param.data -= self.lr * grad
+            else:
+                param.data -= self.lr * (grad + self.weight_decay * param.data)
         self.t += 1

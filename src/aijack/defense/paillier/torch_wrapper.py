@@ -65,9 +65,9 @@ class PaillierTensor(object):
     @implements(torch.sub)
     def sub(input, other):
         if type(other) in [int, float]:
-            return PaillierTensor(input._paillier_np_array + (-1 * other))
+            return PaillierTensor(input._paillier_np_array + (-1) * other)
         elif type(other) in [torch.Tensor, PaillierTensor]:
-            return PaillierTensor(input._paillier_np_array + (-1 * other.numpy()))
+            return PaillierTensor(input._paillier_np_array + (-1) * other.numpy())
         else:
             raise NotImplementedError(f"{type(other)} is not supported.")
 
