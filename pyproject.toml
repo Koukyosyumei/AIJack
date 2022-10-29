@@ -1,0 +1,63 @@
+[build-system]
+requires = [
+    "setuptools>=42",
+    "wheel",
+    "ninja",
+    "cmake>=3.12",
+]
+build-backend = "setuptools.build_meta"
+
+[project]
+
+name = "aijack"
+version = "0.0.0"
+authors = [
+  { name="Hideaki Takahashi" },
+]
+description = "Security and Privacy Risk Simulator for Machine Learning"
+repository = "https://github.com/Koukyosyumei/AIJack"
+readme = "README.md"
+license = {file = "LICENSE"}
+
+dependencies = [
+    'numpy',
+    'tqdm',
+    'sklearn',
+    'torch >= 1.11.0',
+    'torchvision',
+    'pybind11',
+    'pybind11[global]',
+    'matplotlib',
+    'mpi4py'
+]
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.isort]
+profile = "black"
+
+[tool.mypy]
+files = "setup.py"
+strict = true
+show_error_codes = true
+enable_error_code = ["ignore-without-code", "redundant-expr", "truthy-bool"]
+warn_unreachable = true
+
+[[tool.mypy.overrides]]
+module = ["ninja"]
+ignore_missing_imports = true
+
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+addopts = ["-ra", "--showlocals", "--strict-markers", "--strict-config"]
+xfail_strict = true
+testpaths = ["tests"]
+
+[tool.cibuildwheel]
+test-command = "pytest {project}/tests"
+test-extras = ["test"]
+test-skip = ["*universal2:arm64"]
+# Setuptools bug causes collision between pypy and cpython artifacts
+before-build = "rm -rf {project}/build"

@@ -3,9 +3,7 @@ import re
 import subprocess
 import sys
 
-from pybind11 import get_cmake_dir  # noqa: F401
-from pybind11.setup_helpers import build_ext
-from setuptools import Extension, find_packages, setup
+from setuptools import Extension, setup
 from setuptools.command.build_ext import build_ext
 
 # Convert distutils Windows platform specifiers to CMake -A arguments
@@ -133,16 +131,6 @@ ext_modules = [CMakeExtension("aijack_cpp_core")]
 console_scripts = []
 
 setup(
-    name="aijack",
-    version=__version__,
-    description="Security and Privacy Risk Simulator for Machine Learning",
-    author="Koukyosyumei",
-    author_email="koukyosyumei@hotmail.com",
-    license="Apache-2.0",
-    install_requires=read_requirements(),
-    url="https://github.com/Koukyosyumei/AIJack",
-    package_dir={"": "src"},
-    packages=find_packages(where="src"),
     ext_modules=ext_modules,
     entry_points={"console_scripts": console_scripts},
     cmdclass={"build_ext": CMakeBuild},
