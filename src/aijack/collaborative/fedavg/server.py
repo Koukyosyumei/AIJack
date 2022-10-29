@@ -160,6 +160,7 @@ class MPIFedAVGServer(BaseServer):
         lr=0.1,
         optimizer_type="sgd",
         optimizer_kwargs={},
+        server_side_update=True,
         device="cpu",
     ):
         super(MPIFedAVGServer, self).__init__(
@@ -173,6 +174,7 @@ class MPIFedAVGServer(BaseServer):
 
         self.round = 0
         self.num_clients = len(client_ids)
+        self.server_side_update = server_side_update
         self.device = device
 
         self._setup_optimizer(optimizer_type, **optimizer_kwargs)
@@ -214,15 +216,15 @@ class MPIFedAVGServer(BaseServer):
         self.received_gradients = []
 
         while len(self.received_gradients) < self.num_clients:
-            gradients_flattend = self.comm.recv(tag=GRADIENTS_TAG)
-            gradients_reshaped = []
-            for params, grad in zip(self.server_model.parameters(), gradients_flattend):
-                gradients_reshaped.append(grad.to(self.device))
-                if torch.sum(torch.isnan(gradients_reshaped[-1])):
+            gradients_received = self.comm.recv(tag=GRADIENTS_TAG)
+            gradients_processed = []
+            for grad in gradients_received:
+                gradients_processed.append(grad.to(self.device))
+                if torch.sum(torch.isnan(gradients_processed[-1])):
                     print("the received gradients contains nan")
                     MPI.COMM_WORLD.Abort(RECEIVE_NAN_CODE)
 
-            self.received_gradients.append(gradients_reshaped)
+            self.received_gradients.append(gradients_processed)
 
     def update(self):
         self.updata_from_gradients()
@@ -235,10 +237,12 @@ class MPIFedAVGServer(BaseServer):
 
         for gradients in self.received_gradients:
             for gradient_id in range(len_gradients):
-                self.aggregated_gradients[gradient_id] += (
-                    1 / self.num_clients
-                ) * gradients[gradient_id]
+                self.aggregated_gradients[gradient_id] = (
+                    gradients[gradient_id] * (1 / self.num_clients)
+                    + self.aggregated_gradients[gradient_id]
+                )
 
     def updata_from_gradients(self):
         self._aggregate()
-        self.optimizer.step(self.aggregated_gradients)
+        if self.server_side_update:
+            self.optimizer.step(self.aggregated_gradients)

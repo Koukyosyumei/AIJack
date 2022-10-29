@@ -53,6 +53,7 @@ AIJack requires Boost and pybind11.
 
 ```
 apt install -y libboost-all-dev
+pip install -U pip
 pip install "pybind11[global]"
 
 pip install git+https://github.com/Koukyosyumei/AIJack
