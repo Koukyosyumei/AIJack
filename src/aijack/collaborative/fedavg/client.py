@@ -107,29 +107,26 @@ class FedAvgClient(BaseClient):
             self.prev_parameters.append(copy.deepcopy(param))
 
 
-class MPIFedAVGClient(BaseClient):
-    """Client of FedAVG for mpi-backend simulation"""
-
-    def __init__(self, comm, model, user_id=0, lr=0.1, device="cpu"):
-        super(MPIFedAVGClient, self).__init__(model, user_id=user_id)
+class MPIFedAvgClientAPI:
+    def __init__(self, comm, client):
         self.comm = comm
-        self.lr = lr
-        self.device = device
+        self.client = client
 
-        self.prev_parameters = []
-        for param in self.model.parameters():
-            self.prev_parameters.append(copy.deepcopy(param))
+    def action(self):
+        self.mpi_upload()
+        self.client.model.zero_grad()
+        self.mpi_download()
 
-    def upload(self):
-        self.upload_gradient()
+    def mpi_upload(self):
+        self.mpi_upload_gradient()
 
-    def upload_gradient(self, destination_id=0):
-        self.gradients = []
-        for param, prev_param in zip(self.model.parameters(), self.prev_parameters):
-            self.gradients.append((prev_param - param) / self.lr)
-        self.comm.send(self.gradients, dest=destination_id, tag=GRADIENTS_TAG)
+    def mpi_upload_gradient(self, destination_id=0):
+        self.comm.send(
+            self.client.upload_gradients(), dest=destination_id, tag=GRADIENTS_TAG
+        )
 
-    def download(self):
-        new_parameters = self.comm.recv(tag=PARAMETERS_TAG)
-        for params, new_params in zip(self.model.parameters(), new_parameters):
-            params.data = torch.Tensor(new_params).reshape(params.shape).to(self.device)
+    def mpi_download(self):
+        self.client.download(self.comm.recv(tag=PARAMETERS_TAG).to(self.client.device))
+
+    def mpi_initialize(self):
+        self.mpi_download()
