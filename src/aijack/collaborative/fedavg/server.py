@@ -161,7 +161,7 @@ class MPIFedAvgServer:
     def __init__(self, comm, server):
         self.comm = comm
         self.server = server
-        self.num_clients = len(self.clients)
+        self.num_clients = len(self.server.clients)
 
     def action(self):
         self.mpi_receive()

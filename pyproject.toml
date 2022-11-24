@@ -21,7 +21,7 @@ license = {file = "LICENSE"}
 dependencies = [
     'numpy',
     'tqdm',
-    'sklearn',
+    'scikit-learn',
     'torch >= 1.11.0',
     'torchvision',
     'pybind11',
