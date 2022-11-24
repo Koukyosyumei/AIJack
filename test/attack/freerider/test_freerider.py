@@ -3,7 +3,7 @@ def test_fedavg_delta_weight():
     import torch.nn as nn
     import torch.optim as optim
 
-    from aijack.attack import FreeRiderClientManager
+    from aijack.attack.freerider import FreeRiderClientManager
     from aijack.collaborative import FedAvgClient, FedAvgServer
 
     torch.manual_seed(0)

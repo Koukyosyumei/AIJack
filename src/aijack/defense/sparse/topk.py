@@ -32,7 +32,7 @@ def attach_sparse_gradient_to_client(cls, k):
     return SparseGradientClientWrapper
 
 
-def attach_sparse_gradient_to_server(cls, k):
+def attach_sparse_gradient_to_server(cls):
     """Make the server class communicate the sparse gradients.
 
     Args:
