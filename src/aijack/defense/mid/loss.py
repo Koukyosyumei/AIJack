@@ -32,7 +32,7 @@ def mib_loss(
         )
     )
 
-    loss = torch.nn.CrossEntropyLoss(reduce=False)
+    loss = torch.nn.CrossEntropyLoss(reduction="none")
     cross_entropy_loss = loss(
         sampled_y_pred, y[:, None].expand(-1, sampled_y_pred.size()[-1])
     )

@@ -149,7 +149,7 @@ class FedAvgServer(BaseServer):
                 client.download(self.aggregated_gradients)
 
 
-class MPIFedAvgServerAPI:
+class MPIFedAvgServer:
     def __init__(self, comm, server):
         self.comm = comm
         self.server = server

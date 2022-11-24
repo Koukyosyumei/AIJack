@@ -107,7 +107,7 @@ class FedAvgClient(BaseClient):
             self.prev_parameters.append(copy.deepcopy(param))
 
 
-class MPIFedAvgClientAPI:
+class MPIFedAvgClient:
     def __init__(self, comm, client):
         self.comm = comm
         self.client = client
