@@ -8,6 +8,7 @@ def attach_sparse_gradient_to_client(cls, k):
 
     Args:
         cls: client class
+        k (int): strength of sparcity
     """
 
     class SparseGradientClientWrapper(cls):
@@ -21,6 +22,7 @@ def attach_sparse_gradient_to_client(cls, k):
             sparse_indices = []
             for vanila_grad in vanila_gradients:
                 temp_grad = vanila_grad.reshape(-1)
+                # only send top-k gradients
                 topk_indices = torch.topk(
                     torch.abs(temp_grad), k=int(len(temp_grad) * k)
                 ).indices
@@ -45,7 +47,7 @@ def attach_sparse_gradient_to_server(cls):
 
         def receive_local_gradients(self):
             """Receive sparse local gradients"""
-            self.upload_gradients = []
+            self.uploaded_gradients = []
 
             for c in self.clients:
                 gradients_reshaped = []

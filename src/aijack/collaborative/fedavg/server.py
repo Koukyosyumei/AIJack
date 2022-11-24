@@ -31,12 +31,14 @@ class FedAvgServer(BaseServer):
         optimizer_type="sgd",
         server_side_update=True,
         optimizer_kwargs={},
+        device="cpu",
     ):
         super(FedAvgServer, self).__init__(clients, global_model, server_id=server_id)
         self.lr = lr
         self._setup_optimizer(optimizer_type, **optimizer_kwargs)
         self.server_side_update = server_side_update
         self.distribute(force_send_model_state_dict=True)
+        self.device = device
 
     def _setup_optimizer(self, optimizer_type, **kwargs):
         if optimizer_type == "sgd":

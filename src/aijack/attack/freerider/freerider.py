@@ -33,14 +33,16 @@ def attach_freerider_to_client(cls, mu, sigma):
         def download(self, new_global_model):
             """Download the new global model"""
             self.prev_parameters_to_generate_fake_gradients = copy.deepcopy(
-                self.model.parameters()
+                list(self.model.parameters())
             )
-            super().download(self, new_global_model)
+            super().download(new_global_model)
 
     return FreeRiderClientWrapper
 
 
 class FreeRiderClientManager(BaseManager):
+    """Implementation of Free Rider Attack (https://arxiv.org/abs/1911.12560)"""
+
     def __init__(self, *args, **kwargs):
         self.args = args
         self.kwargs = kwargs
