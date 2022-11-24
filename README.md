@@ -42,6 +42,7 @@ AIJack allows you to assess the privacy and security risks of machine learning a
   - [Federated Learning and Model Inversion Attack](#federated-learning-and-model-inversion-attack)
   - [Split Learning and Label Leakage Attack](#split-learning-and-label-leakage-attack)
   - [DPSGD (SGD with Differential Privacy)](#dpsgd-sgd-with-differential-privacy)
+  - [Federated Learning with Homomorphic Encryption](#federated-learning-with-homomorphic-encryption)
   - [SecureBoost (XGBoost with Homomorphic Encryption)](#secureboost-xgboost-with-homomorphic-encryption)
   - [Evasion Attack](#evasion-attack)
   - [Poisoning Attack](#poisoning-attack)
@@ -218,6 +219,24 @@ for data in lot_loader(trainset):
         loss.backward()
         optimizer.update_accum_grads()
     optimizer.step()
+```
+
+## Federated Learning with Homomorphic Encryption
+
+```Python
+  from aijack.collaborative import FedAvgClient, FedAvgServer
+  from aijack.defense import PaillierGradientClientManager, PaillierKeyGenerator
+
+keygenerator = PaillierKeyGenerator(64)
+pk, sk = keygenerator.generate_keypair()
+
+manager = PaillierGradientClientManager(pk, sk)
+PaillierGradFedAvgClient = manager.attach(FedAvgClient)
+
+clients = [
+    PaillierGradFedAvgClient(Net(), user_id=i, lr=lr, server_side_update=False)
+    for i in range(client_num)
+]
 ```
 
 ## SecureBoost (XGBoost with Homomorphic Encryption)
