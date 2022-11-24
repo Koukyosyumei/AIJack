@@ -36,7 +36,7 @@ class FedAvgServer(BaseServer):
         self.lr = lr
         self._setup_optimizer(optimizer_type, **optimizer_kwargs)
         self.server_side_update = server_side_update
-        self.distribtue(force_send_model_state_dict=True)
+        self.distribute(force_send_model_state_dict=True)
 
     def _setup_optimizer(self, optimizer_type, **kwargs):
         if optimizer_type == "sgd":
@@ -57,7 +57,7 @@ class FedAvgServer(BaseServer):
     def action(self, use_gradients=True):
         self.receive(use_gradients)
         self.update(use_gradients)
-        self.distribtue()
+        self.distribute()
 
     def receive(self, use_gradients=True):
         """Receive the local models
@@ -136,20 +136,28 @@ class FedAvgServer(BaseServer):
 
         self.server_model.load_state_dict(averaged_params)
 
-    def distribtue(self, force_send_model_state_dict=False):
+    def distribute(self, force_send_model_state_dict=False):
         """Distribute the current global model to each client.
 
         Args:
             force_send_model_state_dict (bool, optional): If True, send the global model as the dictionary of model state regardless of other parameters. Defaults to False.
         """
         for client in self.clients:
-            if self.server_side_update or force_send_model_state_dict:
-                client.download(self.server_model.state_dict())
-            else:
-                client.download(self.aggregated_gradients)
+            if type(client) != int:
+                if self.server_side_update or force_send_model_state_dict:
+                    client.download(self.server_model.state_dict())
+                else:
+                    client.download(self.aggregated_gradients)
 
 
 class MPIFedAvgServer:
+    """MPI Wrapper for FedAvgServer
+
+    Args:
+        comm: MPI.COMM_WORLD
+        server: the instance of FedAvgServer. The `clients` member variable shoud be the list of id.
+    """
+
     def __init__(self, comm, server):
         self.comm = comm
         self.server = server
