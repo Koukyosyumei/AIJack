@@ -150,7 +150,7 @@ class MPIFedMDAPI(BaseFedAPI):
     def __init__(
         self,
         comm,
-        mpiapi,
+        party,
         is_server,
         criterion,
         local_optimizer=None,
@@ -166,7 +166,7 @@ class MPIFedMDAPI(BaseFedAPI):
         device="cpu",
     ):
         self.comm = comm
-        self.mpiapi = mpiapi
+        self.party = party
         self.is_server = is_server
         self.criterion = criterion
         self.local_optimizer = local_optimizer
@@ -193,19 +193,19 @@ class MPIFedMDAPI(BaseFedAPI):
 
             # Updata global logits
             for _ in range(1, self.num_communication + 1):
-                self.mpiapi.action()
+                self.party.action()
             self.comm.Barrier()
 
             # Digest phase
             if not self.is_server:
                 for _ in range(1, self.consensus_epoch):
-                    self.mpiapi.client.approach_consensus(self.local_optimizer)
+                    self.party.client.approach_consensus(self.local_optimizer)
 
             # Revisit phase
             for _ in range(self.revisit_epoch):
                 self.train_client(public=False)
 
-            self.mpiapi.action()
+            self.party.action()
 
             self.custom_action(self)
             self.comm.Barrier()
@@ -218,7 +218,7 @@ class MPIFedMDAPI(BaseFedAPI):
                 self.local_optimizer.zero_grad()
                 data = data.to(self.device)
                 target = target.to(self.device)
-                output = self.mpiapi.client.model(data)
+                output = self.party.client.model(data)
                 loss = self.criterion(output, target)
                 loss.backward()
                 self.local_optimizer.step()
