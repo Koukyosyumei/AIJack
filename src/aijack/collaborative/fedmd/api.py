@@ -109,8 +109,7 @@ class FedMDAPI(BaseFLKnowledgeDistillationAPI):
 
             self.epoch = i
 
-            self.server.update()
-            self.server.distribute()
+            self.server.action()
 
             # Digest
             temp_consensus_loss = []
