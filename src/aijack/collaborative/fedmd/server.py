@@ -38,7 +38,6 @@ class FedMDServer(BaseServer):
     def distribute(self):
         """Distribute the logits of public dataset to each client."""
         for client in self.clients:
-            print("download!!!!")
             client.download(self.consensus)
 
 
@@ -65,11 +64,11 @@ class MPIFedMDServer:
         self.mpi_receive_local_logits()
 
     def mpi_receive_local_logits(self):
-        self.uploaded_logits = []
+        self.server.uploaded_logits = []
 
-        while len(self.uploaded_logits) < self.num_clients:
+        while len(self.server.uploaded_logits) < self.num_clients:
             received_logits = self.comm.recv(tag=LOCAL_LOGIT_TAG)
-            self.uploaded_logits.append(received_logits)
+            self.server.uploaded_logits.append(received_logits)
 
     def mpi_distribute(self):
         for client_id in self.server.clients:
