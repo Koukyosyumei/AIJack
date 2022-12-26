@@ -1,4 +1,5 @@
 from ..core import BaseServer
+from ..core.utils import GLOBAL_LOGIT_TAG, LOCAL_LOGIT_TAG
 
 
 class FedMDServer(BaseServer):
@@ -31,3 +32,37 @@ class FedMDServer(BaseServer):
         """Distribute the logits of public dataset to each client."""
         for client in self.clients:
             client.download(self.consensus)
+
+
+class MPIFedMDServer:
+    """MPI Wrapper for FedMDServer
+
+    Args:
+        comm: MPI.COMM_WORLD
+        server: the instance of FedAvgServer. The `clients` member variable shoud be the list of id.
+    """
+
+    def __init__(self, comm, server):
+        self.comm = comm
+        self.server = server
+        self.num_clients = len(self.server.clients)
+
+    def action(self):
+        self.mpi_receive()
+        self.server.update()
+        self.mpi_distribute()
+        self.round += 1
+
+    def mpi_receive(self):
+        self.mpi_receive_local_logits()
+
+    def mpi_receive_local_logits(self):
+        self.uploaded_logits = []
+
+        while len(self.uploaded_gradients) < self.num_clients:
+            received_logits = self.comm.recv(tag=LOCAL_LOGIT_TAG)
+            self.uploaded_logits.append(received_logits)
+
+    def mpi_distribute(self):
+        for client_id in self.server.clients:
+            self.comm.send(self.server.consensus, dest=client_id, tag=GLOBAL_LOGIT_TAG)
