@@ -216,7 +216,7 @@ class MPIFedMDAPI(BaseFedAPI):
             self.custom_action(self)
             self.comm.Barrier()
 
-    def local_train(self, public=True):
+    def train_client(self, public=True):
         for _ in range(self.local_epoch):
             running_loss = 0
             trainloader = self.public_dataloader if public else self.local_dataloader
