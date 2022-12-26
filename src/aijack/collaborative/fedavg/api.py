@@ -103,7 +103,7 @@ class MPIFedAVGAPI(BaseFedAPI):
     def __init__(
         self,
         comm,
-        mpiapi,
+        party,
         is_server,
         criterion,
         local_optimizer=None,
@@ -114,7 +114,7 @@ class MPIFedAVGAPI(BaseFedAPI):
         device="cpu",
     ):
         self.comm = comm
-        self.mpiapi = mpiapi
+        self.party = party
         self.is_server = is_server
         self.criterion = criterion
         self.local_optimizer = local_optimizer
@@ -125,21 +125,21 @@ class MPIFedAVGAPI(BaseFedAPI):
         self.device = device
 
     def run(self):
-        self.mpiapi.mpi_initialize()
+        self.party.mpi_initialize()
         self.comm.Barrier()
 
         for _ in range(self.num_communication):
             if not self.is_server:
                 self.local_train()
-            self.mpiapi.action()
+            self.party.action()
 
             self.custom_action(self)
             self.comm.Barrier()
 
     def local_train(self):
-        self.mpiapi.prev_parameters = []
-        for param in self.mpiapi.client.model.parameters():
-            self.mpiapi.client.prev_parameters.append(copy.deepcopy(param))
+        self.party.prev_parameters = []
+        for param in self.party.client.model.parameters():
+            self.party.client.prev_parameters.append(copy.deepcopy(param))
 
         for _ in range(self.local_epoch):
             running_loss = 0
@@ -147,7 +147,7 @@ class MPIFedAVGAPI(BaseFedAPI):
                 self.local_optimizer.zero_grad()
                 data = data.to(self.device)
                 target = target.to(self.device)
-                output = self.mpiapi.client.model(data)
+                output = self.party.client.model(data)
                 loss = self.criterion(output, target)
                 loss.backward()
                 self.local_optimizer.step()
