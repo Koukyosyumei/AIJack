@@ -47,6 +47,7 @@ class FedMDClient(BaseClient):
             return torch_round_x_decimal(self.logit2server, self.round_decimal)
 
     def download(self, predicted_values_of_server):
+        print("Download... ", predicted_values_of_server is None)
         self.predicted_values_of_server = predicted_values_of_server
 
     def approach_consensus(self, consensus_optimizer):
