@@ -198,8 +198,7 @@ class MPIFedMDAPI(BaseFedAPI):
                     self.train_client(public=False)
 
             # Updata global logits
-            for _ in range(1, self.num_communication + 1):
-                self.party.action()
+            self.party.action()
             self.comm.Barrier()
 
             # Digest phase
@@ -208,10 +207,9 @@ class MPIFedMDAPI(BaseFedAPI):
                     self.party.client.approach_consensus(self.local_optimizer)
 
             # Revisit phase
-            for _ in range(self.revisit_epoch):
-                self.train_client(public=False)
-
-            self.party.action()
+            if not self.is_server:
+                for _ in range(self.revisit_epoch):
+                    self.train_client(public=False)
 
             self.custom_action(self)
             self.comm.Barrier()
