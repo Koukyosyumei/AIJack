@@ -77,9 +77,9 @@ class MPIFedMDClient:
         self.mpi_download()
 
     def mpi_upload(self):
-        self.mpi_upload_gradient()
+        self.mpi_upload_logits()
 
-    def mpi_uploal(self, destination_id=0):
+    def mpi_upload_logits(self, destination_id=0):
         self.comm.send(self.client.upload(), dest=destination_id, tag=LOCAL_LOGIT_TAG)
 
     def mpi_download(self):
