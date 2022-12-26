@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>4. Gradient-based Model Inversion Attack against Federated Learning &#8212; Let&#39;s hijack AI!</title>
+    <title>3. Gradient-based Model Inversion Attack against Federated Learning &#8212; Let&#39;s hijack AI!</title>
     
   <link href="_static/css/theme.css" rel="stylesheet">
   <link href="_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
@@ -53,8 +53,8 @@ const thebe_selector_output = ".output, .cell_output"
     <script async="async" src="_static/sphinx-thebe.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="5. Split Learning and Label Leakage" href="aijack_split_learning.html" />
-    <link rel="prev" title="3. MI-FACE Model Inversion Attack vs Differentially Private SGD" href="aijack_miface.html" />
+    <link rel="next" title="4. GAN Attack" href="aijack_ganattack.html" />
+    <link rel="prev" title="2. MI-FACE Model Inversion Attack vs Differentially Private SGD" href="aijack_miface.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
     
@@ -105,13 +105,8 @@ const thebe_selector_output = ".output, .cell_output"
 </p>
 <ul class="nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="aijack_fedavg.html">
-   1. FedAVG
-  </a>
- </li>
- <li class="toctree-l1">
   <a class="reference internal" href="aijack_secureboost.html">
-   2. SecureBoost: Vertically Federated XGBoost with Paillier Encryption
+   1. SecureBoost: Vertically Federated XGBoost with Paillier Encryption
   </a>
  </li>
 </ul>
@@ -123,12 +118,27 @@ const thebe_selector_output = ".output, .cell_output"
 <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
   <a class="reference internal" href="aijack_miface.html">
-   3. MI-FACE Model Inversion Attack vs Differentially Private SGD
+   2. MI-FACE Model Inversion Attack vs Differentially Private SGD
   </a>
  </li>
  <li class="toctree-l1 current active">
   <a class="current reference internal" href="#">
-   4. Gradient-based Model Inversion Attack against Federated Learning
+   3. Gradient-based Model Inversion Attack against Federated Learning
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="aijack_ganattack.html">
+   4. GAN Attack
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="aijack_soteria.html">
+   5. Soteria: : Provable Defense against Privacy Leakage in Federated Learning g from Representation Perspective
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="aijack_mid.html">
+   6. Mutual Information-based Defense
   </a>
  </li>
 </ul>
@@ -140,7 +150,19 @@ const thebe_selector_output = ".output, .cell_output"
 <ul class="nav bd-sidenav">
  <li class="toctree-l1">
   <a class="reference internal" href="aijack_split_learning.html">
-   5. Split Learning and Label Leakage
+   7. Split Learning and Label Leakage
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Membership Inference
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="aijack_membership_inference.html">
+   8. Memership inference
   </a>
  </li>
 </ul>
@@ -152,12 +174,12 @@ const thebe_selector_output = ".output, .cell_output"
 <ul class="nav bd-sidenav">
  <li class="toctree-l1">
   <a class="reference internal" href="aijack_evasion_attack.html">
-   6. Evasion Attack against SVM
+   9. Evasion Attack against SVM
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="aijack_poison_attack.html">
-   7. Poisoning Attack against SVM
+   10. Poisoning Attack against SVM
   </a>
  </li>
 </ul>
@@ -169,7 +191,7 @@ const thebe_selector_output = ".output, .cell_output"
 <ul class="nav bd-sidenav">
  <li class="toctree-l1">
   <a class="reference internal" href="aijack_dp.html">
-   8. Differential Privacy and Moment Accountant
+   11. Differential Privacy and Moment Accountant
   </a>
  </li>
 </ul>
@@ -278,39 +300,39 @@ const thebe_selector_output = ".output, .cell_output"
                 <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#reconstruct-single-data">
-   4.1. Reconstruct Single Data
+   3.1. Reconstruct Single Data
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#dlg">
-     4.1.1. DLG
+     3.1.1. DLG
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#gs-attack">
-     4.1.2. GS Attack
+     3.1.2. GS Attack
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#idlg-attack">
-     4.1.3. iDLG Attack
+     3.1.3. iDLG Attack
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#cpl-attack">
-     4.1.4. CPL Attack
+     3.1.4. CPL Attack
     </a>
    </li>
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#reconstruct-batched-data">
-   4.2. Reconstruct Batched Data
+   3.2. Reconstruct Batched Data
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#gradinversion">
-     4.2.1. GradInversion
+     3.2.1. GradInversion
     </a>
    </li>
   </ul>
@@ -337,39 +359,39 @@ const thebe_selector_output = ".output, .cell_output"
                             <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#reconstruct-single-data">
-   4.1. Reconstruct Single Data
+   3.1. Reconstruct Single Data
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#dlg">
-     4.1.1. DLG
+     3.1.1. DLG
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#gs-attack">
-     4.1.2. GS Attack
+     3.1.2. GS Attack
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#idlg-attack">
-     4.1.3. iDLG Attack
+     3.1.3. iDLG Attack
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#cpl-attack">
-     4.1.4. CPL Attack
+     3.1.4. CPL Attack
     </a>
    </li>
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#reconstruct-batched-data">
-   4.2. Reconstruct Batched Data
+   3.2. Reconstruct Batched Data
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#gradinversion">
-     4.2.1. GradInversion
+     3.2.1. GradInversion
     </a>
    </li>
   </ul>
@@ -384,7 +406,7 @@ const thebe_selector_output = ".output, .cell_output"
               <div>
                 
   <div class="tex2jax_ignore mathjax_ignore section" id="gradient-based-model-inversion-attack-against-federated-learning">
-<h1><span class="section-number">4. </span>Gradient-based Model Inversion Attack against Federated Learning<a class="headerlink" href="#gradient-based-model-inversion-attack-against-federated-learning" title="Permalink to this headline">¶</a></h1>
+<h1><span class="section-number">3. </span>Gradient-based Model Inversion Attack against Federated Learning<a class="headerlink" href="#gradient-based-model-inversion-attack-against-federated-learning" title="Permalink to this headline">¶</a></h1>
 <p>In this tutorial, we will experiment gradient-based model inversion attack, which allows the malicious server of Federated Learning to reconstruct the private local dataset via the shared gradients. AIJack currently supports five gradient-based model inversion attacks. These methods reconstruct the private images by minimizing the distance between the fake gradients and the received gradients. Each method has its strategy, such as the distance metric and regularization terms.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -495,7 +517,7 @@ const thebe_selector_output = ".output, .cell_output"
 </div>
 </div>
 <div class="section" id="reconstruct-single-data">
-<h2><span class="section-number">4.1. </span>Reconstruct Single Data<a class="headerlink" href="#reconstruct-single-data" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">3.1. </span>Reconstruct Single Data<a class="headerlink" href="#reconstruct-single-data" title="Permalink to this headline">¶</a></h2>
 <p>First, we try to recover the following private image from the received gradients with the batch size of 1.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -532,7 +554,7 @@ const thebe_selector_output = ".output, .cell_output"
 </div>
 </div>
 <div class="section" id="dlg">
-<h3><span class="section-number">4.1.1. </span>DLG<a class="headerlink" href="#dlg" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">3.1.1. </span>DLG<a class="headerlink" href="#dlg" title="Permalink to this headline">¶</a></h3>
 <p><a class="reference external" href="https://dlg.mit.edu/assets/NeurIPS19_deep_leakage_from_gradients.pdf">https://dlg.mit.edu/assets/NeurIPS19_deep_leakage_from_gradients.pdf</a></p>
 <ul class="simple">
 <li><p>distance metric = L2 norm</p></li>
@@ -560,7 +582,7 @@ iter=69: loss did not improve in the last 50 rounds.
 </div>
 </div>
 <div class="section" id="gs-attack">
-<h3><span class="section-number">4.1.2. </span>GS Attack<a class="headerlink" href="#gs-attack" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">3.1.2. </span>GS Attack<a class="headerlink" href="#gs-attack" title="Permalink to this headline">¶</a></h3>
 <p><a class="reference external" href="https://arxiv.org/abs/2003.14053">https://arxiv.org/abs/2003.14053</a></p>
 <ul class="simple">
 <li><p>distance metric = cosine similarity</p></li>
@@ -592,7 +614,7 @@ iter=87: loss did not improve in the last 50 rounds.
 </div>
 </div>
 <div class="section" id="idlg-attack">
-<h3><span class="section-number">4.1.3. </span>iDLG Attack<a class="headerlink" href="#idlg-attack" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">3.1.3. </span>iDLG Attack<a class="headerlink" href="#idlg-attack" title="Permalink to this headline">¶</a></h3>
 <p><a class="reference external" href="https://arxiv.org/abs/2001.02610">https://arxiv.org/abs/2001.02610</a></p>
 <ul class="simple">
 <li><p>distance metric = L2 norm</p></li>
@@ -620,7 +642,7 @@ iter=87: loss did not improve in the last 50 rounds.
 </div>
 </div>
 <div class="section" id="cpl-attack">
-<h3><span class="section-number">4.1.4. </span>CPL Attack<a class="headerlink" href="#cpl-attack" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">3.1.4. </span>CPL Attack<a class="headerlink" href="#cpl-attack" title="Permalink to this headline">¶</a></h3>
 <p><a class="reference external" href="https://arxiv.org/abs/2004.10397">https://arxiv.org/abs/2004.10397</a></p>
 <ul class="simple">
 <li><p>distance metric = L2 norm</p></li>
@@ -651,7 +673,7 @@ iter=87: loss did not improve in the last 50 rounds.
 </div>
 </div>
 <div class="section" id="reconstruct-batched-data">
-<h2><span class="section-number">4.2. </span>Reconstruct Batched Data<a class="headerlink" href="#reconstruct-batched-data" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">3.2. </span>Reconstruct Batched Data<a class="headerlink" href="#reconstruct-batched-data" title="Permalink to this headline">¶</a></h2>
 <p>Second, we simulate the situatino with larger batch size. We try to recover the bellow three images.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -674,7 +696,7 @@ iter=87: loss did not improve in the last 50 rounds.
 </div>
 </div>
 <div class="section" id="gradinversion">
-<h3><span class="section-number">4.2.1. </span>GradInversion<a class="headerlink" href="#gradinversion" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">3.2.1. </span>GradInversion<a class="headerlink" href="#gradinversion" title="Permalink to this headline">¶</a></h3>
 <p><a class="reference external" href="https://arxiv.org/abs/2104.07586">https://arxiv.org/abs/2104.07586</a></p>
 <ul class="simple">
 <li><p>distance metric = L2 norm</p></li>
@@ -755,13 +777,13 @@ iter=87: loss did not improve in the last 50 rounds.
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
             <p class="prev-next-subtitle">previous</p>
-            <p class="prev-next-title"><span class="section-number">3. </span>MI-FACE Model Inversion Attack vs Differentially Private SGD</p>
+            <p class="prev-next-title"><span class="section-number">2. </span>MI-FACE Model Inversion Attack vs Differentially Private SGD</p>
         </div>
     </a>
-    <a class='right-next' id="next-link" href="aijack_split_learning.html" title="next page">
+    <a class='right-next' id="next-link" href="aijack_ganattack.html" title="next page">
     <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title"><span class="section-number">5. </span>Split Learning and Label Leakage</p>
+        <p class="prev-next-title"><span class="section-number">4. </span>GAN Attack</p>
     </div>
     <i class="fas fa-angle-right"></i>
     </a>
