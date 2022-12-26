@@ -40,6 +40,7 @@ class FedMDServer(BaseServer):
 
     def distribute(self):
         """Distribute the logits of public dataset to each client."""
+        print(f"len of clients is {len(self.clients)}")
         for client in self.clients:
             print("download!!!!")
             client.download(self.consensus)
