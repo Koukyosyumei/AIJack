@@ -2,7 +2,7 @@ import copy
 
 import torch
 
-from ..core.api import BaseFLKnowledgeDistillationAPI
+from ..core.api import BaseFedAPI, BaseFLKnowledgeDistillationAPI
 
 
 class FedMDAPI(BaseFLKnowledgeDistillationAPI):
@@ -144,3 +144,82 @@ class FedMDAPI(BaseFLKnowledgeDistillationAPI):
             self.custom_action(self)
 
         return logging
+
+
+class MPIFedMDAPI(BaseFedAPI):
+    def __init__(
+        self,
+        comm,
+        mpiapi,
+        is_server,
+        criterion,
+        local_optimizer=None,
+        local_dataloader=None,
+        public_dataloader=None,
+        num_communication=1,
+        local_epoch=1,
+        consensus_epoch=1,
+        revisit_epoch=1,
+        transfer_epoch_public=1,
+        transfer_epoch_private=1,
+        custom_action=lambda x: x,
+        device="cpu",
+    ):
+        self.comm = comm
+        self.mpiapi = mpiapi
+        self.is_server = is_server
+        self.criterion = criterion
+        self.local_optimizer = local_optimizer
+        self.local_dataloader = local_dataloader
+        self.public_dataloader = public_dataloader
+        self.num_communication = num_communication
+        self.local_epoch = local_epoch
+        self.consensus_epoch = consensus_epoch
+        self.revist_epoch = revisit_epoch
+        self.transfer_epoch_public = transfer_epoch_public
+        self.transfer_epoch_private = transfer_epoch_private
+        self.custom_action = custom_action
+        self.device = device
+
+    def run(self):
+        for _ in range(self.num_communication):
+
+            # Transfer phase
+            if not self.is_server:
+                for _ in range(1, self.transfer_epoch_public + 1):
+                    self.local_train(public=True)
+                for _ in range(1, self.transfer_epoch_private + 1):
+                    self.local_train(public=False)
+
+            # Updata global logits
+            for _ in range(1, self.num_communication + 1):
+                self.mpiapi.action()
+            self.comm.Barrier()
+
+            # Digest phase
+            if not self.is_server:
+                for _ in range(1, self.consensus_epoch):
+                    self.mpiapi.client.approach_consensus(self.local_optimizer)
+
+            # Revisit phase
+            for _ in range(self.revisit_epoch):
+                self.train_client(public=False)
+
+            self.mpiapi.action()
+
+            self.custom_action(self)
+            self.comm.Barrier()
+
+    def local_train(self, public=True):
+        for _ in range(self.local_epoch):
+            running_loss = 0
+            trainloader = self.public_dataloader if public else self.local_dataloader
+            for (data, target) in trainloader:
+                self.local_optimizer.zero_grad()
+                data = data.to(self.device)
+                target = target.to(self.device)
+                output = self.mpiapi.client.model(data)
+                loss = self.criterion(output, target)
+                loss.backward()
+                self.local_optimizer.step()
+                running_loss += loss.item()
