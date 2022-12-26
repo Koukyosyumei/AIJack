@@ -1,7 +1,5 @@
 import copy
 
-import torch
-
 from ..core import BaseClient
 from ..core.utils import GRADIENTS_TAG, PARAMETERS_TAG
 from ..optimizer import AdamFLOptimizer, SGDFLOptimizer
