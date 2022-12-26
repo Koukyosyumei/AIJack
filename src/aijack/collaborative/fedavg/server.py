@@ -37,6 +37,8 @@ class FedAvgServer(BaseServer):
         self.distribute(force_send_model_state_dict=True)
         self.device = device
 
+        self.uploaded_gradients = []
+
     def _setup_optimizer(self, optimizer_type, **kwargs):
         if optimizer_type == "sgd":
             self.optimizer = SGDFLOptimizer(
@@ -76,7 +78,7 @@ class FedAvgServer(BaseServer):
             use_gradients (bool, optional): If True, update the global model with aggregated local gradients. Defaults to True.
         """
         if use_gradients:
-            self.updata_from_gradients()
+            self.update_from_gradients()
         else:
             self.update_from_parameters()
 
@@ -93,7 +95,7 @@ class FedAvgServer(BaseServer):
         """Receive local parameters"""
         self.uploaded_parameters = [c.upload_parameters() for c in self.clients]
 
-    def updata_from_gradients(self, weight=None):
+    def update_from_gradients(self, weight=None):
         """Update the global model with the local gradients.
 
         Args:
@@ -177,11 +179,11 @@ class MPIFedAvgServer:
         self.mpi_receive_local_gradients()
 
     def mpi_receive_local_gradients(self):
-        self.uploaded_gradients = []
+        self.server.uploaded_gradients = []
 
-        while len(self.uploaded_gradients) < self.num_clients:
+        while len(self.server.uploaded_gradients) < self.num_clients:
             gradients_received = self.comm.recv(tag=GRADIENTS_TAG)
-            self.uploaded_gradients.append(
+            self.server.uploaded_gradients.append(
                 self.server._preprocess_local_gradients(gradients_received)
             )
 
