@@ -27,6 +27,7 @@ class FedMDServer(BaseServer):
         self.distribtue()
 
     def receive(self):
+        print("receive")
         self.uploaded_logits = [client.upload() for client in self.clients]
 
     def update(self):
