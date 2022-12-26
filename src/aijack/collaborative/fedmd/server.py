@@ -22,13 +22,9 @@ class FedMDServer(BaseServer):
             return None
 
     def action(self):
-        print("receive")
         self.receive()
-        print("update")
         self.update()
-        print("distribute")
-        self.distribtue()
-        print("aaaaaaaa")
+        self.distribute()
 
     def receive(self):
         self.uploaded_logits = [client.upload() for client in self.clients]
@@ -41,7 +37,6 @@ class FedMDServer(BaseServer):
 
     def distribute(self):
         """Distribute the logits of public dataset to each client."""
-        print(f"len of clients is {len(self.clients)}")
         for client in self.clients:
             print("download!!!!")
             client.download(self.consensus)

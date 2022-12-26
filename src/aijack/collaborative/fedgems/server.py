@@ -37,13 +37,13 @@ class FedGEMSServer(BaseServer):
         ) * float("inf")
 
     def action(self):
-        self.distribtue()
+        self.distribute()
 
     def update(self, idxs, x):
         """Register the predicted logits to self.predicted_values"""
         self.predicted_values[idxs] = self.server_model(x).detach().to(self.device)
 
-    def distribtue(self):
+    def distribute(self):
         """Distribute the logits of public dataset to each client."""
         for client in self.clients:
             client.download(self.predicted_values)

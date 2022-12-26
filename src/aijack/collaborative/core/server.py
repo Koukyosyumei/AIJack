@@ -29,7 +29,7 @@ class BaseServer(torch.nn.Module):
         """Update the global model."""
         pass
 
-    def distribtue(self):
+    def distribute(self):
         """Distribute the global model to each client."""
         pass
 

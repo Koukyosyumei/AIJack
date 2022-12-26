@@ -94,7 +94,7 @@ class FedAVGAPI(BaseFedAPI):
                 self.server.updata_from_gradients(weight=self.clients_weight)
             else:
                 self.server.update_from_parameters(weight=self.clients_weight)
-            self.server.distribtue()
+            self.server.distribute()
 
             self.custom_action(self)
 
