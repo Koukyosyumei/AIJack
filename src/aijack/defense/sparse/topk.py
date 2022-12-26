@@ -29,7 +29,7 @@ def attach_sparse_gradient_to_client(cls, k):
                 sparse_gradients.append(temp_grad[topk_indices].tolist())
                 sparse_indices.append(topk_indices.tolist())
 
-            return [sparse_gradients, sparse_indices]
+            return sparse_gradients, sparse_indices
 
     return SparseGradientClientWrapper
 
@@ -45,24 +45,19 @@ def attach_sparse_gradient_to_server(cls):
         def __init__(self, *args, **kwargs):
             super(SparseGradientServerWrapper, self).__init__(*args, **kwargs)
 
-        def receive_local_gradients(self):
-            """Receive sparse local gradients"""
-            self.uploaded_gradients = []
+        def _preprocess_local_gradients(self, uploaded_grad):
+            sparse_gradients_flattend, sparse_indices = uploaded_grad
+            gradients_reshaped = []
+            for params, grad, idx in zip(
+                self.server_model.parameters(),
+                sparse_gradients_flattend,
+                sparse_indices,
+            ):
+                temp_grad = torch.zeros_like(params).reshape(-1)
+                temp_grad[idx] = torch.Tensor(grad).to(self.device)
+                gradients_reshaped.append(temp_grad.reshape(params.shape))
 
-            for c in self.clients:
-                gradients_reshaped = []
-                sparse_gradients_flattend, sparse_indices = c.upload_gradients()
-
-                for params, grad, idx in zip(
-                    self.server_model.parameters(),
-                    sparse_gradients_flattend,
-                    sparse_indices,
-                ):
-                    temp_grad = torch.zeros_like(params).reshape(-1)
-                    temp_grad[idx] = torch.Tensor(grad).to(self.device)
-                    gradients_reshaped.append(temp_grad.reshape(params.shape))
-
-                self.uploaded_gradients.append(gradients_reshaped)
+            return gradients_reshaped
 
     return SparseGradientServerWrapper
 

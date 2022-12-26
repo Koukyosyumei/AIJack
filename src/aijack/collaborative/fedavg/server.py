@@ -2,10 +2,9 @@ import copy
 
 import numpy as np
 import torch
-from mpi4py import MPI
 
 from ..core import BaseServer
-from ..core.utils import GRADIENTS_TAG, PARAMETERS_TAG, RECEIVE_NAN_CODE
+from ..core.utils import GRADIENTS_TAG, PARAMETERS_TAG
 from ..optimizer import AdamFLOptimizer, SGDFLOptimizer
 
 
@@ -83,9 +82,14 @@ class FedAvgServer(BaseServer):
         else:
             self.update_from_parameters()
 
+    def _preprocess_local_gradients(self, uploaded_grad):
+        return uploaded_grad
+
     def receive_local_gradients(self):
         """Receive local gradients"""
-        self.uploaded_gradients = [c.upload_gradients() for c in self.clients]
+        self.uploaded_gradients = [
+            self._preprocess_local_gradients(c.upload_gradients()) for c in self.clients
+        ]
 
     def receive_local_parameters(self):
         """Receive local parameters"""
@@ -179,14 +183,9 @@ class MPIFedAvgServer:
 
         while len(self.uploaded_gradients) < self.num_clients:
             gradients_received = self.comm.recv(tag=GRADIENTS_TAG)
-            gradients_processed = []
-            for grad in gradients_received:
-                gradients_processed.append(grad.to(self.server.device))
-                if torch.sum(torch.isnan(gradients_processed[-1])):
-                    print("the received gradients contains nan")
-                    MPI.COMM_WORLD.Abort(RECEIVE_NAN_CODE)
-
-            self.uploaded_gradients.append(gradients_processed)
+            self.uploaded_gradients.append(
+                self.server._preprocess_local_gradients(gradients_received)
+            )
 
     def mpi_distribute(self):
         global_parameters = []
