@@ -13,6 +13,8 @@ class FedMDServer(BaseServer):
         super(FedMDServer, self).__init__(clients, server_model, server_id=server_id)
         self.device = device
 
+        self.uploaded_logits = []
+
     def forward(self, x):
         if self.server_model is not None:
             return self.server_model(x)
@@ -23,10 +25,14 @@ class FedMDServer(BaseServer):
         self.update()
         self.distribtue()
 
+    def receive(self):
+        self.uploaded_logits = [client.upload() for client in self.clients]
+
     def update(self):
-        self.consensus = self.clients[0].upload() / len(self.clients)
-        for client in self.clients[1:]:
-            self.consensus += client.upload() / len(self.clients)
+        self.consensus = self.uploaded_logits[0]
+        len_clients = len(self.clients)
+        for logit in self.uploaded_logits[1:]:
+            self.consensus += logit / len_clients
 
     def distribute(self):
         """Distribute the logits of public dataset to each client."""
