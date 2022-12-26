@@ -221,7 +221,7 @@ class MPIFedMDAPI(BaseFedAPI):
         for _ in range(self.local_epoch):
             running_loss = 0
             trainloader = self.public_dataloader if public else self.local_dataloader
-            for (data, target) in trainloader:
+            for (_, data, target) in trainloader:
                 self.local_optimizer.zero_grad()
                 data = data.to(self.device)
                 target = target.to(self.device)
