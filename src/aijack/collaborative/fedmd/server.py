@@ -53,6 +53,7 @@ class MPIFedMDServer:
         self.comm = comm
         self.server = server
         self.num_clients = len(self.server.clients)
+        self.round = 0
 
     def action(self):
         self.mpi_receive()
