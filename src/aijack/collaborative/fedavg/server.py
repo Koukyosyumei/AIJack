@@ -193,7 +193,7 @@ class MPIFedAvgServer:
         #     global_parameters.append(copy.copy(params).reshape(-1).tolist())
 
         for client_id in self.server.clients:
-            self.comm.send(self.server.server_model.parameters(), dest=client_id, tag=PARAMETERS_TAG)
+            self.comm.send(list[self.server.server_model.parameters()], dest=client_id, tag=PARAMETERS_TAG)
 
     def mpi_initialize(self):
         self.mpi_distribute()
