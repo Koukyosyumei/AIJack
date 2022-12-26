@@ -110,6 +110,7 @@ class FedAvgServer(BaseServer):
         ]
         len_gradients = len(self.aggregated_gradients)
 
+        print("update grads ", len(self.update_from_gradients))
         for i, gradients in enumerate(self.uploaded_gradients):
             for gradient_id in range(len_gradients):
                 self.aggregated_gradients[gradient_id] = (
@@ -118,6 +119,7 @@ class FedAvgServer(BaseServer):
                 )
 
         if self.server_side_update:
+            print("step!")
             self.optimizer.step(self.aggregated_gradients)
 
     def update_from_parameters(self, weight=None):
