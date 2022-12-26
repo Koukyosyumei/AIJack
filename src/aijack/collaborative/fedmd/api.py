@@ -193,9 +193,9 @@ class MPIFedMDAPI(BaseFedAPI):
             # Transfer phase
             if not self.is_server:
                 for _ in range(1, self.transfer_epoch_public + 1):
-                    self.local_train(public=True)
+                    self.train_client(public=True)
                 for _ in range(1, self.transfer_epoch_private + 1):
-                    self.local_train(public=False)
+                    self.train_client(public=False)
 
             # Updata global logits
             for _ in range(1, self.num_communication + 1):
