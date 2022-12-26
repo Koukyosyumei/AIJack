@@ -172,6 +172,9 @@ class MPIFedAvgServer:
         self.num_clients = len(self.server.clients)
         self.round = 0
 
+    def __call__(self, *args, **kwargs):
+        return self.server(*args, **kwargs)
+
     def action(self):
         self.mpi_receive()
         self.server.update()
