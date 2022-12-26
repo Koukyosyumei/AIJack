@@ -22,6 +22,7 @@ class FedMDServer(BaseServer):
             return None
 
     def action(self):
+        self.receive()
         self.update()
         self.distribtue()
 
