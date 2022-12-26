@@ -124,7 +124,7 @@ class MPIFedAvgClient:
         )
 
     def mpi_download(self):
-        self.client.download(self.comm.recv(tag=PARAMETERS_TAG).to(self.client.device))
+        self.client.download(self.comm.recv(tag=PARAMETERS_TAG))
 
     def mpi_initialize(self):
         self.mpi_download()
