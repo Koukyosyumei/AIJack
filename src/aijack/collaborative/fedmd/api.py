@@ -181,7 +181,7 @@ class MPIFedMDAPI(BaseFedAPI):
         self.num_communication = num_communication
         self.local_epoch = local_epoch
         self.consensus_epoch = consensus_epoch
-        self.revist_epoch = revisit_epoch
+        self.revisit_epoch = revisit_epoch
         self.transfer_epoch_public = transfer_epoch_public
         self.transfer_epoch_private = transfer_epoch_private
         self.custom_action = custom_action
