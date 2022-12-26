@@ -71,6 +71,9 @@ class MPIFedMDClient:
         self.comm = comm
         self.client = client
 
+    def __call__(self, *args, **kwargs):
+        return self.client(*args, **kwargs)
+
     def action(self):
         self.mpi_upload()
         self.client.model.zero_grad()
