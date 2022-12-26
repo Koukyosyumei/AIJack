@@ -49,7 +49,8 @@ class FedMDAPI(BaseFLKnowledgeDistillationAPI):
 
     def train_server(self):
         if self.server_optimizer is None:
-            raise ValueError("server_optimzier does not exist")
+            return 0.0
+
         running_loss = 0.0
         for data in self.public_dataloader:
             _, x, y = data
@@ -86,7 +87,9 @@ class FedMDAPI(BaseFLKnowledgeDistillationAPI):
             logging["loss_client_public_dataset_transfer"].append(loss_public)
 
         if self.validation_dataloader is not None:
-            acc_val = self.score(self.validation_dataloader)
+            acc_val = self.score(
+                self.validation_dataloader, self.server_optimizer is None
+            )
             print("acc on validation dataset: ", acc_val)
             logging["acc_val"].append(copy.deepcopy(acc_val))
 
@@ -96,7 +99,9 @@ class FedMDAPI(BaseFLKnowledgeDistillationAPI):
             logging["loss_client_local_dataset_transfer"].append(loss_local)
 
         if self.validation_dataloader is not None:
-            acc_val = self.score(self.validation_dataloader)
+            acc_val = self.score(
+                self.validation_dataloader, self.server_optimizer is None
+            )
             print("acc on validation dataset: ", acc_val)
             logging["acc_val"].append(copy.deepcopy(acc_val))
 
@@ -132,12 +137,14 @@ class FedMDAPI(BaseFLKnowledgeDistillationAPI):
             acc_on_local_dataset = self.local_score()
             print(f"epoch={i} acc on local datasets: ", acc_on_local_dataset)
             logging["acc_local"].append(acc_on_local_dataset)
-            acc_pub = self.score(self.public_dataloader)
+            acc_pub = self.score(self.public_dataloader, self.server_optimizer is None)
             print(f"epoch={i} acc on public dataset: ", acc_pub)
             logging["acc_pub"].append(copy.deepcopy(acc_pub))
             # evaluation
             if self.validation_dataloader is not None:
-                acc_val = self.score(self.validation_dataloader)
+                acc_val = self.score(
+                    self.validation_dataloader, self.server_optimizer is None
+                )
                 print(f"epoch={i} acc on validation dataset: ", acc_val)
                 logging["acc_val"].append(copy.deepcopy(acc_val))
 
