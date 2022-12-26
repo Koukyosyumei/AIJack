@@ -1,5 +1,3 @@
-import copy
-
 import numpy as np
 import torch
 
@@ -194,7 +192,7 @@ class MPIFedAvgServer:
 
         for client_id in self.server.clients:
             self.comm.send(
-                list(self.server.server_model.parameters()),
+                self.server.server_model.state_dict(),
                 dest=client_id,
                 tag=PARAMETERS_TAG,
             )
