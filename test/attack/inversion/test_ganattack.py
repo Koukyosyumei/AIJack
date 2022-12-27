@@ -4,7 +4,7 @@ def test_ganattack():
     import torch.optim as optim
 
     from aijack.attack import GANAttackManager
-    from aijack.collaborative import FedAvgClient, FedAvgServer
+    from aijack.collaborative import FedAVGClient, FedAVGServer
 
     nc = 1
     nz = 100
@@ -68,7 +68,7 @@ def test_ganattack():
             return x
 
     net_1 = Net()
-    client_1 = FedAvgClient(net_1, user_id=0)
+    client_1 = FedAVGClient(net_1, user_id=0)
     optimizer_1 = optim.SGD(
         client_1.parameters(), lr=0.02, weight_decay=1e-7, momentum=0.9
     )
@@ -87,10 +87,10 @@ def test_ganattack():
         criterion,
         nz=nz,
     )
-    GANAttackFedAvgClient = manager.attach(FedAvgClient)
+    GANAttackFedAVGClient = manager.attach(FedAVGClient)
 
     net_2 = Net()
-    client_2 = GANAttackFedAvgClient(net_2, user_id=1)
+    client_2 = GANAttackFedAVGClient(net_2, user_id=1)
     optimizer_2 = optim.SGD(
         client_2.parameters(), lr=0.02, weight_decay=1e-7, momentum=0.9
     )
@@ -99,7 +99,7 @@ def test_ganattack():
     optimizers = [optimizer_1, optimizer_2]
 
     global_model = Net()
-    server = FedAvgServer(clients, global_model)
+    server = FedAVGServer(clients, global_model)
 
     inputs = torch.load("test/demodata/demo_mnist_x.pt")
     labels = torch.load("test/demodata/demo_mnist_y.pt")

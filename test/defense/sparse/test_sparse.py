@@ -1,9 +1,9 @@
-def test_fedavg_sparse_gradient():
+def test_FedAVG_sparse_gradient():
     import torch
     import torch.nn as nn
     import torch.optim as optim
 
-    from aijack.collaborative import FedAvgClient, FedAvgServer
+    from aijack.collaborative import FedAVGClient, FedAVGServer
     from aijack.defense.sparse import (
         SparseGradientClientManager,
         SparseGradientServerManager,
@@ -30,19 +30,19 @@ def test_fedavg_sparse_gradient():
     y = torch.load("test/demodata/demo_mnist_y.pt")
 
     client_manager = SparseGradientClientManager(k=0.3)
-    SparseGradientFedAvgClient = client_manager.attach(FedAvgClient)
+    SparseGradientFedAVGClient = client_manager.attach(FedAVGClient)
 
     server_manager = SparseGradientServerManager()
-    SparseGradientFedAvgServer = server_manager.attach(FedAvgServer)
+    SparseGradientFedAVGServer = server_manager.attach(FedAVGServer)
 
     clients = [
-        SparseGradientFedAvgClient(Net(), user_id=i, lr=lr, server_side_update=False)
+        SparseGradientFedAVGClient(Net(), user_id=i, lr=lr, server_side_update=False)
         for i in range(client_num)
     ]
     optimizers = [optim.SGD(client.parameters(), lr=lr) for client in clients]
 
     global_model = Net()
-    server = SparseGradientFedAvgServer(
+    server = SparseGradientFedAVGServer(
         clients, global_model, lr=lr, server_side_update=False
     )
 

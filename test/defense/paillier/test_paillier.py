@@ -61,12 +61,12 @@ def test_paillier_torch():
     )
 
 
-def test_pailier_fedavg():
+def test_pailier_FedAVG():
     import torch
     import torch.nn as nn
     import torch.optim as optim
 
-    from aijack.collaborative import FedAvgClient, FedAvgServer
+    from aijack.collaborative import FedAVGClient, FedAVGServer
     from aijack.defense import PaillierGradientClientManager, PaillierKeyGenerator
 
     torch.manual_seed(0)
@@ -93,16 +93,16 @@ def test_pailier_fedavg():
     y = torch.load("test/demodata/demo_mnist_y.pt")
 
     manager = PaillierGradientClientManager(pk, sk)
-    PaillierGradFedAvgClient = manager.attach(FedAvgClient)
+    PaillierGradFedAVGClient = manager.attach(FedAVGClient)
 
     clients = [
-        PaillierGradFedAvgClient(Net(), user_id=i, lr=lr, server_side_update=False)
+        PaillierGradFedAVGClient(Net(), user_id=i, lr=lr, server_side_update=False)
         for i in range(client_num)
     ]
     optimizers = [optim.SGD(client.parameters(), lr=lr) for client in clients]
 
     global_model = Net()
-    server = FedAvgServer(clients, global_model, lr=lr, server_side_update=False)
+    server = FedAVGServer(clients, global_model, lr=lr, server_side_update=False)
 
     criterion = nn.CrossEntropyLoss()
 

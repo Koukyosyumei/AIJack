@@ -3,7 +3,7 @@ def test_soteria():
     import torch.nn as nn
     import torch.optim as optim
 
-    from aijack.collaborative import FedAvgClient, FedAvgServer
+    from aijack.collaborative import FedAVGClient, FedAVGServer
     from aijack.defense import SoteriaManager
 
     torch.manual_seed(0)
@@ -37,10 +37,10 @@ def test_soteria():
     y = torch.load("test/demodata/demo_mnist_y.pt")
 
     manager = SoteriaManager("conv", "lin", target_layer_name="lin.0.weight")
-    SoteriaFedAvgClient = manager.attach(FedAvgClient)
+    SoteriaFedAVGClient = manager.attach(FedAVGClient)
 
     clients = [
-        SoteriaFedAvgClient(
+        SoteriaFedAVGClient(
             Net(),
             user_id=i,
             lr=lr,
@@ -50,7 +50,7 @@ def test_soteria():
     optimizers = [optim.SGD(client.parameters(), lr=lr) for client in clients]
 
     global_model = Net()
-    server = FedAvgServer(clients, global_model, lr=lr)
+    server = FedAVGServer(clients, global_model, lr=lr)
 
     criterion = nn.CrossEntropyLoss()
 

@@ -6,7 +6,7 @@ from ..core.utils import GRADIENTS_TAG, PARAMETERS_TAG
 from ..optimizer import AdamFLOptimizer, SGDFLOptimizer
 
 
-class FedAvgServer(BaseServer):
+class FedAVGServer(BaseServer):
     """Server of FedAVG for single process simulation
 
     Args:
@@ -30,7 +30,7 @@ class FedAvgServer(BaseServer):
         optimizer_kwargs={},
         device="cpu",
     ):
-        super(FedAvgServer, self).__init__(clients, global_model, server_id=server_id)
+        super(FedAVGServer, self).__init__(clients, global_model, server_id=server_id)
         self.lr = lr
         self._setup_optimizer(optimizer_type, **optimizer_kwargs)
         self.server_side_update = server_side_update
@@ -156,12 +156,12 @@ class FedAvgServer(BaseServer):
                     client.download(self.aggregated_gradients)
 
 
-class MPIFedAvgServer:
-    """MPI Wrapper for FedAvgServer
+class MPIFedAVGServer(BaseServer):
+    """MPI Wrapper for FedAVGServer
 
     Args:
         comm: MPI.COMM_WORLD
-        server: the instance of FedAvgServer. The `clients` member variable shoud be the list of id.
+        server: the instance of FedAVGServer. The `clients` member variable shoud be the list of id.
     """
 
     def __init__(self, comm, server):
@@ -174,15 +174,18 @@ class MPIFedAvgServer:
         return self.server(*args, **kwargs)
 
     def action(self):
-        self.mpi_receive()
-        self.server.update()
-        self.mpi_distribute()
+        self.receive()
+        self.update()
+        self.distribute()
         self.round += 1
 
-    def mpi_receive(self):
-        self.mpi_receive_local_gradients()
+    def receive(self):
+        self.receive_local_gradients()
 
-    def mpi_receive_local_gradients(self):
+    def update(self):
+        self.server.update()
+
+    def receive_local_gradients(self):
         self.server.uploaded_gradients = []
 
         while len(self.server.uploaded_gradients) < self.num_clients:
@@ -191,7 +194,7 @@ class MPIFedAvgServer:
                 self.server._preprocess_local_gradients(gradients_received)
             )
 
-    def mpi_distribute(self):
+    def distribute(self):
         # global_parameters = []
         # for params in self.server.server_model.parameters():
         #     global_parameters.append(copy.copy(params).reshape(-1).tolist())
