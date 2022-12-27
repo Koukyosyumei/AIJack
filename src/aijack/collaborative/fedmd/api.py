@@ -215,15 +215,5 @@ class MPIFedMDAPI(BaseFedAPI):
             self.comm.Barrier()
 
     def train_client(self, public=True):
-        for _ in range(self.local_epoch):
-            running_loss = 0
-            trainloader = self.public_dataloader if public else self.local_dataloader
-            for (_, data, target) in trainloader:
-                self.local_optimizer.zero_grad()
-                data = data.to(self.device)
-                target = target.to(self.device)
-                output = self.party.client.model(data)
-                loss = self.criterion(output, target)
-                loss.backward()
-                self.local_optimizer.step()
-                running_loss += loss.item()
+        trainloader = self.public_dataloader if public else self.local_dataloader
+        self.party.client.local_train(self, trainloader, self.local_optimizer)
