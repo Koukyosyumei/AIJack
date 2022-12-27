@@ -49,6 +49,23 @@ class FedMDClient(BaseClient):
     def download(self, predicted_values_of_server):
         self.predicted_values_of_server = predicted_values_of_server
 
+    def local_train(self, trainloader, optimizer):
+
+        running_loss = 0.0
+        for data in trainloader:
+            _, x, y = data
+            x = x.to(self.device)
+            y = y.to(self.device).to(torch.int64)
+
+            optimizer.zero_grad()
+            loss = self.criterion(self(x), y)
+            loss.backward()
+            optimizer.step()
+
+            running_loss += loss.item()
+
+        return running_loss
+
     def approach_consensus(self, consensus_optimizer):
         running_loss = 0
 

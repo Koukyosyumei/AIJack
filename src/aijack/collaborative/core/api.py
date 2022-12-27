@@ -67,25 +67,14 @@ class BaseFLKnowledgeDistillationAPI:
         """
         loss_on_local_dataest = []
         for client_idx in range(self.client_num):
-            client = self.clients[client_idx]
             if public:
                 trainloader = self.public_dataloader
             else:
                 trainloader = self.local_dataloaders[client_idx]
-            optimizer = self.client_optimizers[client_idx]
 
-            running_loss = 0.0
-            for data in trainloader:
-                _, x, y = data
-                x = x.to(self.device)
-                y = y.to(self.device).to(torch.int64)
-
-                optimizer.zero_grad()
-                loss = self.criterion(client(x), y)
-                loss.backward()
-                optimizer.step()
-
-                running_loss += loss.item()
+            running_loss = self.clients[client_idx].local_train(
+                self, trainloader, self.client_optimizers[client_idx]
+            )
 
             loss_on_local_dataest.append(copy.deepcopy(running_loss / len(trainloader)))
 

@@ -39,3 +39,6 @@ class BaseClient(torch.nn.Module):
             loss (torch.Tensor): the value of calculated loss.
         """
         loss.backward()
+
+    def local_train(self):
+        pass

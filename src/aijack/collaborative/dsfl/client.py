@@ -65,6 +65,23 @@ class DSFLClient(BaseClient):
         """
         self.global_logit = global_logit
 
+    def local_train(self, trainloader, optimizer):
+
+        running_loss = 0.0
+        for data in trainloader:
+            _, x, y = data
+            x = x.to(self.device)
+            y = y.to(self.device).to(torch.int64)
+
+            optimizer.zero_grad()
+            loss = self.criterion(self(x), y)
+            loss.backward()
+            optimizer.step()
+
+            running_loss += loss.item()
+
+        return running_loss
+
     def approach_consensus(self, consensus_optimizer):
         """Train the own local model to minimize the distance between the global logits and
         the output logits of the local model on the public dataset.
