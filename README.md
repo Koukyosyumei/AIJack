@@ -42,6 +42,7 @@ AIJack allows you to assess the privacy and security risks of machine learning a
   - [Federated Learning and Model Inversion Attack](#federated-learning-and-model-inversion-attack)
   - [Split Learning and Label Leakage Attack](#split-learning-and-label-leakage-attack)
   - [DPSGD (SGD with Differential Privacy)](#dpsgd-sgd-with-differential-privacy)
+  - [Federated Learning with Homomorphic Encryption](#federated-learning-with-homomorphic-encryption)
   - [SecureBoost (XGBoost with Homomorphic Encryption)](#secureboost-xgboost-with-homomorphic-encryption)
   - [Evasion Attack](#evasion-attack)
   - [Poisoning Attack](#poisoning-attack)
@@ -68,7 +69,7 @@ pip install git+https://github.com/Koukyosyumei/AIJack
 | FedAVG      | [example](docs/aijack_fedavg.ipynb)               | [paper](https://arxiv.org/abs/1602.05629) |
 | FedProx     | WIP                                               | [paper](https://arxiv.org/abs/1812.06127) |
 | FedKD       | [example](test/collaborative/fedkd/test_fedkd.py) | [paper](https://arxiv.org/abs/2108.13323) |
-| FedMD       | WIP                                               | [paper](https://arxiv.org/abs/1910.03581) |
+| FedMD       | [example](docs/aijack_fedmd.ipynb)                | [paper](https://arxiv.org/abs/1910.03581) |
 | FedGEMS     | WIP                                               | [paper](https://arxiv.org/abs/2110.11027) |
 | DSFL        | WIP                                               | [paper](https://arxiv.org/abs/2008.06180) |
 | SplitNN     | [example](docs/aijack_split_learning.ipynb)       | [paper](https://arxiv.org/abs/1812.00564) |
@@ -87,6 +88,7 @@ pip install git+https://github.com/Koukyosyumei/AIJack
 | GAN Attack               | Model Inversion      | [example](example/model_inversion/gan_attack.py)       | [paper](https://arxiv.org/abs/1702.07464)                                                                                                           |
 | Shadow Attack            | Membership Inference | [example](docs/aijack_membership_inference.ipynb)      | [paper](https://arxiv.org/abs/1610.05820)                                                                                                           |
 | Norm attack              | Label Leakage        | [example](docs/aijack_split_learning.ipynb)            | [paper](https://arxiv.org/abs/2102.08504)                                                                                                           |
+| Delta Weights            | Free Rider Attack    | WIP                                                    | [paper](https://arxiv.org/pdf/1911.12560.pdf)                                                                                                       |
 | Gradient descent attacks | Evasion Attack       | [example](docs/aijack_evasion_attack.ipynb)            | [paper](https://arxiv.org/abs/1708.06131)                                                                                                           |
 | SVM Poisoning            | Poisoning Attack     | [example](docs/aijack_poison_attack.ipynb)             | [paper](https://arxiv.org/abs/1206.6389)                                                                                                            |
 
@@ -217,6 +219,24 @@ for data in lot_loader(trainset):
         loss.backward()
         optimizer.update_accum_grads()
     optimizer.step()
+```
+
+## Federated Learning with Homomorphic Encryption
+
+```Python
+  from aijack.collaborative import FedAvgClient, FedAvgServer
+  from aijack.defense import PaillierGradientClientManager, PaillierKeyGenerator
+
+keygenerator = PaillierKeyGenerator(64)
+pk, sk = keygenerator.generate_keypair()
+
+manager = PaillierGradientClientManager(pk, sk)
+PaillierGradFedAvgClient = manager.attach(FedAvgClient)
+
+clients = [
+    PaillierGradFedAvgClient(Net(), user_id=i, lr=lr, server_side_update=False)
+    for i in range(client_num)
+]
 ```
 
 ## SecureBoost (XGBoost with Homomorphic Encryption)

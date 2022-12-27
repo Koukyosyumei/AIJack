@@ -94,7 +94,7 @@ class FedAVGAPI(BaseFedAPI):
                 self.server.updata_from_gradients(weight=self.clients_weight)
             else:
                 self.server.update_from_parameters(weight=self.clients_weight)
-            self.server.distribtue()
+            self.server.distribute()
 
             self.custom_action(self)
 
@@ -125,28 +125,21 @@ class MPIFedAVGAPI(BaseFedAPI):
         self.device = device
 
     def run(self):
-        if self.is_server:
-            self.party.send_parameters()
-        else:
-            self.party.download()
+        self.party.mpi_initialize()
         self.comm.Barrier()
 
         for _ in range(self.num_communication):
-            if self.is_server:
-                self.party.action()
-            else:
+            if not self.is_server:
                 self.local_train()
-                self.party.upload()
-                self.party.model.zero_grad()
-                self.party.download()
+            self.party.action()
 
             self.custom_action(self)
             self.comm.Barrier()
 
     def local_train(self):
         self.party.prev_parameters = []
-        for param in self.party.model.parameters():
-            self.party.prev_parameters.append(copy.deepcopy(param))
+        for param in self.party.client.model.parameters():
+            self.party.client.prev_parameters.append(copy.deepcopy(param))
 
         for _ in range(self.local_epoch):
             running_loss = 0
@@ -154,7 +147,7 @@ class MPIFedAVGAPI(BaseFedAPI):
                 self.local_optimizer.zero_grad()
                 data = data.to(self.device)
                 target = target.to(self.device)
-                output = self.party.model(data)
+                output = self.party.client.model(data)
                 loss = self.criterion(output, target)
                 loss.backward()
                 self.local_optimizer.step()

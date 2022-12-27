@@ -55,7 +55,10 @@ def test_ganattack():
             )
 
             self.lin = nn.Sequential(
-                nn.Linear(256, 200), nn.Tanh(), nn.Linear(200, 11), nn.LogSoftmax()
+                nn.Linear(256, 200),
+                nn.Tanh(),
+                nn.Linear(200, 11),
+                nn.LogSoftmax(dim=-1),
             )
 
         def forward(self, x):

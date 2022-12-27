@@ -8,6 +8,7 @@ parts:
     numbered: true
     chapters:
       - file: aijack_fedavg
+      - file: aijack_fedmd
       - file: aijack_secureboost
   - caption: Model Inversion
     numbered: true

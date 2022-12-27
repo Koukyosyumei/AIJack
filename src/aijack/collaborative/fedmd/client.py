@@ -3,6 +3,7 @@ from torch import nn
 
 from ...utils.utils import torch_round_x_decimal
 from ..core import BaseClient
+from ..core.utils import GLOBAL_LOGIT_TAG, LOCAL_LOGIT_TAG
 
 
 class FedMDClient(BaseClient):
@@ -63,3 +64,29 @@ class FedMDClient(BaseClient):
             running_loss += loss.item()
 
         return running_loss
+
+
+class MPIFedMDClient:
+    def __init__(self, comm, client):
+        self.comm = comm
+        self.client = client
+
+    def __call__(self, *args, **kwargs):
+        return self.client(*args, **kwargs)
+
+    def action(self):
+        self.mpi_upload()
+        self.client.model.zero_grad()
+        self.mpi_download()
+
+    def mpi_upload(self):
+        self.mpi_upload_logits()
+
+    def mpi_upload_logits(self, destination_id=0):
+        self.comm.send(self.client.upload(), dest=destination_id, tag=LOCAL_LOGIT_TAG)
+
+    def mpi_download(self):
+        self.client.download(self.comm.recv(tag=GLOBAL_LOGIT_TAG))
+
+    def mpi_initialize(self):
+        self.mpi_download()

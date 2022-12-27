@@ -95,23 +95,29 @@ class BaseFLKnowledgeDistillationAPI:
     def run(self):
         pass
 
-    def score(self, dataloader):
+    def score(self, dataloader, only_local=False):
         """Returns the performance on the given dataset.
 
         Args:
             dataloader (torch.utils.data.DataLoader): a dataloader
+            only_local (bool): show only the local results
 
         Returns:
             Dict[str, int]: performance of global model and local models
         """
-        server_score = accuracy_torch_dataloader(
-            self.server, dataloader, device=self.device
-        )
+
         clients_score = [
             accuracy_torch_dataloader(client, dataloader, device=self.device)
             for client in self.clients
         ]
-        return {"server_score": server_score, "clients_score": clients_score}
+
+        if only_local:
+            return {"clients_score": clients_score}
+        else:
+            server_score = accuracy_torch_dataloader(
+                self.server, dataloader, device=self.device
+            )
+            return {"server_score": server_score, "clients_score": clients_score}
 
     def local_score(self):
         """Returns the local performance of each clients.
