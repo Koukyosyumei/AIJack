@@ -30,6 +30,9 @@ def attach_differential_privacy_mechanism(
         def zero_grad_keep_accum_grads(self):
             super(DPOptimizerWrapper, self).zero_grad()
 
+        def zero_grad(self):
+            self.zero_grad_keep_accum_grads()
+
         def update_accum_grads(self):
             total_norm = 0.0
             for group in self.param_groups:
@@ -44,13 +47,16 @@ def attach_differential_privacy_mechanism(
                     if param.requires_grad:
                         accum_grad.add_(param.grad.data.mul(clip_coef))
 
-        def zero_grad(self):
+        def step(self):
+            self.update_accum_grads()
+
+        def zero_grad_for_lot(self):
             for group in self.param_groups:
                 for accum_grad in group["accum_grads"]:
                     if accum_grad is not None:
                         accum_grad.zero_()
 
-        def step(self, *args, **kwargs):
+        def step_for_lot(self, *args, **kwargs):
             for group in self.param_groups:
                 for param, accum_grad in zip(group["params"], group["accum_grads"]):
                     if param.requires_grad:
