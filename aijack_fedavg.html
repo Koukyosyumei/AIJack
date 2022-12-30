@@ -402,8 +402,7 @@ const thebe_selector_output = ".output, .cell_output"
 <span class="kn">from</span> <span class="nn">mpi4py</span> <span class="kn">import</span> <span class="n">MPI</span>
 <span class="kn">from</span> <span class="nn">torchvision</span> <span class="kn">import</span> <span class="n">datasets</span><span class="p">,</span> <span class="n">transforms</span>
 
-<span class="kn">from</span> <span class="nn">aijack.collaborative</span> <span class="kn">import</span> <span class="n">FedAvgClient</span><span class="p">,</span> <span class="n">FedAvgServer</span>
-<span class="kn">from</span> <span class="nn">aijack.collaborative.fedavg</span> <span class="kn">import</span> <span class="n">FedAVGAPI</span>
+<span class="kn">from</span> <span class="nn">aijack.collaborative</span> <span class="kn">import</span> <span class="n">FedAVGClient</span><span class="p">,</span> <span class="n">FedAVGServer</span><span class="p">,</span> <span class="n">FedAVGAPI</span>
 </pre></div>
 </div>
 </div>
@@ -513,44 +512,43 @@ Downloading http://yann.lecun.com/exdb/mnist/t10k-labels-idx1-ubyte.gz to MNIST/
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">clients</span> <span class="o">=</span> <span class="p">[</span><span class="n">FedAvgClient</span><span class="p">(</span><span class="n">Net</span><span class="p">()</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">),</span> <span class="n">user_id</span><span class="o">=</span><span class="n">c</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">client_size</span><span class="p">)]</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">clients</span> <span class="o">=</span> <span class="p">[</span><span class="n">FedAVGClient</span><span class="p">(</span><span class="n">Net</span><span class="p">()</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">),</span> <span class="n">user_id</span><span class="o">=</span><span class="n">c</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">client_size</span><span class="p">)]</span>
 <span class="n">local_optimizers</span> <span class="o">=</span> <span class="p">[</span><span class="n">optim</span><span class="o">.</span><span class="n">SGD</span><span class="p">(</span><span class="n">client</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="n">lr</span><span class="p">)</span> <span class="k">for</span> <span class="n">client</span> <span class="ow">in</span> <span class="n">clients</span><span class="p">]</span>
 
-<span class="n">server</span> <span class="o">=</span> <span class="n">FedAvgServer</span><span class="p">(</span><span class="n">clients</span><span class="p">,</span> <span class="n">Net</span><span class="p">()</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">))</span>
+<span class="n">server</span> <span class="o">=</span> <span class="n">FedAVGServer</span><span class="p">(</span><span class="n">clients</span><span class="p">,</span> <span class="n">Net</span><span class="p">()</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">))</span>
 
 <span class="k">for</span> <span class="nb">round</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">num_rounds</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
-  <span class="k">for</span> <span class="n">client</span><span class="p">,</span> <span class="n">local_trainloader</span><span class="p">,</span> <span class="n">local_optimizer</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">clients</span><span class="p">,</span> <span class="n">local_dataloaders</span><span class="p">,</span> <span class="n">local_optimizers</span><span class="p">):</span>
-      <span class="k">for</span> <span class="n">data</span> <span class="ow">in</span> <span class="n">local_trainloader</span><span class="p">:</span>
-          <span class="n">inputs</span><span class="p">,</span> <span class="n">labels</span> <span class="o">=</span> <span class="n">data</span>
-          <span class="n">inputs</span> <span class="o">=</span> <span class="n">inputs</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
-          <span class="n">labels</span> <span class="o">=</span> <span class="n">labels</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
-          <span class="n">local_optimizer</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
-          <span class="n">outputs</span> <span class="o">=</span> <span class="n">client</span><span class="p">(</span><span class="n">inputs</span><span class="p">)</span>
-          <span class="n">loss</span> <span class="o">=</span> <span class="n">criterion</span><span class="p">(</span><span class="n">outputs</span><span class="p">,</span> <span class="n">labels</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">int64</span><span class="p">))</span>
-          <span class="n">client</span><span class="o">.</span><span class="n">backward</span><span class="p">(</span><span class="n">loss</span><span class="p">)</span>
-          <span class="n">local_optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
-  <span class="n">server</span><span class="o">.</span><span class="n">action</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">client</span><span class="p">,</span> <span class="n">local_trainloader</span><span class="p">,</span> <span class="n">local_optimizer</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span>
+        <span class="n">clients</span><span class="p">,</span> <span class="n">local_dataloaders</span><span class="p">,</span> <span class="n">local_optimizers</span>
+    <span class="p">):</span>
+        <span class="k">for</span> <span class="n">data</span> <span class="ow">in</span> <span class="n">local_trainloader</span><span class="p">:</span>
+            <span class="n">inputs</span><span class="p">,</span> <span class="n">labels</span> <span class="o">=</span> <span class="n">data</span>
+            <span class="n">inputs</span> <span class="o">=</span> <span class="n">inputs</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+            <span class="n">labels</span> <span class="o">=</span> <span class="n">labels</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+            <span class="n">local_optimizer</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
+            <span class="n">outputs</span> <span class="o">=</span> <span class="n">client</span><span class="p">(</span><span class="n">inputs</span><span class="p">)</span>
+            <span class="n">loss</span> <span class="o">=</span> <span class="n">criterion</span><span class="p">(</span><span class="n">outputs</span><span class="p">,</span> <span class="n">labels</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">int64</span><span class="p">))</span>
+            <span class="n">client</span><span class="o">.</span><span class="n">backward</span><span class="p">(</span><span class="n">loss</span><span class="p">)</span>
+            <span class="n">local_optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+    <span class="n">server</span><span class="o">.</span><span class="n">action</span><span class="p">()</span>
 
+    <span class="n">test_loss</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">correct</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
+        <span class="k">for</span> <span class="n">data</span><span class="p">,</span> <span class="n">target</span> <span class="ow">in</span> <span class="n">test_dataloader</span><span class="p">:</span>
+            <span class="n">data</span><span class="p">,</span> <span class="n">target</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">),</span> <span class="n">target</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+            <span class="n">output</span> <span class="o">=</span> <span class="n">server</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+            <span class="n">test_loss</span> <span class="o">+=</span> <span class="n">F</span><span class="o">.</span><span class="n">nll_loss</span><span class="p">(</span>
+                <span class="n">output</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">reduction</span><span class="o">=</span><span class="s2">&quot;sum&quot;</span>
+            <span class="p">)</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>  <span class="c1"># sum up batch loss</span>
+            <span class="n">pred</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span>
+                <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">keepdim</span><span class="o">=</span><span class="kc">True</span>
+            <span class="p">)</span>  <span class="c1"># get the index of the max log-probability</span>
+            <span class="n">correct</span> <span class="o">+=</span> <span class="n">pred</span><span class="o">.</span><span class="n">eq</span><span class="p">(</span><span class="n">target</span><span class="o">.</span><span class="n">view_as</span><span class="p">(</span><span class="n">pred</span><span class="p">))</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
 
-  <span class="n">test_loss</span> <span class="o">=</span> <span class="mi">0</span>
-  <span class="n">correct</span> <span class="o">=</span> <span class="mi">0</span>
-  <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
-      <span class="k">for</span> <span class="n">data</span><span class="p">,</span> <span class="n">target</span> <span class="ow">in</span> <span class="n">test_dataloader</span><span class="p">:</span>
-          <span class="n">data</span><span class="p">,</span> <span class="n">target</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">),</span> <span class="n">target</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
-          <span class="n">output</span> <span class="o">=</span> <span class="n">server</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
-          <span class="n">test_loss</span> <span class="o">+=</span> <span class="n">F</span><span class="o">.</span><span class="n">nll_loss</span><span class="p">(</span>
-              <span class="n">output</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">reduction</span><span class="o">=</span><span class="s2">&quot;sum&quot;</span>
-          <span class="p">)</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>  <span class="c1"># sum up batch loss</span>
-          <span class="n">pred</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span>
-              <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">keepdim</span><span class="o">=</span><span class="kc">True</span>
-          <span class="p">)</span>  <span class="c1"># get the index of the max log-probability</span>
-          <span class="n">correct</span> <span class="o">+=</span> <span class="n">pred</span><span class="o">.</span><span class="n">eq</span><span class="p">(</span><span class="n">target</span><span class="o">.</span><span class="n">view_as</span><span class="p">(</span><span class="n">pred</span><span class="p">))</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
-
-  <span class="n">test_loss</span> <span class="o">/=</span> <span class="nb">len</span><span class="p">(</span><span class="n">test_dataloader</span><span class="o">.</span><span class="n">dataset</span><span class="p">)</span>
-  <span class="n">accuracy</span> <span class="o">=</span> <span class="mf">100.0</span> <span class="o">*</span> <span class="n">correct</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">test_dataloader</span><span class="o">.</span><span class="n">dataset</span><span class="p">)</span>
-  <span class="nb">print</span><span class="p">(</span>
-      <span class="sa">f</span><span class="s2">&quot;Round: </span><span class="si">{</span><span class="nb">round</span><span class="si">}</span><span class="s2">, Test set: Average loss: </span><span class="si">{</span><span class="n">test_loss</span><span class="si">}</span><span class="s2">, Accuracy: </span><span class="si">{</span><span class="n">accuracy</span><span class="si">}</span><span class="s2">&quot;</span>
-  <span class="p">)</span>
+    <span class="n">test_loss</span> <span class="o">/=</span> <span class="nb">len</span><span class="p">(</span><span class="n">test_dataloader</span><span class="o">.</span><span class="n">dataset</span><span class="p">)</span>
+    <span class="n">accuracy</span> <span class="o">=</span> <span class="mf">100.0</span> <span class="o">*</span> <span class="n">correct</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">test_dataloader</span><span class="o">.</span><span class="n">dataset</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Round: </span><span class="si">{</span><span class="nb">round</span><span class="si">}</span><span class="s2">, Test set: Average loss: </span><span class="si">{</span><span class="n">test_loss</span><span class="si">}</span><span class="s2">, Accuracy: </span><span class="si">{</span><span class="n">accuracy</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -574,46 +572,48 @@ Round: 5, Test set: Average loss: 0.4369198709487915, Accuracy: 88.63
 <span class="n">pk</span><span class="p">,</span> <span class="n">sk</span> <span class="o">=</span> <span class="n">keygenerator</span><span class="o">.</span><span class="n">generate_keypair</span><span class="p">()</span>
 
 <span class="n">manager</span> <span class="o">=</span> <span class="n">PaillierGradientClientManager</span><span class="p">(</span><span class="n">pk</span><span class="p">,</span> <span class="n">sk</span><span class="p">)</span>
-<span class="n">PaillierGradFedAvgClient</span> <span class="o">=</span> <span class="n">manager</span><span class="o">.</span><span class="n">attach</span><span class="p">(</span><span class="n">FedAvgClient</span><span class="p">)</span>
+<span class="n">PaillierGradFedAVGClient</span> <span class="o">=</span> <span class="n">manager</span><span class="o">.</span><span class="n">attach</span><span class="p">(</span><span class="n">FedAVGClient</span><span class="p">)</span>
 
-<span class="n">clients</span> <span class="o">=</span> <span class="p">[</span><span class="n">PaillierGradFedAvgClient</span><span class="p">(</span><span class="n">Net</span><span class="p">()</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">),</span> <span class="n">user_id</span><span class="o">=</span><span class="n">c</span><span class="p">,</span> <span class="n">server_side_update</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">client_size</span><span class="p">)]</span>
+<span class="n">clients</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">PaillierGradFedAVGClient</span><span class="p">(</span><span class="n">Net</span><span class="p">()</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">),</span> <span class="n">user_id</span><span class="o">=</span><span class="n">c</span><span class="p">,</span> <span class="n">server_side_update</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">client_size</span><span class="p">)</span>
+<span class="p">]</span>
 <span class="n">local_optimizers</span> <span class="o">=</span> <span class="p">[</span><span class="n">optim</span><span class="o">.</span><span class="n">SGD</span><span class="p">(</span><span class="n">client</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="n">lr</span><span class="p">)</span> <span class="k">for</span> <span class="n">client</span> <span class="ow">in</span> <span class="n">clients</span><span class="p">]</span>
 
-<span class="n">server</span> <span class="o">=</span> <span class="n">FedAvgServer</span><span class="p">(</span><span class="n">clients</span><span class="p">,</span> <span class="n">Net</span><span class="p">()</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">),</span> <span class="n">server_side_update</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">server</span> <span class="o">=</span> <span class="n">FedAVGServer</span><span class="p">(</span><span class="n">clients</span><span class="p">,</span> <span class="n">Net</span><span class="p">()</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">),</span> <span class="n">server_side_update</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
 <span class="k">for</span> <span class="nb">round</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">num_rounds</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
-  <span class="k">for</span> <span class="n">client</span><span class="p">,</span> <span class="n">local_trainloader</span><span class="p">,</span> <span class="n">local_optimizer</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">clients</span><span class="p">,</span> <span class="n">local_dataloaders</span><span class="p">,</span> <span class="n">local_optimizers</span><span class="p">):</span>
-      <span class="k">for</span> <span class="n">data</span> <span class="ow">in</span> <span class="n">local_trainloader</span><span class="p">:</span>
-          <span class="n">inputs</span><span class="p">,</span> <span class="n">labels</span> <span class="o">=</span> <span class="n">data</span>
-          <span class="n">inputs</span> <span class="o">=</span> <span class="n">inputs</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
-          <span class="n">labels</span> <span class="o">=</span> <span class="n">labels</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
-          <span class="n">local_optimizer</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
-          <span class="n">outputs</span> <span class="o">=</span> <span class="n">client</span><span class="p">(</span><span class="n">inputs</span><span class="p">)</span>
-          <span class="n">loss</span> <span class="o">=</span> <span class="n">criterion</span><span class="p">(</span><span class="n">outputs</span><span class="p">,</span> <span class="n">labels</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">int64</span><span class="p">))</span>
-          <span class="n">client</span><span class="o">.</span><span class="n">backward</span><span class="p">(</span><span class="n">loss</span><span class="p">)</span>
-          <span class="n">local_optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
-  <span class="n">server</span><span class="o">.</span><span class="n">action</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">client</span><span class="p">,</span> <span class="n">local_trainloader</span><span class="p">,</span> <span class="n">local_optimizer</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span>
+        <span class="n">clients</span><span class="p">,</span> <span class="n">local_dataloaders</span><span class="p">,</span> <span class="n">local_optimizers</span>
+    <span class="p">):</span>
+        <span class="k">for</span> <span class="n">data</span> <span class="ow">in</span> <span class="n">local_trainloader</span><span class="p">:</span>
+            <span class="n">inputs</span><span class="p">,</span> <span class="n">labels</span> <span class="o">=</span> <span class="n">data</span>
+            <span class="n">inputs</span> <span class="o">=</span> <span class="n">inputs</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+            <span class="n">labels</span> <span class="o">=</span> <span class="n">labels</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+            <span class="n">local_optimizer</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
+            <span class="n">outputs</span> <span class="o">=</span> <span class="n">client</span><span class="p">(</span><span class="n">inputs</span><span class="p">)</span>
+            <span class="n">loss</span> <span class="o">=</span> <span class="n">criterion</span><span class="p">(</span><span class="n">outputs</span><span class="p">,</span> <span class="n">labels</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">int64</span><span class="p">))</span>
+            <span class="n">client</span><span class="o">.</span><span class="n">backward</span><span class="p">(</span><span class="n">loss</span><span class="p">)</span>
+            <span class="n">local_optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+    <span class="n">server</span><span class="o">.</span><span class="n">action</span><span class="p">()</span>
 
+    <span class="n">test_loss</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">correct</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
+        <span class="k">for</span> <span class="n">data</span><span class="p">,</span> <span class="n">target</span> <span class="ow">in</span> <span class="n">test_dataloader</span><span class="p">:</span>
+            <span class="n">data</span><span class="p">,</span> <span class="n">target</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">),</span> <span class="n">target</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+            <span class="n">output</span> <span class="o">=</span> <span class="n">clients</span><span class="p">[</span><span class="mi">0</span><span class="p">](</span><span class="n">data</span><span class="p">)</span>
+            <span class="n">test_loss</span> <span class="o">+=</span> <span class="n">F</span><span class="o">.</span><span class="n">nll_loss</span><span class="p">(</span>
+                <span class="n">output</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">reduction</span><span class="o">=</span><span class="s2">&quot;sum&quot;</span>
+            <span class="p">)</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>  <span class="c1"># sum up batch loss</span>
+            <span class="n">pred</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span>
+                <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">keepdim</span><span class="o">=</span><span class="kc">True</span>
+            <span class="p">)</span>  <span class="c1"># get the index of the max log-probability</span>
+            <span class="n">correct</span> <span class="o">+=</span> <span class="n">pred</span><span class="o">.</span><span class="n">eq</span><span class="p">(</span><span class="n">target</span><span class="o">.</span><span class="n">view_as</span><span class="p">(</span><span class="n">pred</span><span class="p">))</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
 
-  <span class="n">test_loss</span> <span class="o">=</span> <span class="mi">0</span>
-  <span class="n">correct</span> <span class="o">=</span> <span class="mi">0</span>
-  <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
-      <span class="k">for</span> <span class="n">data</span><span class="p">,</span> <span class="n">target</span> <span class="ow">in</span> <span class="n">test_dataloader</span><span class="p">:</span>
-          <span class="n">data</span><span class="p">,</span> <span class="n">target</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">),</span> <span class="n">target</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
-          <span class="n">output</span> <span class="o">=</span> <span class="n">clients</span><span class="p">[</span><span class="mi">0</span><span class="p">](</span><span class="n">data</span><span class="p">)</span>
-          <span class="n">test_loss</span> <span class="o">+=</span> <span class="n">F</span><span class="o">.</span><span class="n">nll_loss</span><span class="p">(</span>
-              <span class="n">output</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">reduction</span><span class="o">=</span><span class="s2">&quot;sum&quot;</span>
-          <span class="p">)</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>  <span class="c1"># sum up batch loss</span>
-          <span class="n">pred</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span>
-              <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">keepdim</span><span class="o">=</span><span class="kc">True</span>
-          <span class="p">)</span>  <span class="c1"># get the index of the max log-probability</span>
-          <span class="n">correct</span> <span class="o">+=</span> <span class="n">pred</span><span class="o">.</span><span class="n">eq</span><span class="p">(</span><span class="n">target</span><span class="o">.</span><span class="n">view_as</span><span class="p">(</span><span class="n">pred</span><span class="p">))</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
-
-  <span class="n">test_loss</span> <span class="o">/=</span> <span class="nb">len</span><span class="p">(</span><span class="n">test_dataloader</span><span class="o">.</span><span class="n">dataset</span><span class="p">)</span>
-  <span class="n">accuracy</span> <span class="o">=</span> <span class="mf">100.0</span> <span class="o">*</span> <span class="n">correct</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">test_dataloader</span><span class="o">.</span><span class="n">dataset</span><span class="p">)</span>
-  <span class="nb">print</span><span class="p">(</span>
-      <span class="sa">f</span><span class="s2">&quot;Round: </span><span class="si">{</span><span class="nb">round</span><span class="si">}</span><span class="s2">, Test set: Average loss: </span><span class="si">{</span><span class="n">test_loss</span><span class="si">}</span><span class="s2">, Accuracy: </span><span class="si">{</span><span class="n">accuracy</span><span class="si">}</span><span class="s2">&quot;</span>
-  <span class="p">)</span>
+    <span class="n">test_loss</span> <span class="o">/=</span> <span class="nb">len</span><span class="p">(</span><span class="n">test_dataloader</span><span class="o">.</span><span class="n">dataset</span><span class="p">)</span>
+    <span class="n">accuracy</span> <span class="o">=</span> <span class="mf">100.0</span> <span class="o">*</span> <span class="n">correct</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">test_dataloader</span><span class="o">.</span><span class="n">dataset</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Round: </span><span class="si">{</span><span class="nb">round</span><span class="si">}</span><span class="s2">, Test set: Average loss: </span><span class="si">{</span><span class="n">test_loss</span><span class="si">}</span><span class="s2">, Accuracy: </span><span class="si">{</span><span class="n">accuracy</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -649,9 +649,7 @@ Round: 5, Test set: Average loss: 0.3705228189945221, Accuracy: 89.22
 
 <span class="n">test_loss</span> <span class="o">/=</span> <span class="nb">len</span><span class="p">(</span><span class="n">test_dataloader</span><span class="o">.</span><span class="n">dataset</span><span class="p">)</span>
 <span class="n">accuracy</span> <span class="o">=</span> <span class="mf">100.0</span> <span class="o">*</span> <span class="n">correct</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">test_dataloader</span><span class="o">.</span><span class="n">dataset</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span>
-    <span class="sa">f</span><span class="s2">&quot;Round: </span><span class="si">{</span><span class="nb">round</span><span class="si">}</span><span class="s2">, Test set: Average loss: </span><span class="si">{</span><span class="n">test_loss</span><span class="si">}</span><span class="s2">, Accuracy: </span><span class="si">{</span><span class="n">accuracy</span><span class="si">}</span><span class="s2">&quot;</span>
-<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Round: </span><span class="si">{</span><span class="nb">round</span><span class="si">}</span><span class="s2">, Test set: Average loss: </span><span class="si">{</span><span class="n">test_loss</span><span class="si">}</span><span class="s2">, Accuracy: </span><span class="si">{</span><span class="n">accuracy</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -667,7 +665,7 @@ Round: 5, Test set: Average loss: 0.3705228189945221, Accuracy: 89.22
 <h2><span class="section-number">1.2. </span>MPI<a class="headerlink" href="#mpi" title="Permalink to this headline">¶</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="o">%%</span><span class="n">writefile</span> <span class="n">mpi_fedavg</span><span class="o">.</span><span class="n">py</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="o">%%</span><span class="n">writefile</span> <span class="n">mpi_FedAVG</span><span class="o">.</span><span class="n">py</span>
 <span class="kn">import</span> <span class="nn">random</span>
 <span class="kn">from</span> <span class="nn">logging</span> <span class="kn">import</span> <span class="n">getLogger</span>
 
@@ -679,8 +677,7 @@ Round: 5, Test set: Average loss: 0.3705228189945221, Accuracy: 89.22
 <span class="kn">from</span> <span class="nn">mpi4py</span> <span class="kn">import</span> <span class="n">MPI</span>
 <span class="kn">from</span> <span class="nn">torchvision</span> <span class="kn">import</span> <span class="n">datasets</span><span class="p">,</span> <span class="n">transforms</span>
 
-<span class="kn">from</span> <span class="nn">aijack.collaborative</span> <span class="kn">import</span> <span class="n">FedAvgClient</span><span class="p">,</span> <span class="n">FedAvgServer</span>
-<span class="kn">from</span> <span class="nn">aijack.collaborative.fedavg</span> <span class="kn">import</span> <span class="n">MPIFedAVGAPI</span><span class="p">,</span> <span class="n">MPIFedAvgClient</span><span class="p">,</span> <span class="n">MPIFedAvgServer</span>
+<span class="kn">from</span> <span class="nn">aijack.collaborative</span> <span class="kn">import</span> <span class="n">FedAVGClient</span><span class="p">,</span> <span class="n">FedAVGServer</span><span class="p">,</span> <span class="n">MPIFedAVGAPI</span><span class="p">,</span> <span class="n">MPIFedAVGClient</span><span class="p">,</span> <span class="n">MPIFedAVGServer</span>
 
 <span class="n">logger</span> <span class="o">=</span> <span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
@@ -771,7 +768,7 @@ Round: 5, Test set: Average loss: 0.3705228189945221, Accuracy: 89.22
     <span class="k">if</span> <span class="n">myid</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
         <span class="n">dataloader</span> <span class="o">=</span> <span class="n">prepare_dataloader</span><span class="p">(</span><span class="n">size</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">myid</span><span class="p">,</span> <span class="n">train</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
         <span class="n">client_ids</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">size</span><span class="p">))</span>
-        <span class="n">server</span> <span class="o">=</span> <span class="n">MPIFedAvgServer</span><span class="p">(</span><span class="n">comm</span><span class="p">,</span> <span class="n">FedAvgServer</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="n">model</span><span class="p">))</span>
+        <span class="n">server</span> <span class="o">=</span> <span class="n">MPIFedAVGServer</span><span class="p">(</span><span class="n">comm</span><span class="p">,</span> <span class="n">FedAVGServer</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="n">model</span><span class="p">))</span>
         <span class="n">api</span> <span class="o">=</span> <span class="n">MPIFedAVGAPI</span><span class="p">(</span>
             <span class="n">comm</span><span class="p">,</span>
             <span class="n">server</span><span class="p">,</span>
@@ -786,7 +783,7 @@ Round: 5, Test set: Average loss: 0.3705228189945221, Accuracy: 89.22
         <span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">dataloader</span> <span class="o">=</span> <span class="n">prepare_dataloader</span><span class="p">(</span><span class="n">size</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">myid</span><span class="p">,</span> <span class="n">train</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-        <span class="n">client</span> <span class="o">=</span> <span class="n">MPIFedAvgClient</span><span class="p">(</span><span class="n">comm</span><span class="p">,</span> <span class="n">FedAvgClient</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">user_id</span><span class="o">=</span><span class="n">myid</span><span class="p">))</span>
+        <span class="n">client</span> <span class="o">=</span> <span class="n">MPIFedAVGClient</span><span class="p">(</span><span class="n">comm</span><span class="p">,</span> <span class="n">FedAVGClient</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">user_id</span><span class="o">=</span><span class="n">myid</span><span class="p">))</span>
         <span class="n">api</span> <span class="o">=</span> <span class="n">MPIFedAVGAPI</span><span class="p">(</span>
             <span class="n">comm</span><span class="p">,</span>
             <span class="n">client</span><span class="p">,</span>
@@ -815,7 +812,7 @@ Round: 5, Test set: Average loss: 0.3705228189945221, Accuracy: 89.22
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>!mpiexec -np 3 --allow-run-as-root python /content/mpi_fedavg.py
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>!mpiexec -np 3 --allow-run-as-root python /content/mpi_FedAVG.py
 </pre></div>
 </div>
 </div>
@@ -833,7 +830,7 @@ Round: 5, Test set: Average loss: 0.4383064950466156, Accuracy: 88.65
 <h3><span class="section-number">1.2.1. </span>MPI + Sparse Gradient<a class="headerlink" href="#mpi-sparse-gradient" title="Permalink to this headline">¶</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span> <span class="o">%%</span><span class="n">writefile</span> <span class="n">mpi_fedavg_sparse</span><span class="o">.</span><span class="n">py</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="o">%%</span><span class="n">writefile</span> <span class="n">mpi_FedAVG_sparse</span><span class="o">.</span><span class="n">py</span>
 <span class="kn">import</span> <span class="nn">random</span>
 <span class="kn">from</span> <span class="nn">logging</span> <span class="kn">import</span> <span class="n">getLogger</span>
 
@@ -845,9 +842,11 @@ Round: 5, Test set: Average loss: 0.4383064950466156, Accuracy: 88.65
 <span class="kn">from</span> <span class="nn">mpi4py</span> <span class="kn">import</span> <span class="n">MPI</span>
 <span class="kn">from</span> <span class="nn">torchvision</span> <span class="kn">import</span> <span class="n">datasets</span><span class="p">,</span> <span class="n">transforms</span>
 
-<span class="kn">from</span> <span class="nn">aijack.collaborative</span> <span class="kn">import</span> <span class="n">FedAvgClient</span><span class="p">,</span> <span class="n">FedAvgServer</span>
-<span class="kn">from</span> <span class="nn">aijack.collaborative.fedavg</span> <span class="kn">import</span> <span class="n">MPIFedAVGAPI</span><span class="p">,</span> <span class="n">MPIFedAvgClient</span><span class="p">,</span> <span class="n">MPIFedAvgServer</span>
-<span class="kn">from</span> <span class="nn">aijack.defense.sparse</span> <span class="kn">import</span> <span class="n">SparseGradientClientManager</span><span class="p">,</span> <span class="n">SparseGradientServerManager</span>
+<span class="kn">from</span> <span class="nn">aijack.collaborative</span> <span class="kn">import</span> <span class="n">FedAVGClient</span><span class="p">,</span> <span class="n">FedAVGServer</span><span class="p">,</span> <span class="n">MPIFedAVGAPI</span><span class="p">,</span> <span class="n">MPIFedAVGClient</span><span class="p">,</span> <span class="n">MPIFedAVGServer</span>
+<span class="kn">from</span> <span class="nn">aijack.defense.sparse</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">SparseGradientClientManager</span><span class="p">,</span>
+    <span class="n">SparseGradientServerManager</span><span class="p">,</span>
+<span class="p">)</span>
 
 <span class="n">logger</span> <span class="o">=</span> <span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
@@ -936,15 +935,15 @@ Round: 5, Test set: Average loss: 0.4383064950466156, Accuracy: 88.65
     <span class="n">optimizer</span> <span class="o">=</span> <span class="n">optim</span><span class="o">.</span><span class="n">SGD</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="n">lr</span><span class="p">)</span>
 
     <span class="n">client_manager</span> <span class="o">=</span> <span class="n">SparseGradientClientManager</span><span class="p">(</span><span class="n">k</span><span class="o">=</span><span class="mf">0.03</span><span class="p">)</span>
-    <span class="n">SparseGradientFedAvgClient</span> <span class="o">=</span> <span class="n">client_manager</span><span class="o">.</span><span class="n">attach</span><span class="p">(</span><span class="n">FedAvgClient</span><span class="p">)</span>
+    <span class="n">SparseGradientFedAVGClient</span> <span class="o">=</span> <span class="n">client_manager</span><span class="o">.</span><span class="n">attach</span><span class="p">(</span><span class="n">FedAVGClient</span><span class="p">)</span>
 
     <span class="n">server_manager</span> <span class="o">=</span> <span class="n">SparseGradientServerManager</span><span class="p">()</span>
-    <span class="n">SparseGradientFedAvgServer</span> <span class="o">=</span> <span class="n">server_manager</span><span class="o">.</span><span class="n">attach</span><span class="p">(</span><span class="n">FedAvgServer</span><span class="p">)</span>
+    <span class="n">SparseGradientFedAVGServer</span> <span class="o">=</span> <span class="n">server_manager</span><span class="o">.</span><span class="n">attach</span><span class="p">(</span><span class="n">FedAVGServer</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">myid</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
         <span class="n">dataloader</span> <span class="o">=</span> <span class="n">prepare_dataloader</span><span class="p">(</span><span class="n">size</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">myid</span><span class="p">,</span> <span class="n">train</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
         <span class="n">client_ids</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">size</span><span class="p">))</span>
-        <span class="n">server</span> <span class="o">=</span> <span class="n">MPIFedAvgServer</span><span class="p">(</span><span class="n">comm</span><span class="p">,</span> <span class="n">SparseGradientFedAvgServer</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="n">model</span><span class="p">))</span>
+        <span class="n">server</span> <span class="o">=</span> <span class="n">MPIFedAVGServer</span><span class="p">(</span><span class="n">comm</span><span class="p">,</span> <span class="n">SparseGradientFedAVGServer</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="n">model</span><span class="p">))</span>
         <span class="n">api</span> <span class="o">=</span> <span class="n">MPIFedAVGAPI</span><span class="p">(</span>
             <span class="n">comm</span><span class="p">,</span>
             <span class="n">server</span><span class="p">,</span>
@@ -955,11 +954,11 @@ Round: 5, Test set: Average loss: 0.4383064950466156, Accuracy: 88.65
             <span class="n">num_rounds</span><span class="p">,</span>
             <span class="mi">1</span><span class="p">,</span>
             <span class="n">custom_action</span><span class="o">=</span><span class="n">evaluate_gloal_model</span><span class="p">(</span><span class="n">dataloader</span><span class="p">),</span>
-            <span class="n">device</span><span class="o">=</span><span class="n">device</span>
+            <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">,</span>
         <span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">dataloader</span> <span class="o">=</span> <span class="n">prepare_dataloader</span><span class="p">(</span><span class="n">size</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">myid</span><span class="p">,</span> <span class="n">train</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-        <span class="n">client</span> <span class="o">=</span> <span class="n">MPIFedAvgClient</span><span class="p">(</span><span class="n">comm</span><span class="p">,</span> <span class="n">SparseGradientFedAvgClient</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">user_id</span><span class="o">=</span><span class="n">myid</span><span class="p">))</span>
+        <span class="n">client</span> <span class="o">=</span> <span class="n">MPIFedAVGClient</span><span class="p">(</span><span class="n">comm</span><span class="p">,</span> <span class="n">SparseGradientFedAVGClient</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">user_id</span><span class="o">=</span><span class="n">myid</span><span class="p">))</span>
         <span class="n">api</span> <span class="o">=</span> <span class="n">MPIFedAVGAPI</span><span class="p">(</span>
             <span class="n">comm</span><span class="p">,</span>
             <span class="n">client</span><span class="p">,</span>
@@ -969,7 +968,7 @@ Round: 5, Test set: Average loss: 0.4383064950466156, Accuracy: 88.65
             <span class="n">dataloader</span><span class="p">,</span>
             <span class="n">num_rounds</span><span class="p">,</span>
             <span class="mi">1</span><span class="p">,</span>
-            <span class="n">device</span><span class="o">=</span><span class="n">device</span>
+            <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">,</span>
         <span class="p">)</span>
 
     <span class="n">api</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
@@ -988,7 +987,7 @@ Round: 5, Test set: Average loss: 0.4383064950466156, Accuracy: 88.65
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>!mpiexec -np 3 --allow-run-as-root python /content/mpi_fedavg_sparse.py
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>!mpiexec -np 3 --allow-run-as-root python /content/mpi_FedAVG_sparse.py
 </pre></div>
 </div>
 </div>

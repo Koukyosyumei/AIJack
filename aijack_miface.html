@@ -393,6 +393,17 @@ const thebe_selector_output = ".output, .cell_output"
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Cloning into &#39;Facial-Similarity-with-Siamese-Networks-in-Pytorch&#39;...
+remote: Enumerating objects: 550, done.
+remote: Counting objects: 100% (18/18), done.
+remote: Compressing objects: 100% (10/10), done.
+remote: Total 550 (delta 6), reused 18 (delta 6), pack-reused 532
+Receiving objects: 100% (550/550), 6.32 MiB | 21.66 MiB/s, done.
+Resolving deltas: 100% (27/27), done.
+</pre></div>
+</div>
+</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -408,7 +419,7 @@ const thebe_selector_output = ".output, .cell_output"
 <span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">accuracy_score</span>
 
 <span class="kn">from</span> <span class="nn">aijack.attack</span> <span class="kn">import</span> <span class="n">MI_FACE</span>
-<span class="kn">from</span> <span class="nn">aijack.defense</span> <span class="kn">import</span> <span class="n">GeneralMomentAccountant</span><span class="p">,</span> <span class="n">PrivacyManager</span>
+<span class="kn">from</span> <span class="nn">aijack.defense</span> <span class="kn">import</span> <span class="n">GeneralMomentAccountant</span><span class="p">,</span> <span class="n">DPSGDManager</span>
 <span class="kn">from</span> <span class="nn">aijack.utils</span> <span class="kn">import</span> <span class="n">NumpyDataset</span>
 
 <span class="n">BASE</span> <span class="o">=</span> <span class="s2">&quot;data/&quot;</span>
@@ -511,17 +522,17 @@ const thebe_selector_output = ".output, .cell_output"
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>epoch 0: loss is 0.9157032299041749
-epoch 1: loss is 0.8567088800668716
-epoch 2: loss is 0.8028850662708282
-epoch 3: loss is 0.7715613770484925
-epoch 4: loss is 0.7594713896512986
-epoch 5: loss is 0.749403566122055
-epoch 6: loss is 0.746901074051857
-epoch 7: loss is 0.7417646074295043
-epoch 8: loss is 0.7393667602539062
-epoch 9: loss is 0.732665593624115
-Test Accuracy is:  0.825
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>epoch 0: loss is 0.9156735908985137
+epoch 1: loss is 0.8619398236274719
+epoch 2: loss is 0.81106709420681
+epoch 3: loss is 0.7768852257728577
+epoch 4: loss is 0.7660594815015793
+epoch 5: loss is 0.7590363520383835
+epoch 6: loss is 0.7473625355958938
+epoch 7: loss is 0.7374473077058792
+epoch 8: loss is 0.7262152290344238
+epoch 9: loss is 0.7187826019525528
+Test Accuracy is:  0.87
 </pre></div>
 </div>
 </div>
@@ -588,7 +599,7 @@ Test Accuracy is:  0.825
     <span class="n">backend</span><span class="o">=</span><span class="s2">&quot;python&quot;</span><span class="p">,</span>
 <span class="p">)</span>
 
-<span class="n">privacy_manager</span> <span class="o">=</span> <span class="n">PrivacyManager</span><span class="p">(</span>
+<span class="n">privacy_manager</span> <span class="o">=</span> <span class="n">DPSGDManager</span><span class="p">(</span>
     <span class="n">accountant</span><span class="p">,</span>
     <span class="n">optim</span><span class="o">.</span><span class="n">SGD</span><span class="p">,</span>
     <span class="n">l2_norm_clip</span><span class="o">=</span><span class="n">l2_norm_clip</span><span class="p">,</span>
@@ -623,16 +634,13 @@ Test Accuracy is:  0.825
     <span class="n">preds</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">labels</span> <span class="o">=</span> <span class="p">[]</span>
 
-    <span class="k">for</span> <span class="n">data</span> <span class="ow">in</span> <span class="n">lot_loader</span><span class="p">(</span><span class="n">trainset</span><span class="p">):</span>
-        <span class="n">X_lot</span><span class="p">,</span> <span class="n">y_lot</span> <span class="o">=</span> <span class="n">data</span>
-        <span class="n">optimizer</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">X_lot</span><span class="p">,</span> <span class="n">y_lot</span> <span class="ow">in</span> <span class="n">lot_loader</span><span class="p">(</span><span class="n">optimizer</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">X_batch</span><span class="p">,</span> <span class="n">y_batch</span> <span class="ow">in</span> <span class="n">batch_loader</span><span class="p">(</span><span class="n">TensorDataset</span><span class="p">(</span><span class="n">X_lot</span><span class="p">,</span> <span class="n">y_lot</span><span class="p">)):</span>
-            <span class="n">optimizer</span><span class="o">.</span><span class="n">zero_grad_keep_accum_grads</span><span class="p">()</span>
-
+            <span class="n">optimizer</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
             <span class="n">pred</span> <span class="o">=</span> <span class="n">net</span><span class="p">(</span><span class="n">X_batch</span><span class="p">)</span>
             <span class="n">loss</span> <span class="o">=</span> <span class="n">criterion</span><span class="p">(</span><span class="n">pred</span><span class="p">,</span> <span class="n">y_batch</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">int64</span><span class="p">))</span>
             <span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
-            <span class="n">optimizer</span><span class="o">.</span><span class="n">update_accum_grads</span><span class="p">()</span>
+            <span class="n">optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
 
             <span class="n">running_loss</span> <span class="o">+=</span> <span class="n">loss</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
             <span class="n">data_size</span> <span class="o">+=</span> <span class="n">X_batch</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
@@ -651,16 +659,16 @@ Test Accuracy is:  0.825
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>estimated epsilon is 35.149970335258836
-epoch 0: loss is 3.6807964784958784
-epoch 1: loss is 3.626986505371509
-epoch 2: loss is 3.5120377476778053
-epoch 3: loss is 3.40937197042066
-epoch 4: loss is 3.2611714548665316
-epoch 5: loss is 3.1969331194082073
-epoch 6: loss is 3.100970353060101
-epoch 7: loss is 3.0312393050339894
-epoch 8: loss is 2.9934531580656767
-epoch 9: loss is 2.941574161863092
+epoch 0: loss is 3.681807665568788
+epoch 1: loss is 3.635799625376963
+epoch 2: loss is 3.543356508305929
+epoch 3: loss is 3.427740032739615
+epoch 4: loss is 3.336359556889374
+epoch 5: loss is 3.175302603028037
+epoch 6: loss is 3.1255192260694384
+epoch 7: loss is 3.0658171386446917
+epoch 8: loss is 2.9871931764685993
+epoch 9: loss is 2.949955497386951
 final epsilon is 35.14997033525883
 </pre></div>
 </div>
@@ -686,7 +694,7 @@ final epsilon is 35.14997033525883
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Test Accuracy is:  0.9025
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Test Accuracy is:  0.895
 </pre></div>
 </div>
 </div>

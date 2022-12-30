@@ -402,14 +402,26 @@ const thebe_selector_output = ".output, .cell_output"
         <span class="n">dataset</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
         <span class="n">dataset</span><span class="o">.</span><span class="n">targets</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">targets</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
         <span class="n">train_loader</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">DataLoader</span><span class="p">(</span>
-            <span class="n">NumpyDataset</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">dataset</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">y</span><span class="o">=</span><span class="n">dataset</span><span class="o">.</span><span class="n">targets</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">transform</span><span class="o">=</span><span class="n">transform</span><span class="p">,</span> <span class="n">return_idx</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
-             <span class="n">batch_size</span><span class="o">=</span><span class="n">training_batch_size</span>
+            <span class="n">NumpyDataset</span><span class="p">(</span>
+                <span class="n">x</span><span class="o">=</span><span class="n">dataset</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span>
+                <span class="n">y</span><span class="o">=</span><span class="n">dataset</span><span class="o">.</span><span class="n">targets</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span>
+                <span class="n">transform</span><span class="o">=</span><span class="n">transform</span><span class="p">,</span>
+                <span class="n">return_idx</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="p">),</span>
+            <span class="n">batch_size</span><span class="o">=</span><span class="n">training_batch_size</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="k">return</span> <span class="n">train_loader</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">dataset</span> <span class="o">=</span> <span class="n">datasets</span><span class="o">.</span><span class="n">MNIST</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">train</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">download</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">transform</span><span class="p">)</span>
-        <span class="n">test_loader</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">DataLoader</span><span class="p">(</span><span class="n">NumpyDataset</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">dataset</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">y</span><span class="o">=</span><span class="n">dataset</span><span class="o">.</span><span class="n">targets</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">transform</span><span class="o">=</span><span class="n">transform</span><span class="p">,</span> <span class="n">return_idx</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
-                                                  <span class="n">batch_size</span><span class="o">=</span><span class="n">test_batch_size</span><span class="p">)</span>
+        <span class="n">test_loader</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">DataLoader</span><span class="p">(</span>
+            <span class="n">NumpyDataset</span><span class="p">(</span>
+                <span class="n">x</span><span class="o">=</span><span class="n">dataset</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span>
+                <span class="n">y</span><span class="o">=</span><span class="n">dataset</span><span class="o">.</span><span class="n">targets</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span>
+                <span class="n">transform</span><span class="o">=</span><span class="n">transform</span><span class="p">,</span>
+                <span class="n">return_idx</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="p">),</span>
+            <span class="n">batch_size</span><span class="o">=</span><span class="n">test_batch_size</span><span class="p">,</span>
+        <span class="p">)</span>
         <span class="k">return</span> <span class="n">test_loader</span>
 
 
@@ -444,7 +456,7 @@ const thebe_selector_output = ".output, .cell_output"
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dataloaders</span> <span class="o">=</span> <span class="p">[</span><span class="n">prepare_dataloader</span><span class="p">(</span><span class="n">client_size</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">client_size</span><span class="o">+</span><span class="mi">1</span><span class="p">)]</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dataloaders</span> <span class="o">=</span> <span class="p">[</span><span class="n">prepare_dataloader</span><span class="p">(</span><span class="n">client_size</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">client_size</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)]</span>
 <span class="n">public_dataloader</span> <span class="o">=</span> <span class="n">dataloaders</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 <span class="n">local_dataloaders</span> <span class="o">=</span> <span class="n">dataloaders</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
 <span class="n">test_dataloader</span> <span class="o">=</span> <span class="n">prepare_dataloader</span><span class="p">(</span><span class="n">client_size</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">train</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
@@ -489,7 +501,10 @@ Downloading http://yann.lecun.com/exdb/mnist/t10k-labels-idx1-ubyte.gz to MNIST/
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">clients</span> <span class="o">=</span> <span class="p">[</span><span class="n">FedMDClient</span><span class="p">(</span><span class="n">Net</span><span class="p">()</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">),</span> <span class="n">public_dataloader</span><span class="p">,</span> <span class="n">output_dim</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">user_id</span><span class="o">=</span><span class="n">c</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">client_size</span><span class="p">)]</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">clients</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">FedMDClient</span><span class="p">(</span><span class="n">Net</span><span class="p">()</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">),</span> <span class="n">public_dataloader</span><span class="p">,</span> <span class="n">output_dim</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">user_id</span><span class="o">=</span><span class="n">c</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">client_size</span><span class="p">)</span>
+<span class="p">]</span>
 <span class="n">local_optimizers</span> <span class="o">=</span> <span class="p">[</span><span class="n">optim</span><span class="o">.</span><span class="n">SGD</span><span class="p">(</span><span class="n">client</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="n">lr</span><span class="p">)</span> <span class="k">for</span> <span class="n">client</span> <span class="ow">in</span> <span class="n">clients</span><span class="p">]</span>
 
 <span class="n">server</span> <span class="o">=</span> <span class="n">FedMDServer</span><span class="p">(</span><span class="n">clients</span><span class="p">,</span> <span class="n">Net</span><span class="p">()</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">))</span>
@@ -499,7 +514,16 @@ Downloading http://yann.lecun.com/exdb/mnist/t10k-labels-idx1-ubyte.gz to MNIST/
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">api</span> <span class="o">=</span> <span class="n">FedMDAPI</span><span class="p">(</span><span class="n">server</span><span class="p">,</span> <span class="n">clients</span><span class="p">,</span> <span class="n">public_dataloader</span><span class="p">,</span> <span class="n">local_dataloaders</span><span class="p">,</span> <span class="n">F</span><span class="o">.</span><span class="n">nll_loss</span><span class="p">,</span> <span class="n">local_optimizers</span><span class="p">,</span> <span class="n">test_dataloader</span><span class="p">,</span> <span class="n">num_communication</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">api</span> <span class="o">=</span> <span class="n">FedMDAPI</span><span class="p">(</span>
+    <span class="n">server</span><span class="p">,</span>
+    <span class="n">clients</span><span class="p">,</span>
+    <span class="n">public_dataloader</span><span class="p">,</span>
+    <span class="n">local_dataloaders</span><span class="p">,</span>
+    <span class="n">F</span><span class="o">.</span><span class="n">nll_loss</span><span class="p">,</span>
+    <span class="n">local_optimizers</span><span class="p">,</span>
+    <span class="n">test_dataloader</span><span class="p">,</span>
+    <span class="n">num_communication</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+<span class="p">)</span>
 <span class="n">log</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
 </pre></div>
 </div>
