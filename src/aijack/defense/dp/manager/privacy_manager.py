@@ -4,7 +4,7 @@ from .dataloader import LotDataLoader, PoissonSampler
 from .optimizer import attach_differential_privacy_mechanism
 
 
-class PrivacyManager:
+class DPSGDManager:
     def __init__(
         self,
         accountant,

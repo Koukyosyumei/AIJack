@@ -5,7 +5,7 @@ def test_dpsgd():
     import torch.optim as optim
     from torch.utils.data import TensorDataset
 
-    from aijack.defense import GeneralMomentAccountant, PrivacyManager
+    from aijack.defense import DPSGDManager, GeneralMomentAccountant
 
     torch.manual_seed(0)
 
@@ -43,7 +43,7 @@ def test_dpsgd():
         backend="python",
     )
 
-    privacy_manager = PrivacyManager(
+    privacy_manager = DPSGDManager(
         accountant,
         optim.SGD,
         l2_norm_clip=l2_norm_clip,

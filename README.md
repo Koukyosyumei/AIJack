@@ -34,6 +34,8 @@ AIJack allows you to assess the privacy and security risks of machine learning a
 - [What is AIJack?](#what-is-aijack)
 - [Table of Contents](#table-of-contents)
 - [Installation](#installation)
+  - [pip](#pip)
+  - [Docker](#docker)
 - [Supported Algorithms](#supported-algorithms)
   - [Distributed Learning](#distributed-learning)
   - [Attack](#attack)
@@ -50,6 +52,8 @@ AIJack allows you to assess the privacy and security risks of machine learning a
 
 # Installation
 
+## pip
+
 AIJack requires Boost and pybind11.
 
 ```
@@ -59,6 +63,10 @@ pip install "pybind11[global]"
 
 pip install git+https://github.com/Koukyosyumei/AIJack
 ```
+
+## Docker
+
+Please use our [Dockerfile](Dockerfile).
 
 # Supported Algorithms
 
