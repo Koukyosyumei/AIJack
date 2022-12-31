@@ -97,7 +97,8 @@ Please use our [Dockerfile](Dockerfile).
 | Norm attack              | Label Leakage        | [example](docs/aijack_split_learning.ipynb)            | [paper](https://arxiv.org/abs/2102.08504)                                                                                                           |
 | Delta Weights            | Free Rider Attack    | WIP                                                    | [paper](https://arxiv.org/pdf/1911.12560.pdf)                                                                                                       |
 | Gradient descent attacks | Evasion Attack       | [example](docs/aijack_evasion_attack.ipynb)            | [paper](https://arxiv.org/abs/1708.06131)                                                                                                           |
-| Label Flip               | Poisoning Attack     | WIP                                                    | WIP                                                                                                                                                 |
+| Label Flip Attack        | Poisoning Attack     | WIP                                                    | WIP                                                                                                                                                 |
+| Label Flip Attack        | Poisoning Attack     | WIP                                                    | WIP                                                                                                                                                 |
 | SVM Poisoning            | Poisoning Attack     | [example](docs/aijack_poison_attack.ipynb)             | [paper](https://arxiv.org/abs/1206.6389)                                                                                                            |
 
 
