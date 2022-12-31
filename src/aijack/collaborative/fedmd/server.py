@@ -41,7 +41,7 @@ class FedMDServer(BaseServer):
             client.download(self.consensus)
 
 
-class MPIFedMDServer:
+class MPIFedMDServer(FedMDServer):
     """MPI Wrapper for FedMDServer
 
     Args:
@@ -49,18 +49,15 @@ class MPIFedMDServer:
         server: the instance of FedAvgServer. The `clients` member variable shoud be the list of id.
     """
 
-    def __init__(self, comm, server):
+    def __init__(self, comm, *args, **kwargs):
+        super(MPIFedMDServer, self).__init__(*args, **kwargs)
         self.comm = comm
-        self.server = server
         self.num_clients = len(self.server.clients)
         self.round = 0
 
-    def __call__(self, *args, **kwargs):
-        return self.server(*args, **kwargs)
-
     def action(self):
         self.mpi_receive()
-        self.server.update()
+        self.update()
         self.mpi_distribute()
         self.round += 1
 
@@ -68,12 +65,12 @@ class MPIFedMDServer:
         self.mpi_receive_local_logits()
 
     def mpi_receive_local_logits(self):
-        self.server.uploaded_logits = []
+        self.uploaded_logits = []
 
-        while len(self.server.uploaded_logits) < self.num_clients:
+        while len(self.uploaded_logits) < self.num_clients:
             received_logits = self.comm.recv(tag=LOCAL_LOGIT_TAG)
-            self.server.uploaded_logits.append(received_logits)
+            self.uploaded_logits.append(received_logits)
 
     def mpi_distribute(self):
         for client_id in self.server.clients:
-            self.comm.send(self.server.consensus, dest=client_id, tag=GLOBAL_LOGIT_TAG)
+            self.comm.send(self.consensus, dest=client_id, tag=GLOBAL_LOGIT_TAG)

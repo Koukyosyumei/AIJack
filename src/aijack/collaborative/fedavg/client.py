@@ -134,17 +134,14 @@ class FedAVGClient(BaseClient):
             )
 
 
-class MPIFedAVGClient(BaseClient):
-    def __init__(self, comm, client):
+class MPIFedAVGClient(FedAVGClient):
+    def __init__(self, comm, *args, **kwargs):
+        super(MPIFedAVGClient, self).__init__(*args, **kwargs)
         self.comm = comm
-        self.client = client
-
-    def __call__(self, *args, **kwargs):
-        return self.client(*args, **kwargs)
 
     def action(self):
         self.upload()
-        self.client.model.zero_grad()
+        super(MPIFedAVGClient, self).model.zero_grad()
         self.download()
 
     def upload(self):
@@ -152,11 +149,13 @@ class MPIFedAVGClient(BaseClient):
 
     def upload_gradient(self, destination_id=0):
         self.comm.send(
-            self.client.upload_gradients(), dest=destination_id, tag=GRADIENTS_TAG
+            super(MPIFedAVGClient, self).upload_gradients(),
+            dest=destination_id,
+            tag=GRADIENTS_TAG,
         )
 
     def download(self):
-        self.client.download(self.comm.recv(tag=PARAMETERS_TAG))
+        super(MPIFedAVGClient, self).download(self.comm.recv(tag=PARAMETERS_TAG))
 
     def mpi_initialize(self):
         self.download()

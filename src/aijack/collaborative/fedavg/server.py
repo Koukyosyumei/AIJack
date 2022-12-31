@@ -156,7 +156,7 @@ class FedAVGServer(BaseServer):
                     client.download(self.aggregated_gradients)
 
 
-class MPIFedAVGServer(BaseServer):
+class MPIFedAVGServer(FedAVGServer):
     """MPI Wrapper for FedAVGServer
 
     Args:
@@ -164,14 +164,11 @@ class MPIFedAVGServer(BaseServer):
         server: the instance of FedAVGServer. The `clients` member variable shoud be the list of id.
     """
 
-    def __init__(self, comm, server):
+    def __init__(self, comm, *args, **kwargs):
+        super(MPIFedAVGServer, self).__init__(*args, **kwargs)
         self.comm = comm
-        self.server = server
-        self.num_clients = len(self.server.clients)
+        self.num_clients = len(self.clients)
         self.round = 0
-
-    def __call__(self, *args, **kwargs):
-        return self.server(*args, **kwargs)
 
     def action(self):
         self.receive()
@@ -182,16 +179,13 @@ class MPIFedAVGServer(BaseServer):
     def receive(self):
         self.receive_local_gradients()
 
-    def update(self):
-        self.server.update()
-
     def receive_local_gradients(self):
-        self.server.uploaded_gradients = []
+        self.uploaded_gradients = []
 
-        while len(self.server.uploaded_gradients) < self.num_clients:
+        while len(self.uploaded_gradients) < self.num_clients:
             gradients_received = self.comm.recv(tag=GRADIENTS_TAG)
-            self.server.uploaded_gradients.append(
-                self.server._preprocess_local_gradients(gradients_received)
+            self.uploaded_gradients.append(
+                self._preprocess_local_gradients(gradients_received)
             )
 
     def distribute(self):
@@ -199,9 +193,9 @@ class MPIFedAVGServer(BaseServer):
         # for params in self.server.server_model.parameters():
         #     global_parameters.append(copy.copy(params).reshape(-1).tolist())
 
-        for client_id in self.server.clients:
+        for client_id in self.clients:
             self.comm.send(
-                self.server.server_model.state_dict(),
+                self.server_model.state_dict(),
                 dest=client_id,
                 tag=PARAMETERS_TAG,
             )

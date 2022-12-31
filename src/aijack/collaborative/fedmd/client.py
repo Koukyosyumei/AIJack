@@ -83,27 +83,24 @@ class FedMDClient(BaseClient):
         return running_loss
 
 
-class MPIFedMDClient:
-    def __init__(self, comm, client):
+class MPIFedMDClient(FedMDClient):
+    def __init__(self, comm, *args, **kwargs):
+        super(MPIFedMDClient, self).__init__(*args, **kwargs)
         self.comm = comm
-        self.client = client
-
-    def __call__(self, *args, **kwargs):
-        return self.client(*args, **kwargs)
 
     def action(self):
         self.mpi_upload()
-        self.client.model.zero_grad()
+        self.model.zero_grad()
         self.mpi_download()
 
     def mpi_upload(self):
         self.mpi_upload_logits()
 
     def mpi_upload_logits(self, destination_id=0):
-        self.comm.send(self.client.upload(), dest=destination_id, tag=LOCAL_LOGIT_TAG)
+        self.comm.send(self.upload(), dest=destination_id, tag=LOCAL_LOGIT_TAG)
 
     def mpi_download(self):
-        self.client.download(self.comm.recv(tag=GLOBAL_LOGIT_TAG))
+        self.download(self.comm.recv(tag=GLOBAL_LOGIT_TAG))
 
     def mpi_initialize(self):
         self.mpi_download()

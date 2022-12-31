@@ -116,10 +116,10 @@ class MPIFedAVGAPI(BaseFedAPI):
 
     def local_train(self, com_cnt):
         self.party.prev_parameters = []
-        for param in self.party.client.model.parameters():
-            self.party.client.prev_parameters.append(copy.deepcopy(param))
+        for param in self.party.model.parameters():
+            self.party.prev_parameters.append(copy.deepcopy(param))
 
-        self.party.client.local_train(
+        self.party.local_train(
             self.local_epoch,
             self.criterion,
             self.local_dataloader,

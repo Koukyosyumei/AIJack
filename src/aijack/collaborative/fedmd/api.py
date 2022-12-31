@@ -193,9 +193,9 @@ class MPIFedMDAPI(BaseFedAPI):
             # Transfer phase
             if not self.is_server:
                 for _ in range(1, self.transfer_epoch_public + 1):
-                    self.train_client(public=True)
+                    self.local_train(public=True)
                 for _ in range(1, self.transfer_epoch_private + 1):
-                    self.train_client(public=False)
+                    self.local_train(public=False)
 
             # Updata global logits
             self.party.action()
@@ -204,16 +204,16 @@ class MPIFedMDAPI(BaseFedAPI):
             # Digest phase
             if not self.is_server:
                 for _ in range(1, self.consensus_epoch):
-                    self.party.client.approach_consensus(self.local_optimizer)
+                    self.party.approach_consensus(self.local_optimizer)
 
             # Revisit phase
             if not self.is_server:
                 for _ in range(self.revisit_epoch):
-                    self.train_client(public=False)
+                    self.local_train(public=False)
 
             self.custom_action(self)
             self.comm.Barrier()
 
-    def train_client(self, public=True):
+    def local_train(self, public=True):
         trainloader = self.public_dataloader if public else self.local_dataloader
-        self.party.client.local_train(self, trainloader, self.local_optimizer)
+        self.party.local_train(self, trainloader, self.local_optimizer)

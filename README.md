@@ -46,7 +46,6 @@ AIJack allows you to assess the privacy and security risks of machine learning a
   - [DPSGD (SGD with Differential Privacy)](#dpsgd-sgd-with-differential-privacy)
   - [Federated Learning with Homomorphic Encryption](#federated-learning-with-homomorphic-encryption)
   - [SecureBoost (XGBoost with Homomorphic Encryption)](#secureboost-xgboost-with-homomorphic-encryption)
-  - [Evasion Attack](#evasion-attack)
   - [Poisoning Attack](#poisoning-attack)
 - [Contact](#contact)
 
@@ -98,6 +97,7 @@ Please use our [Dockerfile](Dockerfile).
 | Norm attack              | Label Leakage        | [example](docs/aijack_split_learning.ipynb)            | [paper](https://arxiv.org/abs/2102.08504)                                                                                                           |
 | Delta Weights            | Free Rider Attack    | WIP                                                    | [paper](https://arxiv.org/pdf/1911.12560.pdf)                                                                                                       |
 | Gradient descent attacks | Evasion Attack       | [example](docs/aijack_evasion_attack.ipynb)            | [paper](https://arxiv.org/abs/1708.06131)                                                                                                           |
+| Label Flip               | Poisoning Attack     | WIP                                                    | WIP                                                                                                                                                 |
 | SVM Poisoning            | Poisoning Attack     | [example](docs/aijack_poison_attack.ipynb)             | [paper](https://arxiv.org/abs/1206.6389)                                                                                                            |
 
 
@@ -279,17 +279,6 @@ sclf.fit(sparties, y)
 
 sclf.predict_proba(X)
 
-```
-
-## Evasion Attack
-
-Evasion Attack generates data that the victim model cannot classify correctly.
-
-```Python
-from aijack.attack import Evasion_attack_sklearn
-
-attacker = Evasion_attack_sklearn(target_model=clf, X_minus_1=attackers_dataset)
-result, log = attacker.attack(initial_datapoint)
 ```
 
 ## Poisoning Attack
