@@ -115,7 +115,7 @@ def attach_ganattack_to_client(
     return GANAttackClientWrapper
 
 
-class GANAttackManager(BaseManager):
+class GANAttackClientManager(BaseManager):
     def __init__(self, *args, **kwargs):
         self.args = args
         self.kwargs = kwargs

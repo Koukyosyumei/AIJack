@@ -113,7 +113,6 @@ class FedAVGClient(BaseClient):
             for _, data in enumerate(trainloader, 0):
                 inputs, labels = data
                 inputs = inputs.to(self.device)
-                inputs.requires_grad = True
                 labels = labels.to(self.device)
 
                 optimizer.zero_grad()

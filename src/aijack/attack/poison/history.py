@@ -18,7 +18,7 @@ def attach_history_attack_to_client(cls, lam):
     return HistoryAttackClientWrapper
 
 
-class HistoryAttackWrapper(BaseManager):
+class HistoryAttackClientWrapper(BaseManager):
     def __init__(self, *args, **kwargs):
         self.args = args
         self.kwargs = kwargs

@@ -90,10 +90,39 @@ def attach_soteria_to_client(
             super().backward(loss)
             self.action_after_lossbackward(self.target_layer_name)
 
+        def local_train(
+            self, local_epoch, criterion, trainloader, optimizer, communication_id=0
+        ):
+            for i in range(local_epoch):
+                running_loss = 0.0
+                running_data_num = 0
+                for _, data in enumerate(trainloader, 0):
+                    inputs, labels = data
+                    inputs = inputs.to(self.device)
+                    inputs.retain_grad()
+                    labels = labels.to(self.device)
+
+                    optimizer.zero_grad()
+                    self.zero_grad()
+
+                    outputs = self(inputs)
+                    loss = criterion(outputs, labels)
+                    self.backward(loss)
+
+                    optimizer.step()
+
+                    running_loss += loss.item()
+                    running_data_num += inputs.shape[0]
+
+                print(
+                    f"communication {communication_id}, epoch {i}: client-{self.user_id+1}",
+                    running_loss / running_data_num,
+                )
+
     return SoteriaClientWrapper
 
 
-class SoteriaManager(BaseManager):
+class SoteriaClientManager(BaseManager):
     def __init__(self, *args, **kwargs):
         self.args = args
         self.kwargs = kwargs

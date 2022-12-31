@@ -6,7 +6,7 @@ def test_labelleakage():
     import torch.optim as optim
     from sklearn.preprocessing import StandardScaler
 
-    from aijack.attack import NormAttackManager
+    from aijack.attack import NormAttackSplitNNManager
     from aijack.collaborative import SplitNN, SplitNNClient
     from aijack.utils import NumpyDataset
 
@@ -70,7 +70,7 @@ def test_labelleakage():
     clients = [client_1, client_2]
     criterion = nn.BCELoss()
 
-    manager = NormAttackManager(criterion, device="cpu")
+    manager = NormAttackSplitNNManager(criterion, device="cpu")
     NormAttackSplitNN = manager.attach(SplitNN)
     normattacksplitnn = NormAttackSplitNN(clients, optimizers)
 

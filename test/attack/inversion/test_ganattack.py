@@ -3,7 +3,7 @@ def test_ganattack():
     import torch.nn as nn
     import torch.optim as optim
 
-    from aijack.attack import GANAttackManager
+    from aijack.attack import GANAttackClientManager
     from aijack.collaborative import FedAVGClient, FedAVGServer
 
     nc = 1
@@ -80,7 +80,7 @@ def test_ganattack():
         generator.parameters(), lr=0.05, weight_decay=1e-7, momentum=0.0
     )
 
-    manager = GANAttackManager(
+    manager = GANAttackClientManager(
         target_label,
         generator,
         optimizer_g,

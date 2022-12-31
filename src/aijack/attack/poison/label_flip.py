@@ -21,7 +21,6 @@ def attach_label_flip_attack_to_client(
                 for _, data in enumerate(trainloader, 0):
                     inputs, labels = data
                     inputs = inputs.to(self.device)
-                    inputs.requires_grad = True
 
                     if target_label is not None:
                         labels = torch.where(
@@ -54,7 +53,7 @@ def attach_label_flip_attack_to_client(
     return LabelFlipAttackClientWrapper
 
 
-class LabelFlipAttackManager(BaseManager):
+class LabelFlipAttackClientManager(BaseManager):
     def __init__(self, *args, **kwargs):
         self.args = args
         self.kwargs = kwargs

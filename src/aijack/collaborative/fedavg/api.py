@@ -69,7 +69,7 @@ class FedAVGAPI(BaseFedAPI):
             self.local_train(i)
             self.server.receive(use_gradients=self.use_gradients)
             if self.use_gradients:
-                self.server.updata_from_gradients(weight=self.clients_weight)
+                self.server.update_from_gradients(weight=self.clients_weight)
             else:
                 self.server.update_from_parameters(weight=self.clients_weight)
             self.server.distribute()

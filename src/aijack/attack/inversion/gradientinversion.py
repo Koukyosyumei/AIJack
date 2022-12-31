@@ -634,7 +634,7 @@ def attach_gradient_inversion_attack_to_server(
     return GradientInversionServerWrapper
 
 
-class GradientInversionAttackManager(BaseManager):
+class GradientInversionAttackServerManager(BaseManager):
     def __init__(self, *args, **kwargs):
         self.args = args
         self.kwargs = kwargs

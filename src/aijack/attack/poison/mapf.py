@@ -1,18 +1,27 @@
+import torch
+
 from ...manager import BaseManager
 
 
-def attach_mapf_to_client(cls, lam, base_model_parameters):
+def attach_mapf_to_client(cls, lam, base_model_parameters=None):
     class MAPFClientWrapper(cls):
         """Implementation of MAPF proposed in https://arxiv.org/pdf/2203.08669.pdf"""
 
         def __init__(self, *args, **kwargs):
             super(MAPFClientWrapper, self).__init__(*args, **kwargs)
 
+            if base_model_parameters is None:
+                self.base_model_parameters = [
+                    torch.randn_like(p) for p in self.model.parameters()
+                ]
+            else:
+                self.base_model_parameters = base_model_parameters
+
         def upload_gradients(self):
             """Upload the local gradients"""
             gradients = []
             for param, base_param in zip(
-                self.model.parameters(), base_model_parameters
+                self.model.parameters(), self.base_model_parameters
             ):
                 gradients.append((base_param - param) * lam)
             return gradients
@@ -20,7 +29,7 @@ def attach_mapf_to_client(cls, lam, base_model_parameters):
     return MAPFClientWrapper
 
 
-class MAPFWrapper(BaseManager):
+class MAPFClientWrapper(BaseManager):
     def __init__(self, *args, **kwargs):
         self.args = args
         self.kwargs = kwargs

@@ -1,5 +1,5 @@
-from torch.utils.data import TensorDataset
 import torch
+from torch.utils.data import TensorDataset
 
 from ....manager import BaseManager
 
