@@ -157,8 +157,7 @@ class FedAVGServer(BaseServer):
 
 def attach_mpi_to_fedavgserver(cls):
     class MPIFedAVGServerWrapper(cls):
-        """MPI Wrapper for FedAVG-based Server
-        """
+        """MPI Wrapper for FedAVG-based Server"""
 
         def __init__(self, comm, *args, **kwargs):
             self.comm = comm
