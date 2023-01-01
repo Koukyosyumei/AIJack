@@ -203,4 +203,4 @@ class MPIFedAVGServer(FedAVGServer):
             )
 
     def mpi_initialize(self):
-        self.mpi_distribute()
+        self.distribute()
