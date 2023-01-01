@@ -1,8 +1,6 @@
 import copy
 from abc import abstractmethod
 
-import torch
-
 from ...utils import accuracy_torch_dataloader
 
 
@@ -55,7 +53,7 @@ class BaseFLKnowledgeDistillationAPI:
 
         self.client_num = len(clients)
 
-    def train_client(self, public=True):
+    def train_client(self, epoch=1, public=True):
         """Train local models with the local datasets or the public dataset.
 
         Args:
@@ -73,7 +71,7 @@ class BaseFLKnowledgeDistillationAPI:
                 trainloader = self.local_dataloaders[client_idx]
 
             running_loss = self.clients[client_idx].local_train(
-                trainloader, self.client_optimizers[client_idx]
+                epoch, self.criterion, trainloader, self.client_optimizers[client_idx]
             )
 
             loss_on_local_dataest.append(copy.deepcopy(running_loss / len(trainloader)))

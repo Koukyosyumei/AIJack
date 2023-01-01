@@ -34,20 +34,21 @@ class FedGEMSClient(BaseClient):
     def download(self, predicted_values_of_server):
         self.predicted_values_of_server = predicted_values_of_server
 
-    def local_train(self, trainloader, optimizer):
+    def local_train(self, local_epoch, criterion, trainloader, optimizer):
 
         running_loss = 0.0
-        for data in trainloader:
-            _, x, y = data
-            x = x.to(self.device)
-            y = y.to(self.device).to(torch.int64)
+        for _ in range(local_epoch):
+            for data in trainloader:
+                _, x, y = data
+                x = x.to(self.device)
+                y = y.to(self.device).to(torch.int64)
 
-            optimizer.zero_grad()
-            loss = self.criterion(self(x), y)
-            loss.backward()
-            optimizer.step()
+                optimizer.zero_grad()
+                loss = criterion(self(x), y)
+                loss.backward()
+                optimizer.step()
 
-            running_loss += loss.item()
+                running_loss += loss.item()
 
         return running_loss
 
