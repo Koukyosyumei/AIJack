@@ -216,4 +216,4 @@ class MPIFedMDAPI(BaseFedAPI):
 
     def local_train(self, public=True):
         trainloader = self.public_dataloader if public else self.local_dataloader
-        self.party.local_train(self, trainloader, self.local_optimizer)
+        self.party.local_train(trainloader, self.local_optimizer)
