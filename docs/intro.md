@@ -16,11 +16,8 @@ AIJack allows you to assess the privacy and security risks of machine learning a
 - [Installation](#installation)
   - [pip](#pip)
   - [Docker](#docker)
-- [Supported Algorithms](#supported-algorithms)
-  - [Distributed Learning](#distributed-learning)
-  - [Attack](#attack)
-  - [Defense](#defense)
 - [Quick Start](#quick-start)
+  - [Basic Interface](#basic-interface)
   - [Federated Learning](#federated-learning)
     - [FedAVG](#fedavg)
     - [FedMD](#fedmd)
@@ -36,6 +33,10 @@ AIJack allows you to assess the privacy and security risks of machine learning a
   - [Split Learning](#split-learning)
     - [SplitNN](#splitnn)
     - [Attack: Label Leakage](#attack-label-leakage)
+- [Supported Algorithms](#supported-algorithms)
+  - [Distributed Learning](#distributed-learning)
+  - [Attack](#attack)
+  - [Defense](#defense)
 - [Contact](#contact)
 
 # Installation
@@ -56,59 +57,40 @@ pip install git+https://github.com/Koukyosyumei/AIJack
 
 Please use our [Dockerfile](Dockerfile).
 
-# Supported Algorithms
-
-## Distributed Learning
-
-|             | Example                                           | Paper                                     |
-| ----------- | ------------------------------------------------- | ----------------------------------------- |
-| FedAVG      | [example](docs/aijack_fedavg.ipynb)               | [paper](https://arxiv.org/abs/1602.05629) |
-| FedProx     | WIP                                               | [paper](https://arxiv.org/abs/1812.06127) |
-| FedKD       | [example](test/collaborative/fedkd/test_fedkd.py) | [paper](https://arxiv.org/abs/2108.13323) |
-| FedMD       | [example](docs/aijack_fedmd.ipynb)                | [paper](https://arxiv.org/abs/1910.03581) |
-| FedGEMS     | WIP                                               | [paper](https://arxiv.org/abs/2110.11027) |
-| DSFL        | WIP                                               | [paper](https://arxiv.org/abs/2008.06180) |
-| SplitNN     | [example](docs/aijack_split_learning.ipynb)       | [paper](https://arxiv.org/abs/1812.00564) |
-| SecureBoost | [example](docs/aijack_secureboost.ipynb)          | [paper](https://arxiv.org/abs/1901.08755) |
-
-## Attack
-
-|                          | Attack Type          | Example                                                | Paper                                                                                                                                               |
-| ------------------------ | -------------------- | ------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------- |
-| MI-FACE                  | Model Inversion      | [example](docs/aijack_miface.ipynb)                    | [paper](https://dl.acm.org/doi/pdf/10.1145/2810103.2813677)                                                                                         |
-| DLG                      | Model Inversion      | [example](docs/aijack_gradient_inversion_attack.ipynb) | [paper](https://papers.nips.cc/paper/2019/hash/60a6c4002cc7b29142def8871531281a-Abstract.html)                                                      |
-| iDLG                     | Model Inversion      | [example](docs/aijack_gradient_inversion_attack.ipynb) | [paper](https://arxiv.org/abs/2001.02610)                                                                                                           |
-| GS                       | Model Inversion      | [example](docs/aijack_gradient_inversion_attack.ipynb) | [paper](https://proceedings.neurips.cc/paper/2020/hash/c4ede56bbd98819ae6112b20ac6bf145-Abstract.html)                                              |
-| CPL                      | Model Inversion      | [example](docs/aijack_gradient_inversion_attack.ipynb) | [paper](https://arxiv.org/abs/2004.10397)                                                                                                           |
-| GradInversion            | Model Inversion      | [example](docs/aijack_gradient_inversion_attack.ipynb) | [paper](https://openaccess.thecvf.com/content/CVPR2021/papers/Yin_See_Through_Gradients_Image_Batch_Recovery_via_GradInversion_CVPR_2021_paper.pdf) |
-| GAN Attack               | Model Inversion      | [example](example/model_inversion/gan_attack.py)       | [paper](https://arxiv.org/abs/1702.07464)                                                                                                           |
-| Shadow Attack            | Membership Inference | [example](docs/aijack_membership_inference.ipynb)      | [paper](https://arxiv.org/abs/1610.05820)                                                                                                           |
-| Norm attack              | Label Leakage        | [example](docs/aijack_split_learning.ipynb)            | [paper](https://arxiv.org/abs/2102.08504)                                                                                                           |
-| Delta Weights            | Free Rider Attack    | WIP                                                    | [paper](https://arxiv.org/pdf/1911.12560.pdf)                                                                                                       |
-| Gradient descent attacks | Evasion Attack       | [example](docs/aijack_evasion_attack.ipynb)            | [paper](https://arxiv.org/abs/1708.06131)                                                                                                           |
-| DBA                      | Backdoor Attack      | WIP                                                    | [paper](https://openreview.net/forum?id=rkgyS0VFvr)                                                                                                 |
-| Label Flip Attack        | Poisoning Attack     | WIP                                                    | [paper](https://arxiv.org/abs/2203.08669)                                                                                                           |
-| History Attack           | Poisoning Attack     | WIP                                                    | [paper](https://arxiv.org/abs/2203.08669)                                                                                                           |
-| MAPF                     | Poisoning Attack     | WIP                                                    | [paper](https://arxiv.org/abs/2203.08669)                                                                                                           |
-| SVM Poisoning            | Poisoning Attack     | [example](docs/aijack_poison_attack.ipynb)             | [paper](https://arxiv.org/abs/1206.6389)                                                                                                            |
-
-
-## Defense
-
-|                 | Defense Type           | Example                                  | Paper                                                                                                                                                              |
-| --------------- | ---------------------- | ---------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| DPSGD           | Differential Privacy   | [example](docs/aijack_miface.ipynb)      | [paper](https://arxiv.org/abs/1607.00133)                                                                                                                          |
-| Paillier        | Homomorphic Encryption | [example](docs/aijack_secureboost.ipynb) | [paper](https://link.springer.com/chapter/10.1007/3-540-48910-X_16)                                                                                                |  |
-| CKKS            | Homomorphic Encryption | [test](test/defense/ckks/test_core.py)   | [paper](https://eprint.iacr.org/2016/421.pdf)                                                                                                                      |  |
-| Soteria         | Others                 | [example](docs/aijack_soteria.ipynb)     | [paper](https://openaccess.thecvf.com/content/CVPR2021/papers/Sun_Soteria_Provable_Defense_Against_Privacy_Leakage_in_Federated_Learning_From_CVPR_2021_paper.pdf) |
-| FoolsGold       | Others                 | WIP                                      | [paper](https://arxiv.org/abs/1808.04866)                                                                                                                          |
-| Sparse Gradient | Others                 | [example](docs/aijack_fedavg.ipynb)      | [paper](https://aclanthology.org/D17-1045/)                                                                                                                        |
-| MID             | Others                 | [example](docs/aijack_mid.ipynb)         | [paper](https://arxiv.org/abs/2009.05241)                                                                                                                          |
-
 
 # Quick Start
 
 We briefly introduce some example usages. You can also find more examples in [documentation](https://koukyosyumei.github.io/AIJack/intro.html).
+
+## Basic Interface
+
+For standard machine learning algorithm, AIJack allows you to simulate attacks against machine learning models with `Attacker` APIs. AIJack mostly supports PyTorch or sklearn models.
+
+abstract code
+```Python
+attacker = Attacker(target_model)
+result = attacker.attack()
+```
+
+For distributed learning such as Fedeated Learning, AIJack offers four basic APIs: `Client`, `Server`, `API`, and `Manager`. `Client` and `Server` represents each client and server within each distributed learning scheme, and we register the clients and servers to `API`. You can run this `API` and execute training via `run` method. `Manager` gives additional abilities such as attack, defense or parallel computing to `Client`, `Server` or `API` via `attach` method.
+
+abstract code
+```Python
+client = [Client(), Client()]
+server = Server()
+api = API(client, server)
+api.run() # execute training
+
+c_manager = ClientManager()
+s_manager = ServerManager()
+ExtendedClient = c_manager.attach(Client)
+ExtendedServer = c_manager.attach(Server)
+
+extended_client = [ExtendedClient(), ExtendedClient()]
+extended_server = ExtendedServer()
+api = API(extended_client, extended_server)
+api.run() # execute training
+```
 
 ## Federated Learning
 
@@ -391,7 +373,7 @@ Split Learning is another collaborative learning scheme, where only one party ow
 ### SplitNN
 
 ```Python
-from aijack.collaborative import SplitNNAPI, SplitNNClient
+from aijack.collaborative.splitnn import SplitNNAPI, SplitNNClient
 
 clients = [SplitNNClient(model_1, user_id=0), SplitNNClient(model_2, user_id=1)]
 optimizers = [optim.Adam(model_1.parameters()), optim.Adam(model_2.parameters())]
@@ -412,6 +394,56 @@ NormAttackSplitNNAPI = manager.attach(SplitNNAPI)
 normattacksplitnn = NormAttackSplitNNAPI(clients, optimizers)
 leak_auc = normattacksplitnn.attack(target_dataloader)
 ```
+
+
+# Supported Algorithms
+
+## Distributed Learning
+
+|             | Example                                           | Paper                                     |
+| ----------- | ------------------------------------------------- | ----------------------------------------- |
+| FedAVG      | [example](aijack_fedavg.ipynb)                    | [paper](https://arxiv.org/abs/1602.05629) |
+| FedProx     | WIP                                               | [paper](https://arxiv.org/abs/1812.06127) |
+| FedKD       | [example](test/collaborative/fedkd/test_fedkd.py) | [paper](https://arxiv.org/abs/2108.13323) |
+| FedMD       | [example](aijack_fedmd.ipynb)                     | [paper](https://arxiv.org/abs/1910.03581) |
+| FedGEMS     | WIP                                               | [paper](https://arxiv.org/abs/2110.11027) |
+| DSFL        | WIP                                               | [paper](https://arxiv.org/abs/2008.06180) |
+| SplitNN     | [example](aijack_split_learning.ipynb)            | [paper](https://arxiv.org/abs/1812.00564) |
+| SecureBoost | [example](aijack_secureboost.ipynb)               | [paper](https://arxiv.org/abs/1901.08755) |
+
+## Attack
+
+|                          | Attack Type          | Example                                              | Paper                                                                                                                                               |
+| ------------------------ | -------------------- | ---------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- |
+| MI-FACE                  | Model Inversion      | [example](aijack_miface.ipynb)                       | [paper](https://dl.acm.org/doi/pdf/10.1145/2810103.2813677)                                                                                         |
+| DLG                      | Model Inversion      | [example](aijack_gradient_inversion_attack.ipynb)    | [paper](https://papers.nips.cc/paper/2019/hash/60a6c4002cc7b29142def8871531281a-Abstract.html)                                                      |
+| iDLG                     | Model Inversion      | [example](aijack_gradient_inversion_attack.ipynb)    | [paper](https://arxiv.org/abs/2001.02610)                                                                                                           |
+| GS                       | Model Inversion      | [example](aijack_gradient_inversion_attack.ipynb)    | [paper](https://proceedings.neurips.cc/paper/2020/hash/c4ede56bbd98819ae6112b20ac6bf145-Abstract.html)                                              |
+| CPL                      | Model Inversion      | [example](aijack_gradient_inversion_attack.ipynb)    | [paper](https://arxiv.org/abs/2004.10397)                                                                                                           |
+| GradInversion            | Model Inversion      | [example](aijack_gradient_inversion_attack.ipynb)    | [paper](https://openaccess.thecvf.com/content/CVPR2021/papers/Yin_See_Through_Gradients_Image_Batch_Recovery_via_GradInversion_CVPR_2021_paper.pdf) |
+| GAN Attack               | Model Inversion      | [example](example/model_inversion/gan_attack.py)     | [paper](https://arxiv.org/abs/1702.07464)                                                                                                           |
+| Shadow Attack            | Membership Inference | [example](aijack_membership_inference.ipynb)         | [paper](https://arxiv.org/abs/1610.05820)                                                                                                           |
+| Norm attack              | Label Leakage        | [example](aijack_split_learning.ipynb)               | [paper](https://arxiv.org/abs/2102.08504)                                                                                                           |
+| Delta Weights            | Free Rider Attack    | WIP                                                  | [paper](https://arxiv.org/pdf/1911.12560.pdf)                                                                                                       |
+| Gradient descent attacks | Evasion Attack       | [example](aijack_evasion_attack.ipynb)               | [paper](https://arxiv.org/abs/1708.06131)                                                                                                           |
+| DBA                      | Backdoor Attack      | WIP                                                  | [paper](https://openreview.net/forum?id=rkgyS0VFvr)                                                                                                 |
+| Label Flip Attack        | Poisoning Attack     | [example](aijack_poisoning_federated_learning.ipynb) | [paper](https://arxiv.org/abs/2203.08669)                                                                                                           |
+| History Attack           | Poisoning Attack     | [example](aijack_poisoning_federated_learning.ipynb) | [paper](https://arxiv.org/abs/2203.08669)                                                                                                           |
+| MAPF                     | Poisoning Attack     | [example](aijack_poisoning_federated_learning.ipynb) | [paper](https://arxiv.org/abs/2203.08669)                                                                                                           |
+| SVM Poisoning            | Poisoning Attack     | [example](aijack_poisoning_attack_svm.ipynb)         | [paper](https://arxiv.org/abs/1206.6389)                                                                                                            |
+
+
+## Defense
+
+|                 | Defense Type           | Example                                | Paper                                                                                                                                                              |
+| --------------- | ---------------------- | -------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| DPSGD           | Differential Privacy   | [example](aijack_miface.ipynb)         | [paper](https://arxiv.org/abs/1607.00133)                                                                                                                          |
+| Paillier        | Homomorphic Encryption | [example](aijack_secureboost.ipynb)    | [paper](https://link.springer.com/chapter/10.1007/3-540-48910-X_16)                                                                                                |  |
+| CKKS            | Homomorphic Encryption | [test](test/defense/ckks/test_core.py) | [paper](https://eprint.iacr.org/2016/421.pdf)                                                                                                                      |  |
+| Soteria         | Others                 | [example](aijack_soteria.ipynb)        | [paper](https://openaccess.thecvf.com/content/CVPR2021/papers/Sun_Soteria_Provable_Defense_Against_Privacy_Leakage_in_Federated_Learning_From_CVPR_2021_paper.pdf) |
+| FoolsGold       | Others                 | WIP                                    | [paper](https://arxiv.org/abs/1808.04866)                                                                                                                          |
+| Sparse Gradient | Others                 | [example](aijack_fedavg.ipynb)         | [paper](https://aclanthology.org/D17-1045/)                                                                                                                        |
+| MID             | Others                 | [example](aijack_mid.ipynb)            | [paper](https://arxiv.org/abs/2009.05241)                                                                                                                          |
 
 -----------------------------------------------------------------------
 
