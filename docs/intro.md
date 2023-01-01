@@ -6,7 +6,7 @@
 
 # What is AIJack?
 
-AIJack allows you to assess the privacy and security risks of machine learning algorithms such as *Model Inversion*, *Poisoning Attack*, *Evasion Attack*, *Free Rider*, and *Backdoor Attack*. AIJack also provides various defense techniques like *Differential Privacy*, *Homomorphic Encryption*, and other heuristic approaches. In addition, AIJack provides APIs for many distributed learning schemes like *Federated Learning* and *Split Learning*. You can integrate many attack and defense methods into such collaborative learning with a few lines. We currently implement more than 20 state-of-arts methods. For more information, see the [documentation](https://koukyosyumei.github.io/AIJack/intro.html).
+AIJack allows you to assess the privacy and security risks of machine learning algorithms such as *Model Inversion*, *Poisoning Attack*, *Evasion Attack*, *Free Rider*, and *Backdoor Attack*. AIJack also provides various defense techniques like *Differential Privacy*, *Homomorphic Encryption*, and other heuristic approaches. In addition, AIJack provides APIs for many distributed learning schemes like *Federated Learning* and *Split Learning*. You can integrate many attack and defense methods into such collaborative learning with a few lines. We currently implement more than 30 state-of-arts methods. For more information, see the [documentation](https://koukyosyumei.github.io/AIJack/intro.html).
 
 # Table of Contents
 
@@ -102,7 +102,7 @@ Please use our [Dockerfile](Dockerfile).
 | CKKS            | Homomorphic Encryption | [test](test/defense/ckks/test_core.py)   | [paper](https://eprint.iacr.org/2016/421.pdf)                                                                                                                      |  |
 | Soteria         | Others                 | [example](docs/aijack_soteria.ipynb)     | [paper](https://openaccess.thecvf.com/content/CVPR2021/papers/Sun_Soteria_Provable_Defense_Against_Privacy_Leakage_in_Federated_Learning_From_CVPR_2021_paper.pdf) |
 | FoolsGold       | Others                 | WIP                                      | [paper](https://arxiv.org/abs/1808.04866)                                                                                                                          |
-| Sparse Gradient | Others                 | WIP                                      | WIP                                                                                                                                                                |
+| Sparse Gradient | Others                 | [example](docs/aijack_fedavg.ipynb)      | [paper](https://aclanthology.org/D17-1045/)                                                                                                                        |
 | MID             | Others                 | [example](docs/aijack_mid.ipynb)         | [paper](https://arxiv.org/abs/2009.05241)                                                                                                                          |
 
 
@@ -194,10 +194,16 @@ AIJack supports MPI-backend for some of Federated Learning methods.
 FedAVG
 ```Python
 from mpi4py import MPI
-from aijack.collaborative import MPIFedAVGAPI, MPIFedAVGClient, MPIFedAVGServer
+from aijack.collaborative.fedavg import FedAVGClient, FedAVGServer
+from aijack.collaborative.fedavg import MPIFedAVGAPI, MPIFedAVGClientManager, MPIFedAVGServerManager
 
 comm = MPI.COMM_WORLD
 myid = comm.Get_rank()
+
+mpi_client_manager = MPIFedAVGClientManager()
+mpi_server_manager = MPIFedAVGServerManager()
+MPIFedAVGClient = mpi_client_manager.attach(FedAVGClient)
+MPIFedAVGServer = mpi_server_manager.attach(FedAVGServer)
 
 if myid == 0:
     server = MPIFedAVGServer(comm, FedAVGServer(client_ids, model))
@@ -385,19 +391,13 @@ Split Learning is another collaborative learning scheme, where only one party ow
 ### SplitNN
 
 ```Python
-from aijack.collaborative import SplitNN, SplitNNClient
+from aijack.collaborative import SplitNNAPI, SplitNNClient
 
 clients = [SplitNNClient(model_1, user_id=0), SplitNNClient(model_2, user_id=1)]
 optimizers = [optim.Adam(model_1.parameters()), optim.Adam(model_2.parameters())]
-splitnn = SplitNN(clients, optimizers)
 
-for data dataloader:
-    splitnn.zero_grad()
-    inputs, labels = data
-    outputs = splitnn(inputs)
-    loss = criterion(outputs, labels)
-    splitnn.backward(loss)
-    splitnn.step()
+splitnn = SplitNNAPI(clients, optimizers, train_loader, criterion, num_epoch)
+splitnn.run()
 ```
 
 ### Attack: Label Leakage
@@ -408,8 +408,8 @@ AIJack supports norm-based label leakage attack against Split Learning.
 from aijack.attack.labelleakage import NormAttackManager
 
 manager = NormAttackManager(criterion, device="cpu")
-NormAttackSplitNN = manager.attach(SplitNN)
-normattacksplitnn = NormAttackSplitNN(clients, optimizers)
+NormAttackSplitNNAPI = manager.attach(SplitNNAPI)
+normattacksplitnn = NormAttackSplitNNAPI(clients, optimizers)
 leak_auc = normattacksplitnn.attack(target_dataloader)
 ```
 
