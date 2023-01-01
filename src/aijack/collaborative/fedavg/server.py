@@ -1,6 +1,7 @@
 import numpy as np
 import torch
 
+from ...manager import BaseManager
 from ..core import BaseServer
 from ..core.utils import GRADIENTS_TAG, PARAMETERS_TAG
 from ..optimizer import AdamFLOptimizer, SGDFLOptimizer
@@ -154,49 +155,53 @@ class FedAVGServer(BaseServer):
                     client.download(self.aggregated_gradients)
 
 
-class MPIFedAVGServer(FedAVGServer):
-    """MPI Wrapper for FedAVGServer
+def attach_mpi_to_fedavgserver(cls):
+    class MPIFedAVGServerWrapper(cls):
+        """MPI Wrapper for FedAVG-based Server
+        """
 
-    Args:
-        comm: MPI.COMM_WORLD
-        server: the instance of FedAVGServer. The `clients` member variable shoud be the list of id.
-    """
+        def __init__(self, comm, *args, **kwargs):
+            self.comm = comm
+            super(MPIFedAVGServerWrapper, self).__init__(*args, **kwargs)
+            self.num_clients = len(self.clients)
+            self.round = 0
 
-    def __init__(self, comm, *args, **kwargs):
-        self.comm = comm
-        super(MPIFedAVGServer, self).__init__(*args, **kwargs)
-        self.num_clients = len(self.clients)
-        self.round = 0
+        def action(self):
+            self.receive()
+            self.update()
+            self.distribute()
+            self.round += 1
 
-    def action(self):
-        self.receive()
-        self.update()
-        self.distribute()
-        self.round += 1
+        def receive(self):
+            self.receive_local_gradients()
 
-    def receive(self):
-        self.receive_local_gradients()
+        def receive_local_gradients(self):
+            self.uploaded_gradients = []
 
-    def receive_local_gradients(self):
-        self.uploaded_gradients = []
+            while len(self.uploaded_gradients) < self.num_clients:
+                gradients_received = self.comm.recv(tag=GRADIENTS_TAG)
+                self.uploaded_gradients.append(
+                    self._preprocess_local_gradients(gradients_received)
+                )
 
-        while len(self.uploaded_gradients) < self.num_clients:
-            gradients_received = self.comm.recv(tag=GRADIENTS_TAG)
-            self.uploaded_gradients.append(
-                self._preprocess_local_gradients(gradients_received)
-            )
+        def distribute(self):
+            for client_id in self.clients:
+                self.comm.send(
+                    self.server_model.state_dict(),
+                    dest=client_id,
+                    tag=PARAMETERS_TAG,
+                )
 
-    def distribute(self):
-        # global_parameters = []
-        # for params in self.server.server_model.parameters():
-        #     global_parameters.append(copy.copy(params).reshape(-1).tolist())
+        def mpi_initialize(self):
+            self.distribute()
 
-        for client_id in self.clients:
-            self.comm.send(
-                self.server_model.state_dict(),
-                dest=client_id,
-                tag=PARAMETERS_TAG,
-            )
+    return MPIFedAVGServerWrapper
 
-    def mpi_initialize(self):
-        self.distribute()
+
+class MPIFedAVGServerManager(BaseManager):
+    def __init__(self, *args, **kwargs):
+        self.args = args
+        self.kwargs = kwargs
+
+    def attach(self, cls):
+        return attach_mpi_to_fedavgserver(cls, *self.args, **self.kwargs)

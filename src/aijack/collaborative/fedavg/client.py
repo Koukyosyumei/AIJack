@@ -1,5 +1,6 @@
 import copy
 
+from ...manager import BaseManager
 from ..core import BaseClient
 from ..core.utils import GRADIENTS_TAG, PARAMETERS_TAG
 from ..optimizer import AdamFLOptimizer, SGDFLOptimizer
@@ -133,28 +134,42 @@ class FedAVGClient(BaseClient):
             )
 
 
-class MPIFedAVGClient(FedAVGClient):
-    def __init__(self, comm, *args, **kwargs):
-        super(MPIFedAVGClient, self).__init__(*args, **kwargs)
-        self.comm = comm
+def attach_mpi_to_fedavgclient(cls):
+    class MPIFedAVGClientWrapper(cls):
+        def __init__(self, comm, *args, **kwargs):
+            super(MPIFedAVGClientWrapper, self).__init__(*args, **kwargs)
+            self.comm = comm
 
-    def action(self):
-        self.upload()
-        self.model.zero_grad()
-        self.download()
+        def action(self):
+            self.upload()
+            self.model.zero_grad()
+            self.download()
 
-    def upload(self):
-        self.upload_gradient()
+        def upload(self):
+            self.upload_gradient()
 
-    def upload_gradient(self, destination_id=0):
-        self.comm.send(
-            super(MPIFedAVGClient, self).upload_gradients(),
-            dest=destination_id,
-            tag=GRADIENTS_TAG,
-        )
+        def upload_gradient(self, destination_id=0):
+            self.comm.send(
+                super(MPIFedAVGClientWrapper, self).upload_gradients(),
+                dest=destination_id,
+                tag=GRADIENTS_TAG,
+            )
 
-    def download(self):
-        super(MPIFedAVGClient, self).download(self.comm.recv(tag=PARAMETERS_TAG))
+        def download(self):
+            super(MPIFedAVGClientWrapper, self).download(
+                self.comm.recv(tag=PARAMETERS_TAG)
+            )
 
-    def mpi_initialize(self):
-        self.download()
+        def mpi_initialize(self):
+            self.download()
+
+    return MPIFedAVGClientWrapper
+
+
+class MPIFedAVGClientManager(BaseManager):
+    def __init__(self, *args, **kwargs):
+        self.args = args
+        self.kwargs = kwargs
+
+    def attach(self, cls):
+        return attach_mpi_to_fedavgclient(cls, *self.args, **self.kwargs)
