@@ -26,7 +26,7 @@
 
 # What is AIJack?
 
-AIJack allows you to assess the privacy and security risks of machine learning algorithms such as *Model Inversion*, *Poisoning Attack* and *Evasion Attack*. AIJack also provides various defense techniques like *Federated Learning*, *Split Learning*, *Differential Privacy*, *Homomorphic Encryption*, and other heuristic approaches. We currently implement more than 20 state-of-arts methods. We also support MPI for some of the distributed algorithms. For more information, see the [documentation](https://koukyosyumei.github.io/AIJack/intro.html).
+AIJack allows you to assess the privacy and security risks of machine learning algorithms such as *Model Inversion*, *Poisoning Attack*, *Evasion Attack*, *Free Rider*, and *Backdoor Attack*. AIJack also provides various defense techniques like *Differential Privacy*, *Homomorphic Encryption*, and other heuristic approaches. In addition, AIJack provides APIs for many distributed learning schemes like *Federated Learning* and *Split Learning*. You can integrate many attack and defense methods into such collaborative learning with a few lines. We currently implement more than 20 state-of-arts methods. For more information, see the [documentation](https://koukyosyumei.github.io/AIJack/intro.html).
 
 # Table of Contents
 
@@ -41,12 +41,21 @@ AIJack allows you to assess the privacy and security risks of machine learning a
   - [Attack](#attack)
   - [Defense](#defense)
 - [Quick Start](#quick-start)
-  - [Federated Learning and Model Inversion Attack](#federated-learning-and-model-inversion-attack)
-  - [Split Learning and Label Leakage Attack](#split-learning-and-label-leakage-attack)
-  - [DPSGD (SGD with Differential Privacy)](#dpsgd-sgd-with-differential-privacy)
-  - [Federated Learning with Homomorphic Encryption](#federated-learning-with-homomorphic-encryption)
-  - [SecureBoost (XGBoost with Homomorphic Encryption)](#secureboost-xgboost-with-homomorphic-encryption)
-  - [Poisoning Attack](#poisoning-attack)
+  - [Federated Learning](#federated-learning)
+    - [FedAVG](#fedavg)
+    - [FedMD](#fedmd)
+    - [SecureBoost (Vertical Federated version of XGBoost)](#secureboost-vertical-federated-version-of-xgboost)
+    - [MPI-backend](#mpi-backend)
+    - [Attack: Model Inversion](#attack-model-inversion)
+    - [Defense: Differential Privacy](#defense-differential-privacy)
+    - [Defense: Soteria](#defense-soteria)
+    - [Defense: Homomorophic Encryption](#defense-homomorophic-encryption)
+    - [Attack: Poisoning](#attack-poisoning)
+    - [Defense: FoolsGOld](#defense-foolsgold)
+    - [Attack: FreeRider](#attack-freerider)
+  - [Split Learning](#split-learning)
+    - [SplitNN](#splitnn)
+    - [Attack: Label Leakage](#attack-label-leakage)
 - [Contact](#contact)
 
 # Installation
@@ -97,86 +106,303 @@ Please use our [Dockerfile](Dockerfile).
 | Norm attack              | Label Leakage        | [example](docs/aijack_split_learning.ipynb)            | [paper](https://arxiv.org/abs/2102.08504)                                                                                                           |
 | Delta Weights            | Free Rider Attack    | WIP                                                    | [paper](https://arxiv.org/pdf/1911.12560.pdf)                                                                                                       |
 | Gradient descent attacks | Evasion Attack       | [example](docs/aijack_evasion_attack.ipynb)            | [paper](https://arxiv.org/abs/1708.06131)                                                                                                           |
-| Label Flip Attack        | Poisoning Attack     | WIP                                                    | WIP                                                                                                                                                 |
-| History Attack           | Poisoning Attack     | WIP                                                    | WIP                                                                                                                                                 |
-| MAPF                     | Poisoning Attack     | WIP                                                    | WIP                                                                                                                                                 |
+| DBA                      | Backdoor Attack      | WIP                                                    | [paper](https://openreview.net/forum?id=rkgyS0VFvr)                                                                                                 |
+| Label Flip Attack        | Poisoning Attack     | WIP                                                    | [paper](https://arxiv.org/abs/2203.08669)                                                                                                           |
+| History Attack           | Poisoning Attack     | WIP                                                    | [paper](https://arxiv.org/abs/2203.08669)                                                                                                           |
+| MAPF                     | Poisoning Attack     | WIP                                                    | [paper](https://arxiv.org/abs/2203.08669)                                                                                                           |
 | SVM Poisoning            | Poisoning Attack     | [example](docs/aijack_poison_attack.ipynb)             | [paper](https://arxiv.org/abs/1206.6389)                                                                                                            |
 
 
 ## Defense
 
-|           | Defense Type           | Example                                  | Paper                                                                                                                                                              |
-| --------- | ---------------------- | ---------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| DPSGD     | Differential Privacy   | [example](docs/aijack_miface.ipynb)      | [paper](https://arxiv.org/abs/1607.00133)                                                                                                                          |
-| Paillier  | Homomorphic Encryption | [example](docs/aijack_secureboost.ipynb) | [paper](https://link.springer.com/chapter/10.1007/3-540-48910-X_16)                                                                                                |  |
-| CKKS      | Homomorphic Encryption | [test](test/defense/ckks/test_core.py)   | [paper](https://eprint.iacr.org/2016/421.pdf)                                                                                                                      |  |
-| Soteria   | Others                 | [example](docs/aijack_soteria.ipynb)     | [paper](https://openaccess.thecvf.com/content/CVPR2021/papers/Sun_Soteria_Provable_Defense_Against_Privacy_Leakage_in_Federated_Learning_From_CVPR_2021_paper.pdf) |
-| FoolsGold | Others                 | WIP                                      | WIP                                                                                                                                                                |
-| MID       | Others                 | [example](docs/aijack_mid.ipynb)         | [paper](https://arxiv.org/abs/2009.05241)                                                                                                                          |
+|                 | Defense Type           | Example                                  | Paper                                                                                                                                                              |
+| --------------- | ---------------------- | ---------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| DPSGD           | Differential Privacy   | [example](docs/aijack_miface.ipynb)      | [paper](https://arxiv.org/abs/1607.00133)                                                                                                                          |
+| Paillier        | Homomorphic Encryption | [example](docs/aijack_secureboost.ipynb) | [paper](https://link.springer.com/chapter/10.1007/3-540-48910-X_16)                                                                                                |  |
+| CKKS            | Homomorphic Encryption | [test](test/defense/ckks/test_core.py)   | [paper](https://eprint.iacr.org/2016/421.pdf)                                                                                                                      |  |
+| Soteria         | Others                 | [example](docs/aijack_soteria.ipynb)     | [paper](https://openaccess.thecvf.com/content/CVPR2021/papers/Sun_Soteria_Provable_Defense_Against_Privacy_Leakage_in_Federated_Learning_From_CVPR_2021_paper.pdf) |
+| FoolsGold       | Others                 | WIP                                      | [paper](https://arxiv.org/abs/1808.04866)                                                                                                                          |
+| Sparse Gradient | Others                 | WIP                                      | WIP                                                                                                                                                                |
+| MID             | Others                 | [example](docs/aijack_mid.ipynb)         | [paper](https://arxiv.org/abs/2009.05241)                                                                                                                          |
 
 
 # Quick Start
 
-We briefly introduce some example usages. You can also find more examples in [`example`](example).
+We briefly introduce some example usages. You can also find more examples in [documentation](https://koukyosyumei.github.io/AIJack/intro.html).
 
-## Federated Learning and Model Inversion Attack
+## Federated Learning
 
-FedAVG is the most representative algorithm of Federated Learning, where multiple clients jointly train a single model without sharing their local datasets.
+### FedAVG
 
-- Base
-
-You can write the process of FedAVG like the standard training with Pytorch.
+FedAVG is the most representative algorithm of Federated Learning, where multiple clients jointly train a single model without sharing their local datasets. You can integrate any Pytorch models.
 
 ```Python
-from aijack.collaborative import FedAvgClient, FedAvgServer
+from aijack.collaborative.fedavg import FedAVGClient, FedAVGServer
 
-clients = [FedAvgClient(local_model_1, user_id=0), FedAvgClient(local_model_2, user_id=1)]
+clients = [FedAVGClient(local_model_1, user_id=0), FedAVGClient(local_model_2, user_id=1)]
 optimizers = [optim.SGD(clients[0].parameters()), optim.SGD(clients[1].parameters())]
-server = FedAvgServer(clients, global_model)
 
-for client, local_trainloader, local_optimizer in zip(clients, trainloaders, optimizers):
-    for data in local_trainloader:
-        inputs, labels = data
-        local_optimizer.zero_grad()
-        outputs = client(inputs)
-        loss = criterion(outputs, labels.to(torch.int64))
-        client.backward(loss)
-        optimizer.step()
-server.action()
+server = FedAVGServer(clients, global_model)
+
+api = FedAVGAPI(
+    server,
+    clients,
+    criterion,
+    optimizers,
+    dataloaders
+)
+api.run()
 ```
 
-- Attack
+### FedMD
 
-You can simulate the model inversion attack against FedAVG.
+Model-Distillation based Federated Learning does not need communicating gradients, which might decrease the information leakage.
 
 ```Python
-from aijack.attack import GradientInversion_Attack
+from aijack.collaborative.fedmd import FedMDAPI, FedMDClient, FedMDServer
 
-dlg_manager = GradientInversionAttackManager(input_shape, distancename="l2")
-FedAvgServer_DLG = dlg.attach(FedAvgServer)
-server = FedAvgServer_DLG(clients, global_model, lr=lr)
+clients = [
+    FedMDClient(Net().to(device), public_dataloader, output_dim=10, user_id=c)
+    for c in range(client_size)
+]
+local_optimizers = [optim.SGD(client.parameters(), lr=lr) for client in clients]
 
-reconstructed_image, reconstructed_label = server.attack()
+server = FedMDServer(clients, Net().to(device))
+
+api = FedMDAPI(
+    server,
+    clients,
+    public_dataloader,
+    local_dataloaders,
+    F.nll_loss,
+    local_optimizers,
+    test_dataloader,
+    num_communication=2,
+)
+api.run()
 ```
 
-- Defense
+### SecureBoost (Vertical Federated version of XGBoost)
 
-One possible defense for clients of FedAVG is Soteria, and you need only two additional lines to implement Soteria.
+AIJack supports not only neuralnetwork but also tree-based Federated Learning.
 
 ```Python
-from aijack.collaborative import FedAvgClient
-from aijack.defense import SoteriaManager
+from aijacl.collaborative.tree import SecureBoostClassifier, SecureBoostParty
 
-manager = SoteriaManager("conv", "lin", target_layer_name="lin.0.weight")
-SoteriaFedAvgClient = manager.attach(FedAvgClient)
-client = SoteriaFedAvgClient(Net(), user_id=i, lr=lr)
+keygenerator = PaillierKeyGenerator(512)
+pk, sk = keygenerator.generate_keypair()
+
+sclf = SecureBoostClassifier(2,subsample_cols,min_child_weight,depth,min_leaf,
+                  learning_rate,boosting_rounds,lam,gamma,eps,0,0,1.0,1,True)
+
+sp1 = SecureBoostParty(x1, 2, [0], 0, min_leaf, subsample_cols, 256, False, 0)
+sp2 = SecureBoostParty(x2, 2, [1], 1, min_leaf, subsample_cols, 256, False, 0)
+sparties = [sp1, sp2]
+
+sparties[0].set_publickey(pk)
+sparties[0].set_secretkey(sk)
+sparties[1].set_publickey(pk)
+
+sclf.fit(sparties, y)
+sclf.predict_proba(X)
 ```
 
-## Split Learning and Label Leakage Attack
+### MPI-backend
 
-You can use split learning, where only one party has the ground-truth labels.
+AIJack supports MPI-backend for some of Federated Learning methods.
 
-- Base
+FedAVG
+```Python
+from mpi4py import MPI
+from aijack.collaborative import MPIFedAVGAPI, MPIFedAVGClient, MPIFedAVGServer
+
+comm = MPI.COMM_WORLD
+myid = comm.Get_rank()
+
+if myid == 0:
+    server = MPIFedAVGServer(comm, FedAVGServer(client_ids, model))
+    api = MPIFedAVGAPI(
+        comm,
+        server,
+        True,
+        F.nll_loss,
+        None,
+        None,
+        num_rounds,
+        1,
+    )
+else:
+    client = MPIFedAVGClient(comm, FedAVGClient(model, user_id=myid))
+    api = MPIFedAVGAPI(
+        comm,
+        client,
+        False,
+        F.nll_loss,
+        optimizer,
+        dataloader,
+        num_rounds,
+        1,
+    )
+
+api.run()
+```
+
+FedMD
+```Python
+from mpi4py import MPI
+from aijack.collaborative.fedmd import MPIFedMDAPI, MPIFedMDClient, MPIFedMDServer
+
+comm = MPI.COMM_WORLD
+myid = comm.Get_rank()
+
+if myid == 0:
+    server = MPIFedMDServer(comm, FedMDServer(client_ids, model))
+    api = MPIFedMDAPI(
+        comm,
+        server,
+        True,
+        F.nll_loss,
+        None,
+        None,
+    )
+else:
+    client = MPIFedMDClient(comm, FedMDClient(model, public_dataloader, output_dim=10, user_id=myid))
+    api = MPIFedMDAPI(
+        comm,
+        client,
+        False,
+        F.nll_loss,
+        optimizer,
+        dataloader,
+        public_dataloader,
+    )
+
+api.run()
+```
+
+### Attack: Model Inversion
+
+Model Inversion Attack steals the local training data via the shared information like gradients or parameters.
+
+```Python
+from aijack.attack.inversion import GradientInversionAttackServerManager
+
+manager = GradientInversionAttackServerManager(input_shape, distancename="l2")
+GradientInversionAttackFedAVGServer = manager.attach(FedAVGServer)
+
+server = GradientInversionAttackFedAVGServer(clients, global_model)
+
+api = FedAVGAPI(
+    server,
+    clients,
+    criterion,
+    optimizers,
+    dataloaders
+)
+api.run()
+
+reconstructed_training_data = server.attack()
+```
+
+### Defense: Differential Privacy
+
+One possible defense against Model Inversion Attack is using differential privacy. AIJack supports DPSGD, an optimizer which makes the trained model satisfy differential privacy.
+
+```Python
+from aijack.defense.dp import DPSGDManager, GeneralMomentAccountant, DPSGDClientManager
+
+dp_accountant = GeneralMomentAccountant()
+dp_manager = DPSGDManager(
+    accountant,
+    optim.SGD,
+    dataset=trainset,
+)
+
+manager = DPSGDClientManager(dp_manager)
+DPSGDFedAVGClient = manager.attach(FedAVGClient)
+
+clients = [DPSGDFedAVGClient(local_model_1, user_id=0), DPSGDFedAVGClient(local_model_2, user_id=1)]
+```
+
+### Defense: Soteria
+
+Another defense algorithm soteria, which theoretically gurantees the lowerbound of reconstructino error.
+
+```Python
+from aijack.defense.soteria import SoteriaClientManager
+
+manager = SoteriaClientManager("conv", "lin", target_layer_name="lin.0.weight")
+SoteriaFedAVGClient = manager.attach(FedAVGClient)
+
+clients = [SoteriaFedAVGClient(local_model_1, user_id=0), SoteriaFedAVGClient(local_model_2, user_id=1)]
+```
+
+### Defense: Homomorophic Encryption
+
+Clients in Federated Learning can also encrypt their local gradients to prevent the potential information leakage. For example, AIJack offers Paiilier Encryption with c++ backend, which faster than other python-based implementations.
+
+```Python
+from aijack.defense.paillier import PaillierGradientClientManager, PaillierKeyGenerator
+
+keygenerator = PaillierKeyGenerator(key_length)
+pk, sk = keygenerator.generate_keypair()
+
+manager = PaillierGradientClientManager(pk, sk)
+PaillierGradFedAVGClient = manager.attach(FedAVGClient)
+
+clients = [
+  PaillierGradFedAVGClient(local_model_1, user_id=0, server_side_update=False),
+  PaillierGradFedAVGClient(local_model_2, user_id=1, server_side_update=False)
+    ]
+
+server = FedAVGServer(clients, global_model, lr=lr, server_side_update=False)
+```
+
+### Attack: Poisoning
+
+Poisoning Attack aims to deteriorate the performance of the trained model.
+
+One famous approach is Label Flip Attack.
+
+```Python
+from aijack.attack.poison import LabelFlipAttackClientManager
+
+manager = LabelFlipAttackClientManager(victim_label=0, target_label=1)
+LabelFlipAttackFedAVGClient = manager.attach(FedAVGClient)
+
+clients = [LabelFlipAttackFedAVGClient(local_model_1, user_id=0), FedAVGClient(local_model_2, user_id=1)]
+```
+
+### Defense: FoolsGOld
+
+One of the standard method to mitigate Poisoning Attack is FoolsGold, which calculates the similarity among clients and decrease the influence of the malicious clients.
+
+```Python
+from aijack.defense.foolsgold import FoolsGoldServerManager
+
+manager = FoolsGoldServerManager()
+FoolsGoldFedAVGServer = manager.attach(FedAVGServer)
+server = FoolsGoldFedAVGServer(clients, global_model)
+```
+
+### Attack: FreeRider
+
+In real situation where the center server pay money for clients, it is important to detect freeriders who do not anything but pretend to locally train their models.
+
+```Python
+from aijack.attack.freerider import FreeRiderClientManager
+
+manager = FreeRiderClientManager(mu=0, sigma=1.0)
+FreeRiderFedAVGClient = manager.attach(FedAVGClient)
+
+clients = [FreeRiderFedAVGClient(local_model_1, user_id=0), FedAVGClient(local_model_2, user_id=1)]
+```
+
+## Split Learning
+
+Split Learning is another collaborative learning scheme, where only one party owns the ground-truth labels.
+
+### SplitNN
 
 ```Python
 from aijack.collaborative import SplitNN, SplitNNClient
@@ -194,105 +420,17 @@ for data dataloader:
     splitnn.step()
 ```
 
-- Attack
+### Attack: Label Leakage
 
-We support norm-based label leakage attack against Split Learning.
+AIJack supports norm-based label leakage attack against Split Learning.
 
 ```Python
-from aijack.attack import NormAttackManager
-from aijack.collaborative import SplitNN
+from aijack.attack.labelleakage import NormAttackManager
 
 manager = NormAttackManager(criterion, device="cpu")
 NormAttackSplitNN = manager.attach(SplitNN)
 normattacksplitnn = NormAttackSplitNN(clients, optimizers)
 leak_auc = normattacksplitnn.attack(target_dataloader)
-```
-
-## DPSGD (SGD with Differential Privacy)
-
-DPSGD is an optimizer based on Differential Privacy and theoretically privatizes your deep learning model. We implement the core of differential privacy mechanisms with C++, which is faster than many other libraries purely implemented with Python.
-
-```Python
-from aijack.defense import GeneralMomentAccountant
-from aijack.defense import PrivacyManager
-
-accountant = GeneralMomentAccountant(noise_type="Gaussian", search="greedy", orders=list(range(2, 64)), bound_type="rdp_tight_upperbound")
-privacy_manager = PrivacyManager(accountant, optim.SGD, l2_norm_clip=l2_norm_clip, dataset=trainset, iterations=iterations)
-dpoptimizer_cls, lot_loader, batch_loader = privacy_manager.privatize(noise_multiplier=sigma)
-
-for data in lot_loader(trainset):
-    X_lot, y_lot = data
-    optimizer.zero_grad()
-    for X_batch, y_batch in batch_loader(TensorDataset(X_lot, y_lot)):
-        optimizer.zero_grad_keep_accum_grads()
-        pred = net(X_batch)
-        loss = criterion(pred, y_batch.to(torch.int64))
-        loss.backward()
-        optimizer.update_accum_grads()
-    optimizer.step()
-```
-
-## Federated Learning with Homomorphic Encryption
-
-```Python
-  from aijack.collaborative import FedAvgClient, FedAvgServer
-  from aijack.defense import PaillierGradientClientManager, PaillierKeyGenerator
-
-keygenerator = PaillierKeyGenerator(64)
-pk, sk = keygenerator.generate_keypair()
-
-manager = PaillierGradientClientManager(pk, sk)
-PaillierGradFedAvgClient = manager.attach(FedAvgClient)
-
-clients = [
-    PaillierGradFedAvgClient(Net(), user_id=i, lr=lr, server_side_update=False)
-    for i in range(client_num)
-]
-```
-
-## SecureBoost (XGBoost with Homomorphic Encryption)
-
-SecureBoost is a vertically federated version of XGBoost, where each party encrypts sensitive information with Paillier Encryption. You need additional compile to use secureboost, which requires Boost 1.65 or later.
-
-```
-cd src/aijack/collaborative/tree
-pip install -e .
-```
-
-
-```Python
-from aijack_secureboost import SecureBoostParty, SecureBoostClassifier, PaillierKeyGenerator
-
-keygenerator = PaillierKeyGenerator(512)
-pk, sk = keygenerator.generate_keypair()
-
-sclf = SecureBoostClassifier(2,subsample_cols,min_child_weight,depth,min_leaf,
-                  learning_rate,boosting_rounds,lam,gamma,eps,0,0,1.0,1,True)
-
-sp1 = SecureBoostParty(x1, 2, [0], 0, min_leaf, subsample_cols, 256, False, 0)
-sp2 = SecureBoostParty(x2, 2, [1], 1, min_leaf, subsample_cols, 256, False, 0)
-
-sparties = [sp1, sp2]
-
-sparties[0].set_publickey(pk)
-sparties[1].set_publickey(pk)
-sparties[0].set_secretkey(sk)
-
-sclf.fit(sparties, y)
-
-sclf.predict_proba(X)
-
-```
-
-## Poisoning Attack
-
-Poisoning Attack injects malicious data into the training dataset to control the behavior of the trained models.
-
-```Python
-from aijack.attack import Poison_attack_sklearn
-
-attacker = Poison_attack_sklearn(clf, X_train_, y_train_, t=0.5)
-xc_attacked, log = attacker.attack(xc, 1, X_valid, y_valid)
 ```
 
 -----------------------------------------------------------------------
