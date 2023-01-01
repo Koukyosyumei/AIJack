@@ -516,8 +516,8 @@ const thebe_selector_output = ".output, .cell_output"
 <span class="n">manager</span> <span class="o">=</span> <span class="n">NormAttackSplitNNManager</span><span class="p">(</span><span class="n">criterion</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="s2">&quot;cpu&quot;</span><span class="p">)</span>
 <span class="n">NormAttackSplitNNAPI</span> <span class="o">=</span> <span class="n">manager</span><span class="o">.</span><span class="n">attach</span><span class="p">(</span><span class="n">SplitNNAPI</span><span class="p">)</span>
 <span class="n">normattacksplitnn</span> <span class="o">=</span> <span class="n">NormAttackSplitNNAPI</span><span class="p">(</span>
-        <span class="n">clients</span><span class="p">,</span> <span class="n">optimizers</span><span class="p">,</span> <span class="n">train_loader</span><span class="p">,</span> <span class="n">criterion</span><span class="p">,</span> <span class="n">num_communication</span>
-    <span class="p">)</span>
+    <span class="n">clients</span><span class="p">,</span> <span class="n">optimizers</span><span class="p">,</span> <span class="n">train_loader</span><span class="p">,</span> <span class="n">criterion</span><span class="p">,</span> <span class="n">num_communication</span>
+<span class="p">)</span>
 
 <span class="n">normattacksplitnn</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
 </pre></div>
