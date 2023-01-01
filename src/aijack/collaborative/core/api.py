@@ -73,7 +73,7 @@ class BaseFLKnowledgeDistillationAPI:
                 trainloader = self.local_dataloaders[client_idx]
 
             running_loss = self.clients[client_idx].local_train(
-                self, trainloader, self.client_optimizers[client_idx]
+                trainloader, self.client_optimizers[client_idx]
             )
 
             loss_on_local_dataest.append(copy.deepcopy(running_loss / len(trainloader)))
