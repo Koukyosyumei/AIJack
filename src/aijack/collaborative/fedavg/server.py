@@ -167,8 +167,8 @@ class MPIFedAVGServer(FedAVGServer):
     """
 
     def __init__(self, comm, *args, **kwargs):
-        super(MPIFedAVGServer, self).__init__(*args, **kwargs)
         self.comm = comm
+        super(MPIFedAVGServer, self).__init__(*args, **kwargs)
         self.num_clients = len(self.clients)
         self.round = 0
 
