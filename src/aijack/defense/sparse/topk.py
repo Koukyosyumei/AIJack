@@ -47,13 +47,13 @@ def attach_sparse_gradient_to_server(cls):
 
         def _preprocess_local_gradients(self, uploaded_grad):
             sparse_gradients_flattend, sparse_indices = uploaded_grad
+            print(sparse_gradients_flattend, sparse_indices)
             gradients_reshaped = []
             for params, grad, idx in zip(
                 self.server_model.parameters(),
                 sparse_gradients_flattend,
                 sparse_indices,
             ):
-                print(idx)
                 temp_grad = torch.zeros_like(params).reshape(-1)
                 temp_grad[idx] = torch.Tensor(grad).to(self.device)
                 gradients_reshaped.append(temp_grad.reshape(params.shape))
