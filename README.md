@@ -214,10 +214,16 @@ AIJack supports MPI-backend for some of Federated Learning methods.
 FedAVG
 ```Python
 from mpi4py import MPI
-from aijack.collaborative import MPIFedAVGAPI, MPIFedAVGClient, MPIFedAVGServer
+from aijack.collaborative.fedavg import FedAVGClient, FedAVGServer
+from aijack.collaborative.fedavg import MPIFedAVGAPI, MPIFedAVGClientManager, MPIFedAVGServerManager
 
 comm = MPI.COMM_WORLD
 myid = comm.Get_rank()
+
+mpi_client_manager = MPIFedAVGClientManager()
+mpi_server_manager = MPIFedAVGServerManager()
+MPIFedAVGClient = mpi_client_manager.attach(FedAVGClient)
+MPIFedAVGServer = mpi_server_manager.attach(FedAVGServer)
 
 if myid == 0:
     server = MPIFedAVGServer(comm, FedAVGServer(client_ids, model))
