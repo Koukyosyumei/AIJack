@@ -52,7 +52,7 @@ class MPIFedMDServer(FedMDServer):
     def __init__(self, comm, *args, **kwargs):
         super(MPIFedMDServer, self).__init__(*args, **kwargs)
         self.comm = comm
-        self.num_clients = len(self.server.clients)
+        self.num_clients = len(self.clients)
         self.round = 0
 
     def action(self):
@@ -72,5 +72,5 @@ class MPIFedMDServer(FedMDServer):
             self.uploaded_logits.append(received_logits)
 
     def mpi_distribute(self):
-        for client_id in self.server.clients:
+        for client_id in self.clients:
             self.comm.send(self.consensus, dest=client_id, tag=GLOBAL_LOGIT_TAG)
