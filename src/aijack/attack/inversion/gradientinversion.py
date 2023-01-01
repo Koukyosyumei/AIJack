@@ -550,7 +550,10 @@ def _default_gradinent_inversion_attack_on_receive(self):
     tmp_result = []
     for s in range(self.num_trial_per_communication):
         self.reset_seed(s)
-        tmp_result.append(self.attack())
+        try:
+            tmp_result.append(self.attack())
+        except:
+            continue
     self.attack_results.append(tmp_result)
 
 
