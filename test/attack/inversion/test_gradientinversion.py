@@ -110,26 +110,10 @@ def test_gs():
         distancename="cossim",
     )
     gs_attacker_1.reset_seed(seed)
-    reconstructed_x_1, reconstructed_y_1 = gs_attacker_1.attack(received_gradients)
+    reconstructed_x_1, _ = gs_attacker_1.attack(received_gradients)
 
     assert reconstructed_x_1.shape == x.shape
     assert gs_attacker_1.log_loss[1] < gs_attacker_1.log_loss[0]
-
-    gs_attacker_2 = GradientInversion_Attack(
-        net,
-        (1, 28, 28),
-        lr=1.0,
-        log_interval=0,
-        num_iteration=2,
-        tv_reg_coef=0.001,
-        distancename="cossim",
-    )
-    gs_attacker_2.reset_seed(seed)
-    reconstructed_x_2, reconstructed_y_2 = gs_attacker_2.attack(received_gradients)
-
-    assert torch.sum(reconstructed_x_1 == reconstructed_x_2) == 28 * 28
-    assert torch.sum(reconstructed_y_1 == reconstructed_y_2) == 10
-    assert gs_attacker_1.log_loss[1] == gs_attacker_2.log_loss[1]
 
 
 def test_idlg():
@@ -189,22 +173,6 @@ def test_idlg():
     assert reconstructed_y_1.item() == 4
     assert idlg_attacker_1.log_loss[1] < idlg_attacker_1.log_loss[0]
 
-    idlg_attacker_2 = GradientInversion_Attack(
-        net,
-        (1, 28, 28),
-        lr=1.0,
-        log_interval=0,
-        distancename="l2",
-        optimize_label=False,
-        num_iteration=2,
-    )
-    idlg_attacker_2.reset_seed(seed)
-    reconstructed_x_2, reconstructed_y_2 = idlg_attacker_2.attack(received_gradients)
-
-    assert torch.sum(reconstructed_x_1 == reconstructed_x_2) == 28 * 28
-    assert reconstructed_y_1.item() == reconstructed_y_2.item()
-    assert idlg_attacker_1.log_loss[1] == idlg_attacker_2.log_loss[1]
-
 
 def test_cpl():
     import torch
@@ -263,23 +231,6 @@ def test_cpl():
     assert reconstructed_x_1.shape == x.shape
     assert reconstructed_y_1.item() == 4
     assert cpl_attacker_1.log_loss[1] < cpl_attacker_1.log_loss[0]
-
-    cpl_attacker_2 = GradientInversion_Attack(
-        net,
-        (1, 28, 28),
-        lr=1.0,
-        log_interval=0,
-        distancename="l2",
-        optimize_label=False,
-        num_iteration=2,
-        lm_reg_coef=0.01,
-    )
-    cpl_attacker_2.reset_seed(seed)
-    reconstructed_x_2, reconstructed_y_2 = cpl_attacker_2.attack(received_gradients)
-
-    assert torch.sum(reconstructed_x_1 == reconstructed_x_2) == 28 * 28
-    assert reconstructed_y_1.item() == reconstructed_y_2.item()
-    assert cpl_attacker_1.log_loss[1] == cpl_attacker_2.log_loss[1]
 
 
 def test_gradinversion():

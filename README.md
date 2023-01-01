@@ -411,7 +411,7 @@ Split Learning is another collaborative learning scheme, where only one party ow
 ### SplitNN
 
 ```Python
-from aijack.collaborative import SplitNNAPI, SplitNNClient
+from aijack.collaborative.splitnn import SplitNNAPI, SplitNNClient
 
 clients = [SplitNNClient(model_1, user_id=0), SplitNNClient(model_2, user_id=1)]
 optimizers = [optim.Adam(model_1.parameters()), optim.Adam(model_2.parameters())]
