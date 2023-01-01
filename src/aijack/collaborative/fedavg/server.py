@@ -34,10 +34,12 @@ class FedAVGServer(BaseServer):
         self.lr = lr
         self._setup_optimizer(optimizer_type, **optimizer_kwargs)
         self.server_side_update = server_side_update
-        self.distribute(force_send_model_state_dict=True)
         self.device = device
-
         self.uploaded_gradients = []
+
+        self.force_send_model_state_dict = True
+        self.distribute()
+        self.force_send_model_state_dict = False
 
     def _setup_optimizer(self, optimizer_type, **kwargs):
         if optimizer_type == "sgd":
@@ -142,7 +144,7 @@ class FedAVGServer(BaseServer):
 
         self.server_model.load_state_dict(averaged_params)
 
-    def distribute(self, force_send_model_state_dict=False):
+    def distribute(self):
         """Distribute the current global model to each client.
 
         Args:
@@ -150,7 +152,7 @@ class FedAVGServer(BaseServer):
         """
         for client in self.clients:
             if type(client) != int:
-                if self.server_side_update or force_send_model_state_dict:
+                if self.server_side_update or self.force_send_model_state_dict:
                     client.download(self.server_model.state_dict())
                 else:
                     client.download(self.aggregated_gradients)

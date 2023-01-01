@@ -122,7 +122,7 @@ Please use our [Dockerfile](Dockerfile).
 | CKKS            | Homomorphic Encryption | [test](test/defense/ckks/test_core.py)   | [paper](https://eprint.iacr.org/2016/421.pdf)                                                                                                                      |  |
 | Soteria         | Others                 | [example](docs/aijack_soteria.ipynb)     | [paper](https://openaccess.thecvf.com/content/CVPR2021/papers/Sun_Soteria_Provable_Defense_Against_Privacy_Leakage_in_Federated_Learning_From_CVPR_2021_paper.pdf) |
 | FoolsGold       | Others                 | WIP                                      | [paper](https://arxiv.org/abs/1808.04866)                                                                                                                          |
-| Sparse Gradient | Others                 | WIP                                      | [paper](https://aclanthology.org/D17-1045/)                                                                                                                        |
+| Sparse Gradient | Others                 | [example](docs/aijack_fedavg.ipynb)      | [paper](https://aclanthology.org/D17-1045/)                                                                                                                        |
 | MID             | Others                 | [example](docs/aijack_mid.ipynb)         | [paper](https://arxiv.org/abs/2009.05241)                                                                                                                          |
 
 
