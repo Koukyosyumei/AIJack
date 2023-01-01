@@ -37,10 +37,6 @@ class FedAVGServer(BaseServer):
         self.device = device
         self.uploaded_gradients = []
 
-        self.force_send_model_state_dict = True
-        self.distribute()
-        self.force_send_model_state_dict = False
-
     def _setup_optimizer(self, optimizer_type, **kwargs):
         if optimizer_type == "sgd":
             self.optimizer = SGDFLOptimizer(
@@ -203,4 +199,5 @@ class MPIFedAVGServer(FedAVGServer):
             )
 
     def mpi_initialize(self):
+        print("a")
         self.distribute()

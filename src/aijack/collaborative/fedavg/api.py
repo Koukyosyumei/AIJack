@@ -65,6 +65,10 @@ class FedAVGAPI(BaseFedAPI):
             )
 
     def run(self):
+        self.server.force_send_model_state_dict = True
+        self.distribute()
+        self.server.force_send_model_state_dict = False
+
         for i in range(self.num_communication):
             self.local_train(i)
             self.server.receive(use_gradients=self.use_gradients)

@@ -157,4 +157,5 @@ class MPIFedAVGClient(FedAVGClient):
         super(MPIFedAVGClient, self).download(self.comm.recv(tag=PARAMETERS_TAG))
 
     def mpi_initialize(self):
+        print("b")
         self.download()
