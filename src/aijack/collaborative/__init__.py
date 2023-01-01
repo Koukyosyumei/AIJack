@@ -8,8 +8,8 @@ from .fedavg import (  # noqa: F401
     FedAVGClient,
     FedAVGServer,
     MPIFedAVGAPI,
-    MPIFedAVGClient,
-    MPIFedAVGServer,
+    MPIFedAVGClientManager,
+    MPIFedAVGServerManager,
 )
 from .fedgems import FedGEMSAPI, FedGEMSClient, FedGEMSServer  # noqa: F401
 from .fedkd import FedKDClient  # noqa :F401
