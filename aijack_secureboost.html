@@ -94,7 +94,7 @@ const thebe_selector_output = ".output, .cell_output"
         <ul class="nav bd-sidenav">
  <li class="toctree-l1">
   <a class="reference internal" href="intro.html">
-   Welcom to AIJack: Security and Privacy Risk Simulator for Machine Learning
+   What is AIJack?
   </a>
  </li>
 </ul>
@@ -154,13 +154,30 @@ const thebe_selector_output = ".output, .cell_output"
 </ul>
 <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
+  Poisoning Attack
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="aijack_poisoning_federated_learning.html">
+   9. Poisoning Attack against Federated Learning
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="aijack_poisoning_attack_svm.html">
+   10. Poisoning Attack against SVM
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
   Label Leakage
  </span>
 </p>
 <ul class="nav bd-sidenav">
  <li class="toctree-l1">
   <a class="reference internal" href="aijack_split_learning.html">
-   9. Split Learning and Label Leakage
+   11. Split Learning and Label Leakage
   </a>
  </li>
 </ul>
@@ -172,24 +189,19 @@ const thebe_selector_output = ".output, .cell_output"
 <ul class="nav bd-sidenav">
  <li class="toctree-l1">
   <a class="reference internal" href="aijack_membership_inference.html">
-   10. Memership inference
+   12. Memership inference
   </a>
  </li>
 </ul>
 <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
-  Adversarial Examples
+  Evasion Attack
  </span>
 </p>
 <ul class="nav bd-sidenav">
  <li class="toctree-l1">
   <a class="reference internal" href="aijack_evasion_attack.html">
-   11. Evasion Attack against SVM
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="aijack_poison_attack.html">
-   12. Poisoning Attack against SVM
+   13. Evasion Attack against SVM
   </a>
  </li>
 </ul>
@@ -201,7 +213,7 @@ const thebe_selector_output = ".output, .cell_output"
 <ul class="nav bd-sidenav">
  <li class="toctree-l1">
   <a class="reference internal" href="aijack_dp.html">
-   13. Differential Privacy and Moment Accountant
+   14. Differential Privacy and Moment Accountant
   </a>
  </li>
 </ul>
@@ -363,33 +375,8 @@ const thebe_selector_output = ".output, .cell_output"
 <p>SecureBoost allows multiple parties to train the same model as normal XGBoost without disclosing their local datasets.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>!git clone https://github.com/Koukyosyumei/AIJack
-%cd AIJack/src/aijack/collaborative/tree
-!pip install -e .
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>fatal: destination path &#39;AIJack&#39; already exists and is not an empty directory.
-/content/AIJack/src/aijack/collaborative/tree
-Looking in indexes: https://pypi.org/simple, https://us-python.pkg.dev/colab-wheels/public/simple/
-Obtaining file:///content/AIJack/src/aijack/collaborative/tree
-Installing collected packages: aijack-secureboost
-  Running setup.py develop for aijack-secureboost
-Successfully installed aijack-secureboost-0.0.1
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">aijack_secureboost</span> <span class="kn">import</span> <span class="p">(</span>  <span class="c1"># noqa: F401</span>
-    <span class="n">XGBoostParty</span><span class="p">,</span>
-    <span class="n">XGBoostClassifier</span><span class="p">,</span>
-    <span class="n">SecureBoostParty</span><span class="p">,</span>
-    <span class="n">SecureBoostClassifier</span><span class="p">,</span>
-    <span class="n">PaillierKeyGenerator</span><span class="p">,</span>
-<span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">aijack.defense.paillier</span> <span class="kn">import</span> <span class="n">PaillierKeyGenerator</span>
+<span class="kn">from</span> <span class="nn">aijack.collaborative.tree</span> <span class="kn">import</span> <span class="n">SecureBoostClassifierAPI</span><span class="p">,</span> <span class="n">SecureBoostClient</span><span class="p">,</span> <span class="n">XGBoostClassifierAPI</span><span class="p">,</span> <span class="n">XGBoostClient</span>
 </pre></div>
 </div>
 </div>
@@ -406,8 +393,8 @@ Successfully installed aijack-secureboost-0.0.1
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(&#39;61572608231496542453581177536528163494017609098535837232920833013767806167859719041551634564813251020881664349358443102542707779823953086953323128922758068556932295347813830727334122866826546454549796930503502736645744742073329381208312594113635429820085463783287308901173037364659000548867020513320689564191&#39;,
- &#39;61572608231496542453581177536528163494017609098535837232920833013767806167859719041551634564813251020881664349358443102542707779823953086953323128922758068556932295347813830727334122866826546454549796930503502736645744742073329381208312594113635429820085463783287308901173037364659000548867020513320689564192&#39;)
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(&#39;75242327359052187572169010861692481547454348330868546066717438408853157480428647976190531420312698828694087675121469049411809985056891481101471011077945157641578304180814676083157925906917435382632123247869197335370689139712763870678635308347455305720914931243235831753850053494946430764740457718377179707311&#39;,
+ &#39;75242327359052187572169010861692481547454348330868546066717438408853157480428647976190531420312698828694087675121469049411809985056891481101471011077945157641578304180814676083157925906917435382632123247869197335370689139712763870678635308347455305720914931243235831753850053494946430764740457718377179707312&#39;)
 </pre></div>
 </div>
 </div>
@@ -466,11 +453,11 @@ ct_1 + ct_3 =  31.600000381469727
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">p1</span> <span class="o">=</span> <span class="n">XGBoostParty</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">0</span><span class="p">,</span> <span class="n">min_leaf</span><span class="p">,</span> <span class="n">subsample_cols</span><span class="p">,</span> <span class="mi">256</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
-<span class="n">p2</span> <span class="o">=</span> <span class="n">XGBoostParty</span><span class="p">(</span><span class="n">x2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">1</span><span class="p">,</span> <span class="n">min_leaf</span><span class="p">,</span> <span class="n">subsample_cols</span><span class="p">,</span> <span class="mi">256</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">p1</span> <span class="o">=</span> <span class="n">XGBoostClient</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">0</span><span class="p">,</span> <span class="n">min_leaf</span><span class="p">,</span> <span class="n">subsample_cols</span><span class="p">,</span> <span class="mi">256</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">p2</span> <span class="o">=</span> <span class="n">XGBoostClient</span><span class="p">(</span><span class="n">x2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">1</span><span class="p">,</span> <span class="n">min_leaf</span><span class="p">,</span> <span class="n">subsample_cols</span><span class="p">,</span> <span class="mi">256</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
 <span class="n">parties</span> <span class="o">=</span> <span class="p">[</span><span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">]</span>
 
-<span class="n">clf</span> <span class="o">=</span> <span class="n">XGBoostClassifier</span><span class="p">(</span>
+<span class="n">clf</span> <span class="o">=</span> <span class="n">XGBoostClassifierAPI</span><span class="p">(</span>
     <span class="mi">2</span><span class="p">,</span>
     <span class="n">subsample_cols</span><span class="p">,</span>
     <span class="n">min_child_weight</span><span class="p">,</span>
@@ -510,15 +497,15 @@ ct_1 + ct_3 =  31.600000381469727
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">keygenerator</span> <span class="o">=</span> <span class="n">PaillierKeyGenerator</span><span class="p">(</span><span class="mi">512</span><span class="p">)</span>
 <span class="n">pk</span><span class="p">,</span> <span class="n">sk</span> <span class="o">=</span> <span class="n">keygenerator</span><span class="o">.</span><span class="n">generate_keypair</span><span class="p">()</span>
 
-<span class="n">sp1</span> <span class="o">=</span> <span class="n">SecureBoostParty</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">0</span><span class="p">,</span> <span class="n">min_leaf</span><span class="p">,</span> <span class="n">subsample_cols</span><span class="p">,</span> <span class="mi">256</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
-<span class="n">sp2</span> <span class="o">=</span> <span class="n">SecureBoostParty</span><span class="p">(</span><span class="n">x2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">1</span><span class="p">,</span> <span class="n">min_leaf</span><span class="p">,</span> <span class="n">subsample_cols</span><span class="p">,</span> <span class="mi">256</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">sp1</span> <span class="o">=</span> <span class="n">SecureBoostClient</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">0</span><span class="p">,</span> <span class="n">min_leaf</span><span class="p">,</span> <span class="n">subsample_cols</span><span class="p">,</span> <span class="mi">256</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">sp2</span> <span class="o">=</span> <span class="n">SecureBoostClient</span><span class="p">(</span><span class="n">x2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">1</span><span class="p">,</span> <span class="n">min_leaf</span><span class="p">,</span> <span class="n">subsample_cols</span><span class="p">,</span> <span class="mi">256</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
 <span class="n">sparties</span> <span class="o">=</span> <span class="p">[</span><span class="n">sp1</span><span class="p">,</span> <span class="n">sp2</span><span class="p">]</span>
 
 <span class="n">sparties</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_publickey</span><span class="p">(</span><span class="n">pk</span><span class="p">)</span>
 <span class="n">sparties</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_publickey</span><span class="p">(</span><span class="n">pk</span><span class="p">)</span>
 <span class="n">sparties</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_secretkey</span><span class="p">(</span><span class="n">sk</span><span class="p">)</span>
 
-<span class="n">sclf</span> <span class="o">=</span> <span class="n">SecureBoostClassifier</span><span class="p">(</span>
+<span class="n">sclf</span> <span class="o">=</span> <span class="n">SecureBoostClassifierAPI</span><span class="p">(</span>
     <span class="mi">2</span><span class="p">,</span>
     <span class="n">subsample_cols</span><span class="p">,</span>
     <span class="n">min_child_weight</span><span class="p">,</span>

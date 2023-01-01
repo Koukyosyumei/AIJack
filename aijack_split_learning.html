@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>9. Split Learning and Label Leakage &#8212; Let&#39;s hijack AI!</title>
+    <title>11. Split Learning and Label Leakage &#8212; Let&#39;s hijack AI!</title>
     
   <link href="_static/css/theme.css" rel="stylesheet">
   <link href="_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
@@ -53,8 +53,8 @@ const thebe_selector_output = ".output, .cell_output"
     <script async="async" src="_static/sphinx-thebe.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="10. Memership inference" href="aijack_membership_inference.html" />
-    <link rel="prev" title="8. Mutual Information-based Defense" href="aijack_mid.html" />
+    <link rel="next" title="12. Memership inference" href="aijack_membership_inference.html" />
+    <link rel="prev" title="10. Poisoning Attack against SVM" href="aijack_poisoning_attack_svm.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
     
@@ -94,7 +94,7 @@ const thebe_selector_output = ".output, .cell_output"
         <ul class="nav bd-sidenav">
  <li class="toctree-l1">
   <a class="reference internal" href="intro.html">
-   Welcom to AIJack: Security and Privacy Risk Simulator for Machine Learning
+   What is AIJack?
   </a>
  </li>
 </ul>
@@ -154,13 +154,30 @@ const thebe_selector_output = ".output, .cell_output"
 </ul>
 <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
+  Poisoning Attack
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="aijack_poisoning_federated_learning.html">
+   9. Poisoning Attack against Federated Learning
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="aijack_poisoning_attack_svm.html">
+   10. Poisoning Attack against SVM
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
   Label Leakage
  </span>
 </p>
 <ul class="current nav bd-sidenav">
  <li class="toctree-l1 current active">
   <a class="current reference internal" href="#">
-   9. Split Learning and Label Leakage
+   11. Split Learning and Label Leakage
   </a>
  </li>
 </ul>
@@ -172,24 +189,19 @@ const thebe_selector_output = ".output, .cell_output"
 <ul class="nav bd-sidenav">
  <li class="toctree-l1">
   <a class="reference internal" href="aijack_membership_inference.html">
-   10. Memership inference
+   12. Memership inference
   </a>
  </li>
 </ul>
 <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
-  Adversarial Examples
+  Evasion Attack
  </span>
 </p>
 <ul class="nav bd-sidenav">
  <li class="toctree-l1">
   <a class="reference internal" href="aijack_evasion_attack.html">
-   11. Evasion Attack against SVM
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="aijack_poison_attack.html">
-   12. Poisoning Attack against SVM
+   13. Evasion Attack against SVM
   </a>
  </li>
 </ul>
@@ -201,7 +213,7 @@ const thebe_selector_output = ".output, .cell_output"
 <ul class="nav bd-sidenav">
  <li class="toctree-l1">
   <a class="reference internal" href="aijack_dp.html">
-   13. Differential Privacy and Moment Accountant
+   14. Differential Privacy and Moment Accountant
   </a>
  </li>
 </ul>
@@ -310,17 +322,17 @@ const thebe_selector_output = ".output, .cell_output"
                 <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#parameters-and-pre-processing">
-   9.1. Parameters and Pre-processing
+   11.1. Parameters and Pre-processing
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#split-learning">
-   9.2. Split Learning
+   11.2. Split Learning
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#norm-based-label-leakage-attack">
-   9.3. Norm-based Label Leakage Attack
+   11.3. Norm-based Label Leakage Attack
   </a>
  </li>
 </ul>
@@ -345,17 +357,17 @@ const thebe_selector_output = ".output, .cell_output"
                             <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#parameters-and-pre-processing">
-   9.1. Parameters and Pre-processing
+   11.1. Parameters and Pre-processing
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#split-learning">
-   9.2. Split Learning
+   11.2. Split Learning
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#norm-based-label-leakage-attack">
-   9.3. Norm-based Label Leakage Attack
+   11.3. Norm-based Label Leakage Attack
   </a>
  </li>
 </ul>
@@ -368,7 +380,7 @@ const thebe_selector_output = ".output, .cell_output"
               <div>
                 
   <div class="tex2jax_ignore mathjax_ignore section" id="split-learning-and-label-leakage">
-<h1><span class="section-number">9. </span>Split Learning and Label Leakage<a class="headerlink" href="#split-learning-and-label-leakage" title="Permalink to this headline">¶</a></h1>
+<h1><span class="section-number">11. </span>Split Learning and Label Leakage<a class="headerlink" href="#split-learning-and-label-leakage" title="Permalink to this headline">¶</a></h1>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -413,7 +425,7 @@ const thebe_selector_output = ".output, .cell_output"
 </div>
 </div>
 <div class="section" id="parameters-and-pre-processing">
-<h2><span class="section-number">9.1. </span>Parameters and Pre-processing<a class="headerlink" href="#parameters-and-pre-processing" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">11.1. </span>Parameters and Pre-processing<a class="headerlink" href="#parameters-and-pre-processing" title="Permalink to this headline">¶</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">batch_size</span> <span class="o">=</span> <span class="mi">5</span>
@@ -486,7 +498,7 @@ const thebe_selector_output = ".output, .cell_output"
 </div>
 </div>
 <div class="section" id="split-learning">
-<h2><span class="section-number">9.2. </span>Split Learning<a class="headerlink" href="#split-learning" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">11.2. </span>Split Learning<a class="headerlink" href="#split-learning" title="Permalink to this headline">¶</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">model_1</span> <span class="o">=</span> <span class="n">FirstNet</span><span class="p">(</span><span class="n">train_features</span><span class="p">)</span>
@@ -522,7 +534,7 @@ const thebe_selector_output = ".output, .cell_output"
 </div>
 </div>
 <div class="section" id="norm-based-label-leakage-attack">
-<h2><span class="section-number">9.3. </span>Norm-based Label Leakage Attack<a class="headerlink" href="#norm-based-label-leakage-attack" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">11.3. </span>Norm-based Label Leakage Attack<a class="headerlink" href="#norm-based-label-leakage-attack" title="Permalink to this headline">¶</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">train_leak_auc</span> <span class="o">=</span> <span class="n">normattacksplitnn</span><span class="o">.</span><span class="n">attack</span><span class="p">(</span><span class="n">train_loader</span><span class="p">)</span>
@@ -564,17 +576,17 @@ const thebe_selector_output = ".output, .cell_output"
             
                 <!-- Previous / next buttons -->
 <div class='prev-next-area'> 
-    <a class='left-prev' id="prev-link" href="aijack_mid.html" title="previous page">
+    <a class='left-prev' id="prev-link" href="aijack_poisoning_attack_svm.html" title="previous page">
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
             <p class="prev-next-subtitle">previous</p>
-            <p class="prev-next-title"><span class="section-number">8. </span>Mutual Information-based Defense</p>
+            <p class="prev-next-title"><span class="section-number">10. </span>Poisoning Attack against SVM</p>
         </div>
     </a>
     <a class='right-next' id="next-link" href="aijack_membership_inference.html" title="next page">
     <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title"><span class="section-number">10. </span>Memership inference</p>
+        <p class="prev-next-title"><span class="section-number">12. </span>Memership inference</p>
     </div>
     <i class="fas fa-angle-right"></i>
     </a>

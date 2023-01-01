@@ -94,7 +94,7 @@ const thebe_selector_output = ".output, .cell_output"
         <ul class="nav bd-sidenav">
  <li class="toctree-l1">
   <a class="reference internal" href="intro.html">
-   Welcom to AIJack: Security and Privacy Risk Simulator for Machine Learning
+   What is AIJack?
   </a>
  </li>
 </ul>
@@ -154,13 +154,30 @@ const thebe_selector_output = ".output, .cell_output"
 </ul>
 <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
+  Poisoning Attack
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="aijack_poisoning_federated_learning.html">
+   9. Poisoning Attack against Federated Learning
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="aijack_poisoning_attack_svm.html">
+   10. Poisoning Attack against SVM
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
   Label Leakage
  </span>
 </p>
 <ul class="nav bd-sidenav">
  <li class="toctree-l1">
   <a class="reference internal" href="aijack_split_learning.html">
-   9. Split Learning and Label Leakage
+   11. Split Learning and Label Leakage
   </a>
  </li>
 </ul>
@@ -172,24 +189,19 @@ const thebe_selector_output = ".output, .cell_output"
 <ul class="nav bd-sidenav">
  <li class="toctree-l1">
   <a class="reference internal" href="aijack_membership_inference.html">
-   10. Memership inference
+   12. Memership inference
   </a>
  </li>
 </ul>
 <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
-  Adversarial Examples
+  Evasion Attack
  </span>
 </p>
 <ul class="nav bd-sidenav">
  <li class="toctree-l1">
   <a class="reference internal" href="aijack_evasion_attack.html">
-   11. Evasion Attack against SVM
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="aijack_poison_attack.html">
-   12. Poisoning Attack against SVM
+   13. Evasion Attack against SVM
   </a>
  </li>
 </ul>
@@ -201,7 +213,7 @@ const thebe_selector_output = ".output, .cell_output"
 <ul class="nav bd-sidenav">
  <li class="toctree-l1">
   <a class="reference internal" href="aijack_dp.html">
-   13. Differential Privacy and Moment Accountant
+   14. Differential Privacy and Moment Accountant
   </a>
  </li>
 </ul>
@@ -373,8 +385,7 @@ const thebe_selector_output = ".output, .cell_output"
 <span class="kn">from</span> <span class="nn">mpi4py</span> <span class="kn">import</span> <span class="n">MPI</span>
 <span class="kn">from</span> <span class="nn">torchvision</span> <span class="kn">import</span> <span class="n">datasets</span><span class="p">,</span> <span class="n">transforms</span>
 
-<span class="kn">from</span> <span class="nn">aijack.collaborative</span> <span class="kn">import</span> <span class="n">FedMDClient</span><span class="p">,</span> <span class="n">FedMDServer</span>
-<span class="kn">from</span> <span class="nn">aijack.collaborative.fedmd</span> <span class="kn">import</span> <span class="n">FedMDAPI</span>
+<span class="kn">from</span> <span class="nn">aijack.collaborative.fedmd</span> <span class="kn">import</span> <span class="n">FedMDAPI</span><span class="p">,</span> <span class="n">FedMDClient</span><span class="p">,</span> <span class="n">FedMDServer</span>
 <span class="kn">from</span> <span class="nn">aijack.utils</span> <span class="kn">import</span> <span class="n">NumpyDataset</span>
 </pre></div>
 </div>
@@ -390,7 +401,23 @@ const thebe_selector_output = ".output, .cell_output"
     <span class="n">torch</span><span class="o">.</span><span class="n">backends</span><span class="o">.</span><span class="n">cudnn</span><span class="o">.</span><span class="n">deterministic</span> <span class="o">=</span> <span class="kc">True</span>
 
 
-<span class="k">def</span> <span class="nf">prepare_dataloader</span><span class="p">(</span><span class="n">num_clients</span><span class="p">,</span> <span class="n">myid</span><span class="p">,</span> <span class="n">train</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
+<span class="n">training_batch_size</span> <span class="o">=</span> <span class="mi">64</span>
+<span class="n">test_batch_size</span> <span class="o">=</span> <span class="mi">64</span>
+<span class="n">num_rounds</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="n">lr</span> <span class="o">=</span> <span class="mf">0.001</span>
+<span class="n">seed</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">client_size</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="n">criterion</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">nll_loss</span>
+
+<span class="n">device</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s2">&quot;cuda&quot;</span> <span class="k">if</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">()</span> <span class="k">else</span> <span class="s2">&quot;cpu&quot;</span><span class="p">)</span>
+<span class="n">fix_seed</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">prepare_dataloader</span><span class="p">(</span><span class="n">num_clients</span><span class="p">,</span> <span class="n">myid</span><span class="p">,</span> <span class="n">train</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
     <span class="n">transform</span> <span class="o">=</span> <span class="n">transforms</span><span class="o">.</span><span class="n">Compose</span><span class="p">(</span>
         <span class="p">[</span><span class="n">transforms</span><span class="o">.</span><span class="n">ToTensor</span><span class="p">(),</span> <span class="n">transforms</span><span class="o">.</span><span class="n">Normalize</span><span class="p">((</span><span class="mf">0.1307</span><span class="p">,),</span> <span class="p">(</span><span class="mf">0.3081</span><span class="p">,))]</span>
     <span class="p">)</span>
@@ -440,22 +467,6 @@ const thebe_selector_output = ".output, .cell_output"
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">training_batch_size</span> <span class="o">=</span> <span class="mi">64</span>
-<span class="n">test_batch_size</span> <span class="o">=</span> <span class="mi">64</span>
-<span class="n">num_rounds</span> <span class="o">=</span> <span class="mi">5</span>
-<span class="n">lr</span> <span class="o">=</span> <span class="mf">0.001</span>
-<span class="n">seed</span> <span class="o">=</span> <span class="mi">0</span>
-<span class="n">client_size</span> <span class="o">=</span> <span class="mi">2</span>
-<span class="n">criterion</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">nll_loss</span>
-
-<span class="n">device</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s2">&quot;cuda&quot;</span> <span class="k">if</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">()</span> <span class="k">else</span> <span class="s2">&quot;cpu&quot;</span><span class="p">)</span>
-<span class="n">fix_seed</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dataloaders</span> <span class="o">=</span> <span class="p">[</span><span class="n">prepare_dataloader</span><span class="p">(</span><span class="n">client_size</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">client_size</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)]</span>
 <span class="n">public_dataloader</span> <span class="o">=</span> <span class="n">dataloaders</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 <span class="n">local_dataloaders</span> <span class="o">=</span> <span class="n">dataloaders</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
@@ -469,7 +480,7 @@ Downloading http://yann.lecun.com/exdb/mnist/train-images-idx3-ubyte.gz to MNIST
 </pre></div>
 </div>
 <script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "9d874fa6fd3247b79da9efb1c33c02dd", "version_major": 2, "version_minor": 0}
+{"model_id": "71200790faa54441b156d43c33795366", "version_major": 2, "version_minor": 0}
 </script><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Extracting MNIST/raw/train-images-idx3-ubyte.gz to MNIST/raw
 
 Downloading http://yann.lecun.com/exdb/mnist/train-labels-idx1-ubyte.gz
@@ -477,7 +488,7 @@ Downloading http://yann.lecun.com/exdb/mnist/train-labels-idx1-ubyte.gz to MNIST
 </pre></div>
 </div>
 <script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "5358548b6eaf448c957810b88ab08014", "version_major": 2, "version_minor": 0}
+{"model_id": "03ca00dcd6f34c7588fd826131df6919", "version_major": 2, "version_minor": 0}
 </script><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Extracting MNIST/raw/train-labels-idx1-ubyte.gz to MNIST/raw
 
 Downloading http://yann.lecun.com/exdb/mnist/t10k-images-idx3-ubyte.gz
@@ -485,7 +496,7 @@ Downloading http://yann.lecun.com/exdb/mnist/t10k-images-idx3-ubyte.gz to MNIST/
 </pre></div>
 </div>
 <script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "5e3d00f57ddd4615b60b5c7fd814ccc4", "version_major": 2, "version_minor": 0}
+{"model_id": "4e928c6ca9d74ad4bd2da6c7025939f2", "version_major": 2, "version_minor": 0}
 </script><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Extracting MNIST/raw/t10k-images-idx3-ubyte.gz to MNIST/raw
 
 Downloading http://yann.lecun.com/exdb/mnist/t10k-labels-idx1-ubyte.gz
@@ -493,7 +504,7 @@ Downloading http://yann.lecun.com/exdb/mnist/t10k-labels-idx1-ubyte.gz to MNIST/
 </pre></div>
 </div>
 <script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "e2d15e7d2dcf4802b98af8e6dcda3986", "version_major": 2, "version_minor": 0}
+{"model_id": "b9f82f60b05143f78fc0f7b03e6f39a2", "version_major": 2, "version_minor": 0}
 </script><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Extracting MNIST/raw/t10k-labels-idx1-ubyte.gz to MNIST/raw
 </pre></div>
 </div>
@@ -508,13 +519,8 @@ Downloading http://yann.lecun.com/exdb/mnist/t10k-labels-idx1-ubyte.gz to MNIST/
 <span class="n">local_optimizers</span> <span class="o">=</span> <span class="p">[</span><span class="n">optim</span><span class="o">.</span><span class="n">SGD</span><span class="p">(</span><span class="n">client</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="n">lr</span><span class="p">)</span> <span class="k">for</span> <span class="n">client</span> <span class="ow">in</span> <span class="n">clients</span><span class="p">]</span>
 
 <span class="n">server</span> <span class="o">=</span> <span class="n">FedMDServer</span><span class="p">(</span><span class="n">clients</span><span class="p">,</span> <span class="n">Net</span><span class="p">()</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">))</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">api</span> <span class="o">=</span> <span class="n">FedMDAPI</span><span class="p">(</span>
+
+<span class="n">api</span> <span class="o">=</span> <span class="n">FedMDAPI</span><span class="p">(</span>
     <span class="n">server</span><span class="p">,</span>
     <span class="n">clients</span><span class="p">,</span>
     <span class="n">public_dataloader</span><span class="p">,</span>
@@ -564,11 +570,8 @@ epoch=2 acc on validation dataset:  {&#39;clients_score&#39;: [0.8601, 0.8641]}
 <span class="kn">from</span> <span class="nn">mpi4py</span> <span class="kn">import</span> <span class="n">MPI</span>
 <span class="kn">from</span> <span class="nn">torchvision</span> <span class="kn">import</span> <span class="n">datasets</span><span class="p">,</span> <span class="n">transforms</span>
 
-<span class="kn">from</span> <span class="nn">aijack.collaborative</span> <span class="kn">import</span> <span class="n">FedMDClient</span><span class="p">,</span> <span class="n">FedMDServer</span>
-<span class="kn">from</span> <span class="nn">aijack.collaborative.fedmd</span> <span class="kn">import</span> <span class="n">FedMDAPI</span>
-<span class="kn">from</span> <span class="nn">aijack.collaborative.fedmd.api</span> <span class="kn">import</span> <span class="n">MPIFedMDAPI</span>
-<span class="kn">from</span> <span class="nn">aijack.collaborative.fedmd.client</span> <span class="kn">import</span> <span class="n">MPIFedMDClient</span>
-<span class="kn">from</span> <span class="nn">aijack.collaborative.fedmd.server</span> <span class="kn">import</span> <span class="n">MPIFedMDServer</span>
+<span class="kn">from</span> <span class="nn">aijack.collaborative.fedmd</span> <span class="kn">import</span> <span class="n">FedMDAPI</span><span class="p">,</span> <span class="n">FedMDClient</span><span class="p">,</span> <span class="n">FedMDServer</span>
+<span class="kn">from</span> <span class="nn">aijack.collaborative.fedmd</span> <span class="kn">import</span> <span class="n">MPIFedMDAPI</span><span class="p">,</span> <span class="n">MPIFedMDClientManager</span><span class="p">,</span> <span class="n">MPIFedMDServerManager</span>
 <span class="kn">from</span> <span class="nn">aijack.utils</span> <span class="kn">import</span> <span class="n">NumpyDataset</span><span class="p">,</span> <span class="n">accuracy_torch_dataloader</span>
 
 <span class="n">logger</span> <span class="o">=</span> <span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
@@ -638,7 +641,9 @@ epoch=2 acc on validation dataset:  {&#39;clients_score&#39;: [0.8601, 0.8641]}
     <span class="k">if</span> <span class="n">myid</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
         <span class="n">dataloader</span> <span class="o">=</span> <span class="n">prepare_dataloader</span><span class="p">(</span><span class="n">size</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">myid</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">train</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
         <span class="n">client_ids</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">size</span><span class="p">))</span>
-        <span class="n">server</span> <span class="o">=</span> <span class="n">MPIFedMDServer</span><span class="p">(</span><span class="n">comm</span><span class="p">,</span> <span class="n">FedMDServer</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="n">model</span><span class="p">))</span>
+        <span class="n">mpi_manager</span> <span class="o">=</span> <span class="n">MPIFedMDServerManager</span><span class="p">()</span>
+        <span class="n">MPIFedMDServer</span> <span class="o">=</span> <span class="n">mpi_manager</span><span class="o">.</span><span class="n">attach</span><span class="p">(</span><span class="n">FedMDServer</span><span class="p">)</span>
+        <span class="n">server</span> <span class="o">=</span> <span class="n">MPIFedMDServer</span><span class="p">(</span><span class="n">comm</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="n">model</span><span class="p">)</span>
         <span class="n">api</span> <span class="o">=</span> <span class="n">MPIFedMDAPI</span><span class="p">(</span>
             <span class="n">comm</span><span class="p">,</span>
             <span class="n">server</span><span class="p">,</span>
@@ -651,7 +656,9 @@ epoch=2 acc on validation dataset:  {&#39;clients_score&#39;: [0.8601, 0.8641]}
         <span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">dataloader</span> <span class="o">=</span> <span class="n">prepare_dataloader</span><span class="p">(</span><span class="n">size</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">myid</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">train</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-        <span class="n">client</span> <span class="o">=</span> <span class="n">MPIFedMDClient</span><span class="p">(</span><span class="n">comm</span><span class="p">,</span> <span class="n">FedMDClient</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">public_dataloader</span><span class="p">,</span> <span class="n">output_dim</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">user_id</span><span class="o">=</span><span class="n">myid</span><span class="p">))</span>
+        <span class="n">mpi_manager</span> <span class="o">=</span> <span class="n">MPIFedMDClientManager</span><span class="p">()</span>
+        <span class="n">MPIFedMDClient</span> <span class="o">=</span> <span class="n">mpi_manager</span><span class="o">.</span><span class="n">attach</span><span class="p">(</span><span class="n">FedMDClient</span><span class="p">)</span>
+        <span class="n">client</span> <span class="o">=</span> <span class="n">MPIFedMDClient</span><span class="p">(</span><span class="n">comm</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">public_dataloader</span><span class="p">,</span> <span class="n">output_dim</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">user_id</span><span class="o">=</span><span class="n">myid</span><span class="p">)</span>
         <span class="n">api</span> <span class="o">=</span> <span class="n">MPIFedMDAPI</span><span class="p">(</span>
             <span class="n">comm</span><span class="p">,</span>
             <span class="n">client</span><span class="p">,</span>
