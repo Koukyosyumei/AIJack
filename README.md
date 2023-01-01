@@ -187,16 +187,16 @@ api.run()
 AIJack supports not only neuralnetwork but also tree-based Federated Learning.
 
 ```Python
-from aijacl.collaborative.tree import SecureBoostClassifier, SecureBoostParty
+from aijacl.collaborative.tree import SecureBoostClassifierAPI, SecureBoostClient
 
 keygenerator = PaillierKeyGenerator(512)
 pk, sk = keygenerator.generate_keypair()
 
-sclf = SecureBoostClassifier(2,subsample_cols,min_child_weight,depth,min_leaf,
+sclf = SecureBoostClassifierAPI(2,subsample_cols,min_child_weight,depth,min_leaf,
                   learning_rate,boosting_rounds,lam,gamma,eps,0,0,1.0,1,True)
 
-sp1 = SecureBoostParty(x1, 2, [0], 0, min_leaf, subsample_cols, 256, False, 0)
-sp2 = SecureBoostParty(x2, 2, [1], 1, min_leaf, subsample_cols, 256, False, 0)
+sp1 = SecureBoostClient(x1, 2, [0], 0, min_leaf, subsample_cols, 256, False, 0)
+sp2 = SecureBoostClient(x2, 2, [1], 1, min_leaf, subsample_cols, 256, False, 0)
 sparties = [sp1, sp2]
 
 sparties[0].set_publickey(pk)
@@ -405,19 +405,13 @@ Split Learning is another collaborative learning scheme, where only one party ow
 ### SplitNN
 
 ```Python
-from aijack.collaborative import SplitNN, SplitNNClient
+from aijack.collaborative import SplitNNAPI, SplitNNClient
 
 clients = [SplitNNClient(model_1, user_id=0), SplitNNClient(model_2, user_id=1)]
 optimizers = [optim.Adam(model_1.parameters()), optim.Adam(model_2.parameters())]
-splitnn = SplitNN(clients, optimizers)
 
-for data dataloader:
-    splitnn.zero_grad()
-    inputs, labels = data
-    outputs = splitnn(inputs)
-    loss = criterion(outputs, labels)
-    splitnn.backward(loss)
-    splitnn.step()
+splitnn = SplitNNAPI(clients, optimizers, train_loader, criterion, num_epoch)
+splitnn.run()
 ```
 
 ### Attack: Label Leakage
@@ -428,8 +422,8 @@ AIJack supports norm-based label leakage attack against Split Learning.
 from aijack.attack.labelleakage import NormAttackManager
 
 manager = NormAttackManager(criterion, device="cpu")
-NormAttackSplitNN = manager.attach(SplitNN)
-normattacksplitnn = NormAttackSplitNN(clients, optimizers)
+NormAttackSplitNNAPI = manager.attach(SplitNNAPI)
+normattacksplitnn = NormAttackSplitNNAPI(clients, optimizers)
 leak_auc = normattacksplitnn.attack(target_dataloader)
 ```
 

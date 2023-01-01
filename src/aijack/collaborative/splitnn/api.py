@@ -1,13 +1,38 @@
-import torch
+from ..core.api import BaseFedAPI
 
 
-class SplitNN(torch.nn.Module):
-    def __init__(self, clients, optimizers):
+class SplitNNAPI(BaseFedAPI):
+    def __init__(self, clients, optimizers, dataloader, criterion, num_epoch):
         super().__init__()
         self.clients = clients
         self.optimizers = optimizers
+        self.dataloader = dataloader
+        self.criterion = criterion
+        self.num_epoch = num_epoch
+
         self.num_clients = len(clients)
         self.recent_output = None
+        self.loss_log = []
+
+    def local_train(self):
+        for data in self.dataloader:
+            self.zero_grad()
+            inputs, labels = data
+            outputs = self(inputs)
+            loss = self.criterion(outputs, labels)
+            self.backward(loss)
+            self.step()
+
+            self.loss_log.append(loss.item())
+
+    def run(self):
+        self.train()
+
+        for _ in range(self.num_epoch):
+            self.local_train()
+
+    def __call__(self, *args, **kwds):
+        return self.forward(*args, **kwds)
 
     def forward(self, x):
         intermidiate_to_next_client = x

@@ -167,16 +167,16 @@ api.run()
 AIJack supports not only neuralnetwork but also tree-based Federated Learning.
 
 ```Python
-from aijacl.collaborative.tree import SecureBoostClassifier, SecureBoostParty
+from aijacl.collaborative.tree import SecureBoostClassifierAPI, SecureBoostClient
 
 keygenerator = PaillierKeyGenerator(512)
 pk, sk = keygenerator.generate_keypair()
 
-sclf = SecureBoostClassifier(2,subsample_cols,min_child_weight,depth,min_leaf,
+sclf = SecureBoostClassifierAPI(2,subsample_cols,min_child_weight,depth,min_leaf,
                   learning_rate,boosting_rounds,lam,gamma,eps,0,0,1.0,1,True)
 
-sp1 = SecureBoostParty(x1, 2, [0], 0, min_leaf, subsample_cols, 256, False, 0)
-sp2 = SecureBoostParty(x2, 2, [1], 1, min_leaf, subsample_cols, 256, False, 0)
+sp1 = SecureBoostClient(x1, 2, [0], 0, min_leaf, subsample_cols, 256, False, 0)
+sp2 = SecureBoostClient(x2, 2, [1], 1, min_leaf, subsample_cols, 256, False, 0)
 sparties = [sp1, sp2]
 
 sparties[0].set_publickey(pk)
