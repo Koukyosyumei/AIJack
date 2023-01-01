@@ -391,8 +391,8 @@ const thebe_selector_output = ".output, .cell_output"
 <span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">StandardScaler</span>
 <span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
 
-<span class="kn">from</span> <span class="nn">aijack.attack</span> <span class="kn">import</span> <span class="n">NormAttackManager</span>
-<span class="kn">from</span> <span class="nn">aijack.collaborative</span> <span class="kn">import</span> <span class="n">SplitNN</span><span class="p">,</span> <span class="n">SplitNNClient</span>
+<span class="kn">from</span> <span class="nn">aijack.attack.labelleakage</span> <span class="kn">import</span> <span class="n">NormAttackSplitNNManager</span>
+<span class="kn">from</span> <span class="nn">aijack.collaborative.splitnn</span> <span class="kn">import</span> <span class="n">SplitNNAPI</span><span class="p">,</span> <span class="n">SplitNNClient</span>
 <span class="kn">from</span> <span class="nn">aijack.utils</span> <span class="kn">import</span> <span class="n">NumpyDataset</span>
 </pre></div>
 </div>
@@ -436,7 +436,7 @@ const thebe_selector_output = ".output, .cell_output"
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;torch._C.Generator at 0x7f8e513eb790&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;torch._C.Generator at 0x7fbb0c497cf0&gt;
 </pre></div>
 </div>
 </div>
@@ -513,21 +513,13 @@ const thebe_selector_output = ".output, .cell_output"
 <span class="n">clients</span> <span class="o">=</span> <span class="p">[</span><span class="n">client_1</span><span class="p">,</span> <span class="n">client_2</span><span class="p">]</span>
 <span class="n">criterion</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">BCELoss</span><span class="p">()</span>
 
-<span class="n">manager</span> <span class="o">=</span> <span class="n">NormAttackManager</span><span class="p">(</span><span class="n">criterion</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="s2">&quot;cpu&quot;</span><span class="p">)</span>
-<span class="n">NormAttackSplitNN</span> <span class="o">=</span> <span class="n">manager</span><span class="o">.</span><span class="n">attach</span><span class="p">(</span><span class="n">SplitNN</span><span class="p">)</span>
-<span class="n">normattacksplitnn</span> <span class="o">=</span> <span class="n">NormAttackSplitNN</span><span class="p">(</span><span class="n">clients</span><span class="p">,</span> <span class="n">optimizers</span><span class="p">)</span>
+<span class="n">manager</span> <span class="o">=</span> <span class="n">NormAttackSplitNNManager</span><span class="p">(</span><span class="n">criterion</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="s2">&quot;cpu&quot;</span><span class="p">)</span>
+<span class="n">NormAttackSplitNNAPI</span> <span class="o">=</span> <span class="n">manager</span><span class="o">.</span><span class="n">attach</span><span class="p">(</span><span class="n">SplitNNAPI</span><span class="p">)</span>
+<span class="n">normattacksplitnn</span> <span class="o">=</span> <span class="n">NormAttackSplitNNAPI</span><span class="p">(</span>
+        <span class="n">clients</span><span class="p">,</span> <span class="n">optimizers</span><span class="p">,</span> <span class="n">train_loader</span><span class="p">,</span> <span class="n">criterion</span><span class="p">,</span> <span class="n">num_communication</span>
+    <span class="p">)</span>
 
-<span class="n">normattacksplitnn</span><span class="o">.</span><span class="n">train</span><span class="p">()</span>
-<span class="n">loss_log</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_communication</span><span class="p">):</span>
-    <span class="k">for</span> <span class="n">data</span> <span class="ow">in</span> <span class="n">train_loader</span><span class="p">:</span>
-        <span class="n">inputs</span><span class="p">,</span> <span class="n">labels</span> <span class="o">=</span> <span class="n">data</span>
-        <span class="n">normattacksplitnn</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
-        <span class="n">outputs</span> <span class="o">=</span> <span class="n">normattacksplitnn</span><span class="p">(</span><span class="n">inputs</span><span class="p">)</span>
-        <span class="n">loss</span> <span class="o">=</span> <span class="n">criterion</span><span class="p">(</span><span class="n">outputs</span><span class="p">,</span> <span class="n">labels</span><span class="p">)</span>
-        <span class="n">normattacksplitnn</span><span class="o">.</span><span class="n">backward</span><span class="p">(</span><span class="n">loss</span><span class="p">)</span>
-        <span class="n">normattacksplitnn</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
-        <span class="n">loss_log</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">loss</span><span class="o">.</span><span class="n">item</span><span class="p">())</span>
+<span class="n">normattacksplitnn</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -543,7 +535,7 @@ const thebe_selector_output = ".output, .cell_output"
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Leau AUC is  0.9988736647330452
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Leau AUC is  0.9975959580734046
 </pre></div>
 </div>
 </div>
