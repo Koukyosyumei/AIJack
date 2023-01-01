@@ -53,6 +53,7 @@ def attach_sparse_gradient_to_server(cls):
                 sparse_gradients_flattend,
                 sparse_indices,
             ):
+                print(idx)
                 temp_grad = torch.zeros_like(params).reshape(-1)
                 temp_grad[idx] = torch.Tensor(grad).to(self.device)
                 gradients_reshaped.append(temp_grad.reshape(params.shape))
