@@ -1,6 +1,7 @@
 import torch
 from torch import nn
 
+from ...manager import BaseManager
 from ...utils.utils import torch_round_x_decimal
 from ..core import BaseClient
 from ..core.utils import GLOBAL_LOGIT_TAG, LOCAL_LOGIT_TAG
@@ -84,24 +85,34 @@ class FedMDClient(BaseClient):
         return running_loss
 
 
-class MPIFedMDClient(FedMDClient):
-    def __init__(self, comm, *args, **kwargs):
-        super(MPIFedMDClient, self).__init__(*args, **kwargs)
-        self.comm = comm
+def attach_mpi_to_fedmdclient(cls):
+    class MPIFedMDClientWrapper(cls):
+        def __init__(self, comm, *args, **kwargs):
+            super(MPIFedMDClientWrapper, self).__init__(*args, **kwargs)
+            self.comm = comm
 
-    def action(self):
-        self.mpi_upload()
-        self.model.zero_grad()
-        self.mpi_download()
+        def action(self):
+            self.mpi_upload()
+            self.model.zero_grad()
+            self.mpi_download()
 
-    def mpi_upload(self):
-        self.mpi_upload_logits()
+        def mpi_upload(self):
+            self.mpi_upload_logits()
 
-    def mpi_upload_logits(self, destination_id=0):
-        self.comm.send(self.upload(), dest=destination_id, tag=LOCAL_LOGIT_TAG)
+        def mpi_upload_logits(self, destination_id=0):
+            self.comm.send(self.upload(), dest=destination_id, tag=LOCAL_LOGIT_TAG)
 
-    def mpi_download(self):
-        self.download(self.comm.recv(tag=GLOBAL_LOGIT_TAG))
+        def mpi_download(self):
+            self.download(self.comm.recv(tag=GLOBAL_LOGIT_TAG))
 
-    def mpi_initialize(self):
-        self.mpi_download()
+        def mpi_initialize(self):
+            self.mpi_download()
+
+
+class MPIFedMDClientManager(BaseManager):
+    def __init__(self, *args, **kwargs):
+        self.args = args
+        self.kwargs = kwargs
+
+    def attach(self, cls):
+        return attach_mpi_to_fedmdclient(cls, *self.args, **self.kwargs)
