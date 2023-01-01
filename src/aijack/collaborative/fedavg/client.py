@@ -140,7 +140,7 @@ class MPIFedAVGClient(FedAVGClient):
 
     def action(self):
         self.upload()
-        super(MPIFedAVGClient, self).model.zero_grad()
+        self.model.zero_grad()
         self.download()
 
     def upload(self):
