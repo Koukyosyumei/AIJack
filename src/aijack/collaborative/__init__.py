@@ -18,8 +18,8 @@ from .fedmd import (  # noqa: F401
     FedMDClient,
     FedMDServer,
     MPIFedMDAPI,
-    MPIFedMDClient,
-    MPIFedMDServer,
+    MPIFedMDClientManager,
+    MPIFedMDServerManager,
 )
 from .optimizer import AdamFLOptimizer, SGDFLOptimizer  # noqa: F401
 from .splitnn import SplitNNAPI, SplitNNClient  # noqa: F401
