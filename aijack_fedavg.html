@@ -425,9 +425,9 @@ const thebe_selector_output = ".output, .cell_output"
             <span class="k">for</span> <span class="n">data</span><span class="p">,</span> <span class="n">target</span> <span class="ow">in</span> <span class="n">dataloader</span><span class="p">:</span>
                 <span class="n">data</span><span class="p">,</span> <span class="n">target</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">api</span><span class="o">.</span><span class="n">device</span><span class="p">),</span> <span class="n">target</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">api</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
                 <span class="k">if</span> <span class="n">client_id</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
-                  <span class="n">output</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">server</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+                    <span class="n">output</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">server</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
                 <span class="k">else</span><span class="p">:</span>
-                  <span class="n">output</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">clients</span><span class="p">[</span><span class="n">client_id</span><span class="p">](</span><span class="n">data</span><span class="p">)</span>
+                    <span class="n">output</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">clients</span><span class="p">[</span><span class="n">client_id</span><span class="p">](</span><span class="n">data</span><span class="p">)</span>
                 <span class="n">test_loss</span> <span class="o">+=</span> <span class="n">F</span><span class="o">.</span><span class="n">nll_loss</span><span class="p">(</span>
                     <span class="n">output</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">reduction</span><span class="o">=</span><span class="s2">&quot;sum&quot;</span>
                 <span class="p">)</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>  <span class="c1"># sum up batch loss</span>
@@ -438,9 +438,7 @@ const thebe_selector_output = ".output, .cell_output"
 
         <span class="n">test_loss</span> <span class="o">/=</span> <span class="nb">len</span><span class="p">(</span><span class="n">dataloader</span><span class="o">.</span><span class="n">dataset</span><span class="p">)</span>
         <span class="n">accuracy</span> <span class="o">=</span> <span class="mf">100.0</span> <span class="o">*</span> <span class="n">correct</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">dataloader</span><span class="o">.</span><span class="n">dataset</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;Test set: Average loss: </span><span class="si">{</span><span class="n">test_loss</span><span class="si">}</span><span class="s2">, Accuracy: </span><span class="si">{</span><span class="n">accuracy</span><span class="si">}</span><span class="s2">&quot;</span>
-        <span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Test set: Average loss: </span><span class="si">{</span><span class="n">test_loss</span><span class="si">}</span><span class="s2">, Accuracy: </span><span class="si">{</span><span class="n">accuracy</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">_evaluate_global_model</span>
 </pre></div>
@@ -569,7 +567,7 @@ Downloading http://yann.lecun.com/exdb/mnist/t10k-labels-idx1-ubyte.gz to MNIST/
     <span class="n">local_optimizers</span><span class="p">,</span>
     <span class="n">local_dataloaders</span><span class="p">,</span>
     <span class="n">num_communication</span><span class="o">=</span><span class="n">num_rounds</span><span class="p">,</span>
-    <span class="n">custom_action</span><span class="o">=</span><span class="n">evaluate_gloal_model</span><span class="p">(</span><span class="n">test_dataloader</span><span class="p">)</span>
+    <span class="n">custom_action</span><span class="o">=</span><span class="n">evaluate_gloal_model</span><span class="p">(</span><span class="n">test_dataloader</span><span class="p">),</span>
 <span class="p">)</span>
 <span class="n">api</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
 </pre></div>
@@ -622,7 +620,7 @@ Test set: Average loss: 0.4369198709487915, Accuracy: 88.63
     <span class="n">local_optimizers</span><span class="p">,</span>
     <span class="n">local_dataloaders</span><span class="p">,</span>
     <span class="n">num_communication</span><span class="o">=</span><span class="n">num_rounds</span><span class="p">,</span>
-    <span class="n">custom_action</span><span class="o">=</span><span class="n">evaluate_gloal_model</span><span class="p">(</span><span class="n">test_dataloader</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="n">custom_action</span><span class="o">=</span><span class="n">evaluate_gloal_model</span><span class="p">(</span><span class="n">test_dataloader</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
 <span class="p">)</span>
 <span class="n">api</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
 </pre></div>
