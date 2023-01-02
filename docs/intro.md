@@ -8,42 +8,9 @@
 
 AIJack allows you to assess the privacy and security risks of machine learning algorithms such as *Model Inversion*, *Poisoning Attack*, *Evasion Attack*, *Free Rider*, and *Backdoor Attack*. AIJack also provides various defense techniques like *Differential Privacy*, *Homomorphic Encryption*, and other heuristic approaches. In addition, AIJack provides APIs for many distributed learning schemes like *Federated Learning* and *Split Learning*. You can integrate many attack and defense methods into such collaborative learning with a few lines. We currently implement more than 30 state-of-arts methods. For more information, see the [documentation](https://koukyosyumei.github.io/AIJack/intro.html).
 
-# Table of Contents
-
-
-- [What is AIJack?](#what-is-aijack)
-- [Table of Contents](#table-of-contents)
-- [Installation](#installation)
-  - [pip](#pip)
-  - [Docker](#docker)
-- [Quick Start](#quick-start)
-  - [Basic Interface](#basic-interface)
-  - [Federated Learning](#federated-learning)
-    - [FedAVG](#fedavg)
-    - [FedMD](#fedmd)
-    - [SecureBoost (Vertical Federated version of XGBoost)](#secureboost-vertical-federated-version-of-xgboost)
-    - [MPI-backend](#mpi-backend)
-    - [Attack: Model Inversion](#attack-model-inversion)
-    - [Defense: Differential Privacy](#defense-differential-privacy)
-    - [Defense: Soteria](#defense-soteria)
-    - [Defense: Homomorophic Encryption](#defense-homomorophic-encryption)
-    - [Attack: Poisoning](#attack-poisoning)
-    - [Defense: FoolsGOld](#defense-foolsgold)
-    - [Attack: FreeRider](#attack-freerider)
-  - [Split Learning](#split-learning)
-    - [SplitNN](#splitnn)
-    - [Attack: Label Leakage](#attack-label-leakage)
-- [Supported Algorithms](#supported-algorithms)
-  - [Distributed Learning](#distributed-learning)
-  - [Attack](#attack)
-  - [Defense](#defense)
-- [Contact](#contact)
-
 # Installation
 
-## pip
-
-AIJack requires Boost and pybind11.
+You can install AIJack with `pip`. AIJack requires Boost and pybind11.
 
 ```
 apt install -y libboost-all-dev
@@ -53,9 +20,7 @@ pip install "pybind11[global]"
 pip install git+https://github.com/Koukyosyumei/AIJack
 ```
 
-## Docker
-
-Please use our [Dockerfile](Dockerfile).
+You can also use our [Dockerfile](Dockerfile).
 
 
 # Quick Start
