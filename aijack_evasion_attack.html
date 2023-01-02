@@ -6,47 +6,6 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>13. Evasion Attack against SVM &#8212; Let&#39;s hijack AI!</title>
-    <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-    <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
-    
-        <script>
-            MathJax = {
-            loader: {load: ['[tex]/boldsymbol', '[tex]/textmacros']},
-            tex: {
-                packages: {'[+]': ['boldsymbol', 'textmacros']},
-                inlineMath: [['$', '$'], ['\\(', '\\)']],
-                processEscapes: true,
-                macros: {
-                    "argmax" : "arg\\,max",
-                    "argmin" : "arg\\,min",
-                    "col"    : "col",
-                    "Span"   :  "span",
-                    "epsilon": "\\varepsilon",
-                    "EE": "\\mathbb{E}",
-                    "PP": "\\mathbb{P}",
-                    "RR": "\\mathbb{R}",
-                    "NN": "\\mathbb{N}",
-                    "ZZ": "\\mathbb{Z}",
-                    "aA": "\\mathcal{A}",
-                    "bB": "\\mathcal{B}",
-                    "cC": "\\mathcal{C}",
-                    "dD": "\\mathcal{D}",
-                    "eE": "\\mathcal{E}",
-                    "fF": "\\mathcal{F}",
-                    "gG": "\\mathcal{G}",
-                    "hH": "\\mathcal{H}",
-                }
-            },
-            svg: {
-                fontCache: 'global',
-                scale: 0.92,
-                displayAlign: "center",
-            },
-            };
-        </script>
-    
-    
     
   <link href="_static/css/theme.css" rel="stylesheet">
   <link href="_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
@@ -64,7 +23,7 @@
 
     
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/quantecon-book-theme.1ef59f8f4e91ec8319176e8479c6af4e.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
@@ -72,7 +31,6 @@
     <link rel="stylesheet" type="text/css" href="_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" />
     
   <link rel="preload" as="script" href="_static/js/index.be7d3bbb2ef33a8344ce.js">
-
 
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
@@ -87,7 +45,6 @@
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
     <script src="_static/design-tabs.js"></script>
     <script src="_static/sphinx-book-theme.d59cb220de22ca1c485ebbdc042f0030.js"></script>
-    <script src="_static/quantecon-book-theme.15b0c36fffe88f468997fa7b698991d3.js"></script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
 const thebe_selector = ".thebe,.cell"
 const thebe_selector_input = "pre"
@@ -98,52 +55,300 @@ const thebe_selector_output = ".output, .cell_output"
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="14. Differential Privacy and Moment Accountant" href="aijack_dp.html" />
     <link rel="prev" title="12. Memership inference" href="aijack_membership_inference.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
 
-<!-- Normal Meta Tags -->
-<meta name="author" context="Hideaki Takahashi" />
-<meta name="keywords" content="" />
-<meta name="description" content=Evasion Attack against SVM  import os import time import copy  import numpy as np import sklearn from sklearn import datasets from sklearn import metrics from s />
-
-<!-- Twitter tags -->
-<meta name="twitter:card" content="summary" />
-<meta name="twitter:site" content="@" />
-<meta name="twitter:title" content="Evasion Attack against SVM"/>
-<meta name="twitter:description" content="Evasion Attack against SVM  import os import time import copy  import numpy as np import sklearn from sklearn import datasets from sklearn import metrics from s">
-<meta name="twitter:creator" content="@">
-<meta name="twitter:image" content="">
-
-<!-- Opengraph tags -->
-<meta property="og:title" content="Evasion Attack against SVM" />
-<meta property="og:type" content="website" />
-<meta property="og:url" content="None" />
-<meta property="og:image" content="" />
-<meta property="og:description" content="Evasion Attack against SVM  import os import time import copy  import numpy as np import sklearn from sklearn import datasets from sklearn import metrics from s" />
-<meta property="og:site_name" content="Let&#39;s hijack AI!" />
-<meta name="theme-color" content="#ffffff" />
-
+    <!-- Google Analytics -->
+    
   </head>
-<body>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="index.html">
+      
+        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+        
+      
+      
+      <img src="_static/logo.png" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">Let's hijack AI!</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="intro.html">
+   AIJack: Security and Privacy Risk Simulator for Standard/Distributed Machine Learning
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Federated Learning
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="aijack_fedavg.html">
+   1. FedAVG
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="aijack_fedmd.html">
+   2. FedMD: Federated Learning with Model Distillation
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="aijack_secureboost.html">
+   3. SecureBoost: Vertically Federated XGBoost with Paillier Encryption
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Model Inversion
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="aijack_miface.html">
+   4. MI-FACE Model Inversion Attack vs Differentially Private SGD
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="aijack_gradient_inversion_attack.html">
+   5. Gradient-based Model Inversion Attack against Federated Learning
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="aijack_ganattack.html">
+   6. GAN Attack
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="aijack_soteria.html">
+   7. Soteria: : Provable Defense against Privacy Leakage in Federated Learning g from Representation Perspective
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="aijack_mid.html">
+   8. Mutual Information-based Defense
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Poisoning Attack
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="aijack_poisoning_federated_learning.html">
+   9. Poisoning Attack against Federated Learning
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="aijack_poisoning_attack_svm.html">
+   10. Poisoning Attack against SVM
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Label Leakage
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="aijack_split_learning.html">
+   11. Split Learning and Label Leakage
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Membership Inference
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="aijack_membership_inference.html">
+   12. Memership inference
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Evasion Attack
+ </span>
+</p>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   13. Evasion Attack against SVM
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Others
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="aijack_dp.html">
+   14. Differential Privacy and Moment Accountant
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
 
 
-    <span id="top"></span>
+          
 
-    <div class="qe-wrapper">
 
-        <div class="qe-main">
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
 
-            <div class="qe-page" id=aijack_evasion_attack>
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="_sources/aijack_evasion_attack.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.ipynb</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+                onclick="printPdf(this)" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
 
-                <div class="qe-page__toc">
+            <!-- Source interaction buttons -->
 
-                    <div class="inner">
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/Koukyosyumei/AIJack"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        <a class="issues-button"
+            href="https://github.com/Koukyosyumei/AIJack/issues/new?title=Issue%20on%20page%20%2Faijack_evasion_attack.html&body=Your%20issue%20content%20here."><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+        
+    </div>
+</div>
 
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
+    <div class="dropdown-buttons">
+        
+        <a class="binder-button" href="https://mybinder.org/v2/gh/Koukyosyumei/AIJack/main?urlpath=tree/docs/aijack_evasion_attack.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
+                data-placement="left"><img class="binder-button-logo"
+                    src="_static/images/logo_binder.svg"
+                    alt="Interact on binder">Binder</button></a>
+        
+        
+        
+        
+    </div>
+</div>
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show noprint">
+            
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
+            </div>
+            <nav id="bd-toc-nav" aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#train-the-target-classification-model">
+   13.1. Train the target classification model
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#evasion-attack">
+   13.2. Evasion Attack
+  </a>
+ </li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1>Evasion Attack against SVM</h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
                         
-                        <div class="qe-page__toc-header">
-                            On this page
+                        <div>
+                            <h2> Contents </h2>
                         </div>
-
-
-                        <nav id="bd-toc-nav" class="qe-page__toc-nav">
+                        <nav aria-label="Page">
                             <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#train-the-target-classification-model">
@@ -157,49 +362,13 @@ const thebe_selector_output = ".output, .cell_output"
  </li>
 </ul>
 
-                            <p class="logo">
-                                
-                                    
-                                    <a href="intro.html"><img src="_static/logo.png" class="logo" alt="logo"></a>
-                                    
-                                
-                            </p>
-
-                            <p class="powered">Powered by <a href="https://jupyterbook.org/">Jupyter Book</a></p>
-
                         </nav>
-
-                        <div class="qe-page__toc-footer">
-                            
-                            
-                            <p><a href="#top"><strong>Back to top</strong></a></p>
-                        </div>
-
                     </div>
-
                 </div>
-
-                <div class="qe-page__header">
-
-                    <div class="qe-page__header-copy">
-
-                        <p class="qe-page__header-heading"><a href="intro.html">Let&#39;s hijack AI!</a></p>
-
-                        <p class="qe-page__header-subheading">Evasion Attack against SVM</p>
-
-                    </div>
-
-                    <p class="qe-page__header-authors">Hideaki Takahashi</p>
-
-                </div> <!-- .page__header -->
-
-
-
+            </div>
+            
+              <div>
                 
-                <main class="qe-page__content" role="main">
-                    
-                    <div>
-                        
   <div class="tex2jax_ignore mathjax_ignore section" id="evasion-attack-against-svm">
 <h1><span class="section-number">13. </span>Evasion Attack against SVM<a class="headerlink" href="#evasion-attack-against-svm" title="Permalink to this headline">¶</a></h1>
 <div class="cell docutils container">
@@ -346,318 +515,44 @@ weighted avg       0.98      0.98      0.98       500
     </script>
     <script>kernelName = 'python3'</script>
 
-                    </div>
-                    
-                </main> <!-- .page__content -->
-                
-
-
-                <footer class="qe-page__footer">
-
-                    <p><a href="https://creativecommons.org/licenses/by-sa/4.0/"><img src="https://licensebuttons.net/l/by-sa/4.0/80x15.png"></a></p>
-
-                    <p>Creative Commons License &ndash; This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International.</p>
-
-                </footer> <!-- .page__footer -->
-
-            </div> <!-- .page -->
-
+              </div>
+              
             
-
-            
-            <div class="qe-sidebar bd-sidebar inactive" id="site-navigation">
-
-                <div class="qe-sidebar__header">
-
-
-                    Contents
-
-                </div>
-
-                <nav class="qe-sidebar__nav" id="qe-sidebar-nav" aria-label="Main navigation">
-                    <ul class="nav bd-sidenav nav sidenav_l1">
- <li class="toctree-l1">
-  <a class="reference internal" href="intro.html">
-   AIJack: Security and Privacy Risk Simulator for Standard/Distributed Machine Learning
-  </a>
- </li>
-</ul>
-<p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  Federated Learning
- </span>
-</p>
-<ul class="nav bd-sidenav nav sidenav_l1">
- <li class="toctree-l1">
-  <a class="reference internal" href="aijack_fedavg.html">
-   1. FedAVG
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="aijack_fedmd.html">
-   2. FedMD: Federated Learning with Model Distillation
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="aijack_secureboost.html">
-   3. SecureBoost: Vertically Federated XGBoost with Paillier Encryption
-  </a>
- </li>
-</ul>
-<p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  Model Inversion
- </span>
-</p>
-<ul class="nav bd-sidenav nav sidenav_l1">
- <li class="toctree-l1">
-  <a class="reference internal" href="aijack_miface.html">
-   4. MI-FACE Model Inversion Attack vs Differentially Private SGD
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="aijack_gradient_inversion_attack.html">
-   5. Gradient-based Model Inversion Attack against Federated Learning
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="aijack_ganattack.html">
-   6. GAN Attack
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="aijack_soteria.html">
-   7. Soteria: : Provable Defense against Privacy Leakage in Federated Learning g from Representation Perspective
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="aijack_mid.html">
-   8. Mutual Information-based Defense
-  </a>
- </li>
-</ul>
-<p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  Poisoning Attack
- </span>
-</p>
-<ul class="nav bd-sidenav nav sidenav_l1">
- <li class="toctree-l1">
-  <a class="reference internal" href="aijack_poisoning_federated_learning.html">
-   9. Poisoning Attack against Federated Learning
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="aijack_poisoning_attack_svm.html">
-   10. Poisoning Attack against SVM
-  </a>
- </li>
-</ul>
-<p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  Label Leakage
- </span>
-</p>
-<ul class="nav bd-sidenav nav sidenav_l1">
- <li class="toctree-l1">
-  <a class="reference internal" href="aijack_split_learning.html">
-   11. Split Learning and Label Leakage
-  </a>
- </li>
-</ul>
-<p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  Membership Inference
- </span>
-</p>
-<ul class="nav bd-sidenav nav sidenav_l1">
- <li class="toctree-l1">
-  <a class="reference internal" href="aijack_membership_inference.html">
-   12. Memership inference
-  </a>
- </li>
-</ul>
-<p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  Evasion Attack
- </span>
-</p>
-<ul class="current nav bd-sidenav nav sidenav_l1">
- <li class="toctree-l1 current active active">
-  <a class="current reference internal" href="#">
-   13. Evasion Attack against SVM
-  </a>
- </li>
-</ul>
-<p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  Others
- </span>
-</p>
-<ul class="nav bd-sidenav nav sidenav_l1">
- <li class="toctree-l1">
-  <a class="reference internal" href="aijack_dp.html">
-   14. Differential Privacy and Moment Accountant
-  </a>
- </li>
-</ul>
-
-                </nav>
-
-                <div class="qe-sidebar__footer">
-
-                </div>
-
-            </div> <!-- .sidebar -->
-            
-        </div> <!-- .main -->
-
-        <div class="qe-toolbar">
-
-            <div class="qe-toolbar__inner">
-
-                <ul class="qe-toolbar__main">
-                    <li data-tippy-content="Table of Contents" class="btn__sidebar"><i data-feather="menu"></i></li>
-                    <li data-tippy-content="Home"><a href="intro.html"><i data-feather="home"></i></a></li>
-                    <li class="btn__qelogo"><a href="" title=""><span class="show-for-sr"></span></a></li>
-                    <!-- <li class="btn__search">
-                        <form action="search.html" method="get">
-                            <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off">
-                            <i data-feather="search"></i>
-                        </form>
-                    </li> -->
-                </ul>
-
-                <ul class="qe-toolbar__links">
-                    <li data-tippy-content="Fullscreen" class="btn__fullscreen"><i data-feather="maximize"></i></li>
-                    <li data-tippy-content="Increase font size" class="btn__plus"><i data-feather="plus-circle"></i></li>
-                    <li data-tippy-content="Decrease font size" class="btn__minus"><i data-feather="minus-circle"></i></li>
-                    <li data-tippy-content="Change contrast" class="btn__contrast"><i data-feather="sunset"></i></li>
-                        <li data-tippy-content="Download PDF" onClick="window.print()"><i data-feather="file"></i></li>
-                    <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/Koukyosyumei/AIJack/tree/main/docs/aijack_evasion_attack.ipynb" download><i data-feather="github"></i></a></li>
-                </ul>
-
-            </div>
-
-        </div> <!-- .toolbar -->
-        <div id="downloadPDFModal" style="display: none;">
-            <ul class="pdf-options" style="display: block;">
-                <li class="download-pdf-book" onClick="window.print()">
-                    <p>Lecture (PDF)</p>
-                </li>
-                <li class="download-pdf-file">
-                    <a href="" download><p>Book (PDF)</p></a>
-                </li>
-            </ul>
+                <!-- Previous / next buttons -->
+<div class='prev-next-area'> 
+    <a class='left-prev' id="prev-link" href="aijack_membership_inference.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title"><span class="section-number">12. </span>Memership inference</p>
         </div>
-        <div id="settingsModal" style="display: none;">
-            <p class="modal-title"> Notebook Launcher </p>
-            <div class="modal-desc">
-            <p>
-                Choose public or private cloud service for "Launch" button.
-            </p>
-            </div>
-            <p class="modal-subtitle">Select a server</p>
-            <ul class="modal-servers">
-            <li class="active launcher-public">
-                <span class="label">Public</span>
-                <select id="launcher-public-input">
-                
-                </select>
-                <i class="fas fa-check-circle"></i>
-            </li>
-            <li class="launcher-private">
-                <span class="label">Private</span>
-                <input type="text" id="launcher-private-input" data-repourl="" data-urlpath="" data-branch=>
-                <i class="fas fa-check-circle"></i>
-            </li>
-            </ul>
-            <p class="launch"><a href="" id="advancedLaunchButton" target="_blank">Launch Notebook</a></p>
-            <script>
-                // QuantEcon Notebook Launcher
-                const launcherTypeElements = document.querySelectorAll('#settingsModal .modal-servers li');
-                // Highlight the server type if previous selection exists
-                if (typeof localStorage.launcherType !== 'undefined') {
-                  for (var i = 0; i < launcherTypeElements.length; i++) {
-                    launcherTypeElements[i].classList.remove('active');
-                    if ( launcherTypeElements[i].classList.contains(localStorage.launcherType) ) {
-                      launcherTypeElements[i].classList.add('active');
-                    }
-                  }
-                }
-                // Highlight server type on click and set local storage value
-                for (var i = 0; i < launcherTypeElements.length; i++) {
-                  launcherTypeElements[i].addEventListener('click', function() {
-                    for (var j = 0; j < launcherTypeElements.length; j++) {
-                      launcherTypeElements[j].classList.remove('active');
-                    }
-                    this.classList.add('active');
-                    if ( this.classList.contains('launcher-private') ) {
-                      localStorage.launcherType = 'launcher-private';
-                    } else if ( this.classList.contains('launcher-public') ) {
-                      localStorage.launcherType = 'launcher-public';
-                    }
-                    setLaunchServer();
-                  })
-                }
-                const launcherPublic = document.getElementById('launcher-public-input');
-                const launcherPrivate = document.getElementById('launcher-private-input');
-                const pageName = "aijack_evasion_attack";
-                const repoURL = "";
-                const urlPath = "";
-                const branch = ""
-                const launchNotebookLink = document.getElementById('advancedLaunchButton');
-
-                // Highlight public server option if previous selection exists
-                if (typeof localStorage.launcherPublic !== 'undefined') {
-                  launcherPublic.value = localStorage.launcherPublic;
-                }
-                // Update local storage upon public server selection
-                launcherPublic.addEventListener('change', (event) => {
-                  setLaunchServer();
-                });
-                // Populate private server input if previous entry exists
-                if (typeof localStorage.launcherPrivate !== 'undefined') {
-                  launcherPrivate.value = localStorage.launcherPrivate;
-                }
-                // Update local storage when a private server is entered
-                launcherPrivate.addEventListener('input', (event) => {
-                  setLaunchServer();
-                });
-
-                // Function to update the "Launch Notebook" link href
-                function setLaunchServer() {
-                  launchNotebookLink.removeAttribute("style")
-                  if ( localStorage.launcherType == 'launcher-private' ) {
-                    let repoPrefix = "/jupyter/hub/user-redirect/git-pull?repo=" + repoURL + "&branch=" + branch + "&urlpath=" + urlPath;
-                    launcherPrivateValue = launcherPrivate.value
-                    if (!launcherPrivateValue) {
-                        launchNotebookLink.removeAttribute("href")
-                        launchNotebookLink.style.background = "grey"
-                        return
-                    }
-                    localStorage.launcherPrivate = launcherPrivateValue;
-                    privateServer = localStorage.launcherPrivate.replace(/\/$/, "")
-                    if (!privateServer.includes("http")) {
-                        privateServer = "http://" + privateServer
-                    }
-                    launchNotebookLinkURL = privateServer + repoPrefix;
-                  } else if ( localStorage.launcherType == 'launcher-public' ) {
-                    launcherPublicValue = launcherPublic.options[launcherPublic.selectedIndex].value;
-                    localStorage.launcherPublic = launcherPublicValue;
-                    launchNotebookLinkURL = localStorage.launcherPublic;
-                  }
-                  if (launchNotebookLinkURL) launchNotebookLink.href = launchNotebookLinkURL;
-                }
-                // Check if user has previously selected a server
-                if ( (typeof localStorage.launcherPrivate !== 'undefined') || (typeof localStorage.launcherPublic !== 'undefined') ) {
-                  setLaunchServer();
-                }
-                </script>
-
+    </a>
+    <a class='right-next' id="next-link" href="aijack_dp.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">14. </span>Differential Privacy and Moment Accountant</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+            
         </div>
-
-    </div> <!-- .wrapper-->
+    </div>
+    <footer class="footer">
+  <p>
     
+      By Hideaki Takahashi<br/>
+    
+        &copy; Copyright 2022.<br/>
+  </p>
+</footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="_static/js/index.be7d3bbb2ef33a8344ce.js"></script>
+
   </body>
 </html>
