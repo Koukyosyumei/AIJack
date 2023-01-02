@@ -94,7 +94,7 @@ const thebe_selector_output = ".output, .cell_output"
         <ul class="nav bd-sidenav">
  <li class="toctree-l1">
   <a class="reference internal" href="intro.html">
-   What is AIJack?
+   AIJack: Security and Privacy Risk Simulator for Standard/Distributed Machine Learning
   </a>
  </li>
 </ul>
@@ -429,7 +429,7 @@ const thebe_selector_output = ".output, .cell_output"
                 
   <div class="tex2jax_ignore mathjax_ignore section" id="gradient-based-model-inversion-attack-against-federated-learning">
 <h1><span class="section-number">5. </span>Gradient-based Model Inversion Attack against Federated Learning<a class="headerlink" href="#gradient-based-model-inversion-attack-against-federated-learning" title="Permalink to this headline">¶</a></h1>
-<p>In this tutorial, we will experiment gradient-based model inversion attack, which allows the malicious server of Federated Learning to reconstruct the private local dataset via the shared gradients. AIJack currently supports five gradient-based model inversion attacks. These methods reconstruct the private images by minimizing the distance between the fake gradients and the received gradients. Each method has its strategy, such as the distance metric and regularization terms.</p>
+<p>In this tutorial, we will experiment gradient-based model inversion attack, which allows the malicious server of Federated Learning to reconstruct the private local dataset via shared gradients. You can implement five popular gradient-based model inversion attacks with AIJack. These methods reconstruct the private images by minimizing the distance between the fake gradients and the received gradients. Each method has its own strategy, such as the distance metric and regularization terms.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">cv2</span>
@@ -556,6 +556,7 @@ const thebe_selector_output = ".output, .cell_output"
 </div>
 <div class="section" id="dlg">
 <h3><span class="section-number">5.1.1. </span>DLG<a class="headerlink" href="#dlg" title="Permalink to this headline">¶</a></h3>
+<p>You can convert the normal server to the malicious attacker with <code class="docutils literal notranslate"><span class="pre">GradientInversionAttackServerManager</span></code>.</p>
 <p><a class="reference external" href="https://dlg.mit.edu/assets/NeurIPS19_deep_leakage_from_gradients.pdf">https://dlg.mit.edu/assets/NeurIPS19_deep_leakage_from_gradients.pdf</a></p>
 <ul class="simple">
 <li><p>distance metric = L2 norm</p></li>

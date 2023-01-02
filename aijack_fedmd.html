@@ -94,7 +94,7 @@ const thebe_selector_output = ".output, .cell_output"
         <ul class="nav bd-sidenav">
  <li class="toctree-l1">
   <a class="reference internal" href="intro.html">
-   What is AIJack?
+   AIJack: Security and Privacy Risk Simulator for Standard/Distributed Machine Learning
   </a>
  </li>
 </ul>
@@ -371,6 +371,7 @@ const thebe_selector_output = ".output, .cell_output"
                 
   <div class="tex2jax_ignore mathjax_ignore section" id="fedmd-federated-learning-with-model-distillation">
 <h1><span class="section-number">2. </span>FedMD: Federated Learning with Model Distillation<a class="headerlink" href="#fedmd-federated-learning-with-model-distillation" title="Permalink to this headline">¶</a></h1>
+<p>In this tutorial, we implement FedMD (Federated Learning with Model Distillation), proposed in <a class="reference external" href="https://arxiv.org/abs/1910.03581">https://arxiv.org/abs/1910.03581</a>. AIJack supports both single-process and MPI as the backend of FedMD. While FedAVG communicates local gradients to collaboratively train a model without sharing local datasets, malicious server might be able to recover the training data from the shared gradient (see <em>Gradient-based Model Inversion Attack against Federated Learning</em> for the detail). In addition, sending and receiving gradients of the model requires much communication power. To solve these challenges, FedMD communicates not gradients but predicted logits on the global dataset, and uses model-distillation method to share each party’s knowledge.</p>
 <div class="section" id="single-process">
 <h2><span class="section-number">2.1. </span>Single Process<a class="headerlink" href="#single-process" title="Permalink to this headline">¶</a></h2>
 <div class="cell docutils container">
@@ -556,6 +557,7 @@ epoch=2 acc on validation dataset:  {&#39;clients_score&#39;: [0.8601, 0.8641]}
 </div>
 <div class="section" id="mpi">
 <h2><span class="section-number">2.2. </span>MPI<a class="headerlink" href="#mpi" title="Permalink to this headline">¶</a></h2>
+<p>You can execute FedMD with MPI-backend via <code class="docutils literal notranslate"><span class="pre">MPIFedMDClientManager</span></code>, <code class="docutils literal notranslate"><span class="pre">MPIFedMDServerManager</span></code>, and <code class="docutils literal notranslate"><span class="pre">MPIFedMDAPI</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%writefile</span> mpi_fedmd.py
