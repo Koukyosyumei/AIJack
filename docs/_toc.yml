@@ -18,6 +18,11 @@ parts:
       - file: aijack_ganattack
       - file: aijack_soteria
       - file: aijack_mid
+  - caption: Poisoning Attack
+    numbered: true
+    chapters:
+      - file: aijack_poisoning_federated_learning
+      - file: aijack_poisoning_attack_svm
   - caption: Label Leakage
     numbered: true
     chapters:
@@ -26,11 +31,10 @@ parts:
     numbered: true
     chapters:
       - file: aijack_membership_inference
-  - caption: Adversarial Examples
+  - caption: Evasion Attack
     numbered: true
     chapters:
       - file: aijack_evasion_attack
-      - file: aijack_poison_attack
   - caption: Others
     numbered: true
     chapters:

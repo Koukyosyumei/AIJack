@@ -1,11 +1,12 @@
 import copy
 
+from ...manager import BaseManager
 from ..core import BaseClient
 from ..core.utils import GRADIENTS_TAG, PARAMETERS_TAG
 from ..optimizer import AdamFLOptimizer, SGDFLOptimizer
 
 
-class FedAvgClient(BaseClient):
+class FedAVGClient(BaseClient):
     """Client of FedAVG for single process simulation
 
     Args:
@@ -30,7 +31,7 @@ class FedAvgClient(BaseClient):
         optimizer_kwargs_for_global_grad={},
         device="cpu",
     ):
-        super(FedAvgClient, self).__init__(model, user_id=user_id)
+        super(FedAVGClient, self).__init__(model, user_id=user_id)
         self.lr = lr
         self.send_gradient = send_gradient
         self.server_side_update = server_side_update
@@ -104,30 +105,71 @@ class FedAvgClient(BaseClient):
         for param in self.model.parameters():
             self.prev_parameters.append(copy.deepcopy(param))
 
+    def local_train(
+        self, local_epoch, criterion, trainloader, optimizer, communication_id=0
+    ):
+        for i in range(local_epoch):
+            running_loss = 0.0
+            running_data_num = 0
+            for _, data in enumerate(trainloader, 0):
+                inputs, labels = data
+                inputs = inputs.to(self.device)
+                labels = labels.to(self.device)
 
-class MPIFedAvgClient:
-    def __init__(self, comm, client):
-        self.comm = comm
-        self.client = client
+                optimizer.zero_grad()
+                self.zero_grad()
 
-    def __call__(self, *args, **kwargs):
-        return self.client(*args, **kwargs)
+                outputs = self(inputs)
+                loss = criterion(outputs, labels)
 
-    def action(self):
-        self.mpi_upload()
-        self.client.model.zero_grad()
-        self.mpi_download()
+                loss.backward()
+                optimizer.step()
 
-    def mpi_upload(self):
-        self.mpi_upload_gradient()
+                running_loss += loss.item()
+                running_data_num += inputs.shape[0]
 
-    def mpi_upload_gradient(self, destination_id=0):
-        self.comm.send(
-            self.client.upload_gradients(), dest=destination_id, tag=GRADIENTS_TAG
-        )
+            print(
+                f"communication {communication_id}, epoch {i}: client-{self.user_id+1}",
+                running_loss / running_data_num,
+            )
 
-    def mpi_download(self):
-        self.client.download(self.comm.recv(tag=PARAMETERS_TAG))
 
-    def mpi_initialize(self):
-        self.mpi_download()
+def attach_mpi_to_fedavgclient(cls):
+    class MPIFedAVGClientWrapper(cls):
+        def __init__(self, comm, *args, **kwargs):
+            super(MPIFedAVGClientWrapper, self).__init__(*args, **kwargs)
+            self.comm = comm
+
+        def action(self):
+            self.upload()
+            self.model.zero_grad()
+            self.download()
+
+        def upload(self):
+            self.upload_gradient()
+
+        def upload_gradient(self, destination_id=0):
+            self.comm.send(
+                super(MPIFedAVGClientWrapper, self).upload_gradients(),
+                dest=destination_id,
+                tag=GRADIENTS_TAG,
+            )
+
+        def download(self):
+            super(MPIFedAVGClientWrapper, self).download(
+                self.comm.recv(tag=PARAMETERS_TAG)
+            )
+
+        def mpi_initialize(self):
+            self.download()
+
+    return MPIFedAVGClientWrapper
+
+
+class MPIFedAVGClientManager(BaseManager):
+    def __init__(self, *args, **kwargs):
+        self.args = args
+        self.kwargs = kwargs
+
+    def attach(self, cls):
+        return attach_mpi_to_fedavgclient(cls, *self.args, **self.kwargs)

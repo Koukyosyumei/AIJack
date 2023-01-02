@@ -1,3 +1,5 @@
+from abc import abstractmethod
+
 import torch
 
 
@@ -21,20 +23,23 @@ class BaseServer(torch.nn.Module):
     def forward(self, x):
         return self.server_model(x)
 
-    def action(self):
-        """Execute thr routine of each communication."""
-        pass
-
-    def update(self):
-        """Update the global model."""
-        pass
-
-    def distribute(self):
-        """Distribute the global model to each client."""
-        pass
-
     def train(self):
         self.server_model.train()
 
     def eval(self):
         self.server_model.eval()
+
+    @abstractmethod
+    def action(self):
+        """Execute thr routine of each communication."""
+        pass
+
+    @abstractmethod
+    def update(self):
+        """Update the global model."""
+        pass
+
+    @abstractmethod
+    def distribute(self):
+        """Distribute the global model to each client."""
+        pass

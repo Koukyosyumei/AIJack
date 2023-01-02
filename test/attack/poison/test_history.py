@@ -1,11 +1,11 @@
-def test_soteria():
+def test_history_flip():
     import torch
     import torch.nn as nn
     import torch.optim as optim
     from torch.utils.data import DataLoader, TensorDataset
 
+    from aijack.attack.poison import HistoryAttackClientWrapper
     from aijack.collaborative.fedavg import FedAVGAPI, FedAVGClient, FedAVGServer
-    from aijack.defense import SoteriaClientManager
 
     torch.manual_seed(0)
 
@@ -37,16 +37,20 @@ def test_soteria():
     y = torch.load("test/demodata/demo_mnist_y.pt")
     local_dataloaders = [DataLoader(TensorDataset(x, y)) for _ in range(client_num)]
 
-    manager = SoteriaClientManager("conv", "lin", target_layer_name="lin.0.weight")
-    SoteriaFedAVGClient = manager.attach(FedAVGClient)
+    manager = HistoryAttackClientWrapper(lam=3)
+    HistoryAttackFedAVGClient = manager.attach(FedAVGClient)
 
     clients = [
-        SoteriaFedAVGClient(
+        HistoryAttackFedAVGClient(
             Net(),
-            user_id=i,
+            user_id=0,
             lr=lr,
-        )
-        for i in range(client_num)
+        ),
+        FedAVGClient(
+            Net(),
+            user_id=1,
+            lr=lr,
+        ),
     ]
     local_optimizers = [optim.SGD(client.parameters(), lr=lr) for client in clients]
 

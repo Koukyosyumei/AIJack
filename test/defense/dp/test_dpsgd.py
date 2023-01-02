@@ -5,7 +5,7 @@ def test_dpsgd():
     import torch.optim as optim
     from torch.utils.data import TensorDataset
 
-    from aijack.defense import GeneralMomentAccountant, PrivacyManager
+    from aijack.defense import DPSGDManager, GeneralMomentAccountant
 
     torch.manual_seed(0)
 
@@ -43,7 +43,7 @@ def test_dpsgd():
         backend="python",
     )
 
-    privacy_manager = PrivacyManager(
+    privacy_manager = DPSGDManager(
         accountant,
         optim.SGD,
         l2_norm_clip=l2_norm_clip,
@@ -62,36 +62,20 @@ def test_dpsgd():
     estimated_epsilon = accountant.get_epsilon(delta=delta)
 
     accountant.reset_step_info()
-    dpoptimizer_cls, lot_loader, batch_loader = privacy_manager.privatize(
-        noise_multiplier=sigma
-    )
+    dpoptimizer_cls, lot_loader, batch_loader = privacy_manager.privatize(sigma)
 
     net = Net()
     criterion = nn.CrossEntropyLoss()
     optimizer = dpoptimizer_cls(net.parameters(), lr=0.05, momentum=0.9)
 
     for _ in range(iterations):
-        running_loss = 0
-        data_size = 0
-        preds = []
-        labels = []
-        for data in lot_loader(trainset):
-            X_lot, y_lot = data
-            optimizer.zero_grad()
+        for X_lot, y_lot in lot_loader(optimizer):
             for X_batch, y_batch in batch_loader(TensorDataset(X_lot, y_lot)):
-                optimizer.zero_grad_keep_accum_grads()
-
+                optimizer.zero_grad()
                 pred = net(X_batch)
                 loss = criterion(pred, y_batch.to(torch.int64))
                 loss.backward()
-                optimizer.update_accum_grads()
-
-                running_loss += loss.item()
-                data_size += X_batch.shape[0]
-                preds.append(pred)
-                labels.append(y_batch)
-
-            optimizer.step()
+                optimizer.step()
 
     assert loss.item() is not None
     assert estimated_epsilon is not None

@@ -6,14 +6,15 @@ def test_labelleakage():
     import torch.optim as optim
     from sklearn.preprocessing import StandardScaler
 
-    from aijack.attack import NormAttackManager
-    from aijack.collaborative import SplitNN, SplitNNClient
+    from aijack.attack import NormAttackSplitNNManager
+    from aijack.collaborative.splitnn import SplitNNAPI, SplitNNClient
     from aijack.utils import NumpyDataset
 
     torch.manual_seed(10)
 
     batch_size = 5
     hidden_dim = 16
+    num_epoch = 2
 
     class FirstNet(nn.Module):
         def __init__(self, train_features):
@@ -66,26 +67,19 @@ def test_labelleakage():
     opt_2 = optim.Adam(model_2.parameters(), lr=1e-3)
     optimizers = [opt_1, opt_2]
     client_1 = SplitNNClient(model_1, user_id=0)
-    client_2 = SplitNNClient(model_2, user_id=0)
+    client_2 = SplitNNClient(model_2, user_id=1)
     clients = [client_1, client_2]
     criterion = nn.BCELoss()
 
-    manager = NormAttackManager(criterion, device="cpu")
-    NormAttackSplitNN = manager.attach(SplitNN)
-    normattacksplitnn = NormAttackSplitNN(clients, optimizers)
+    manager = NormAttackSplitNNManager(criterion, device="cpu")
+    NormAttackSplitNNAPI = manager.attach(SplitNNAPI)
+    normattacksplitnn = NormAttackSplitNNAPI(
+        clients, optimizers, train_loader, criterion, num_epoch
+    )
 
-    normattacksplitnn.train()
-    loss_log = []
-    for _ in range(2):
-        for data in train_loader:
-            inputs, labels = data
-            normattacksplitnn.zero_grad()
-            outputs = normattacksplitnn(inputs)
-            loss = criterion(outputs, labels)
-            normattacksplitnn.backward(loss)
-            normattacksplitnn.step()
-            loss_log.append(loss.item())
-
+    normattacksplitnn.run()
+    loss_log = normattacksplitnn.loss_log
     train_leak_auc = normattacksplitnn.attack(train_loader)
+
     assert loss_log[0] > loss_log[1]
     assert train_leak_auc > 0.5

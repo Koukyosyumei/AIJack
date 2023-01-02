@@ -1,3 +1,4 @@
+from ...manager import BaseManager
 from ..core import BaseServer
 from ..core.utils import GLOBAL_LOGIT_TAG, LOCAL_LOGIT_TAG
 
@@ -41,39 +42,43 @@ class FedMDServer(BaseServer):
             client.download(self.consensus)
 
 
-class MPIFedMDServer:
-    """MPI Wrapper for FedMDServer
+def attach_mpi_to_fedmdserver(cls):
+    class MPIFedMDServerWrapper(cls):
+        """MPI Wrapper for FedMDServer"""
 
-    Args:
-        comm: MPI.COMM_WORLD
-        server: the instance of FedAvgServer. The `clients` member variable shoud be the list of id.
-    """
+        def __init__(self, comm, *args, **kwargs):
+            super(MPIFedMDServerWrapper, self).__init__(*args, **kwargs)
+            self.comm = comm
+            self.num_clients = len(self.clients)
+            self.round = 0
 
-    def __init__(self, comm, server):
-        self.comm = comm
-        self.server = server
-        self.num_clients = len(self.server.clients)
-        self.round = 0
+        def action(self):
+            self.mpi_receive()
+            self.update()
+            self.mpi_distribute()
+            self.round += 1
 
-    def __call__(self, *args, **kwargs):
-        return self.server(*args, **kwargs)
+        def mpi_receive(self):
+            self.mpi_receive_local_logits()
 
-    def action(self):
-        self.mpi_receive()
-        self.server.update()
-        self.mpi_distribute()
-        self.round += 1
+        def mpi_receive_local_logits(self):
+            self.uploaded_logits = []
 
-    def mpi_receive(self):
-        self.mpi_receive_local_logits()
+            while len(self.uploaded_logits) < self.num_clients:
+                received_logits = self.comm.recv(tag=LOCAL_LOGIT_TAG)
+                self.uploaded_logits.append(received_logits)
 
-    def mpi_receive_local_logits(self):
-        self.server.uploaded_logits = []
+        def mpi_distribute(self):
+            for client_id in self.clients:
+                self.comm.send(self.consensus, dest=client_id, tag=GLOBAL_LOGIT_TAG)
 
-        while len(self.server.uploaded_logits) < self.num_clients:
-            received_logits = self.comm.recv(tag=LOCAL_LOGIT_TAG)
-            self.server.uploaded_logits.append(received_logits)
+    return MPIFedMDServerWrapper
 
-    def mpi_distribute(self):
-        for client_id in self.server.clients:
-            self.comm.send(self.server.consensus, dest=client_id, tag=GLOBAL_LOGIT_TAG)
+
+class MPIFedMDServerManager(BaseManager):
+    def __init__(self, *args, **kwargs):
+        self.args = args
+        self.kwargs = kwargs
+
+    def attach(self, cls):
+        return attach_mpi_to_fedmdserver(cls, *self.args, **self.kwargs)

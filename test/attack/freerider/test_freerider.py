@@ -1,15 +1,15 @@
-def test_fedavg_delta_weight():
+def test_FedAVG_delta_weight():
     import torch
     import torch.nn as nn
     import torch.optim as optim
+    from torch.utils.data import DataLoader, TensorDataset
 
     from aijack.attack.freerider import FreeRiderClientManager
-    from aijack.collaborative import FedAvgClient, FedAvgServer
+    from aijack.collaborative.fedavg import FedAVGAPI, FedAVGClient, FedAVGServer
 
     torch.manual_seed(0)
 
     lr = 0.01
-    epochs = 2
     client_num = 2
 
     class Net(nn.Module):
@@ -25,38 +25,33 @@ def test_fedavg_delta_weight():
     x = torch.load("test/demodata/demo_mnist_x.pt")
     x.requires_grad = True
     y = torch.load("test/demodata/demo_mnist_y.pt")
+    local_dataloaders = [DataLoader(TensorDataset(x, y)) for _ in range(client_num)]
 
     manager = FreeRiderClientManager(mu=0, sigma=1.0)
-    FreeRiderFedAvgClient = manager.attach(FedAvgClient)
+    FreeRiderFedAVGClient = manager.attach(FedAVGClient)
 
     clients = [
-        FreeRiderFedAvgClient(Net(), user_id=i, lr=lr, server_side_update=False)
+        FreeRiderFedAVGClient(Net(), user_id=i, lr=lr, server_side_update=False)
         for i in range(client_num)
     ]
-    optimizers = [optim.SGD(client.parameters(), lr=lr) for client in clients]
+    local_optimizers = [optim.SGD(client.parameters(), lr=lr) for client in clients]
 
     global_model = Net()
-    server = FedAvgServer(clients, global_model, lr=lr, server_side_update=False)
+    server = FedAVGServer(clients, global_model, lr=lr, server_side_update=False)
 
     criterion = nn.CrossEntropyLoss()
 
-    loss_log = []
-    for _ in range(epochs):
-        temp_loss = 0
-        for client_idx in range(client_num):
-            client = clients[client_idx]
-            optimizer = optimizers[client_idx]
+    api = FedAVGAPI(
+        server,
+        clients,
+        criterion,
+        local_optimizers,
+        local_dataloaders,
+        num_communication=2,
+        local_epoch=1,
+        use_gradients=True,
+        custom_action=lambda x: x,
+        device="cpu",
+    )
 
-            optimizer.zero_grad()
-            client.zero_grad()
-
-            outputs = client(x)
-            loss = criterion(outputs, y.to(torch.int64))
-            client.backward(loss)
-            temp_loss = loss.item() / client_num
-
-            optimizer.step()
-
-        loss_log.append(temp_loss)
-
-        server.action(use_gradients=True)
+    api.run()

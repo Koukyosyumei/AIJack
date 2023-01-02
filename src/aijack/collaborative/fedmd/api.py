@@ -192,10 +192,8 @@ class MPIFedMDAPI(BaseFedAPI):
 
             # Transfer phase
             if not self.is_server:
-                for _ in range(1, self.transfer_epoch_public + 1):
-                    self.train_client(public=True)
-                for _ in range(1, self.transfer_epoch_private + 1):
-                    self.train_client(public=False)
+                self.local_train(epoch=self.transfer_epoch_public, public=True)
+                self.local_train(epoch=self.transfer_epoch_private, public=False)
 
             # Updata global logits
             self.party.action()
@@ -204,26 +202,16 @@ class MPIFedMDAPI(BaseFedAPI):
             # Digest phase
             if not self.is_server:
                 for _ in range(1, self.consensus_epoch):
-                    self.party.client.approach_consensus(self.local_optimizer)
+                    self.party.approach_consensus(self.local_optimizer)
 
             # Revisit phase
             if not self.is_server:
                 for _ in range(self.revisit_epoch):
-                    self.train_client(public=False)
+                    self.local_train(public=False)
 
             self.custom_action(self)
             self.comm.Barrier()
 
-    def train_client(self, public=True):
-        for _ in range(self.local_epoch):
-            running_loss = 0
-            trainloader = self.public_dataloader if public else self.local_dataloader
-            for (_, data, target) in trainloader:
-                self.local_optimizer.zero_grad()
-                data = data.to(self.device)
-                target = target.to(self.device)
-                output = self.party.client.model(data)
-                loss = self.criterion(output, target)
-                loss.backward()
-                self.local_optimizer.step()
-                running_loss += loss.item()
+    def local_train(self, epoch=1, public=True):
+        trainloader = self.public_dataloader if public else self.local_dataloader
+        self.party.local_train(epoch, self.criterion, trainloader, self.local_optimizer)

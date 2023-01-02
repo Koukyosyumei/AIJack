@@ -1,9 +1,9 @@
 import torch.nn.functional as F
 
-from ..fedavg import FedAvgClient
+from ..fedavg import FedAVGClient
 
 
-class FedKDClient(FedAvgClient):
+class FedKDClient(FedAVGClient):
     """Implementation of FedKD (https://arxiv.org/abs/2108.13323)"""
 
     def __init__(

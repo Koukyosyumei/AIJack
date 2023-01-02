@@ -3,7 +3,7 @@ def test_fedkd():
     import torch.nn as nn
     import torch.optim as optim
 
-    from aijack.collaborative import FedAvgServer, FedKDClient
+    from aijack.collaborative import FedAVGServer, FedKDClient
 
     torch.manual_seed(0)
 
@@ -58,7 +58,7 @@ def test_fedkd():
     ]
 
     global_model = Net()
-    server = FedAvgServer(clients, global_model, lr=lr)
+    server = FedAVGServer(clients, global_model, lr=lr)
 
     teacher_loss_log = []
     student_loss_log = []

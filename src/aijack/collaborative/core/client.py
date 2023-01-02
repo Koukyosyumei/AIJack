@@ -1,3 +1,5 @@
+from abc import abstractmethod
+
 import torch
 
 
@@ -18,14 +20,6 @@ class BaseClient(torch.nn.Module):
     def forward(self, x):
         return self.model(x)
 
-    def upload(self):
-        """Upload the locally learned informatino to the server."""
-        pass
-
-    def download(self):
-        """Download the global model from the server."""
-        pass
-
     def train(self):
         self.model.train()
 
@@ -39,3 +33,17 @@ class BaseClient(torch.nn.Module):
             loss (torch.Tensor): the value of calculated loss.
         """
         loss.backward()
+
+    @abstractmethod
+    def upload(self):
+        """Upload the locally learned informatino to the server."""
+        pass
+
+    @abstractmethod
+    def download(self):
+        """Download the global model from the server."""
+        pass
+
+    @abstractmethod
+    def local_train(self):
+        pass

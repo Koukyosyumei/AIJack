@@ -546,10 +546,23 @@ class GradientInversion_Attack(BaseAttacker):
         return best_fake_x, best_fake_label
 
 
+def _default_gradinent_inversion_attack_on_receive(self):
+    tmp_result = []
+    for s in range(self.num_trial_per_communication):
+        self.reset_seed(s)
+        try:
+            tmp_result.append(self.attack())
+        except:
+            continue
+    self.attack_results.append(tmp_result)
+
+
 def attach_gradient_inversion_attack_to_server(
     cls,
     x_shape,
     y_shape=None,
+    attack_function_on_receive=_default_gradinent_inversion_attack_on_receive,
+    num_trial_per_communication=1,
     optimize_label=True,
     gradient_ignore_pos=[],
     pos_of_final_fc_layer=-2,
@@ -583,6 +596,7 @@ def attach_gradient_inversion_attack_to_server(
         def __init__(self, *args, **kwargs):
             super(GradientInversionServerWrapper, self).__init__(*args, **kwargs)
             self.target_client_id = target_client_id
+            self.num_trial_per_communication = num_trial_per_communication
             self.attacker = GradientInversion_Attack(
                 self.server_model,
                 x_shape,
@@ -616,9 +630,16 @@ def attach_gradient_inversion_attack_to_server(
                 **gradinvattack_kwargs,
             )
 
+            self.attack_results = []
+
         def change_target_client_id(self, target_client_id):
             self.target_client_id = target_client_id
             self.attacker.target_model = self.clients[self.target_client_id]
+
+        def receive(self, *args, **kwargs):
+            super(GradientInversionServerWrapper, self).receive(*args, **kwargs)
+
+            attack_function_on_receive(self)
 
         def attack(self, **kwargs):
             received_gradient = self.uploaded_gradients[self.target_client_id]
@@ -634,7 +655,7 @@ def attach_gradient_inversion_attack_to_server(
     return GradientInversionServerWrapper
 
 
-class GradientInversionAttackManager(BaseManager):
+class GradientInversionAttackServerManager(BaseManager):
     def __init__(self, *args, **kwargs):
         self.args = args
         self.kwargs = kwargs

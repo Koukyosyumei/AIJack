@@ -1,6 +1,7 @@
 import torch
 from torch import nn
 
+from ...manager import BaseManager
 from ...utils.utils import torch_round_x_decimal
 from ..core import BaseClient
 from ..core.utils import GLOBAL_LOGIT_TAG, LOCAL_LOGIT_TAG
@@ -49,6 +50,24 @@ class FedMDClient(BaseClient):
     def download(self, predicted_values_of_server):
         self.predicted_values_of_server = predicted_values_of_server
 
+    def local_train(self, local_epoch, criterion, trainloader, optimizer):
+
+        running_loss = 0.0
+        for _ in range(local_epoch):
+            for data in trainloader:
+                _, x, y = data
+                x = x.to(self.device)
+                y = y.to(self.device).to(torch.int64)
+
+                optimizer.zero_grad()
+                loss = criterion(self(x), y)
+                loss.backward()
+                optimizer.step()
+
+                running_loss += loss.item()
+
+        return running_loss
+
     def approach_consensus(self, consensus_optimizer):
         running_loss = 0
 
@@ -66,27 +85,36 @@ class FedMDClient(BaseClient):
         return running_loss
 
 
-class MPIFedMDClient:
-    def __init__(self, comm, client):
-        self.comm = comm
-        self.client = client
+def attach_mpi_to_fedmdclient(cls):
+    class MPIFedMDClientWrapper(cls):
+        def __init__(self, comm, *args, **kwargs):
+            super(MPIFedMDClientWrapper, self).__init__(*args, **kwargs)
+            self.comm = comm
 
-    def __call__(self, *args, **kwargs):
-        return self.client(*args, **kwargs)
+        def action(self):
+            self.mpi_upload()
+            self.model.zero_grad()
+            self.mpi_download()
 
-    def action(self):
-        self.mpi_upload()
-        self.client.model.zero_grad()
-        self.mpi_download()
+        def mpi_upload(self):
+            self.mpi_upload_logits()
 
-    def mpi_upload(self):
-        self.mpi_upload_logits()
+        def mpi_upload_logits(self, destination_id=0):
+            self.comm.send(self.upload(), dest=destination_id, tag=LOCAL_LOGIT_TAG)
 
-    def mpi_upload_logits(self, destination_id=0):
-        self.comm.send(self.client.upload(), dest=destination_id, tag=LOCAL_LOGIT_TAG)
+        def mpi_download(self):
+            self.download(self.comm.recv(tag=GLOBAL_LOGIT_TAG))
 
-    def mpi_download(self):
-        self.client.download(self.comm.recv(tag=GLOBAL_LOGIT_TAG))
+        def mpi_initialize(self):
+            self.mpi_download()
 
-    def mpi_initialize(self):
-        self.mpi_download()
+    return MPIFedMDClientWrapper
+
+
+class MPIFedMDClientManager(BaseManager):
+    def __init__(self, *args, **kwargs):
+        self.args = args
+        self.kwargs = kwargs
+
+    def attach(self, cls):
+        return attach_mpi_to_fedmdclient(cls, *self.args, **self.kwargs)

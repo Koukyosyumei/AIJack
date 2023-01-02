@@ -1,1 +1,1 @@
-from .manager import GeneralMomentAccountant, PrivacyManager  # noqa: F401
+from .manager import DPSGDManager, GeneralMomentAccountant  # noqa: F401

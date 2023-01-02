@@ -1,10 +1,10 @@
 from torch.utils.data import DataLoader
 
-from .dataloader import PoissonSampler
+from .dataloader import LotDataLoader, PoissonSampler
 from .optimizer import attach_differential_privacy_mechanism
 
 
-class PrivacyManager:
+class DPSGDManager:
     def __init__(
         self,
         accountant,
@@ -34,10 +34,13 @@ class PrivacyManager:
             len(self.dataset),
         )
 
-        def lot_loader(dataset):
-            return DataLoader(
+        def lot_loader(dp_optimizer):
+            return LotDataLoader(
+                dp_optimizer,
                 self.dataset,
-                batch_sampler=PoissonSampler(dataset, self.lot_size, self.iterations),
+                batch_sampler=PoissonSampler(
+                    self.dataset, self.lot_size, self.iterations
+                ),
             )
 
         def batch_loader(lot):
