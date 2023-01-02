@@ -47,6 +47,7 @@ jobs:
 
       - name: Build wheels
         run: |
+          pip install "pybind11[global]"
           pip install build
           python -m build
 
