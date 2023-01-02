@@ -5,6 +5,14 @@ from torch.nn import functional as F
 
 
 def total_variance(x):
+    """Returns the total variance of the given data
+
+    Args:
+        x (torch.Tensor): input data
+
+    Returns:
+        float: total variance of the given data
+    """
     dx = torch.mean(torch.abs(x[:, :, :, :-1] - x[:, :, :, 1:]))
     dy = torch.mean(torch.abs(x[:, :, :-1, :] - x[:, :, 1:, :]))
     return dx + dy
@@ -31,6 +39,18 @@ def crossentropyloss_between_logits(y_pred_logit, y_true_labels, reduction="mean
 
 
 def accuracy_torch_dataloader(model, dataloader, device="cpu", xpos=1, ypos=2):
+    """Calculates the accuracy of the model on the given dataloader
+
+    Args:
+        model (torch.nn.Module): model to be evaluated
+        dataloader (torch.DataLoader): dataloader to be evaluated
+        device (str, optional): device type. Defaults to "cpu".
+        xpos (int, optional): the positional index of the input in data. Defaults to 1.
+        ypos (int, optional): the positional index of the label in data. Defaults to 2.
+
+    Returns:
+        float: accuracy
+    """
     in_preds = []
     in_label = []
     with torch.no_grad():

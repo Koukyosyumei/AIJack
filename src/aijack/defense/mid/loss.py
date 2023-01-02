@@ -25,6 +25,20 @@ def mib_loss(
     approximated_z_sigma,
     beta=1e-3,
 ):
+    """Implementation of MID loss for NN proposed in https://arxiv.org/abs/2009.05241
+
+    Args:
+        y (torch.Tensor): ground-truth label
+        sampled_y_pred (torch.Tensor): prdicted output
+        p_z_given_x_mu (torch.Tensor): mean of z|x
+        p_z_given_x_sigma (torch.Tensor): standard deviation of z|x
+        approximated_z_mean (torch.Tensor): approximated mean of z
+        approximated_z_sigma (torch.Tensor): approximated standard deviation of z
+        beta (float, optional): _description_. weight of I(Z|X) to 1e-3.
+
+    Returns:
+        float, torch.Tensor, float: loss values, bound of I(Z|Y) and bound of I(Z|X)
+    """
 
     I_ZX_bound = torch.mean(
         KL_between_normals(

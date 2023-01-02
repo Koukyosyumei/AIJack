@@ -5,7 +5,7 @@ from .torch_wrapper import PaillierTensor
 
 
 def attach_paillier_to_client_for_encrypted_grad(cls, pk, sk):
-    """Make the client class communicate the encrypted gradients with paillier encryption scheme.
+    """Makes the client class communicate the encrypted gradients with paillier encryption scheme.
 
     Args:
         cls: client class
@@ -18,7 +18,7 @@ def attach_paillier_to_client_for_encrypted_grad(cls, pk, sk):
             super(PaillierClientWrapper, self).__init__(*args, **kwargs)
 
         def upload_gradients(self):
-            """Upload encrypted gradients"""
+            """Uploads encrypted gradients"""
             pt_grads = super().upload_gradients()
             return [
                 PaillierTensor(
@@ -28,7 +28,7 @@ def attach_paillier_to_client_for_encrypted_grad(cls, pk, sk):
             ]
 
         def download(self, global_grad):
-            """Download and decrypt the received global gradients"""
+            """Downloads and decrypt the received global gradients"""
             if not self.initialized:
                 # initial parameters are not encrypted
                 return super().download(global_grad)

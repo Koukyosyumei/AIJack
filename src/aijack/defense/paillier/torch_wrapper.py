@@ -7,7 +7,7 @@ HANDLED_FUNCTIONS = {}
 
 
 def implements(torch_function):
-    """Register a torch function override for PaillierTensor"""
+    """Registers a torch function override for PaillierTensor"""
 
     @functools.wraps(torch_function)
     def decorator(func):

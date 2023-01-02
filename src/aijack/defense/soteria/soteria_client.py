@@ -11,6 +11,8 @@ def attach_soteria_to_client(
     target_layer_name=None,
 ):
     class SoteriaClientWrapper(cls):
+        """Implementation of https://arxiv.org/pdf/2012.06043.pdf"""
+
         def __init__(self, *args, **kwargs):
             super(SoteriaClientWrapper, self).__init__(*args, **kwargs)
             self.input_layer = input_layer
