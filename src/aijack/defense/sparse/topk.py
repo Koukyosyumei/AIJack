@@ -9,6 +9,9 @@ def attach_sparse_gradient_to_client(cls, k):
     Args:
         cls: client class
         k (int): strength of sparcity
+
+    Returns:
+        cls: a class wrapped in SparseGradientClientWrapper
     """
 
     class SparseGradientClientWrapper(cls):
@@ -39,6 +42,9 @@ def attach_sparse_gradient_to_server(cls):
 
     Args:
         cls: server class
+
+    Returns:
+        cls: a class wrapped in SparseGradientServerWrapper
     """
 
     class SparseGradientServerWrapper(cls):
@@ -46,6 +52,14 @@ def attach_sparse_gradient_to_server(cls):
             super(SparseGradientServerWrapper, self).__init__(*args, **kwargs)
 
         def _preprocess_local_gradients(self, uploaded_grad):
+            """Reconstructs dense gradient from the received sparse gradients
+
+            Args:
+                uploaded_grad (tuple(torch.Tensor, torch.Tensor)): tuple of non-zero gradients and their positions
+
+            Returns:
+                List[torch.Tensor]: list of recovered dense gradients
+            """
             sparse_gradients_flattend, sparse_indices = uploaded_grad
             gradients_reshaped = []
             for params, grad, idx in zip(

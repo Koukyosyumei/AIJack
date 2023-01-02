@@ -18,18 +18,26 @@ def attach_ganattack_to_client(
     gan_log_interval=0,
     ignore_first_download=False,
 ):
-    class GANAttackClientWrapper(cls):
-        """GAN based model inversion attack (https://arxiv.org/abs/1702.07464)
+    """Wraps the given class in GANAttackClientWrapper.
 
-        Attributes:
-            target_label(int): index of target class
-            generator (torch.nn.Module): Generator
-            generator_optimizer (torch.optim.Optimizer): optimizer for the generator
-            generator_criterion (function): loss function for the generator
-            nz (int): dimension of latent space of the generator
-            user_id (int): user id
-            device (string): device type (cpu or cuda)
-        """
+    Args:
+        target_label(int): index of target class
+        generator (torch.nn.Module): Generator
+        generator_optimizer (torch.optim.Optimizer): optimizer for the generator
+        generator_criterion (function): loss function for the generator
+        nz (int): dimension of latent space of the generator. Defaults to 100.
+        device (str, optional): _description_. Defaults to "cpu".
+        gan_batch_size (int, optional): batch size for training GAN. Defaults to 1.
+        gan_epoch (int, optional): epoch for training GAN. Defaults to 1.
+        gan_log_interval (int, optional): log interval. Defaults to 0.
+        ignore_first_download (bool, optional): Defaults to False.
+
+    Returns:
+        cls: a class wrapped in GANAttackClientWrapper
+    """
+
+    class GANAttackClientWrapper(cls):
+        """Implementation of GAN based model inversion attack (https://arxiv.org/abs/1702.07464)"""
 
         def __init__(self, *args, **kwargs):
             super(GANAttackClientWrapper, self).__init__(*args, **kwargs)
@@ -48,7 +56,7 @@ def attach_ganattack_to_client(
             self.is_params_initialized = False
 
         def update_generator(self, batch_size=10, epoch=1, log_interval=5):
-            """Updata the Generator
+            """Updates the Generator
 
             Args:
                 batch_size (int): batch size
@@ -83,10 +91,11 @@ def attach_ganattack_to_client(
                     )
 
         def update_discriminator(self):
-            """Update the discriminator"""
+            """Updates the discriminator"""
             self.discriminator.load_state_dict(self.model.state_dict())
 
         def download(self, model_parameters):
+            """Downloads the new model"""
             super().download(model_parameters)
             if ignore_first_download and not self.is_params_initialized:
                 self.is_params_initialized = True
@@ -99,7 +108,7 @@ def attach_ganattack_to_client(
             )
 
         def attack(self, n):
-            """Generate fake images
+            """Generates fake images
 
             Args:
                 n (int): the number of fake images created by the Generator
@@ -116,9 +125,16 @@ def attach_ganattack_to_client(
 
 
 class GANAttackClientManager(BaseManager):
+    """Manager class for GAN based model inversion attack (https://arxiv.org/abs/1702.07464)"""
+
     def __init__(self, *args, **kwargs):
         self.args = args
         self.kwargs = kwargs
 
     def attach(self, cls):
+        """Wraps the given class in GANAttackClientWrapper.
+
+        Returns:
+            cls: a class wrapped in GANAttackClientWrapper
+        """
         return attach_ganattack_to_client(cls, *self.args, **self.kwargs)

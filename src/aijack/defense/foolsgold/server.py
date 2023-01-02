@@ -8,7 +8,15 @@ EPS = 1e-8
 
 
 def attach_foolsgold_to_server(cls):
+    """Wraps the given class in FoolsGoldServerWrapper.
+
+    Returns:
+        cls: a class wrapped in FoolsGoldServerWrapper
+    """
+
     class FoolsGoldServerWrapper(cls):
+        """Implementation of https://arxiv.org/abs/1808.04866"""
+
         def __init__(self, *args, **kwargs):
             super(FoolsGoldServerWrapper, self).__init__(*args, **kwargs)
 
@@ -28,6 +36,7 @@ def attach_foolsgold_to_server(cls):
             self.update_from_gradients(self.alpha)
 
         def update_weight(self):
+            """Updates weight for each client given the received local gradients."""
             for i, local_gradient in enumerate(self.uploaded_gradients):
                 self.aggregate_historical_gradients[i] += torch.cat(
                     [g.to(self.device).view(-1) for g in local_gradient[1]]
@@ -59,9 +68,16 @@ def attach_foolsgold_to_server(cls):
 
 
 class FoolsGoldServerManager(BaseManager):
+    """Manager class for FoolsGold proposed in https://arxiv.org/abs/1808.04866."""
+
     def __init__(self, *args, **kwargs):
         self.args = args
         self.kwargs = kwargs
 
     def attach(self, cls):
+        """Wraps the given class in FoolsGoldServerWrapper.
+
+        Returns:
+            cls: a class wrapped in FoolsGoldServerWrapper
+        """
         return attach_foolsgold_to_server(cls, *self.args, **self.kwargs)
