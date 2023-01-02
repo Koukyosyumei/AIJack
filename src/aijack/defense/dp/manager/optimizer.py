@@ -4,6 +4,24 @@ import torch
 def attach_differential_privacy_mechanism(
     cls, accountant, l2_norm_clip, noise_multiplier, lot_size, batch_size, dataset_size
 ):
+    """Wraps the given optimizer class in DPOptimizerWrapper.
+
+    Args:
+        accountant (BaseMomentAccountant): moment accountant
+        l2_norm_clip (float): upper bound of l2-norm
+        noise_multiplier (float): scale for added noise
+        lot_size (int): sampled lot size
+        batch_size (int): batch size
+        dataset_size (int): total number of samples in the dataset
+
+    Raises:
+        ValueError: if noise_multiplier < 0.0
+        ValueError: if l2_norm_clip < 0
+
+    Returns:
+        cls: wrapped DPOptimizerWrapper
+    """
+
     class DPOptimizerWrapper(cls):
         def __init__(self, *args, **kwargs):
             super(DPOptimizerWrapper, self).__init__(*args, **kwargs)
