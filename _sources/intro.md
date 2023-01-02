@@ -33,6 +33,12 @@ apt install -y libboost-all-dev
 pip install -U pip
 pip install "pybind11[global]"
 
+pip install aijack
+```
+
+If you want to use the latest-version, you can directly install from GitHub.
+
+```
 pip install git+https://github.com/Koukyosyumei/AIJack
 ```
 
