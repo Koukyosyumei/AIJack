@@ -4,7 +4,23 @@
   Author: Hideaki Takahashi
   -->
 
+# AIJack: Security and Privacy Risk Simulator for Standard/Distributed Machine Learning
+
+<div align="left">
+<img src="https://badgen.net/github/stars/Koukyosyumei/AIjack?color=green">
+<img src="https://badgen.net/github/forks/Koukyosyumei/AIjack">
+<img src="https://badgen.net/github/watchers/Koukyosyumei/AIjack">
+<img src="https://img.shields.io/github/commit-activity/m/Koukyosyumei/AIJack">
+<img src="https://img.shields.io/github/languages/code-size/Koukyosyumei/AIJack">
+<img src="https://img.shields.io/github/languages/count/Koukyosyumei/AIJack">
+<img src="https://img.shields.io/github/license/Koukyosyumei/AIJack">
+</div>
+
+❤️ <i>If you like AIJack, please consider <a href="https://github.com/sponsors/Koukyosyumei">becoming a GitHub Sponsor</a></i> ❤️
+
 # What is AIJack?
+
+<img src="AIJACK-NEON-LOGO.png" width=400 align="right">
 
 AIJack allows you to assess the privacy and security risks of machine learning algorithms such as *Model Inversion*, *Poisoning Attack*, *Evasion Attack*, *Free Rider*, and *Backdoor Attack*. AIJack also provides various defense techniques like *Differential Privacy*, *Homomorphic Encryption*, and other heuristic approaches. In addition, AIJack provides APIs for many distributed learning schemes like *Federated Learning* and *Split Learning*. You can integrate many attack and defense methods into such collaborative learning with a few lines. We currently implement more than 30 state-of-arts methods. For more information, see the [documentation](https://koukyosyumei.github.io/AIJack/intro.html).
 
