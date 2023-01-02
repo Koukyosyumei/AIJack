@@ -10,6 +10,9 @@
 <img src="https://badgen.net/github/watchers/Koukyosyumei/AIjack">
 <img src="https://badgen.net/github/stars/Koukyosyumei/AIjack?color=green">
 <img src="https://badgen.net/github/forks/Koukyosyumei/AIjack">
+<img src="https://img.shields.io/github/commit-activity/m/Koukyosyumei/AIJack">
+<img src="https://img.shields.io/github/languages/code-size/Koukyosyumei/AIJack">
+<img src="https://img.shields.io/github/license/Koukyosyumei/AIJack">
 </div>
 
 <div align="center">
