@@ -43,11 +43,10 @@ jobs:
           submodules: true
 
       - name: Install Boost
-        run: pipx install libboost-all-dev
+        run: sudo apt install -y libboost-all-dev
 
-      - uses: pypa/cibuildwheel@v2.11.3
-        env:
-          CIBW_ARCHS_MACOS: auto universal2
+      - name: Build wheels
+        run: python -m build
 
       - name: Verify clean directory
         run: git diff --exit-code
@@ -56,7 +55,7 @@ jobs:
       - name: Upload wheels
         uses: actions/upload-artifact@v3
         with:
-          path: wheelhouse/*.whl
+          path: dist/*.whl
 
   upload_all:
     name: Upload if release
