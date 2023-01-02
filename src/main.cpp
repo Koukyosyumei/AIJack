@@ -5,12 +5,12 @@
 #include <iostream>
 #include <vector>
 
-#include "src/aijack/defense/dp/core//rdp.cpp"
-#include "src/aijack/defense/dp/core//search.cpp"
-#include "src/aijack/defense/paillier/src/paillier.h"
-#include "src/aijack/defense/paillier/src/keygenerator.h"
-#include "src/aijack/collaborative/tree/xgboost/xgboost.h"
-#include "src/aijack/collaborative/tree/secureboost/secureboost.h"
+#include "aijack/defense/dp/core//rdp.cpp"
+#include "aijack/defense/dp/core//search.cpp"
+#include "aijack/defense/paillier/src/paillier.h"
+#include "aijack/defense/paillier/src/keygenerator.h"
+#include "aijack/collaborative/tree/xgboost/xgboost.h"
+#include "aijack/collaborative/tree/secureboost/secureboost.h"
 
 #define STRINGIFY(x) #x
 #define MACRO_STRINGIFY(x) STRINGIFY(x)

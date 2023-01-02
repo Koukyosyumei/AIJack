@@ -8,7 +8,7 @@ find_package(Boost REQUIRED)
 
 find_package(Python COMPONENTS Interpreter Development)
 find_package(pybind11 CONFIG)
-pybind11_add_module(aijack_cpp_core main.cpp)
+pybind11_add_module(aijack_cpp_core src/main.cpp)
 
 # EXAMPLE_VERSION_INFO is defined by setup.py and passed into the C++ code as a
 # define (VERSION_INFO) here.

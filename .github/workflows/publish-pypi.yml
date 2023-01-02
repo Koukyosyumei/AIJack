@@ -5,7 +5,7 @@ on:
   pull_request:
   push:
     branches:
-     - main
+      - main
   release:
     types:
       - published
@@ -15,36 +15,67 @@ jobs:
     name: Build SDist
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
-      with:
-        submodules: true
-      
-    - name: Build SDist
-      run: pipx run build --sdist
+      - uses: actions/checkout@v3
+        with:
+          submodules: true
 
-    - name: Check metadata
-      run: pipx run twine check dist/*
+      - name: Build SDist
+        run: pipx run build --sdist
 
-    - uses: actions/upload-artifact@v3
-      with:
-        path: dist/*.tar.gz
+      - name: Check metadata
+        run: pipx run twine check dist/*
+
+      - uses: actions/upload-artifact@v3
+        with:
+          path: dist/*.tar.gz
+
+  build_wheels:
+    name: Wheels on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest]
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: true
+
+      - name: Install Boost
+        run: sudo apt install -y libboost-all-dev
+
+      - name: Build wheels
+        run: |
+          pip install "pybind11[global]"
+          pip install build
+          python -m build
+
+      - name: Verify clean directory
+        run: git diff --exit-code
+        shell: bash
+
+      - name: Upload wheels
+        uses: actions/upload-artifact@v3
+        with:
+          path: dist/*.whl
 
   upload_all:
     name: Upload if release
-    needs: [build_sdist]
+    needs: [build_wheels, build_sdist]
     runs-on: ubuntu-latest
     if: github.event_name == 'release' && github.event.action == 'published'
 
     steps:
-    - uses: actions/setup-python@v4
-      with:
-        python-version: "3.x"
+      - uses: actions/setup-python@v4
+        with:
+          python-version: "3.x"
 
-    - uses: actions/download-artifact@v3
-      with:
-        name: artifact
-        path: dist
+      - uses: actions/download-artifact@v3
+        with:
+          name: artifact
+          path: dist
 
-    - uses: pypa/gh-action-pypi-publish@v1.6.4
-      with:
-        password: ${{ secrets.PYPI_PASSWORD }}
+      - uses: pypa/gh-action-pypi-publish@v1.6.4
+        with:
+          password: ${{ secrets.PYPI_PASSWORD }}
