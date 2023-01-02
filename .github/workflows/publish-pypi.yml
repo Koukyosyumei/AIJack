@@ -46,7 +46,9 @@ jobs:
         run: sudo apt install -y libboost-all-dev
 
       - name: Build wheels
-        run: python -m build
+        run: |
+          pip install build
+          python -m build
 
       - name: Verify clean directory
         run: git diff --exit-code
