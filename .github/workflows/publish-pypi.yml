@@ -43,7 +43,7 @@ jobs:
           submodules: true
 
       - name: Install Boost
-        run: pipx install -y libboost-all-dev
+        run: pipx install libboost-all-dev
 
       - uses: pypa/cibuildwheel@v2.11.3
         env:
