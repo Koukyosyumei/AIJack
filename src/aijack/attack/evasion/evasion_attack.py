@@ -7,7 +7,7 @@ from ..base_attack import BaseAttacker
 
 
 class Evasion_attack_sklearn(BaseAttacker):
-    """Create an adversarial example against sklearn objects
+    """Creates an adversarial example against sklearn objects
         reference https://arxiv.org/abs/1708.06131
 
     Args:
@@ -93,7 +93,7 @@ class Evasion_attack_sklearn(BaseAttacker):
             raise ValueError(f"distance type {distance} is not defined")
 
     def _detect_type_of_classifier(self):
-        """set proper attributes based on the type of classifier
+        """Sets proper attributes based on the type of classifier
 
         Returns:
             return True (bool) if there is no error
@@ -148,7 +148,7 @@ class Evasion_attack_sklearn(BaseAttacker):
         return True
 
     def _get_delta_p(self, xm):
-        """culculate deviation of the estimated density p(xm−1 |yc = −1)
+        """Culculates deviation of the estimated density p(xm−1 |yc = −1)
 
         Args:
             xm (np.array) : an adversarial example
@@ -167,7 +167,7 @@ class Evasion_attack_sklearn(BaseAttacker):
             return delta_p
 
     def _get_grad_f(self, xm, norm="l1"):
-        """culculate deviation of objective function F
+        """Culculates deviation of objective function F
 
         Args:
             xm (np.array) : an adversarial example
@@ -191,7 +191,7 @@ class Evasion_attack_sklearn(BaseAttacker):
         return delta_f
 
     def attack(self, x0):
-        """try evasion attack
+        """Executes evasion attack
 
         Args:
             x0 (np.array) : initial data point

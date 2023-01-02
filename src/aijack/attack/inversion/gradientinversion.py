@@ -172,7 +172,7 @@ class GradientInversion_Attack(BaseAttacker):
         torch.manual_seed(seed)
 
     def _setup_distancefunc(self, distancename):
-        """Assign a function to self.distancefunc according to distancename
+        """Assigns a function to self.distancefunc according to distancename
 
         Args:
             distancename: name of the function to culculat the distance between the gradients.
@@ -191,7 +191,7 @@ class GradientInversion_Attack(BaseAttacker):
             raise ValueError(f"{distancename} is not defined")
 
     def _setup_optimizer_class(self, optimizername):
-        """Assign a class to self.optimizer_class according to optimiername
+        """Assigns a class to self.optimizer_class according to optimiername
 
         Args:
             optimizername: name of optimizer, currently support `LBFGS`, `SGD`, and `Adam`
@@ -211,7 +211,7 @@ class GradientInversion_Attack(BaseAttacker):
             raise ValueError(f"{optimizername} is not defined")
 
     def _get_hook_for_input(self, name):
-        """Return a hook function to extract the input of the specified layer of the target model
+        """Returns a hook function to extract the input of the specified layer of the target model
 
         Args:
             name: the key of self.bn_reg_layer_inputs for the target layer
@@ -255,7 +255,7 @@ class GradientInversion_Attack(BaseAttacker):
         return fake_label
 
     def _estimate_label(self, received_gradients, batch_size):
-        """Estimate the secret labels from the received gradients
+        """Estimates the secret labels from the received gradients
 
         this function is based on the following papers:
         batch_size == 1: https://arxiv.org/abs/2001.02610
@@ -283,7 +283,7 @@ class GradientInversion_Attack(BaseAttacker):
     def _culc_regularization_term(
         self, fake_x, fake_pred, fake_label, group_fake_x, received_gradients
     ):
-        """Culculate the regularization term
+        """Culculates the regularization term
 
         Args:
             fake_x: reconstructed images
@@ -337,7 +337,7 @@ class GradientInversion_Attack(BaseAttacker):
     def _setup_closure(
         self, optimizer, fake_x, fake_label, received_gradients, group_fake_x=None
     ):
-        """Return a closure function for the optimizer
+        """Returns a closure function for the optimizer
 
         Args:
             optimizer (torch.optim.Optimizer): an instance of the optimizer
@@ -374,7 +374,7 @@ class GradientInversion_Attack(BaseAttacker):
         return closure
 
     def _setup_attack(self, received_gradients, batch_size, init_x=None, labels=None):
-        """Initialize the image and label, and set the optimizer
+        """Initializes the image and label, and set the optimizer
 
         Args:
             received_gradients: a list of gradients received from the client
@@ -408,7 +408,7 @@ class GradientInversion_Attack(BaseAttacker):
         return fake_x, fake_label, optimizer
 
     def reset_seed(self, seed):
-        """Reset the random seed
+        """Resets the random seed
 
         Args:
             seed (int): the random seed
@@ -424,7 +424,7 @@ class GradientInversion_Attack(BaseAttacker):
         labels=None,
         return_best=True,
     ):
-        """Reconstruct the images from the gradients received from the client
+        """Reconstructs the images from the gradients received from the client
 
         Args:
             received_gradients: the list of gradients received from the client.
@@ -592,6 +592,49 @@ def attach_gradient_inversion_attack_to_server(
     target_client_id=0,
     gradinvattack_kwargs={},
 ):
+    """Wraps the given class in GradientInversionServerWrapper.
+
+    Args:
+        x_shape: input shape of target_model.
+        y_shape: output shape of target_model.
+        attack_function_on_receive (function, optional): a function to execute attack called after receving the local gradients. Defaults to _default_gradinent_inversion_attack_on_receive.
+        num_trial_per_communication (int, optional): number of attack trials executed per communication. Defaults to 1.
+        optimize_label: If true, only optimize images (the label will be automatically estimated).
+        gradient_ignore_pos: a list of positions whihc will be ignored during the culculation of
+                                the distance between gradients
+        pos_of_final_fc_layer: position of gradients corresponding to the final FC layer
+                                within the gradients received from the client.
+        num_iteration: number of iterations of optimization.
+        optimizer_class: a class of torch optimizer for the attack.
+        optimizername: a name of optimizer class (priority over optimizer_class).
+        lossfunc: a function that takes the predictions of the target model and true labels
+                and returns the loss between them.
+        distancefunc: a function which takes the gradients of reconstructed images and the client-side gradients
+                    and returns the distance between them.
+        distancename: a name of distancefunc (priority over distancefunc).
+        tv_reg_coef: the coefficient of total-variance regularization.
+        lm_reg_coef: the coefficient of label-matching regularization.
+        l2_reg_coef: the coefficient of L2 regularization.
+        bn_reg_coef: the coefficient of BN regularization.
+        gc_reg_coef: the coefficient of group-consistency regularization.
+        bn_reg_layers: a list of batch normalization layers of the target model.
+        custom_reg_func: a custom regularization function.
+        custom_reg_coef: the coefficient of the custom regularization function
+        device: device type.
+        log_interval: the interval of logging.
+        save_loss: If true, save the loss during the attack.
+        seed: random state.
+        group_num: the size of group,
+        group_seed: a list of random states for each worker of the group
+        early_stopping: early stopping
+        clamp_range ((float, float), optional): clamps the fake input within the specified range. Defaults to None.
+        target_client_id (int, optional): id f the target client. Defaults to 0.
+        gradinvattack_kwargs (dict, optional): optional arguments for the optimizer used in inversion attack. Defaults to {}.
+
+    Returns:
+        cls: GradientInversionServerWrapper
+    """
+
     class GradientInversionServerWrapper(cls):
         def __init__(self, *args, **kwargs):
             super(GradientInversionServerWrapper, self).__init__(*args, **kwargs)
@@ -656,11 +699,18 @@ def attach_gradient_inversion_attack_to_server(
 
 
 class GradientInversionAttackServerManager(BaseManager):
+    """Manager class for Gradient-based model inversion attack"""
+
     def __init__(self, *args, **kwargs):
         self.args = args
         self.kwargs = kwargs
 
     def attach(self, cls):
+        """Wraps the given class in GradientInversionServerWrapper.
+
+        Returns:
+            cls: GradientInversionServerWrapper
+        """
         return attach_gradient_inversion_attack_to_server(
             cls, *self.args, **self.kwargs
         )

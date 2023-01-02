@@ -8,14 +8,29 @@ from ...manager import BaseManager
 def attach_dba_to_client(
     cls, decomposed_trigger_rules, target_label, poison_ratio, scale
 ):
+    """Wraps the given class in DistributedBackdoorAttackClientWrapper.
+
+    Args:
+        cls: Server class
+        decomposed_trigger_rules ([function]): list of functions that define the decomposed trigger rules for each client
+        target_label (int): a label that the attacker want to make the victim model predict when the inupt contains the trigger
+        poison_ratio (float): a ratio of poisoned samples
+        scale (_type_): scale for the uploaded gradients
+
+    Returns:
+        cls: a class wrapped in DistributedBackdoorAttackClientWrapper
+    """
+
     class DistributedBackdoorAttackClientWrapper(cls):
+        """Implementation of https://openreview.net/forum?id=rkgyS0VFvr"""
+
         def __init__(self, *args, **kwargs):
             super(DistributedBackdoorAttackClientWrapper, self).__init__(
                 *args, **kwargs
             )
 
         def upload_gradients(self):
-            """Upload the local gradients"""
+            """Uploads the local gradients"""
             gradients = []
             for param, prev_param in zip(self.model.parameters(), self.prev_parameters):
                 gradients.append((prev_param - param) / self.lr * scale)
@@ -58,9 +73,16 @@ def attach_dba_to_client(
 
 
 class DistributedBackdoorAttackClientManager(BaseManager):
+    """Manager class for DistributedBackdoorAttack proposed in https://openreview.net/forum?id=rkgyS0VFvr."""
+
     def __init__(self, *args, **kwargs):
         self.args = args
         self.kwargs = kwargs
 
     def attach(self, cls):
+        """Wraps the given class in DistributedBackdoorAttackClientWrapper.
+
+        Returns:
+            cls: a class wrapped in DistributedBackdoorAttackClientWrapper
+        """
         return attach_dba_to_client(cls, *self.args, **self.kwargs)
