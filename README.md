@@ -16,7 +16,7 @@
 ❤️ <i>If you like AIJack, please consider <a href="https://github.com/sponsors/Koukyosyumei">becoming a GitHub Sponsor</a></i> ❤️
 </div>
 
-<img src="logo/AIJACK-NEON-LOGO.png" width=420 align="right">
+<img src="logo/AIJACK-NEON-LOGO.png" width=400 align="right">
 
 # What is AIJack?
 
@@ -24,9 +24,7 @@ AIJack allows you to assess the privacy and security risks of machine learning a
 
 # Installation
 
-## pip
-
-AIJack requires Boost and pybind11.
+You can install AIJack with `pip`. AIJack requires Boost and pybind11.
 
 ```
 apt install -y libboost-all-dev
@@ -36,9 +34,7 @@ pip install "pybind11[global]"
 pip install git+https://github.com/Koukyosyumei/AIJack
 ```
 
-## Docker
-
-Please use our [Dockerfile](Dockerfile).
+You can also use our [Dockerfile](Dockerfile).
 
 
 # Quick Start
