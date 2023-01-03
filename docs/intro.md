@@ -40,7 +40,7 @@ If you want to use the latest-version, you can directly install from GitHub.
 pip install git+https://github.com/Koukyosyumei/AIJack
 ```
 
-You can also use our [Dockerfile](Dockerfile).
+We also provide [Dockerfile](Dockerfile).
 
 
 # Quick Start
@@ -49,18 +49,20 @@ We briefly introduce some example usages. You can also find more examples in [do
 
 ## Basic Interface
 
-For standard machine learning algorithm, AIJack allows you to simulate attacks against machine learning models with `Attacker` APIs. AIJack mostly supports PyTorch or sklearn models.
+For standard machine learning algorithms, AIJack allows you to simulate attacks against machine learning models with `Attacker` APIs. AIJack mainly supports PyTorch or sklearn models.
 
-abstract code
 ```Python
+# abstract code
+
 attacker = Attacker(target_model)
 result = attacker.attack()
 ```
 
-For distributed learning such as Fedeated Learning, AIJack offers four basic APIs: `Client`, `Server`, `API`, and `Manager`. `Client` and `Server` represents each client and server within each distributed learning scheme, and we register the clients and servers to `API`. You can run this `API` and execute training via `run` method. `Manager` gives additional abilities such as attack, defense or parallel computing to `Client`, `Server` or `API` via `attach` method.
+For distributed learning such as Federated Learning, AIJack offers four basic APIs: `Client`, `Server`, `API`, and `Manager`. `Client` and `Server` represent each client and server within each distributed learning scheme, and we register the clients and servers to `API`. You can run this `API` and execute training via `run` method. `Manager` gives additional abilities such as attack, defense, or parallel computing to `Client`, `Server` or `API` via `attach` method.
 
-abstract code
 ```Python
+# abstract code
+
 client = [Client(), Client()]
 server = Server()
 api = API(client, server)
@@ -81,7 +83,7 @@ api.run() # execute training
 
 ### FedAVG
 
-FedAVG is the most representative algorithm of Federated Learning, where multiple clients jointly train a single model without sharing their local datasets. You can integrate any Pytorch models.
+FedAVG is the most representative algorithm of Federated Learning, where multiple clients jointly train a single model without sharing their local datasets. You can integrate any Pytorch model.
 
 ```Python
 from aijack.collaborative.fedavg import FedAVGClient, FedAVGServer
@@ -103,7 +105,7 @@ api.run()
 
 ### FedMD
 
-Model-Distillation based Federated Learning does not need communicating gradients, which might decrease the information leakage.
+Model-Distillation-based Federated Learning does not need communicating gradients, which might decrease the information leakage.
 
 ```Python
 from aijack.collaborative.fedmd import FedMDAPI, FedMDClient, FedMDServer
@@ -131,7 +133,7 @@ api.run()
 
 ### SecureBoost (Vertical Federated version of XGBoost)
 
-AIJack supports not only neuralnetwork but also tree-based Federated Learning.
+AIJack supports not only neural networks but also tree-based Federated Learning.
 
 ```Python
 from aijacl.collaborative.tree import SecureBoostClassifierAPI, SecureBoostClient
@@ -158,8 +160,9 @@ sclf.predict_proba(X)
 
 AIJack supports MPI-backend for some of Federated Learning methods.
 
-FedAVG
 ```Python
+# FedAVG
+
 from mpi4py import MPI
 from aijack.collaborative.fedavg import FedAVGClient, FedAVGServer
 from aijack.collaborative.fedavg import MPIFedAVGAPI, MPIFedAVGClientManager, MPIFedAVGServerManager
@@ -173,7 +176,7 @@ MPIFedAVGClient = mpi_client_manager.attach(FedAVGClient)
 MPIFedAVGServer = mpi_server_manager.attach(FedAVGServer)
 
 if myid == 0:
-    server = MPIFedAVGServer(comm, FedAVGServer(client_ids, model))
+    server = MPIFedAVGServer(comm, client_ids, model)
     api = MPIFedAVGAPI(
         comm,
         server,
@@ -185,7 +188,7 @@ if myid == 0:
         1,
     )
 else:
-    client = MPIFedAVGClient(comm, FedAVGClient(model, user_id=myid))
+    client = MPIFedAVGClient(comm, model, user_id=myid)
     api = MPIFedAVGAPI(
         comm,
         client,
@@ -200,8 +203,9 @@ else:
 api.run()
 ```
 
-FedMD
 ```Python
+# FedMD
+
 from mpi4py import MPI
 from aijack.collaborative.fedmd import MPIFedMDAPI, MPIFedMDClient, MPIFedMDServer
 
@@ -209,7 +213,9 @@ comm = MPI.COMM_WORLD
 myid = comm.Get_rank()
 
 if myid == 0:
-    server = MPIFedMDServer(comm, FedMDServer(client_ids, model))
+    mpi_manager = MPIFedMDServerManager()
+    MPIFedMDServer = mpi_manager.attach(FedMDServer)
+    server = MPIFedMDServer(comm, client_ids, model)
     api = MPIFedMDAPI(
         comm,
         server,
@@ -219,7 +225,9 @@ if myid == 0:
         None,
     )
 else:
-    client = MPIFedMDClient(comm, FedMDClient(model, public_dataloader, output_dim=10, user_id=myid))
+    mpi_manager = MPIFedMDClientManager()
+    MPIFedMDClient = mpi_manager.attach(FedMDClient)
+    client = MPIFedMDClient(comm, model, public_dataloader, output_dim=class_num, user_id=myid)
     api = MPIFedMDAPI(
         comm,
         client,
@@ -235,7 +243,7 @@ api.run()
 
 ### Attack: Model Inversion
 
-Model Inversion Attack steals the local training data via the shared information like gradients or parameters.
+Model Inversion Attack steals the local training data via shared information like gradients or parameters.
 
 ```Python
 from aijack.attack.inversion import GradientInversionAttackServerManager
@@ -254,12 +262,12 @@ api = FedAVGAPI(
 )
 api.run()
 
-reconstructed_training_data = server.attack()
+reconstructed_training_data = server.attack_results
 ```
 
 ### Defense: Differential Privacy
 
-One possible defense against Model Inversion Attack is using differential privacy. AIJack supports DPSGD, an optimizer which makes the trained model satisfy differential privacy.
+One possible defense against Model Inversion Attack is using differential privacy. AIJack supports DPSGD, an optimizer that makes the trained model satisfy differential privacy.
 
 ```Python
 from aijack.defense.dp import DPSGDManager, GeneralMomentAccountant, DPSGDClientManager
@@ -290,9 +298,9 @@ SoteriaFedAVGClient = manager.attach(FedAVGClient)
 clients = [SoteriaFedAVGClient(local_model_1, user_id=0), SoteriaFedAVGClient(local_model_2, user_id=1)]
 ```
 
-### Defense: Homomorophic Encryption
+### Defense: Homomorphic Encryption
 
-Clients in Federated Learning can also encrypt their local gradients to prevent the potential information leakage. For example, AIJack offers Paiilier Encryption with c++ backend, which faster than other python-based implementations.
+Clients in Federated Learning can also encrypt their local gradients to prevent potential information leakage. For example, AIJack offers Paiilier Encryption with c++ backend faster than other python-based implementations.
 
 ```Python
 from aijack.defense.paillier import PaillierGradientClientManager, PaillierKeyGenerator
@@ -328,7 +336,7 @@ clients = [LabelFlipAttackFedAVGClient(local_model_1, user_id=0), FedAVGClient(l
 
 ### Defense: FoolsGOld
 
-One of the standard method to mitigate Poisoning Attack is FoolsGold, which calculates the similarity among clients and decrease the influence of the malicious clients.
+One standard method to mitigate Poisoning Attack is FoolsGold, which calculates the similarity among clients and decreases the influence of the malicious clients.
 
 ```Python
 from aijack.defense.foolsgold import FoolsGoldServerManager
@@ -353,7 +361,7 @@ clients = [FreeRiderFedAVGClient(local_model_1, user_id=0), FedAVGClient(local_m
 
 ## Split Learning
 
-Split Learning is another collaborative learning scheme, where only one party owns the ground-truth labels.
+Split Learning is another collaborative learning scheme where only one party owns the ground-truth labels.
 
 ### SplitNN
 
