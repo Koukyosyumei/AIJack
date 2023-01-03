@@ -20,7 +20,7 @@
 
 # What is AIJack?
 
-<img src="logo/AIJACK-NEON-LOGO.png" width=406 align="right">
+<center><img src="logo/AIJACK-NEON-LOGO-SQUARE.png" width=300></center>
 
 AIJack allows you to assess the privacy and security risks of machine learning algorithms such as *Model Inversion*, *Poisoning Attack*, *Evasion Attack*, *Free Rider*, and *Backdoor Attack*. AIJack also provides various defense techniques like *Differential Privacy*, *Homomorphic Encryption*, and other heuristic approaches. In addition, AIJack provides APIs for many distributed learning schemes like *Federated Learning* and *Split Learning*. You can integrate many attack and defense methods into such collaborative learning with a few lines. We currently implement more than 30 state-of-arts methods. For more information, see the [documentation](https://koukyosyumei.github.io/AIJack/intro.html).
 
@@ -160,7 +160,7 @@ sclf.predict_proba(X)
 
 ### MPI-backend
 
-AIJack supports MPI-backend for some of Federated Learning methods. 
+AIJack supports MPI-backend for some of Federated Learning methods.
 
 ```Python
 # FedAVG
