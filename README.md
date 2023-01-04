@@ -106,7 +106,7 @@ GradientInversionAttackFedAVGServer = manager.attach(FedAVGServer)
 clients = [FedAVGClient(...), DPSGDFedAVGClient(...)]
 server = GradientInversionAttackFedAVGServer(...)
 
-api = API(extended_client, extended_server)
+api = FedAVGAPI(extended_client, extended_server)
 api.run()
 ```
 
