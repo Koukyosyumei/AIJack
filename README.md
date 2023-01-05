@@ -55,7 +55,7 @@ We briefly introduce the overview of AIJack.
 - Compatible with PyTorch and scikit-learn
 - Support for both Deep Learning and classical ML
 - Fast Implementation with C++ backend
-- Pythorch-Extension for Homomorphic Encryption
+- PyTorch-Extension for Homomorphic Encryption
 - MPI-Backend for Federated Learning
 
 ## Basic Interface
