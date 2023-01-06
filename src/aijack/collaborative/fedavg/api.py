@@ -49,7 +49,7 @@ class FedAVGAPI(BaseFedAPI):
             len(dataloader.dataset) for dataloader in self.local_dataloaders
         ]
         sum_local_dataset_sizes = sum(local_dataset_sizes)
-        self.servre.weight = [
+        self.server.weight = [
             dataset_size / sum_local_dataset_sizes
             for dataset_size in local_dataset_sizes
         ]
