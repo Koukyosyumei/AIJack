@@ -33,7 +33,7 @@ def attach_foolsgold_to_server(cls):
 
         def update(self):
             self.update_weight()
-            self.update_from_gradients(self.alpha)
+            self.update_from_gradients()
 
         def update_weight(self):
             """Updates weight for each client given the received local gradients."""
@@ -63,6 +63,7 @@ def attach_foolsgold_to_server(cls):
 
             self.alpha = np.max(self.cs, axis=1)
             self.alpha = self.alpha / (np.max(self.alpha) + EPS)
+            self.weight = self.alpha
 
     return FoolsGoldServerWrapper
 

@@ -39,6 +39,7 @@ class FedAVGServer(BaseServer):
         self.uploaded_gradients = []
 
         self.force_send_model_state_dict = True
+        self.weight = np.ones(self.num_clients) / self.num_clients
 
     def _setup_optimizer(self, optimizer_type, **kwargs):
         if optimizer_type == "sgd":
@@ -96,16 +97,8 @@ class FedAVGServer(BaseServer):
         """Receive local parameters"""
         self.uploaded_parameters = [c.upload_parameters() for c in self.clients]
 
-    def update_from_gradients(self, weight=None):
-        """Update the global model with the local gradients.
-
-        Args:
-            weight (list of float, optional): weight for each client. Defaults to None.
-        """
-        if weight is None:
-            weight = np.ones(self.num_clients) / self.num_clients
-            weight = weight.tolist()
-
+    def update_from_gradients(self):
+        """Update the global model with the local gradients."""
         self.aggregated_gradients = [
             torch.zeros_like(params) for params in self.server_model.parameters()
         ]
@@ -114,28 +107,21 @@ class FedAVGServer(BaseServer):
         for i, gradients in enumerate(self.uploaded_gradients):
             for gradient_id in range(len_gradients):
                 self.aggregated_gradients[gradient_id] = (
-                    gradients[gradient_id] * weight[i]
+                    gradients[gradient_id] * self.weight[i]
                     + self.aggregated_gradients[gradient_id]
                 )
 
         if self.server_side_update:
             self.optimizer.step(self.aggregated_gradients)
 
-    def update_from_parameters(self, weight=None):
-        """Update the global model with the local model parameters.
-
-        Args:
-            weight (list of float, optional): weight for each client. Defaults to None.
-        """
-        if weight is None:
-            weight = np.ones(self.num_clients) / self.num_clients
-
+    def update_from_parameters(self):
+        """Update the global model with the local model parameters."""
         averaged_params = self.uploaded_parameters[0]
 
         for k in averaged_params.keys():
             for i in range(0, len(self.uploaded_parameters)):
                 local_model_params = self.uploaded_parameters[i]
-                w = weight[i]
+                w = self.weight[i]
                 if i == 0:
                     averaged_params[k] = local_model_params[k] * w
                 else:
