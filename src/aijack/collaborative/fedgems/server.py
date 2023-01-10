@@ -38,7 +38,6 @@ class FedGEMSServer(BaseServer):
             len_public_dataloader, output_dim, self.device
         )
 
-
     def action(self):
         self.distribute()
 
