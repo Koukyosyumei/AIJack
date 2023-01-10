@@ -122,7 +122,7 @@ class FedMDAPI(BaseFLKnowledgeDistillationAPI):
         logging["loss_server_public_dataset"].append(loss_server_public)
         return logging
 
-    def evaluation(self, logging):
+    def evaluation(self, i, logging):
         acc_on_local_dataset = self.local_score()
         print(f"epoch={i} acc on local datasets: ", acc_on_local_dataset)
         logging["acc_local"].append(acc_on_local_dataset)
@@ -160,7 +160,7 @@ class FedMDAPI(BaseFLKnowledgeDistillationAPI):
             logging = self.digest_phase(logging)
             logging = self.revisit_phase(logging)
             logging = self.server_side_training(logging)
-            logging = self.evaluation(logging)
+            logging = self.evaluation(i, logging)
 
             self.custom_action(self)
 
