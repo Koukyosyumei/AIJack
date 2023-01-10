@@ -71,10 +71,6 @@ def attach_foolsgold_to_server(cls):
 class FoolsGoldServerManager(BaseManager):
     """Manager class for FoolsGold proposed in https://arxiv.org/abs/1808.04866."""
 
-    def __init__(self, *args, **kwargs):
-        self.args = args
-        self.kwargs = kwargs
-
     def attach(self, cls):
         """Wraps the given class in FoolsGoldServerWrapper.
 

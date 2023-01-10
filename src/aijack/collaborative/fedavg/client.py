@@ -167,9 +167,5 @@ def attach_mpi_to_fedavgclient(cls):
 
 
 class MPIFedAVGClientManager(BaseManager):
-    def __init__(self, *args, **kwargs):
-        self.args = args
-        self.kwargs = kwargs
-
     def attach(self, cls):
         return attach_mpi_to_fedavgclient(cls, *self.args, **self.kwargs)

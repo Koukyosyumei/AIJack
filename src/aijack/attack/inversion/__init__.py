@@ -3,8 +3,8 @@ the trained machine learning models.
 """
 from .gan_attack import GANAttackClientManager, attach_ganattack_to_client  # noqa: F401
 from .generator_attack import Generator_Attack  # noqa: F401
-from .gradientinversion import (  # noqa: F401
-    GradientInversion_Attack,
+from .gradientinversion import GradientInversion_Attack  # noqa: F401
+from .gradientinversion_server import (  # noqa:F401
     GradientInversionAttackServerManager,
     attach_gradient_inversion_attack_to_server,
 )

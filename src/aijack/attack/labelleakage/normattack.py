@@ -54,9 +54,5 @@ def attach_normattack_to_splitnn(
 
 
 class NormAttackSplitNNManager(BaseManager):
-    def __init__(self, *args, **kwargs):
-        self.args = args
-        self.kwargs = kwargs
-
     def attach(self, cls):
         return attach_normattack_to_splitnn(cls, *self.args, **self.kwargs)

@@ -54,9 +54,5 @@ def attach_label_flip_attack_to_client(
 
 
 class LabelFlipAttackClientManager(BaseManager):
-    def __init__(self, *args, **kwargs):
-        self.args = args
-        self.kwargs = kwargs
-
     def attach(self, cls):
         return attach_label_flip_attack_to_client(cls, *self.args, **self.kwargs)

@@ -112,9 +112,5 @@ def attach_mpi_to_fedmdclient(cls):
 
 
 class MPIFedMDClientManager(BaseManager):
-    def __init__(self, *args, **kwargs):
-        self.args = args
-        self.kwargs = kwargs
-
     def attach(self, cls):
         return attach_mpi_to_fedmdclient(cls, *self.args, **self.kwargs)

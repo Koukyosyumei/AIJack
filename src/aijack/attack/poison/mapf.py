@@ -30,9 +30,5 @@ def attach_mapf_to_client(cls, lam, base_model_parameters=None):
 
 
 class MAPFClientWrapper(BaseManager):
-    def __init__(self, *args, **kwargs):
-        self.args = args
-        self.kwargs = kwargs
-
     def attach(self, cls):
         return attach_mapf_to_client(cls, *self.args, **self.kwargs)

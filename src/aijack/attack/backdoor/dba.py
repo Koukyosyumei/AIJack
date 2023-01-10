@@ -75,10 +75,6 @@ def attach_dba_to_client(
 class DistributedBackdoorAttackClientManager(BaseManager):
     """Manager class for DistributedBackdoorAttack proposed in https://openreview.net/forum?id=rkgyS0VFvr."""
 
-    def __init__(self, *args, **kwargs):
-        self.args = args
-        self.kwargs = kwargs
-
     def attach(self, cls):
         """Wraps the given class in DistributedBackdoorAttackClientWrapper.
 

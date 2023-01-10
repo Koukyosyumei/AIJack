@@ -47,10 +47,6 @@ def attach_paillier_to_client_for_encrypted_grad(cls, pk, sk):
 class PaillierGradientClientManager(BaseManager):
     """Client Manager for secure aggregation with Paillier Encryption"""
 
-    def __init__(self, *args, **kwargs):
-        self.args = args
-        self.kwargs = kwargs
-
     def attach(self, cls):
         return attach_paillier_to_client_for_encrypted_grad(
             cls, *self.args, **self.kwargs
