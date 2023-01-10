@@ -317,13 +317,20 @@ class GradientInversion_Attack(BaseAttacker):
         self.seed = seed
         torch.manual_seed(seed)
 
+    def _update_logging(self, i, distance, best_iteration, best_distance):
+        if self.save_loss:
+            self.log_loss.append(distance)
+        if self.log_interval != 0 and i % self.log_interval == 0:
+            print(
+                f"iter={i}: {distance}, (best_iter={best_iteration}: {best_distance})"
+            )
+
     def attack(
         self,
         received_gradients,
         batch_size=1,
         init_x=None,
         labels=None,
-        return_best=True,
     ):
         """Reconstructs the images from the gradients received from the client
 
@@ -370,23 +377,16 @@ class GradientInversion_Attack(BaseAttacker):
             if torch.sum(torch.isnan(distance)).item():
                 raise ValueError("stop because the culculated distance is Nan")
 
-            if self.save_loss:
-                self.log_loss.append(distance)
-
             if best_distance > distance:
-                if return_best:
-                    best_fake_x = copy.deepcopy(fake_x)
-                    best_fake_label = copy.deepcopy(fake_label)
+                best_fake_x = copy.deepcopy(fake_x)
+                best_fake_label = copy.deepcopy(fake_label)
                 best_distance = distance
                 best_iteration = i
                 num_of_not_improve_round = 0
             else:
                 num_of_not_improve_round += 1
 
-            if self.log_interval != 0 and i % self.log_interval == 0:
-                print(
-                    f"iter={i}: {distance}, (best_iter={best_iteration}: {best_distance})"
-                )
+            self._update_logging(i, distance, best_iteration, best_distance)
 
             if num_of_not_improve_round > self.early_stopping:
                 print(
@@ -394,10 +394,7 @@ class GradientInversion_Attack(BaseAttacker):
                 )
                 break
 
-        if return_best:
-            return best_fake_x, best_fake_label
-        else:
-            return fake_x, fake_label
+        return best_fake_x, best_fake_label
 
     def group_attack(self, received_gradients, batch_size=1):
         """Multiple simultaneous attacks with different random states
