@@ -68,18 +68,7 @@ class FedMDAPI(BaseFLKnowledgeDistillationAPI):
 
         return running_loss
 
-    def run(self):
-        logging = {
-            "loss_client_local_dataset_transfer": [],
-            "loss_client_public_dataset_transfer": [],
-            "loss_client_consensus": [],
-            "loss_client_revisit": [],
-            "loss_server_public_dataset": [],
-            "acc_local": [],
-            "acc_pub": [],
-            "acc_val": [],
-        }
-
+    def transfer_phase(self, logging):
         # Transfer
         for i in range(1, self.transfer_epoch_public + 1):
             loss_public = self.train_client(public=True)
@@ -105,47 +94,73 @@ class FedMDAPI(BaseFLKnowledgeDistillationAPI):
             print("acc on validation dataset: ", acc_val)
             logging["acc_val"].append(copy.deepcopy(acc_val))
 
+        return logging
+
+    def digest_phase(self, logging):
+        temp_consensus_loss = []
+        if len(self.clients) > 1:
+            for j, client in enumerate(self.clients):
+                for _ in range(self.consensus_epoch):
+                    consensus_loss = client.approach_consensus(
+                        self.client_optimizers[j]
+                    )
+                print(f"epoch {i}, client {j}: {consensus_loss}")
+                temp_consensus_loss.append(consensus_loss)
+        logging["loss_client_consensus"].append(temp_consensus_loss)
+        return logging
+
+    def revisit_phase(self, logging):
+        for _ in range(self.revisit_epoch):
+            loss_local_revisit = self.train_client(public=False)
+        logging["loss_client_revisit"].append(loss_local_revisit)
+        return logging
+
+    def server_side_training(self, logging):
+        # Train a server-side model if it exists (different from the original paper)
+        for _ in range(self.server_training_epoch):
+            loss_server_public = self.train_server()
+        logging["loss_server_public_dataset"].append(loss_server_public)
+        return logging
+
+    def evaluation(self, logging):
+        acc_on_local_dataset = self.local_score()
+        print(f"epoch={i} acc on local datasets: ", acc_on_local_dataset)
+        logging["acc_local"].append(acc_on_local_dataset)
+        acc_pub = self.score(self.public_dataloader, self.server_optimizer is None)
+        print(f"epoch={i} acc on public dataset: ", acc_pub)
+        logging["acc_pub"].append(copy.deepcopy(acc_pub))
+        # evaluation
+        if self.validation_dataloader is not None:
+            acc_val = self.score(
+                self.validation_dataloader, self.server_optimizer is None
+            )
+            print(f"epoch={i} acc on validation dataset: ", acc_val)
+            logging["acc_val"].append(copy.deepcopy(acc_val))
+
+        return logging
+
+    def run(self):
+        logging = {
+            "loss_client_local_dataset_transfer": [],
+            "loss_client_public_dataset_transfer": [],
+            "loss_client_consensus": [],
+            "loss_client_revisit": [],
+            "loss_server_public_dataset": [],
+            "acc_local": [],
+            "acc_pub": [],
+            "acc_val": [],
+        }
+
+        logging = self.transfer_phase(logging)
+
         for i in range(1, self.num_communication + 1):
 
             self.epoch = i
-
             self.server.action()
-
-            # Digest
-            temp_consensus_loss = []
-            if len(self.clients) > 1:
-                for j, client in enumerate(self.clients):
-                    for _ in range(self.consensus_epoch):
-                        consensus_loss = client.approach_consensus(
-                            self.client_optimizers[j]
-                        )
-                    print(f"epoch {i}, client {j}: {consensus_loss}")
-                    temp_consensus_loss.append(consensus_loss)
-            logging["loss_client_consensus"].append(temp_consensus_loss)
-
-            # Revisit
-            for _ in range(self.revisit_epoch):
-                loss_local_revisit = self.train_client(public=False)
-            logging["loss_client_revisit"].append(loss_local_revisit)
-
-            # Train a server-side model if it exists (different from the original paper)
-            for _ in range(self.server_training_epoch):
-                loss_server_public = self.train_server()
-            logging["loss_server_public_dataset"].append(loss_server_public)
-
-            acc_on_local_dataset = self.local_score()
-            print(f"epoch={i} acc on local datasets: ", acc_on_local_dataset)
-            logging["acc_local"].append(acc_on_local_dataset)
-            acc_pub = self.score(self.public_dataloader, self.server_optimizer is None)
-            print(f"epoch={i} acc on public dataset: ", acc_pub)
-            logging["acc_pub"].append(copy.deepcopy(acc_pub))
-            # evaluation
-            if self.validation_dataloader is not None:
-                acc_val = self.score(
-                    self.validation_dataloader, self.server_optimizer is None
-                )
-                print(f"epoch={i} acc on validation dataset: ", acc_val)
-                logging["acc_val"].append(copy.deepcopy(acc_val))
+            logging = self.digest_phase(logging)
+            logging = self.revisit_phase(logging)
+            logging = self.server_side_training(logging)
+            logging = self.evaluation(logging)
 
             self.custom_action(self)
 
@@ -188,13 +203,12 @@ class MPIFedMDAPI(BaseFedAPI):
         self.device = device
 
     def run(self):
+        # Transfer phase
+        if not self.is_server:
+            self.local_train(epoch=self.transfer_epoch_public, public=True)
+            self.local_train(epoch=self.transfer_epoch_private, public=False)
+
         for _ in range(self.num_communication):
-
-            # Transfer phase
-            if not self.is_server:
-                self.local_train(epoch=self.transfer_epoch_public, public=True)
-                self.local_train(epoch=self.transfer_epoch_private, public=False)
-
             # Updata global logits
             self.party.action()
             self.comm.Barrier()
