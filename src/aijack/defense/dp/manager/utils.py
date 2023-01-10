@@ -52,3 +52,11 @@ def _log_erfc(x):
             )
         else:
             return math.log(r)
+
+
+def _log_coef_i(alpha, el, sampling_rate):
+    return (
+        np.log(special.binom(alpha, el))
+        + (alpha - el) * np.log(1 - sampling_rate)
+        + el * np.log(sampling_rate)
+    )
