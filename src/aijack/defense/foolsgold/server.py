@@ -16,15 +16,11 @@ def calculate_cs(cs, num_clients, aggregate_historical_gradients):
                 0,
                 EPS,
             )
+            cs[j_idx][i_idx] = cs[i_idx][j_idx]
     return cs
 
 
-def normalize_cs(
-    cs,
-    v,
-    num_clients,
-):
-
+def normalize_cs(cs, v, num_clients):
     for i_idx in range(num_clients):
         for j_idx in range(num_clients):
             if v[j_idx] > v[i_idx]:
