@@ -4,6 +4,7 @@ import torch
 import torch.nn as nn
 
 from ..base_attack import BaseAttacker
+from .utils import _generate_fake_gradients, _setup_attack
 from .utils.distance import cossim, l2
 from .utils.regularization import (
     bn_regularizer,
@@ -224,61 +225,6 @@ class GradientInversion_Attack(BaseAttacker):
 
         return hook
 
-    def _initialize_x(self, batch_size):
-        """Inits the fake images
-
-        Args:
-            batch_size: the batch size
-
-        Returns:
-            randomly generated torch.Tensor whose shape is (batch_size, ) + (self.x_shape)
-        """
-        fake_x = torch.randn(
-            (batch_size,) + (self.x_shape), requires_grad=True, device=self.device
-        )
-        return fake_x
-
-    def _initialize_label(self, batch_size):
-        """Inits the fake labels
-
-        Args:
-            batch_size: the batch size
-
-        Returns:
-            randomly initialized or estimated labels
-        """
-        fake_label = torch.randn(
-            (batch_size, self.y_shape), requires_grad=True, device=self.device
-        )
-        fake_label = fake_label.to(self.device)
-        return fake_label
-
-    def _estimate_label(self, received_gradients, batch_size):
-        """Estimates the secret labels from the received gradients
-
-        this function is based on the following papers:
-        batch_size == 1: https://arxiv.org/abs/2001.02610
-        batch_size > 1: https://arxiv.org/abs/2104.07586
-
-        Args:
-            received_gradients: gradients received from the client
-            batch_size: batch size used to culculate the received_gradients
-
-        Returns:
-            estimated labels
-        """
-        if batch_size == 1:
-            fake_label = torch.argmin(
-                torch.sum(received_gradients[self.pos_of_final_fc_layer], dim=1)
-            )
-        else:
-            fake_label = torch.argsort(
-                torch.min(received_gradients[self.pos_of_final_fc_layer], dim=-1)[0]
-            )[:batch_size]
-        fake_label = fake_label.reshape(batch_size)
-        fake_label = fake_label.to(self.device)
-        return fake_label
-
     def _culc_regularization_term(
         self, fake_x, fake_pred, fake_label, group_fake_x, received_gradients
     ):
@@ -319,20 +265,6 @@ class GradientInversion_Attack(BaseAttacker):
 
         return reg_term
 
-    def _generate_fake_gradients(self, fake_x, fake_label):
-        fake_pred = self.target_model(fake_x)
-        if self.optimize_label:
-            loss = self.lossfunc(fake_pred, fake_label.softmax(dim=-1))
-        else:
-            loss = self.lossfunc(fake_pred, fake_label)
-        fake_gradients = torch.autograd.grad(
-            loss,
-            self.target_model.parameters(),
-            create_graph=True,
-            allow_unused=True,
-        )
-        return fake_pred, fake_gradients
-
     def _setup_closure(
         self, optimizer, fake_x, fake_label, received_gradients, group_fake_x=None
     ):
@@ -348,8 +280,12 @@ class GradientInversion_Attack(BaseAttacker):
 
         def closure():
             if self.custom_generate_fake_grad_fn is None:
-                fake_pred, fake_gradients = self._generate_fake_gradients(
-                    fake_x, fake_label
+                fake_pred, fake_gradients = _generate_fake_gradients(
+                    self.target_model,
+                    self.lossfunc,
+                    self.optimize_label,
+                    fake_x,
+                    fake_label,
                 )
             else:
                 fake_pred, fake_gradients = self.custom_generate_fake_grad_fn(
@@ -371,40 +307,6 @@ class GradientInversion_Attack(BaseAttacker):
             return distance
 
         return closure
-
-    def _setup_attack(self, received_gradients, batch_size, init_x=None, labels=None):
-        """Initializes the image and label, and set the optimizer
-
-        Args:
-            received_gradients: a list of gradients received from the client
-            batch_size: the batch size
-
-        Returns:
-            initial images, labels, and the optimizer instance
-        """
-        fake_x = self._initialize_x(batch_size) if init_x is None else init_x
-
-        if labels is None:
-            fake_label = (
-                self._initialize_label(batch_size)
-                if self.optimize_label
-                else self._estimate_label(received_gradients, batch_size)
-            )
-        else:
-            fake_label = labels
-
-        optimizer = (
-            self.optimizer_class([fake_x, fake_label], **self.kwargs)
-            if self.optimize_label
-            else self.optimizer_class(
-                [
-                    fake_x,
-                ],
-                **self.kwargs,
-            )
-        )
-
-        return fake_x, fake_label, optimizer
 
     def reset_seed(self, seed):
         """Resets the random seed
@@ -435,9 +337,22 @@ class GradientInversion_Attack(BaseAttacker):
         Raises:
             ValueError: If the culculated distance become Nan
         """
-        fake_x, fake_label, optimizer = self._setup_attack(
-            received_gradients, batch_size, init_x=init_x, labels=labels
+        fake_x, fake_label, optimizer = _setup_attack(
+            self.x_shape,
+            self.y_shape,
+            self.optimizer_class,
+            self.optimize_label,
+            self.pos_of_final_fc_layer,
+            self.device,
+            received_gradients,
+            batch_size,
+            init_x=init_x,
+            labels=labels,
+            **self.kwargs,
         )
+        # self._setup_attack(
+        #    received_gradients, batch_size, init_x=init_x, labels=labels
+        # )
 
         num_of_not_improve_round = 0
         best_distance = float("inf")
@@ -502,9 +417,20 @@ class GradientInversion_Attack(BaseAttacker):
         group_optimizer = []
 
         for _ in range(self.group_num):
-            fake_x, fake_label, optimizer = self._setup_attack(
-                received_gradients, batch_size
+            fake_x, fake_label, optimizer = _setup_attack(
+                self.x_shape,
+                self.y_shape,
+                self.optimizer_class,
+                self.optimize_label,
+                self.pos_of_final_fc_layer,
+                self.device,
+                received_gradients,
+                batch_size,
+                **self.kwargs,
             )
+            # self._setup_attack(
+            #    received_gradients, batch_size
+            # )
             group_fake_x.append(fake_x)
             group_fake_label.append(fake_label)
             group_optimizer.append(optimizer)
