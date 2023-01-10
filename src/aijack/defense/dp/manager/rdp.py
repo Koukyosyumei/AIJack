@@ -4,7 +4,7 @@ import numpy as np
 from scipy import special
 from scipy.special import logsumexp
 
-from .utils import _log_add, _log_coef_i, _log_e, _log_erfc, _log_sub, _log_t
+from .utils import _log_add, _log_coef_i, _log_e, _log_erfc, _log_s, _log_sub, _log_t
 
 
 def eps_gaussian(alpha, params):
@@ -103,8 +103,8 @@ def culc_upperbound_of_rdp_with_Sampled_Gaussian_Mechanism_float(
         log_e0 = _log_e(i, z0, params["sigma"])
         log_e1 = _log_e(z0, j, params["sigma"])
 
-        log_s0 = log_t0 + (i * i - i) / (2 * (params["sigma"] ** 2)) + log_e0
-        log_s1 = log_t1 + (j * j - j) / (2 * (params["sigma"] ** 2)) + log_e1
+        log_s0 = _log_s(i, log_t0, log_e0, params["sigma"])
+        log_s1 = _log_s(j, log_t1, log_e1, params["sigma"])
 
         if coef > 0:
             log_a0 = _log_add(log_a0, log_s0)
