@@ -60,3 +60,7 @@ def _log_coef_i(alpha, el, sampling_rate):
         + (alpha - el) * np.log(1 - sampling_rate)
         + el * np.log(sampling_rate)
     )
+
+
+def _log_t(log_coef, x, y, sampling_rate):
+    return log_coef + x * np.log(sampling_rate) + y * np.log(1 - sampling_rate)
