@@ -98,14 +98,11 @@ class FedMDAPI(BaseFLKnowledgeDistillationAPI):
 
     def digest_phase(self, logging):
         temp_consensus_loss = []
-        if len(self.clients) > 1:
-            for j, client in enumerate(self.clients):
-                for _ in range(self.consensus_epoch):
-                    consensus_loss = client.approach_consensus(
-                        self.client_optimizers[j]
-                    )
-                print(f"epoch {i}, client {j}: {consensus_loss}")
-                temp_consensus_loss.append(consensus_loss)
+        for j, client in enumerate(self.clients):
+            for _ in range(self.consensus_epoch):
+                consensus_loss = client.approach_consensus(self.client_optimizers[j])
+            print(f"epoch {i}, client {j}: {consensus_loss}")
+            temp_consensus_loss.append(consensus_loss)
         logging["loss_client_consensus"].append(temp_consensus_loss)
         return logging
 
@@ -213,18 +210,21 @@ class MPIFedMDAPI(BaseFedAPI):
             self.party.action()
             self.comm.Barrier()
 
-            # Digest phase
-            if not self.is_server:
-                for _ in range(1, self.consensus_epoch):
-                    self.party.approach_consensus(self.local_optimizer)
-
-            # Revisit phase
-            if not self.is_server:
-                for _ in range(self.revisit_epoch):
-                    self.local_train(public=False)
+            self.digest_phase()
+            self.revisit_phase()
 
             self.custom_action(self)
             self.comm.Barrier()
+
+    def digest_phase(self):
+        if not self.is_server:
+            for _ in range(1, self.consensus_epoch):
+                self.party.approach_consensus(self.local_optimizer)
+
+    def revisit_phase(self):
+        if not self.is_server:
+            for _ in range(self.revisit_epoch):
+                self.local_train(public=False)
 
     def local_train(self, epoch=1, public=True):
         trainloader = self.public_dataloader if public else self.local_dataloader
