@@ -4,7 +4,6 @@ import torch
 import torch.nn as nn
 
 from ..base_attack import BaseAttacker
-from .utils.utils import _generate_fake_gradients, _setup_attack
 from .utils.distance import cossim, l2
 from .utils.regularization import (
     bn_regularizer,
@@ -12,6 +11,7 @@ from .utils.regularization import (
     label_matching,
     total_variance,
 )
+from .utils.utils import _generate_fake_gradients, _setup_attack
 
 
 class GradientInversion_Attack(BaseAttacker):
