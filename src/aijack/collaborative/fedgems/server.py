@@ -2,6 +2,7 @@ import torch
 from torch import nn
 
 from ..core import BaseServer
+from ..fedmd.client import initialize_global_logit
 
 
 class FedGEMSServer(BaseServer):
@@ -29,12 +30,14 @@ class FedGEMSServer(BaseServer):
         self.output_dim = output_dim
         self.device = device
 
-        self.global_pool_of_logits = torch.ones((len_public_dataloader, output_dim)).to(
-            self.device
-        ) * float("inf")
-        self.predicted_values = torch.ones((len_public_dataloader, output_dim)).to(
-            self.device
-        ) * float("inf")
+        self.global_pool_of_logits = initialize_global_logit(
+            len_public_dataloader, output_dim, self.device
+        )
+
+        self.predicted_values = initialize_global_logit(
+            len_public_dataloader, output_dim, self.device
+        )
+
 
     def action(self):
         self.distribute()

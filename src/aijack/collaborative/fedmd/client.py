@@ -7,6 +7,10 @@ from ..core import BaseClient
 from ..core.utils import GLOBAL_LOGIT_TAG, LOCAL_LOGIT_TAG
 
 
+def initialize_global_logit(len_public_dataloader, output_dim, device):
+    return torch.ones((len_public_dataloader, output_dim)).to(device) * float("inf")
+
+
 class FedMDClient(BaseClient):
     def __init__(
         self,
@@ -31,9 +35,9 @@ class FedMDClient(BaseClient):
         self.predicted_values_of_server = None
 
         len_public_dataloader = len(self.public_dataloader.dataset)
-        self.logit2server = torch.ones((len_public_dataloader, output_dim)).to(
-            self.device
-        ) * float("inf")
+        self.logit2server = initialize_global_logit(
+            len_public_dataloader, output_dim, self.device
+        )
 
     def upload(self):
         for data in self.public_dataloader:

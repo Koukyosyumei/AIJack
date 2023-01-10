@@ -3,6 +3,7 @@ import torch
 from ...utils.metrics import crossentropyloss_between_logits
 from ...utils.utils import default_local_train_for_client, torch_round_x_decimal
 from ..core import BaseClient
+from ..fedmd.client import initialize_global_logit
 
 
 class DSFLClient(BaseClient):
@@ -36,9 +37,9 @@ class DSFLClient(BaseClient):
         self.consensus_scale = consensus_scale
 
         len_public_dataloader = len(self.public_dataloader.dataset)
-        self.logit2server = torch.ones((len_public_dataloader, output_dim)).to(
-            self.device
-        ) * float("inf")
+        self.logit2server = initialize_global_logit(
+            len_public_dataloader, output_dim, self.device
+        )
 
     def upload(self):
         """Upload the output logits on the public dataset to the server.
