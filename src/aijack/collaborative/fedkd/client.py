@@ -3,6 +3,12 @@ import torch.nn.functional as F
 from ..fedavg import FedAVGClient
 
 
+def _adaptive_distillation_loss(y_pred_1, y_pred_2, task_loss_1, task_loss_2):
+    return F.kl_div(y_pred_1.softmax(dim=1).log(), y_pred_2.softmax(dim=1)) / (
+        task_loss_1 + task_loss_2
+    )
+
+
 class FedKDClient(FedAVGClient):
     """Implementation of FedKD (https://arxiv.org/abs/2108.13323)"""
 
@@ -60,12 +66,12 @@ class FedKDClient(FedAVGClient):
 
         # adaptive_distillation_losses
         if self.adaptive_distillation_losses:
-            adaptive_distillaion_loss_teacher = F.kl_div(
-                y_pred_student.softmax(dim=1).log(), y_pred_teacher.softmax(dim=1)
-            ) / (task_loss_student + task_loss_teacher)
-            adaptive_distillaion_loss_student = F.kl_div(
-                y_pred_teacher.softmax(dim=1).log(), y_pred_student.softmax(dim=1)
-            ) / (task_loss_student + task_loss_teacher)
+            adaptive_distillaion_loss_teacher = _adaptive_distillation_loss(
+                y_pred_student, y_pred_teacher, task_loss_student, task_loss_teacher
+            )
+            adaptive_distillaion_loss_student = _adaptive_distillation_loss(
+                y_pred_teacher, y_pred_student, task_loss_teacher, task_loss_student
+            )
             teacher_loss += adaptive_distillaion_loss_teacher
             student_loss += adaptive_distillaion_loss_student
 
