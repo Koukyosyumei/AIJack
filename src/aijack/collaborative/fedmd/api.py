@@ -96,7 +96,7 @@ class FedMDAPI(BaseFLKnowledgeDistillationAPI):
 
         return logging
 
-    def digest_phase(self, logging):
+    def digest_phase(self, i, logging):
         temp_consensus_loss = []
         for j, client in enumerate(self.clients):
             for _ in range(self.consensus_epoch):
@@ -154,7 +154,7 @@ class FedMDAPI(BaseFLKnowledgeDistillationAPI):
 
             self.epoch = i
             self.server.action()
-            logging = self.digest_phase(logging)
+            logging = self.digest_phase(i, logging)
             logging = self.revisit_phase(logging)
             logging = self.server_side_training(logging)
             logging = self.evaluation(i, logging)
