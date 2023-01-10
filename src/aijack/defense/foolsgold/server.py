@@ -35,13 +35,7 @@ def attach_foolsgold_to_server(cls):
             self.update_weight()
             self.update_from_gradients()
 
-        def update_weight(self):
-            """Updates weight for each client given the received local gradients."""
-            for i, local_gradient in enumerate(self.uploaded_gradients):
-                self.aggregate_historical_gradients[i] += torch.cat(
-                    [g.to(self.device).view(-1) for g in local_gradient[1]]
-                ).to(self.device)
-
+        def calculate_cs(self):
             num_clients = len(self.uploaded_gradients)
 
             for i_idx in range(num_clients):
@@ -52,6 +46,9 @@ def attach_foolsgold_to_server(cls):
                         0,
                         EPS,
                     )
+
+        def normalize_cs(self):
+            num_clients = len(self.uploaded_gradients)
             self.v = np.max(self.cs, axis=1)
 
             for i_idx in range(num_clients):
@@ -60,6 +57,16 @@ def attach_foolsgold_to_server(cls):
                         continue
                     if self.v[j_idx] > self.v[i_idx]:
                         self.cs[i_idx][j_idx] *= self.v[i_idx] / self.v[j_idx]
+
+        def update_weight(self):
+            """Updates weight for each client given the received local gradients."""
+            for i, local_gradient in enumerate(self.uploaded_gradients):
+                self.aggregate_historical_gradients[i] += torch.cat(
+                    [g.to(self.device).view(-1) for g in local_gradient[1]]
+                ).to(self.device)
+
+            self.calculate_cs()
+            self.normalize_cs()
 
             self.alpha = np.max(self.cs, axis=1)
             self.alpha = self.alpha / (np.max(self.alpha) + EPS)
