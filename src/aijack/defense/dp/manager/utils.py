@@ -64,3 +64,6 @@ def _log_coef_i(alpha, el, sampling_rate):
 
 def _log_t(log_coef, x, y, sampling_rate):
     return log_coef + x * np.log(sampling_rate) + y * np.log(1 - sampling_rate)
+
+def _log_e(x, y, sigma):
+    return np.log(0.5) + _log_erfc((x - y) / (math.sqrt(2) * sigma))
