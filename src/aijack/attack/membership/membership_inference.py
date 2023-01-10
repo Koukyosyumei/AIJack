@@ -91,9 +91,8 @@ class ShadowModel:
         return result_dict
 
     def _train(self, num_itr, trainloader, optimizer, model, criterion):
-        for epoch in range(num_itr):
-            running_loss = 0.0
-            for i, data in enumerate(trainloader, 0):
+        for _ in range(num_itr):
+            for data in trainloader:
                 inputs, labels = data
                 inputs = try_gpu(inputs)
                 labels = try_gpu(labels)
@@ -103,13 +102,6 @@ class ShadowModel:
                 loss = criterion(outputs, labels)
                 loss.backward()
                 optimizer.step()
-
-                running_loss += loss.item()
-                if i % 2000 == 1999:
-                    print(
-                        "[%d, %5d] loss: %.3f" % (epoch + 1, i + 1, running_loss / 2000)
-                    )
-                    running_loss = 0.0
         return model
 
     def _fit(self, X, y, num_itr=100):
