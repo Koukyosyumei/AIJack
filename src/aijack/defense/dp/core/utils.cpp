@@ -25,13 +25,20 @@ double robust_beta(double x, double y)
     {
         cpp_dec_float_100 x_ = x;
         cpp_dec_float_100 y_ = y;
-        double x_square = static_cast<double>(boost::multiprecision::pow(x_, x_));
-        double y_square = static_cast<double>(boost::multiprecision::pow(y_, y_));
-        return y_square * std::tgamma(x) * std::tgamma(y) / (x_square * std::tgamma(x + y));
+        cpp_dec_float_100 x_square = boost::multiprecision::pow(x_, x_);
+        cpp_dec_float_100 y_square = boost::multiprecision::pow(y_, y_);
+        cpp_dec_float_100 x_tgamma = boost::math::tgamma(x_);
+        cpp_dec_float_100 y_tgamma = boost::math::tgamma(y_);
+        cpp_dec_float_100 xpy_tgamma = boost::math::tgamma(x_ + y_);
+        return static_cast<double>(y_square * x_tgamma * y_tgamma / (x_square * xpy_tgamma));
     }
     else if (y < 0 && x > 0)
     {
-        return std::pow(x, x) * std::tgamma(x) * std::tgamma(y) / (std::pow(y, y) * std::tgamma(x + y));
+        cpp_dec_float_100 x_ = x;
+        cpp_dec_float_100 y_ = y;
+        double x_square = static_cast<double>(boost::multiprecision::pow(x_, x_));
+        double y_square = static_cast<double>(boost::multiprecision::pow(y_, y_));
+        return x_square * std::tgamma(x) * std::tgamma(y) / (y_square * std::tgamma(x + y));
     }
     else if (x <= 0 && y <= 0)
     {
