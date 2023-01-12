@@ -16,6 +16,11 @@ namespace py = pybind11;
 
 constexpr double pi = 3.14159265358979323846;
 
+std::complex<double> lgamma_complex(std::complex<double> z)
+{
+    return std::log(std::exp(std::lgamma(z.real())) * std::exp(std::lgamma(z.imag())));
+}
+
 double robust_beta(double x, double y)
 {
     // Use the analytic continuation of the beta function to
@@ -25,7 +30,7 @@ double robust_beta(double x, double y)
     std::complex<double> cxcy = cx + cy;
     if (cxcy.real() <= 0)
     {
-        return std::pow(2, cxcy - 1.0) * std::exp(boost::math::lgamma(cx) + boost::math::lgamma(cy) - boost::math::lgamma(cxcy)) * std::sin(pi * cx) * std::sin(pi * cy) / pi;
+        return std::pow(2, cxcy - 1.0) * std::exp(lgamma_complex(cx) + lgamma_complex(cy) - lgamma_complex(cxcy)) * std::sin(pi * cx) * std::sin(pi * cy) / pi;
     }
     else
     {
