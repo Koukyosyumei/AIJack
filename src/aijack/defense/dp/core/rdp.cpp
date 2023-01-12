@@ -86,6 +86,11 @@ double culc_upperbound_of_rdp_with_Sampled_Gaussian_Mechanism_int(int alpha,
         double s = log_coef_i + (i * i - i) * inv_double_sigma_square;
         log_a = _log_add(log_a, s);
     }
+
+    auto warnings = py::module::import("warnings");
+    warnings.attr("warn")(
+        "intini******" + to_string(log_a / (alpha - 1)));
+
     return log_a / (alpha - 1);
 }
 
