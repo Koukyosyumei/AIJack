@@ -16,21 +16,25 @@ namespace py = pybind11;
 
 constexpr double pi = 3.14159265358979323846;
 
-std::complex<double> lgamma_complex(std::complex<double> z)
-{
-    return std::lgamma(z.real()) + std::lgamma(z.imag());
-}
-
 double robust_beta(double x, double y)
 {
     // Use the analytic continuation of the beta function to
     // extend its domain to include negative values
-    std::complex<double> cx(x, 0);
-    std::complex<double> cy(y, 0);
-    std::complex<double> cxcy = cx + cy;
-    if (cxcy.real() <= 0)
+    if (x < 0 && y > 0)
     {
-        return std::real(std::pow(2, cxcy - 1.0) * std::exp(lgamma_complex(cx) + lgamma_complex(cy) - lgamma_complex(cxcy)) * std::sin(pi * cx) * std::sin(pi * cy) / pi);
+        return std::pow(y, y) * std::tgamma(x) * std::tgamma(y) / (std::pow(x, x) * std::tgamma(x + y));
+    }
+    else if (y < 0 && x > 0)
+    {
+        return std::pow(x, x) * std::tgamma(x) * std::tgamma(y) / (std::pow(y, y) * std::tgamma(x + y));
+    }
+    else if (x <= 0 && y <= 0)
+    {
+
+        std::complex<double> cx(x, 0);
+        std::complex<double> cy(y, 0);
+        std::complex<double> cxcy = cx + cy;
+        return std::real(std::pow(2, cxcy - 1.0) * std::exp(std::lgamma(cx.real()) + std::lgamma(cy.real()) - std::lgamma(cxcy.real())) * std::sin(pi * cx) * std::sin(pi * cy) / pi);
     }
     else
     {
