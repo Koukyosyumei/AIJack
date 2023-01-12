@@ -14,7 +14,7 @@
 namespace mp = boost::multiprecision;
 
 using namespace std;
-using Real32 = mp::number<mp::cpp_dec_float<32>>;
+using Real1024 = mp::number<mp::cpp_dec_float<1024>>;
 namespace py = pybind11;
 
 constexpr double pi = 3.14159265358979323846;
@@ -25,8 +25,8 @@ double robust_beta(double x, double y)
     // extend its domain to include negative values
     if (x < 0 && y > 0)
     {
-        Real32 x_ = x;
-        Real32 y_ = y;
+        Real1024 x_ = x;
+        Real1024 y_ = y;
         return static_cast<float>(std::pow(y_, y_) * std::tgamma(x_) * std::tgamma(y_) / (std::pow(x_, x_) * std::tgamma(x_ + y_)));
     }
     else if (y < 0 && x > 0)
