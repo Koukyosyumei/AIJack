@@ -18,7 +18,14 @@ constexpr double pi = 3.14159265358979323846;
 
 double binom(double n, double k)
 {
-    return boost::math::binomial_coefficient<double>(n, k);
+    if (n == k)
+    {
+        return 1.0
+    }
+    else
+    {
+        return boost::math::binomial_coefficient<double>(n, k);
+    }
 }
 
 double _log_add(double logx, double logy)
