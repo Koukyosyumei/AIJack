@@ -4,7 +4,6 @@
 #include <pybind11/functional.h>
 #include <boost/math/special_functions/beta.hpp>
 #include <boost/math/special_functions/gamma.hpp>
-#include <boost/math/special_functions/binomial.hpp>
 #include <boost/math/special_functions/erf.hpp>
 #include <cmath>
 #include <vector>
@@ -153,7 +152,7 @@ double _log_erfc(double x)
     }
     else
     {
-        return std::log1p(-r);
+        return std::log(r);
     }
 }
 
