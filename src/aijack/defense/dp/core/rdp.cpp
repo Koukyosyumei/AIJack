@@ -155,7 +155,9 @@ double culc_upperbound_of_rdp_with_Sampled_Gaussian_Mechanism_frac(double alpha,
         to_string(log_a0) + " " + to_string(log_a1) +
         " " + to_string(log_t0) + " " + to_string(log_t1) +
         " " + to_string(log_e0) + " " + to_string(log_e1) +
-        " " + to_string(log_s0) + " " + to_string(log_s1));
+        " " + to_string(log_s0) + " " + to_string(log_s1) +
+        " " + to_string(log_coef) + to_string(i) + " " + to_string(log_sampling_rate) +
+        " " + to_string(j) + " " + to_string(log_1m_sampling_rate));
 
     return _log_add(log_a0, log_a1) / (alpha - 1);
 }

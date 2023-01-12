@@ -118,5 +118,8 @@ int main()
     std::cout << binom(2.2, 3.1) << std::endl;
     std::cout << binom(0.277464, 20.000000) << std::endl;
 
-    std::cout <<
+    std::cout << log(0.99) << std::endl;
+    std::cout << log(0.98) << std::endl;
+    std::cout << log(1 - 0.99) << std::endl;
+    std::cout << log(1 - 0.98) << std::endl;
 }
