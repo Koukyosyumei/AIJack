@@ -27,7 +27,7 @@ double robust_beta(double x, double y)
     {
         Real1024 x_ = x;
         Real1024 y_ = y;
-        return static_cast<float>(std::pow(y_, y_) * std::tgamma(x_) * std::tgamma(y_) / (std::pow(x_, x_) * std::tgamma(x_ + y_)));
+        return static_cast<double>(std::pow(y_, y_) * std::tgamma(x_) * std::tgamma(y_) / (std::pow(x_, x_) * std::tgamma(x_ + y_)));
     }
     else if (y < 0 && x > 0)
     {
