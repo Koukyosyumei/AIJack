@@ -5,6 +5,7 @@
 #include <boost/math/special_functions/beta.hpp>
 #include <boost/math/special_functions/gamma.hpp>
 #include <boost/multiprecision/cpp_dec_float.hpp>
+#include <boost/math/special_functions/binomial.hpp>
 #include <complex>
 #include <cmath>
 #include <vector>
@@ -73,7 +74,7 @@ double binom(double n, double k)
 
     cpp_dec_float_100 n_ = n;
     cpp_dec_float_100 k_ = k;
-    return static_cast<double>(binomial_coefficient<cpp_dec_float_100>(n_, k_));
+    return static_cast<double>(boost::math::binomial_coefficient<cpp_dec_float_100>(n_, k_));
 
     kx = std::floor(k);
     if ((k == kx) && (fabs(n) > 1e-8 or n == 0))
