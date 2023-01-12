@@ -1,4 +1,5 @@
 import numpy as np
+
 from aijack_cpp_core import (
     _greedy_search,
     _greedy_search_frac,
