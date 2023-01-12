@@ -126,7 +126,7 @@ double _log_add(double logx, double logy)
     {
         return b;
     }
-    return std::log(1 + std::exp(a - b)) + b;
+    return std::log1p(std::exp(a - b)) + b;
 }
 
 double _log_sub(double logx, double logy)
@@ -139,7 +139,7 @@ double _log_sub(double logx, double logy)
     {
         return -1 * std::numeric_limits<double>::infinity();
     }
-    double result = std::log(std::exp((logx - logy) - 1)) + logy;
+    double result = std::log(std::expm1(logx - logy)) + logy;
     if (std::fetestexcept(FE_OVERFLOW))
     {
         return logx;
