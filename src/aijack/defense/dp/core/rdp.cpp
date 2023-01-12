@@ -87,10 +87,6 @@ double culc_upperbound_of_rdp_with_Sampled_Gaussian_Mechanism_int(int alpha,
         log_a = _log_add(log_a, s);
     }
 
-    auto warnings = py::module::import("warnings");
-    warnings.attr("warn")(
-        "intini******" + to_string(log_a / (alpha - 1)));
-
     return log_a / (alpha - 1);
 }
 
@@ -153,24 +149,6 @@ double culc_upperbound_of_rdp_with_Sampled_Gaussian_Mechanism_frac(double alpha,
             break;
         }
     }
-
-    if (std::isnan(log_a0))
-    {
-        auto warnings = py::module::import("warnings");
-        warnings.attr("warn")(
-            "log_a0 is nan" + to_string(log_a0));
-    }
-
-    if (std::isnan(log_a1))
-    {
-        auto warnings = py::module::import("warnings");
-        warnings.attr("warn")(
-            "log_a0 is nan" + to_string(log_a1));
-    }
-
-    auto warnings = py::module::import("warnings");
-    warnings.attr("warn")(
-        "*************" + to_string(_log_add(log_a0, log_a1) / (alpha - 1)));
 
     return _log_add(log_a0, log_a1) / (alpha - 1);
 }

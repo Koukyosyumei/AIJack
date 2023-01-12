@@ -1,5 +1,4 @@
 import numpy as np
-
 from aijack_cpp_core import (
     _greedy_search,
     _greedy_search_frac,
@@ -168,6 +167,7 @@ class BaseMomentAccountant:
             self.precision,
             self.max_iterations,
         )
+        print("optimal_lam is ", optimal_lam)
 
         min_epsilon = estimate_eps(optimal_lam)
 
