@@ -2,10 +2,6 @@
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
 #include <pybind11/functional.h>
-#include <boost/math/special_functions/beta.hpp>
-#include <boost/math/special_functions/gamma.hpp>
-#include <boost/multiprecision/cpp_dec_float.hpp>
-#include <boost/math/special_functions/binomial.hpp>
 #include <complex>
 #include <cmath>
 #include <vector>
@@ -13,52 +9,21 @@
 #include <cfenv>
 
 using namespace std;
-using namespace boost::multiprecision;
 namespace py = pybind11;
 
 constexpr double pi = 3.14159265358979323846;
 
-double robust_beta(double x, double y)
+double beta(double a, double b)
 {
-    // Use the analytic continuation of the beta function to
-    // extend its domain to include negative values
-    if (x < 0 && y > 0)
-    {
-        cpp_dec_float_100 x_ = x;
-        cpp_dec_float_100 y_ = y;
-        cpp_dec_float_100 x_square = boost::multiprecision::pow(x_, x_);
-        cpp_dec_float_100 y_square = boost::multiprecision::pow(y_, y_);
-        cpp_dec_float_100 x_tgamma = boost::math::tgamma(x_);
-        cpp_dec_float_100 y_tgamma = boost::math::tgamma(y_);
-        cpp_dec_float_100 xpy_tgamma = boost::math::tgamma(x_ + y_);
-        return static_cast<double>(y_square * x_tgamma * y_tgamma / (x_square * xpy_tgamma));
-    }
-    else if (y < 0 && x > 0)
-    {
-        cpp_dec_float_100 x_ = x;
-        cpp_dec_float_100 y_ = y;
-        cpp_dec_float_100 x_square = boost::multiprecision::pow(x_, x_);
-        cpp_dec_float_100 y_square = boost::multiprecision::pow(y_, y_);
-        cpp_dec_float_100 x_tgamma = boost::math::tgamma(x_);
-        cpp_dec_float_100 y_tgamma = boost::math::tgamma(y_);
-        cpp_dec_float_100 xpy_tgamma = boost::math::tgamma(x_ + y_);
-        return static_cast<double>(x_square * x_tgamma * y_tgamma / (y_square * xpy_tgamma));
-    }
-    else if (x <= 0 && y <= 0)
-    {
-
-        std::complex<double> cx(x, 0);
-        std::complex<double> cy(y, 0);
-        std::complex<double> cxcy = cx + cy;
-        return std::real(std::pow(2, cxcy - 1.0) * std::exp(std::lgamma(cx.real()) + std::lgamma(cy.real()) - std::lgamma(cxcy.real())) * std::sin(pi * cx) * std::sin(pi * cy) / pi);
-    }
-    else
-    {
-        return boost::math::beta(x, y);
-    }
+    return std::tgamma(a) * std::tgamma(b) / std::tgamma(a + b);
 }
 
-double binom(double n, double k)
+double lbeta(double a, double b)
+{
+    return std::lgamma(a) + std::lgamma(b) - std::lgamma(a + b);
+}
+
+inline double binom(double n, double k)
 {
     double kx, nx, num, den, dk, sgn;
     int i;
@@ -68,20 +33,24 @@ double binom(double n, double k)
         nx = std::floor(n);
         if (n == nx)
         {
-            return std::nan("");
+            // undefined
+            return NAN;
         }
     }
 
-    cpp_dec_float_100 n_ = n;
-    cpp_dec_float_100 k_ = k;
-    return static_cast<double>(boost::math::binomial_coefficient<cpp_dec_float_100>(n_, k_));
-
     kx = std::floor(k);
-    if ((k == kx) && (fabs(n) > 1e-8 or n == 0))
+    if (k == kx && (std::fabs(n) > 1e-8 || n == 0))
     {
+        // Integer case: use multiplication formula for less rounding error
+        // for cases where the result is an integer.
+        //
+        // This cannot be used for small nonzero n due to loss of
+        // precision.
+
         nx = std::floor(n);
         if (nx == n && kx > nx / 2 && nx > 0)
         {
+            // Reduce kx by symmetry
             kx = nx - kx;
         }
 
@@ -89,7 +58,7 @@ double binom(double n, double k)
         {
             num = 1.0;
             den = 1.0;
-            for (int i = 1; i < 1 + (int)kx; i++)
+            for (i = 1; i <= (int)kx; i++)
             {
                 num *= i + n - kx;
                 den *= i;
@@ -103,35 +72,31 @@ double binom(double n, double k)
         }
     }
 
-    if ((n >= 1e10 * k) && (k > 0))
+    // general case:
+    if (n >= 1e10 * k && k > 0)
     {
-        return std::exp(-std::log(robust_beta(1 + n - k, 1 + k))) - std::log(n + 1);
+        // avoid under/overflows in intermediate results
+        return std::exp(-lbeta(1 + n - k, 1 + k) - std::log(n + 1));
     }
     else if (k > 1e8 * std::fabs(n))
     {
-        num = boost::math::tgamma(1 + n) / std::fabs(k) + boost::math::tgamma(1 + n) * n / (2 * (k * k));
-        num /= pi * pow(std::fabs(k), n);
+        // avoid loss of precision
+        num = std::tgamma(1 + n) / std::fabs(k) + std::tgamma(1 + n) * n / (2 * k * k); // + ...
+        num /= M_PI * std::fabs(k) * n;
         if (k > 0)
         {
             kx = std::floor(k);
             if ((int)kx == kx)
             {
                 dk = k - kx;
-                if ((int)kx % 2 == 0)
-                {
-                    sgn = 1;
-                }
-                else
-                {
-                    sgn = -1;
-                }
+                sgn = (int)kx % 2 == 0 ? 1 : -1;
             }
             else
             {
                 dk = k;
                 sgn = 1;
             }
-            return num * std::sin((dk - n) * pi) * sgn;
+            return num * std::sin((dk - n) * M_PI) * sgn;
         }
         else
         {
@@ -142,13 +107,13 @@ double binom(double n, double k)
             }
             else
             {
-                return num * std::sin(k * pi);
+                return num * std::sin(k * M_PI);
             }
         }
     }
     else
     {
-        return 1 / (n + 1) / robust_beta(1 + n - k, 1 + k);
+        return 1 / (n + 1) / beta(1 + n - k, 1 + k);
     }
 }
 
