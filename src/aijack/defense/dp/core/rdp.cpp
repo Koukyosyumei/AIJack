@@ -163,12 +163,9 @@ double culc_upperbound_of_rdp_with_Sampled_Gaussian_Mechanism_frac(double alpha,
             "log_a0 is nan" + to_string(log_a1));
     }
 
-    if (std::isnan(_log_add(log_a0, log_a1)))
-    {
-        auto warnings = py::module::import("warnings");
-        warnings.attr("warn")(
-            "*************" + to_string(log_a1));
-    }
+    auto warnings = py::module::import("warnings");
+    warnings.attr("warn")(
+        "*************" + to_string(_log_add(log_a0, log_a1) / (alpha - 1)));
 
     return _log_add(log_a0, log_a1) / (alpha - 1);
 }
