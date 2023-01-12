@@ -141,7 +141,20 @@ double _log_sub(double logx, double logy)
 
 double _log_erfc(double x)
 {
-    return log1p(-boost::math::erf(x));
+    double r = std::erfc(x);
+    if (r == 0.)
+    {
+        return -1 * std::log(pi) / 2 -
+               std::log(x) - pow(x, 2) -
+               (0.5 * pow(x, -2)) +
+               0.625 * pow(x, -4) -
+               37.0 / 24.0 * pow(x, -6) +
+               353.0 / 64.0 * pow(x, -8);
+    }
+    else
+    {
+        return std::log1p(-r);
+    }
 }
 
 double logsumexp(const std::vector<double> &arr, const std::vector<int> &signs)
