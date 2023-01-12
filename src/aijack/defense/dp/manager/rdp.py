@@ -117,24 +117,6 @@ def culc_upperbound_of_rdp_with_Sampled_Gaussian_Mechanism_float(
         if max(log_s0, log_s1) < -30:
             break
 
-    print(
-        str(log_a0)
-        + " "
-        + str(log_a1)
-        + " "
-        + str(log_t0)
-        + " "
-        + str(log_t1)
-        + " "
-        + str(log_e0)
-        + " "
-        + str(log_e1)
-        + " "
-        + str(log_s0)
-        + " "
-        + str(log_s1)
-    )
-
     return _log_add(log_a0, log_a1) / (alpha - 1)
 
 
