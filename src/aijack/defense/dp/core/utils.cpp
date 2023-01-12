@@ -36,9 +36,12 @@ double robust_beta(double x, double y)
     {
         cpp_dec_float_100 x_ = x;
         cpp_dec_float_100 y_ = y;
-        double x_square = static_cast<double>(boost::multiprecision::pow(x_, x_));
-        double y_square = static_cast<double>(boost::multiprecision::pow(y_, y_));
-        return x_square * std::tgamma(x) * std::tgamma(y) / (y_square * std::tgamma(x + y));
+        cpp_dec_float_100 x_square = boost::multiprecision::pow(x_, x_);
+        cpp_dec_float_100 y_square = boost::multiprecision::pow(y_, y_);
+        cpp_dec_float_100 x_tgamma = boost::math::tgamma(x_);
+        cpp_dec_float_100 y_tgamma = boost::math::tgamma(y_);
+        cpp_dec_float_100 xpy_tgamma = boost::math::tgamma(x_ + y_);
+        return static_cast<double>(x_square * x_tgamma * y_tgamma / (y_square * xpy_tgamma));
     }
     else if (x <= 0 && y <= 0)
     {
