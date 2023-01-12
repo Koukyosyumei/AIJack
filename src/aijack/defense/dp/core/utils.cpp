@@ -4,6 +4,8 @@
 #include <pybind11/functional.h>
 #include <boost/math/special_functions/beta.hpp>
 #include <boost/math/special_functions/gamma.hpp>
+#include <boost/math/special_functions/binomial.hpp>
+#include <boost/math/special_functions/erf.hpp>
 #include <cmath>
 #include <vector>
 #include <limits>
@@ -16,92 +18,7 @@ constexpr double pi = 3.14159265358979323846;
 
 double binom(double n, double k)
 {
-    double kx, nx, num, den, dk, sgn;
-    int i;
-
-    if (n < 0)
-    {
-        nx = std::floor(n);
-        if (n == nx)
-        {
-            return std::nan("");
-        }
-    }
-
-    kx = std::floor(k);
-    if ((k == kx) && (fabs(n) > 1e-8 or n == 0))
-    {
-        nx = std::floor(n);
-        if (nx == n && kx > nx / 2 && nx > 0)
-        {
-            kx = nx - kx;
-        }
-
-        if (kx >= 0 && kx < 20)
-        {
-            num = 1.0;
-            den = 1.0;
-            for (int i = 1; i < 1 + (int)kx; i++)
-            {
-                num *= i + n - kx;
-                den *= i;
-                if (std::fabs(num) > 1e50)
-                {
-                    num /= den;
-                    den = 1.0;
-                }
-            }
-            return num / den;
-        }
-    }
-
-    if ((n >= 1e10 * k) && (k > 0))
-    {
-        return std::exp(-std::log(boost::math::beta(1 + n - k, 1 + k))) - std::log(n + 1);
-    }
-    else if (k > 1e8 * std::fabs(n))
-    {
-        num = boost::math::tgamma(1 + n) / std::fabs(k) + boost::math::tgamma(1 + n) * n / (2 * (k * k));
-        num /= pi * pow(std::fabs(k), n);
-        if (k > 0)
-        {
-            kx = std::floor(k);
-            if ((int)kx == kx)
-            {
-                dk = k - kx;
-                if ((int)kx % 2 == 0)
-                {
-                    sgn = 1;
-                }
-                else
-                {
-                    sgn = -1;
-                }
-            }
-            else
-            {
-                dk = k;
-                sgn = 1;
-            }
-            return num * std::sin((dk - n) * pi) * sgn;
-        }
-        else
-        {
-            kx = std::floor(k);
-            if ((int)kx == kx)
-            {
-                return 0;
-            }
-            else
-            {
-                return num * std::sin(k * pi);
-            }
-        }
-    }
-    else
-    {
-        return 1 / (n + 1) / boost::math::beta(1 + n - k, 1 + k);
-    }
+    return boost::math::binomial_coefficient<double>(n, k);
 }
 
 double _log_add(double logx, double logy)
@@ -139,20 +56,7 @@ double _log_sub(double logx, double logy)
 
 double _log_erfc(double x)
 {
-    double r = std::erfc(x);
-    if (r == 0.)
-    {
-        return -1 * std::log(pi) / 2 -
-               std::log(x) - pow(x, 2) -
-               (0.5 * pow(x, -2)) +
-               0.625 * pow(x, -4) -
-               37.0 / 24.0 * pow(x, -6) +
-               353.0 / 64.0 * pow(x, -8);
-    }
-    else
-    {
-        return std::log(r);
-    }
+    return log1p(-boost::math::erf(x));
 }
 
 double logsumexp(const std::vector<double> &arr, const std::vector<int> &signs)
