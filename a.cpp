@@ -117,4 +117,6 @@ int main()
     std::cout << binom(-3.1, 2.2) << std::endl;
     std::cout << binom(2.2, 3.1) << std::endl;
     std::cout << binom(0.277464, 20.000000) << std::endl;
+
+    std::cout <<
 }

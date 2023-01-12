@@ -150,6 +150,13 @@ double culc_upperbound_of_rdp_with_Sampled_Gaussian_Mechanism_frac(double alpha,
         }
     }
 
+    auto warnings = py::module::import("warnings");
+    warnings.attr("warn")(
+        to_string(log_a0) + " " + to_string(log_a1)) +
+        " " + to_string(log_t0) + " " + to_string(log_t1) +
+        " " + to_string(log_e0) + " " + to_string(log_e1) +
+        " " + to_string(log_s0) + " " + to_string(log_s1);
+
     return _log_add(log_a0, log_a1) / (alpha - 1);
 }
 
