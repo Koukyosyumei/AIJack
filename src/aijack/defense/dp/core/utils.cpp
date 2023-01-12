@@ -4,14 +4,17 @@
 #include <pybind11/functional.h>
 #include <boost/math/special_functions/beta.hpp>
 #include <boost/math/special_functions/gamma.hpp>
-#include <boost/math/special_functions/erf.hpp>
+#include <boost/multiprecision/cpp_dec_float.hpp>
 #include <complex>
 #include <cmath>
 #include <vector>
 #include <limits>
 #include <cfenv>
 
+namespace mp = boost::multiprecision;
+
 using namespace std;
+using Real32 = mp::number<mp::cpp_dec_float<32>>;
 namespace py = pybind11;
 
 constexpr double pi = 3.14159265358979323846;
@@ -22,7 +25,9 @@ double robust_beta(double x, double y)
     // extend its domain to include negative values
     if (x < 0 && y > 0)
     {
-        return std::pow(y, y) * std::tgamma(x) * std::tgamma(y) / (std::pow(x, x) * std::tgamma(x + y));
+        Real32 x_ = x;
+        Real32 y_ = y;
+        return static_cast<float>(std::pow(y_, y_) * std::tgamma(x_) * std::tgamma(y_) / (std::pow(x_, x_) * std::tgamma(x_ + y_)));
     }
     else if (y < 0 && x > 0)
     {
