@@ -20,7 +20,7 @@ double binom(double n, double k)
 {
     if (n == k)
     {
-        return 1.0
+        return 1.0;
     }
     else
     {
