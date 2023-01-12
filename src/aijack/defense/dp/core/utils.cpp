@@ -71,6 +71,10 @@ double binom(double n, double k)
         }
     }
 
+    cpp_dec_float_100 n_ = n;
+    cpp_dec_float_100 k_ = k;
+    return static_cast<double>(binomial_coefficient<cpp_dec_float_100>(n_, k_));
+
     kx = std::floor(k);
     if ((k == kx) && (fabs(n) > 1e-8 or n == 0))
     {
