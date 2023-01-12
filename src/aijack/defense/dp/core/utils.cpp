@@ -25,7 +25,7 @@ double robust_beta(double x, double y)
     std::complex<double> cxcy = cx + cy;
     if (cxcy.real() <= 0)
     {
-        return std::pow(2, cxcy - 1) * std::exp(boost::math::lgamma(cx) + boost::math::lgamma(cy) - boost::math::lgamma(cxcy)) * std::sin(pi * cx) * std::sin(pi * cy) / pi;
+        return std::pow(2, cxcy - 1.0) * std::exp(boost::math::lgamma(cx) + boost::math::lgamma(cy) - boost::math::lgamma(cxcy)) * std::sin(pi * cx) * std::sin(pi * cy) / pi;
     }
     else
     {
