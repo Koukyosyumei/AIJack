@@ -149,6 +149,27 @@ double culc_upperbound_of_rdp_with_Sampled_Gaussian_Mechanism_frac(double alpha,
         }
     }
 
+    if (std::isnan(log_a0))
+    {
+        auto warnings = py::module::import("warnings");
+        warnings.attr("warn")(
+            "log_a0 is nan" + to_string(log_a0));
+    }
+
+    if (std::isnan(log_a1))
+    {
+        auto warnings = py::module::import("warnings");
+        warnings.attr("warn")(
+            "log_a0 is nan" + to_string(log_a1));
+    }
+
+    if (std::isnan(_log_add(log_a0, log_a1)))
+    {
+        auto warnings = py::module::import("warnings");
+        warnings.attr("warn")(
+            "*************" + to_string(log_a1));
+    }
+
     return _log_add(log_a0, log_a1) / (alpha - 1);
 }
 
