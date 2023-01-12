@@ -5,6 +5,7 @@
 #include <vector>
 #include <cmath>
 #include <numeric>
+#include <iostream>
 
 using namespace std;
 namespace py = pybind11;
@@ -25,6 +26,8 @@ double _ternary_search(const std::function<double(double)> &f,
 
         left_third = left + (right - left) / 3;
         right_third = right - (right - left) / 3;
+
+        std::cout << left_third << " " << right_third << " " << f(left_third) << std::endl;
 
         if (f(left_third) < f(right_third))
         {
