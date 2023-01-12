@@ -5,6 +5,7 @@
 #include <boost/math/special_functions/beta.hpp>
 #include <boost/math/special_functions/gamma.hpp>
 #include <boost/math/special_functions/erf.hpp>
+#include <complex>
 #include <cmath>
 #include <vector>
 #include <limits>
@@ -14,6 +15,23 @@ using namespace std;
 namespace py = pybind11;
 
 constexpr double pi = 3.14159265358979323846;
+
+double robust_beta(double x, double y)
+{
+    // Use the analytic continuation of the beta function to
+    // extend its domain to include negative values
+    std::complex<double> cx(x, 0);
+    std::complex<double> cy(y, 0);
+    std::complex<double> cxcy = cx + cy;
+    if (cxcy.real() <= 0)
+    {
+        return std::pow(2, cxcy - 1) * std::exp(boost::math::lgamma(cx) + boost::math::lgamma(cy) - boost::math::lgamma(cxcy)) * std::sin(M_PI * cx) * std::sin(M_PI * cy) / M_PI;
+    }
+    else
+    {
+        return boost::math::beta(x, y);
+    }
+}
 
 double binom(double n, double k)
 {
@@ -58,7 +76,7 @@ double binom(double n, double k)
 
     if ((n >= 1e10 * k) && (k > 0))
     {
-        return std::exp(-std::log(boost::math::beta(1 + n - k, 1 + k))) - std::log(n + 1);
+        return std::exp(-std::log(robust_beta(1 + n - k, 1 + k))) - std::log(n + 1);
     }
     else if (k > 1e8 * std::fabs(n))
     {
@@ -101,7 +119,7 @@ double binom(double n, double k)
     }
     else
     {
-        return 1 / (n + 1) / boost::math::beta(1 + n - k, 1 + k);
+        return 1 / (n + 1) / robust_beta(1 + n - k, 1 + k);
     }
 }
 
