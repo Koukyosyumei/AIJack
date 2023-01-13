@@ -168,7 +168,6 @@ class BaseMomentAccountant:
             self.precision,
             self.max_iterations,
         )
-        print("optimal_lam is ", optimal_lam)
 
         min_epsilon = estimate_eps(optimal_lam)
 
