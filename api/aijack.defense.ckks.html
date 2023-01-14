@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>aijack.defense.ckks package &mdash; AIJack  documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> AIJack
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">aijack.defense.ckks package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-aijack.defense.ckks.ciphertext">aijack.defense.ckks.ciphertext module</a></li>
+<li><a class="reference internal" href="#module-aijack.defense.ckks.encoder">aijack.defense.ckks.encoder module</a></li>
+<li><a class="reference internal" href="#module-aijack.defense.ckks.encrypter">aijack.defense.ckks.encrypter module</a></li>
+<li><a class="reference internal" href="#module-aijack.defense.ckks.plaintext">aijack.defense.ckks.plaintext module</a></li>
+<li><a class="reference internal" href="#module-aijack.defense.ckks.random">aijack.defense.ckks.random module</a></li>
+<li><a class="reference internal" href="#module-aijack.defense.ckks.utils">aijack.defense.ckks.utils module</a></li>
+<li><a class="reference internal" href="#module-aijack.defense.ckks">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">AIJack</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>aijack.defense.ckks package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/aijack.defense.ckks.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <div class="section" id="aijack-defense-ckks-package">
+<h1>aijack.defense.ckks package<a class="headerlink" href="#aijack-defense-ckks-package" title="Permalink to this headline"></a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline"></a></h2>
+</div>
+<div class="section" id="module-aijack.defense.ckks.ciphertext">
+<span id="aijack-defense-ckks-ciphertext-module"></span><h2>aijack.defense.ckks.ciphertext module<a class="headerlink" href="#module-aijack.defense.ckks.ciphertext" title="Permalink to this headline"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="aijack.defense.ckks.ciphertext.CKKSCiphertext">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">aijack.defense.ckks.ciphertext.</span></span><span class="sig-name descname"><span class="pre">CKKSCiphertext</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">c0</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.polynomial.polynomial.Polynomial</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">c1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.polynomial.polynomial.Polynomial</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">N</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">q</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scale</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#aijack.defense.ckks.ciphertext.CKKSCiphertext" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-aijack.defense.ckks.encoder">
+<span id="aijack-defense-ckks-encoder-module"></span><h2>aijack.defense.ckks.encoder module<a class="headerlink" href="#module-aijack.defense.ckks.encoder" title="Permalink to this headline"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="aijack.defense.ckks.encoder.CKKSEncoder">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">aijack.defense.ckks.encoder.</span></span><span class="sig-name descname"><span class="pre">CKKSEncoder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">M</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scale</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#aijack.defense.ckks.encoder.CKKSEncoder" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Basic CKKS encoder to encode complex vectors into polynomials.
+This class is mainly based on <a class="reference external" href="https://blog.openmined.org/ckks-explained-part-1-simple-encoding-and-decoding/">https://blog.openmined.org/ckks-explained-part-1-simple-encoding-and-decoding/</a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="aijack.defense.ckks.encoder.CKKSEncoder.compute_basis_coordinates">
+<span class="sig-name descname"><span class="pre">compute_basis_coordinates</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">z</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#aijack.defense.ckks.encoder.CKKSEncoder.compute_basis_coordinates" title="Permalink to this definition"></a></dt>
+<dd><p>Computes the coordinates of a vector with respect to the orthogonal lattice basis.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="aijack.defense.ckks.encoder.CKKSEncoder.decode">
+<span class="sig-name descname"><span class="pre">decode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pt</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#aijack.defense.ckks.plaintext.CKKSPlaintext" title="aijack.defense.ckks.plaintext.CKKSPlaintext"><span class="pre">aijack.defense.ckks.plaintext.CKKSPlaintext</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">numpy.array</span></span></span><a class="headerlink" href="#aijack.defense.ckks.encoder.CKKSEncoder.decode" title="Permalink to this definition"></a></dt>
+<dd><p>Decodes a polynomial by removing the scale,
+evaluating on the roots, and project it on C^(N/2)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="aijack.defense.ckks.encoder.CKKSEncoder.encode">
+<span class="sig-name descname"><span class="pre">encode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">z</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.array</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#aijack.defense.ckks.plaintext.CKKSPlaintext" title="aijack.defense.ckks.plaintext.CKKSPlaintext"><span class="pre">aijack.defense.ckks.plaintext.CKKSPlaintext</span></a></span></span><a class="headerlink" href="#aijack.defense.ckks.encoder.CKKSEncoder.encode" title="Permalink to this definition"></a></dt>
+<dd><p>Encodes a vector by expanding it first to H,
+scale it, project it on the lattice of sigma(R), and performs
+sigma inverse.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="aijack.defense.ckks.encoder.CKKSEncoder.pi">
+<span class="sig-name descname"><span class="pre">pi</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">z</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.array</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">numpy.array</span></span></span><a class="headerlink" href="#aijack.defense.ckks.encoder.CKKSEncoder.pi" title="Permalink to this definition"></a></dt>
+<dd><p>Projects a vector of H into C^{N/2}.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>z</strong> – </p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>np.array</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="aijack.defense.ckks.encoder.CKKSEncoder.pi_inverse">
+<span class="sig-name descname"><span class="pre">pi_inverse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">z</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.array</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">numpy.array</span></span></span><a class="headerlink" href="#aijack.defense.ckks.encoder.CKKSEncoder.pi_inverse" title="Permalink to this definition"></a></dt>
+<dd><p>Expands a vector of C^{N/2} by expanding it with its
+complex conjugate.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="aijack.defense.ckks.encoder.CKKSEncoder.sigma">
+<span class="sig-name descname"><span class="pre">sigma</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">p</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.polynomial.polynomial.Polynomial</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">numpy.array</span></span></span><a class="headerlink" href="#aijack.defense.ckks.encoder.CKKSEncoder.sigma" title="Permalink to this definition"></a></dt>
+<dd><p>Decodes a polynomial to a vector (C^{N/2})</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>p</strong> – encoded polinoimial</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>decoded vector</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>np.array</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="aijack.defense.ckks.encoder.CKKSEncoder.sigma_R_discretization">
+<span class="sig-name descname"><span class="pre">sigma_R_discretization</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">z</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#aijack.defense.ckks.encoder.CKKSEncoder.sigma_R_discretization" title="Permalink to this definition"></a></dt>
+<dd><p>Projects a vector on the lattice using coordinate wise random rounding.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="aijack.defense.ckks.encoder.CKKSEncoder.sigma_inverse">
+<span class="sig-name descname"><span class="pre">sigma_inverse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">z</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.array</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">numpy.polynomial.polynomial.Polynomial</span></span></span><a class="headerlink" href="#aijack.defense.ckks.encoder.CKKSEncoder.sigma_inverse" title="Permalink to this definition"></a></dt>
+<dd><p>Encodes the vector z (C^{N/2}) to a polinomial ().</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>z</strong> (<em>np.array</em>) – target vector</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the encoded polinoimial</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Polynomial</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-aijack.defense.ckks.encrypter">
+<span id="aijack-defense-ckks-encrypter-module"></span><h2>aijack.defense.ckks.encrypter module<a class="headerlink" href="#module-aijack.defense.ckks.encrypter" title="Permalink to this headline"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="aijack.defense.ckks.encrypter.CKKSEncrypter">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">aijack.defense.ckks.encrypter.</span></span><span class="sig-name descname"><span class="pre">CKKSEncrypter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">encoder</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">q</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#aijack.defense.ckks.encrypter.CKKSEncrypter" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="aijack.defense.ckks.encrypter.CKKSEncrypter.decrypt">
+<span class="sig-name descname"><span class="pre">decrypt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ct</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#aijack.defense.ckks.encrypter.CKKSEncrypter.decrypt" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="aijack.defense.ckks.encrypter.CKKSEncrypter.decrypt_to_plaintext">
+<span class="sig-name descname"><span class="pre">decrypt_to_plaintext</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ct</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#aijack.defense.ckks.encrypter.CKKSEncrypter.decrypt_to_plaintext" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="aijack.defense.ckks.encrypter.CKKSEncrypter.encrypt">
+<span class="sig-name descname"><span class="pre">encrypt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">z</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#aijack.defense.ckks.encrypter.CKKSEncrypter.encrypt" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="aijack.defense.ckks.encrypter.CKKSEncrypter.encrypt_from_plaintext">
+<span class="sig-name descname"><span class="pre">encrypt_from_plaintext</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pt</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#aijack.defense.ckks.encrypter.CKKSEncrypter.encrypt_from_plaintext" title="Permalink to this definition"></a></dt>
+<dd><p>Encrypt an integer.
+:param pk: public-key.
+:param pt: plaintext to be encrypted.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Tuple representing a ciphertext.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="aijack.defense.ckks.encrypter.CKKSEncrypter.keygen">
+<span class="sig-name descname"><span class="pre">keygen</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#aijack.defense.ckks.encrypter.CKKSEncrypter.keygen" title="Permalink to this definition"></a></dt>
+<dd><p>Generate a public and secret keys
+:param size: size of the polynoms for the public and secret keys.
+:param q: coefficient modulus.
+:param poly_mod: polynomial modulus.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Public and secret key.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="aijack.defense.ckks.encrypter.CKKSEncrypter.set_pk">
+<span class="sig-name descname"><span class="pre">set_pk</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pk</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#aijack.defense.ckks.encrypter.CKKSEncrypter.set_pk" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="aijack.defense.ckks.encrypter.CKKSEncrypter.set_sk">
+<span class="sig-name descname"><span class="pre">set_sk</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sk</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#aijack.defense.ckks.encrypter.CKKSEncrypter.set_sk" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-aijack.defense.ckks.plaintext">
+<span id="aijack-defense-ckks-plaintext-module"></span><h2>aijack.defense.ckks.plaintext module<a class="headerlink" href="#module-aijack.defense.ckks.plaintext" title="Permalink to this headline"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="aijack.defense.ckks.plaintext.CKKSPlaintext">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">aijack.defense.ckks.plaintext.</span></span><span class="sig-name descname"><span class="pre">CKKSPlaintext</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">p</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.polynomial.polynomial.Polynomial</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">N</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scale</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#aijack.defense.ckks.plaintext.CKKSPlaintext" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-aijack.defense.ckks.random">
+<span id="aijack-defense-ckks-random-module"></span><h2>aijack.defense.ckks.random module<a class="headerlink" href="#module-aijack.defense.ckks.random" title="Permalink to this headline"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="aijack.defense.ckks.random.gen_binary_poly">
+<span class="sig-prename descclassname"><span class="pre">aijack.defense.ckks.random.</span></span><span class="sig-name descname"><span class="pre">gen_binary_poly</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#aijack.defense.ckks.random.gen_binary_poly" title="Permalink to this definition"></a></dt>
+<dd><p>Generates a polynomial with coeffecients in [0, 1]
+:param size: number of coeffcients, size-1 being the degree of the</p>
+<blockquote>
+<div><p>polynomial.</p>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>array of coefficients with the coeff[i] being
+the coeff of x ^ i.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="aijack.defense.ckks.random.gen_normal_poly">
+<span class="sig-prename descclassname"><span class="pre">aijack.defense.ckks.random.</span></span><span class="sig-name descname"><span class="pre">gen_normal_poly</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mean</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">std</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#aijack.defense.ckks.random.gen_normal_poly" title="Permalink to this definition"></a></dt>
+<dd><p>Generates a polynomial with coeffecients in a normal distribution
+of mean 0 and a standard deviation of 2, then discretize it.
+:param size: number of coeffcients, size-1 being the degree of the</p>
+<blockquote>
+<div><p>polynomial.</p>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>array of coefficients with the coeff[i] being
+the coeff of x ^ i.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="aijack.defense.ckks.random.gen_uniform_poly">
+<span class="sig-prename descclassname"><span class="pre">aijack.defense.ckks.random.</span></span><span class="sig-name descname"><span class="pre">gen_uniform_poly</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">modulus</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#aijack.defense.ckks.random.gen_uniform_poly" title="Permalink to this definition"></a></dt>
+<dd><p>Generates a polynomial with coeffecients being integers in Z_modulus
+:param size: number of coeffcients, size-1 being the degree of the</p>
+<blockquote>
+<div><p>polynomial.</p>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>array of coefficients with the coeff[i] being
+the coeff of x ^ i.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-aijack.defense.ckks.utils">
+<span id="aijack-defense-ckks-utils-module"></span><h2>aijack.defense.ckks.utils module<a class="headerlink" href="#module-aijack.defense.ckks.utils" title="Permalink to this headline"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="aijack.defense.ckks.utils.coordinate_wise_random_rounding">
+<span class="sig-prename descclassname"><span class="pre">aijack.defense.ckks.utils.</span></span><span class="sig-name descname"><span class="pre">coordinate_wise_random_rounding</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coordinates</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#aijack.defense.ckks.utils.coordinate_wise_random_rounding" title="Permalink to this definition"></a></dt>
+<dd><p>Rounds coordinates randonmly.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="aijack.defense.ckks.utils.polydiv_coef">
+<span class="sig-prename descclassname"><span class="pre">aijack.defense.ckks.utils.</span></span><span class="sig-name descname"><span class="pre">polydiv_coef</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">p</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.polynomial.polynomial.Polynomial</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mod</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">numpy.polynomial.polynomial.Polynomial</span></span></span><a class="headerlink" href="#aijack.defense.ckks.utils.polydiv_coef" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="aijack.defense.ckks.utils.round_coordinates">
+<span class="sig-prename descclassname"><span class="pre">aijack.defense.ckks.utils.</span></span><span class="sig-name descname"><span class="pre">round_coordinates</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coordinates</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#aijack.defense.ckks.utils.round_coordinates" title="Permalink to this definition"></a></dt>
+<dd><p>Gives the integral rest.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-aijack.defense.ckks">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-aijack.defense.ckks" title="Permalink to this headline"></a></h2>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Hideaki Takahashi.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
