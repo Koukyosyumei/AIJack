@@ -52,12 +52,12 @@ We briefly introduce the overview of AIJack.
 
 ## Features
 
-- All-around abilities for both attack & defense
-- PyTorch-friendly design
-- Compatible with scikit-learn
-- Fast Implementation with C++ backend
-- MPI-Backend for Federated Learning
-- Extensible modular APIs
+-  All-around abilities for both attack & defense
+-  PyTorch-friendly design
+-  Compatible with scikit-learn
+-  Fast Implementation with C++ backend
+-  MPI-Backend for Federated Learning
+-  Extensible modular APIs
 
 ## Basic Interface
 
@@ -115,9 +115,9 @@ api.run()
 
 You can also find more examples in our tutorials and documentation.
 
-- [Blog](https://dev.to/koukyosyumei/privacy-preserving-machine-learning-with-aijack-1-federated-learning-on-pytorch-3i5m)
-- [Documentation](https://koukyosyumei.github.io/AIJack/intro.html)
-- [API Reference](https://koukyosyumei.github.io/AIJack/api/index.html)
+-  [Blog](https://dev.to/koukyosyumei/privacy-preserving-machine-learning-with-aijack-1-federated-learning-on-pytorch-3i5m)
+-  [Documentation](https://koukyosyumei.github.io/AIJack/intro.html)
+-  [API Reference](https://koukyosyumei.github.io/AIJack/api/index.html)
 
 # Supported Algorithms
 
