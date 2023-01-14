@@ -22,6 +22,7 @@
 
 <img src="logo/AIJACK-NEON-LOGO.png" width=380 align="right">
 
+
 AIJack is an easy-to-use open-source simulation tool for testing the security of your AI system against hijackers. It provides advanced security techniques like *Differential Privacy*, *Homomorphic Encryption*, and *Federated Learning* to guarantee protection for your AI. With AIJack, you can test and simulate defenses against various attacks such as *Poisoning*, *Model Inversion*, *Backdoor*, and *Free-Rider*. We support more than 30 state-of-the-art methods. For more information, check our [documentation](https://koukyosyumei.github.io/AIJack/intro.html) and start securing your AI today with AIJack.
 
 # Installation
