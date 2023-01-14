@@ -6,6 +6,8 @@
 
 # AIJack: Security and Privacy Risk Simulator for Standard/Distributed Machine Learning
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/5f2f795f043a46eea2b23c92c8ddc2a2)](https://app.codacy.com/gh/Koukyosyumei/AIJack?utm_source=github.com&utm_medium=referral&utm_content=Koukyosyumei/AIJack&utm_campaign=Badge_Grade_Settings)
+
 <div align="left">
 <img src="https://badgen.net/github/stars/Koukyosyumei/AIjack?color=green">
 <img src="https://badgen.net/github/forks/Koukyosyumei/AIjack">
