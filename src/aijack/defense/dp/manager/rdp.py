@@ -4,7 +4,7 @@ import numpy as np
 from scipy import special
 from scipy.special import logsumexp
 
-from .utils import _log_add, _log_coef_i, _log_e, _log_erfc, _log_s, _log_sub, _log_t
+from .utils import _log_add, _log_coef_i, _log_e, _log_s, _log_sub, _log_t
 
 
 def eps_gaussian(alpha, params):
