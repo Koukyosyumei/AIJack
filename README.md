@@ -4,7 +4,7 @@
   Author: Hideaki Takahashi
   -->
 
-# AIJack: Security and Privacy Risk Simulator for Standard/Distributed Machine Learning
+# AIJack: Security and Privacy Risk Simulator for Machine Learning
 
 <div align="left">
 <img src="https://badgen.net/github/stars/Koukyosyumei/AIjack?color=green">
@@ -22,7 +22,7 @@
 
 <img src="logo/AIJACK-NEON-LOGO.png" width=406 align="right">
 
-AIJack allows you to assess the privacy and security risks of machine learning algorithms such as *Model Inversion*, *Poisoning Attack*, *Evasion Attack*, *Free Rider*, and *Backdoor Attack*. AIJack also provides various defense techniques like *Differential Privacy*, *Homomorphic Encryption*, and other heuristic approaches. In addition, AIJack provides APIs for many distributed learning schemes like *Federated Learning* and *Split Learning*. You can integrate many attack and defense methods into such collaborative learning with a few lines. We currently implement more than 30 state-of-arts methods. For more information, see the [documentation](https://koukyosyumei.github.io/AIJack/intro.html).
+Unleash the power of secure AI with AIJack - the ultimate open-source simulation tool to test the security of your AI system against hijackers. With advanced security techniques like *Differential Privacy*, *Homomorphic Encryption*, and *Federated Learning*, AIJack guarantees protection for your AI. Test and simulate defenses against various attacks, such as *Poisoning*, *Model Inversion*, *Backdoor* and *Free-Rider*. We currently implement more than 30 state-of-arts methods. For more information, see the [documentation](https://koukyosyumei.github.io/AIJack/intro.html). Don't leave your AI vulnerable, arm it with AIJack.
 
 # Installation
 
@@ -51,12 +51,12 @@ We briefly introduce the overview of AIJack.
 
 ## Features
 
-- Flexible API for more than 30 attack and defense algorithms
-- Compatible with PyTorch and scikit-learn
-- Support for both Deep Learning and classical ML
-- Fast Implementation with C++ backend
-- PyTorch-Extension for Homomorphic Encryption
-- MPI-Backend for Federated Learning
+- ✅ All-around abilities for both attack & defense
+- ✅ PyTorch-friendly design
+- ✅ Compatible with scikit-learn
+- ✅ Fast Implementation with C++ backend
+- ✅ MPI-Backend for Federated Learning
+- ✅ Extensible modular APIs
 
 ## Basic Interface
 
@@ -114,8 +114,9 @@ api.run()
 
 You can also find more examples in our tutorials and documentation.
 
-- [Tutorials](https://dev.to/koukyosyumei/privacy-preserving-machine-learning-with-aijack-1-federated-learning-on-pytorch-3i5m)
+- [Blog](https://dev.to/koukyosyumei/privacy-preserving-machine-learning-with-aijack-1-federated-learning-on-pytorch-3i5m)
 - [Documentation](https://koukyosyumei.github.io/AIJack/intro.html)
+- [API Reference](https://koukyosyumei.github.io/AIJack/api/index.html)
 
 # Supported Algorithms
 
