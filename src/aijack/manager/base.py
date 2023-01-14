@@ -9,5 +9,5 @@ class BaseManager(metaclass=ABCMeta):
         self.kwargs = kwargs
 
     @abstractmethod
-    def attach(self):
+    def attach(self, cls):
         pass
