@@ -342,7 +342,7 @@ class GradientInversion_Attack(BaseAttacker):
             a tuple of the best reconstructed images and corresponding labels
 
         Raises:
-            ValueError: If the culculated distance become Nan
+            OverflowError: If the culculated distance become Nan
         """
         fake_x, fake_label, optimizer = _setup_attack(
             self.x_shape,
@@ -375,7 +375,7 @@ class GradientInversion_Attack(BaseAttacker):
                     fake_x[:] = fake_x.clamp(self.clamp_range[0], self.clamp_range[1])
 
             if torch.sum(torch.isnan(distance)).item():
-                raise ValueError("stop because the culculated distance is Nan")
+                raise OverflowError("stop because the culculated distance is Nan")
 
             if best_distance > distance:
                 best_fake_x = copy.deepcopy(fake_x)
@@ -405,9 +405,6 @@ class GradientInversion_Attack(BaseAttacker):
 
         Returns:
             a tuple of the best reconstructed images and corresponding labels
-
-        Raises:
-            ValueError: If the culculated distance become Nan
         """
         group_fake_x = []
         group_fake_label = []

@@ -8,7 +8,7 @@ def _default_gradinent_inversion_attack_on_receive(self):
         self.reset_seed(s)
         try:
             tmp_result.append(self.attack())
-        except:
+        except OverflowError:
             continue
     self.attack_results.append(tmp_result)
 
