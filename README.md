@@ -51,12 +51,12 @@ We briefly introduce the overview of AIJack.
 
 ## Features
 
-- ✅ All-around abilities for both attack & defense
-- ✅ PyTorch-friendly design
-- ✅ Compatible with scikit-learn
-- ✅ Fast Implementation with C++ backend
-- ✅ MPI-Backend for Federated Learning
-- ✅ Extensible modular APIs
+- All-around abilities for both attack & defense
+- PyTorch-friendly design
+- Compatible with scikit-learn
+- Fast Implementation with C++ backend
+- MPI-Backend for Federated Learning
+- Extensible modular APIs
 
 ## Basic Interface
 
