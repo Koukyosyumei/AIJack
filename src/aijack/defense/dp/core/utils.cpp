@@ -76,7 +76,7 @@ inline double binom(double n, double k)
     if (n >= 1e10 * k && k > 0)
     {
         // avoid under/overflows in intermediate results
-        return std::exp(-lbeta(1 + n - k, 1 + k) - std::log(n + 1));
+        return std::exp(-lbeta(1 + n - k, 1 + k) - std::log1p(n));
     }
     else if (k > 1e8 * std::fabs(n))
     {
