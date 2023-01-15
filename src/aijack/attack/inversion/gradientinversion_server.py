@@ -25,8 +25,10 @@ def attach_gradient_inversion_attack_to_server(
 
     Args:
         x_shape: input shape of target_model.
-        attack_function_on_receive (function, optional): a function to execute attack called after receving the local gradients. Defaults to _default_gradinent_inversion_attack_on_receive.
-        num_trial_per_communication (int, optional): number of attack trials executed per communication. Defaults to 1.
+        attack_function_on_receive (function, optional): a function to execute attack called after
+        receving the local gradients. Defaults to _default_gradinent_inversion_attack_on_receive.
+        num_trial_per_communication (int, optional): number of attack trials executed per
+        communication. Defaults to 1.
         target_client_id (int, optional): id of target client. Default to 0.
         gradinvattack_kwargs: kwargs for GradientInversion_Attack
 

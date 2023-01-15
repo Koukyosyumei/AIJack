@@ -6,6 +6,36 @@ import torch.optim as optim
 from ...utils import NumpyDataset, try_gpu
 
 
+def _train(num_itr, trainloader, optimizer, model, criterion):
+    for _ in range(num_itr):
+        for data in trainloader:
+            inputs, labels = data
+            inputs = try_gpu(inputs)
+            labels = try_gpu(labels)
+            optimizer.zero_grad()
+            outputs = model(inputs)
+
+            loss = criterion(outputs, labels)
+            loss.backward()
+            optimizer.step()
+    return model
+
+def _gather_prediction(dataloader, model):
+        preds_list = []
+        label_list = []
+        with torch.no_grad():
+            for data in dataloader:
+                inputs, labels = data
+                inputs = try_gpu(inputs)
+                labels = try_gpu(labels)
+                outputs = model(inputs)
+                preds_list.append(outputs)
+                label_list.append(labels)
+        preds_tensor = torch.cat(preds_list)
+        label_tensor = torch.cat(label_list)
+        return preds_tensor, label_tensor
+
+
 class ShadowModel:
     """Train shadow models for membership inference
        reference https://arxiv.org/abs/1610.05820
@@ -89,20 +119,6 @@ class ShadowModel:
 
         return result_dict
 
-    def _train(self, num_itr, trainloader, optimizer, model, criterion):
-        for _ in range(num_itr):
-            for data in trainloader:
-                inputs, labels = data
-                inputs = try_gpu(inputs)
-                labels = try_gpu(labels)
-                optimizer.zero_grad()
-                outputs = model(inputs)
-
-                loss = criterion(outputs, labels)
-                loss.backward()
-                optimizer.step()
-        return model
-
     def _fit(self, X, y, num_itr=100):
         """train shadow models on given data
 
@@ -144,25 +160,10 @@ class ShadowModel:
             criterion = nn.CrossEntropyLoss()
             optimizer = optim.SGD(model.parameters(), lr=0.001, momentum=0.9)
 
-            model = self._train(num_itr, trainloader, optimizer, model, criterion)
+            model = _train(num_itr, trainloader, optimizer, model, criterion)
             print("Finished Training")
 
             self.models[model_idx] = model
-
-    def _gather_prediction(self, dataloader, model):
-        preds_list = []
-        label_list = []
-        with torch.no_grad():
-            for data in dataloader:
-                inputs, labels = data
-                inputs = try_gpu(inputs)
-                labels = try_gpu(labels)
-                outputs = model(inputs)
-                preds_list.append(outputs)
-                label_list.append(labels)
-        preds_tensor = torch.cat(preds_list)
-        label_tensor = torch.cat(label_list)
-        return preds_tensor, label_tensor
 
     def _transform(self):
         """get prediction and its membership label per each class
@@ -196,12 +197,12 @@ class ShadowModel:
             testloader = self.testloaders[model_idx]
 
             # shadow-in
-            train_preds, train_label = self._gather_prediction(trainloader, model)
+            train_preds, train_label = _gather_prediction(trainloader, model)
             shadow_in_data.append(train_preds)
             in_original_labels.append(train_label)
 
             # shadow-out
-            test_preds, test_label = self._gather_prediction(testloader, model)
+            test_preds, test_label = _gather_prediction(testloader, model)
             shadow_out_data.append(test_preds)
             out_original_labels.append(test_label)
 
