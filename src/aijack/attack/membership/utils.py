@@ -20,20 +20,21 @@ def _train(num_itr, trainloader, optimizer, model, criterion):
             optimizer.step()
     return model
 
+
 def _gather_prediction(dataloader, model):
-        preds_list = []
-        label_list = []
-        with torch.no_grad():
-            for data in dataloader:
-                inputs, labels = data
-                inputs = try_gpu(inputs)
-                labels = try_gpu(labels)
-                outputs = model(inputs)
-                preds_list.append(outputs)
-                label_list.append(labels)
-        preds_tensor = torch.cat(preds_list)
-        label_tensor = torch.cat(label_list)
-        return preds_tensor, label_tensor
+    preds_list = []
+    label_list = []
+    with torch.no_grad():
+        for data in dataloader:
+            inputs, labels = data
+            inputs = try_gpu(inputs)
+            labels = try_gpu(labels)
+            outputs = model(inputs)
+            preds_list.append(outputs)
+            label_list.append(labels)
+    preds_tensor = torch.cat(preds_list)
+    label_tensor = torch.cat(label_list)
+    return preds_tensor, label_tensor
 
 
 class ShadowModel:
