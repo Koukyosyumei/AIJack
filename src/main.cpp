@@ -153,8 +153,8 @@ PYBIND11_MODULE(aijack_cpp_core, m)
         .def(py::init<vector<string>, map<string, bool>, int>())
         .def("insert_real", &DataFrame::insert_real)
         .def("insert_categorical", &DataFrame::insert_categorical)
-        .def("data_real", &DataFrame::data_real)
-        .def("data_categorical", &DataFrame::data_categorical);
+        .def("get_data_real", &DataFrame::get_data_real)
+        .def("get_data_categorical", &DataFrame::get_data_categorical);
 
     m.def("partition_dataframe",
           &partition_dataframe, R"pbdoc(partition_dataframe)pbdoc");
