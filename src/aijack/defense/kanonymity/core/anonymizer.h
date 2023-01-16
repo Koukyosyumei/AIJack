@@ -106,7 +106,7 @@ partition_dataframe(DataFrame &df, std::vector<string> &feature_columns,
   while (!que.empty()) {
     std::vector<int> partition = que.front();
     que.pop();
-    std::map<std::string, float> spans = get_spans(df, partition, &scale_map);
+    std::map<std::string, float> spans = get_spans(df, partition, scale_map);
 
     std::vector<std::pair<string, float>> sorted_spans =
         sort_map_by_value<string, float>(spans);

@@ -1,4 +1,5 @@
 #pragma once
+#include "dataframe.h"
 #include <algorithm>
 #include <iostream>
 #include <limits>
@@ -8,7 +9,6 @@
 #include <set>
 #include <string>
 #include <vector>
-#include "dataframe.h"
 using namespace std;
 
 /**
@@ -82,9 +82,9 @@ template <typename K, typename V> void print_map(std::map<K, V> &m) {
  * @param scale_map
  * @return std::map<std::string, float>
  */
-std::map<std::string, float>
-get_spans(DataFrame &df, std::vector<int> &partition,
-          std::map<string, float> *scale_map = nullptr) {
+std::map<std::string, float> get_spans(DataFrame &df,
+                                       std::vector<int> &partition,
+                                       std::map<string, float> &scale_map) {
   std::map<std::string, float> span;
 
   for (std::string col : df.columns) {
@@ -100,9 +100,7 @@ get_spans(DataFrame &df, std::vector<int> &partition,
       span[col] = (float)get_nunique(dfp.data_categorical[col]);
     }
 
-    if (scale_map != nullptr) {
-      span[col] /= scale_map->at(col);
-    }
+    span[col] /= scale_map[col];
   }
 
   return span;
