@@ -158,7 +158,7 @@ PYBIND11_MODULE(aijack_cpp_core, m)
         .def("get_data_real", &DataFrame::get_data_real)
         .def("get_data_categorical", &DataFrame::get_data_categorical);
 
-    m.def("get_spans", &get_span, R"phdoc(get_spans)phdoc");
+    m.def("get_spans", &get_span, R"pbdoc(get_spans)pbdoc");
 
     m.def("partition_dataframe",
           &partition_dataframe, R"pbdoc(partition_dataframe)pbdoc");
