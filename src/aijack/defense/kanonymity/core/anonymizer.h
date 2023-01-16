@@ -55,8 +55,13 @@ void insert_anonymized_feature(DataFrame &df, DataFrame &anonymized_df,
 
 struct Mondrian {
   int k;
+  std::vector<std::vector<int>> final_partitions;
 
   Mondrian(int k = 3) { this->k = k; }
+
+  std::vector<std::vector<int>> get_final_partitions() {
+    return this->final_partitions;
+  }
 
   /**
    * @brief Splits partitions and insert them to que if they meet k-anonymous
@@ -188,7 +193,7 @@ struct Mondrian {
 
     std::map<std::string, float> init_spans =
         get_spans(df, init_idx, init_scale);
-    std::vector<std::vector<int>> final_partitions =
+    this->final_partitions =
         partition_dataframe(df, feature_columns, sensitive_column, init_spans);
     DataFrame anonymized_df = anonymize_dataframe_with_partition(
         df, final_partitions, feature_columns, sensitive_column);
