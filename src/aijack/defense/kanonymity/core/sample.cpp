@@ -48,7 +48,9 @@ int main()
     std::cout << "---" << std::endl;
 
     std::vector<int> tmp_idx_2 = {0, 1, 2, 3, 4, 5};
-    std::map<std::string, float> spans = get_spans(df, tmp_idx_2);
+    std::map<std::string, float> init_scale = {
+        {"age", 1}, {"sex", 1}, {"zip", 1}, {"disease", 1}};
+    std::map<std::string, float> spans = get_spans(df, tmp_idx_2, init_scale);
     print_map(spans);
     std::cout << "---" << std::endl;
 
