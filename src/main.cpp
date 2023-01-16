@@ -158,13 +158,9 @@ PYBIND11_MODULE(aijack_cpp_core, m)
         .def("get_data_real", &DataFrame::get_data_real)
         .def("get_data_categorical", &DataFrame::get_data_categorical);
 
-    m.def("get_spans", &get_spans, R"pbdoc(get_spans)pbdoc");
-
-    m.def("partition_dataframe",
-          &partition_dataframe, R"pbdoc(partition_dataframe)pbdoc");
-
-    m.def("anonymize_dataframe",
-          &anonymize_dataframe, R"pbdoc(anonymize_dataframe)pbdoc");
+    py::class_<Mondrian>(m, "Mondrian")
+        .def(py::init<int>())
+        .def("anonymize", &Mondrian::anonymize);
 
 #ifdef VERSION_INFO
     m.attr("__version__") = MACRO_STRINGIFY(VERSION_INFO);
