@@ -47,15 +47,9 @@ int main()
     df[tmp_indices].print();
     std::cout << "---" << std::endl;
 
-    std::vector<int> tmp_idx_2 = {0, 1, 2, 3, 4, 5};
-    std::map<std::string, float> init_scale = {
-        {"age", 1}, {"sex", 1}, {"zip", 1}, {"disease", 1}};
-    std::map<std::string, float> spans = get_spans(df, tmp_idx_2, init_scale);
-    print_map(spans);
-    std::cout << "---" << std::endl;
-
+    std::vector<int> tmp_idx = {0, 1, 2, 3, 4};
     std::pair<vector<int>, vector<int>> tmp_split_result_1 =
-        split_dataframe(df, tmp_idx_2, "age");
+        split_dataframe(df, tmp_idx, "age");
     for (int i = 0; i < tmp_split_result_1.first.size(); i++)
     {
         std::cout << tmp_split_result_1.first[i] << " ";
@@ -68,12 +62,7 @@ int main()
     std::cout << std::endl;
 
     std::vector<string> feature_columns = {"age", "sex", "zip"};
-    std::vector<std::vector<int>> final_partitions =
-        partition_dataframe(df, feature_columns, "disease", spans);
-    std::cout << "length of final_partitions is " << final_partitions.size()
-              << std::endl;
-
-    DataFrame anonymized_df =
-        anonymize_dataframe(df, final_partitions, feature_columns, "disease");
+    Mondrian mondrian = Mondrian(3);
+    DataFrame anonymized_df = mondrian.anonymize(df, feature_columns, "disease");
     anonymized_df.print();
 }

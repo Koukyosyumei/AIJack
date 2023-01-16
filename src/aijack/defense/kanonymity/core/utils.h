@@ -18,11 +18,14 @@ using namespace std;
  * @param array
  * @return std::vector<size_t>
  */
-template <typename T> std::vector<size_t> argsort(const std::vector<T> &array) {
+template <typename T>
+std::vector<size_t> argsort(const std::vector<T> &array)
+{
   std::vector<size_t> indices(array.size());
   std::iota(indices.begin(), indices.end(), 0);
   std::sort(indices.begin(), indices.end(),
-            [&array](int left, int right) -> bool {
+            [&array](int left, int right) -> bool
+            {
               // sort indices according to corresponding array element
               return array[left] < array[right];
             });
@@ -39,7 +42,9 @@ template <typename T> std::vector<size_t> argsort(const std::vector<T> &array) {
  * @param n end position
  * @return std::vector<T>
  */
-template <typename T> std::vector<T> slice(std::vector<T> &v, int m, int n) {
+template <typename T>
+std::vector<T> slice(std::vector<T> &v, int m, int n)
+{
   std::vector<T> vec(n - m + 1);
   std::copy(v.begin() + m, v.begin() + n + 1, vec.begin());
   return vec;
@@ -51,7 +56,8 @@ template <typename T> std::vector<T> slice(std::vector<T> &v, int m, int n) {
  * @param xs
  * @return size_t
  */
-size_t get_nunique(std::vector<string> &xs) {
+size_t get_nunique(std::vector<string> &xs)
+{
   std::vector<string> ys;
   std::copy(xs.begin(), xs.end(), std::back_inserter(ys));
   std::sort(ys.begin(), ys.end());
@@ -68,8 +74,11 @@ size_t get_nunique(std::vector<string> &xs) {
  * @tparam V
  * @param m
  */
-template <typename K, typename V> void print_map(std::map<K, V> &m) {
-  for (auto const &pair : m) {
+template <typename K, typename V>
+void print_map(std::map<K, V> &m)
+{
+  for (auto const &pair : m)
+  {
     std::cout << "{" << pair.first << ": " << pair.second << "}\n";
   }
 }
@@ -84,19 +93,24 @@ template <typename K, typename V> void print_map(std::map<K, V> &m) {
  */
 std::map<std::string, float> get_spans(DataFrame &df,
                                        std::vector<int> &partition,
-                                       std::map<string, float> &scale_map) {
+                                       std::map<string, float> &scale_map)
+{
   std::map<std::string, float> span;
 
-  for (std::string col : df.columns) {
+  for (std::string col : df.columns)
+  {
     std::vector<std::string> tmp_col = {col};
     std::pair<std::vector<string>, std::vector<int>> tmp_pair =
         std::make_pair(tmp_col, partition);
     DataFrame dfp = df[tmp_pair];
-    if (df.is_real[col]) {
+    if (df.is_real[col])
+    {
       span[col] =
           *max_element(dfp.data_real[col].begin(), dfp.data_real[col].end()) -
           *min_element(dfp.data_real[col].begin(), dfp.data_real[col].end());
-    } else {
+    }
+    else
+    {
       span[col] = (float)get_nunique(dfp.data_categorical[col]);
     }
 
@@ -116,7 +130,8 @@ std::map<std::string, float> get_spans(DataFrame &df,
  */
 std::pair<std::vector<int>, std::vector<int>>
 split_dataframe_real_column(DataFrame &df, std::vector<int> &partition,
-                            std::string column) {
+                            std::string column)
+{
 
   vector<string> tmp_columns;
   tmp_columns.push_back(column);
@@ -129,10 +144,12 @@ split_dataframe_real_column(DataFrame &df, std::vector<int> &partition,
 
   std::vector<int> left_partition = std::vector<int>(n / 2);
   std::vector<int> right_partition = std::vector<int>(n - n / 2);
-  for (size_t i = 0; i < n / 2; i++) {
+  for (size_t i = 0; i < n / 2; i++)
+  {
     left_partition[i] = partition[argsorted_indices[i]];
   }
-  for (size_t i = n / 2; i < n; i++) {
+  for (size_t i = n / 2; i < n; i++)
+  {
     right_partition[i - n / 2] = partition[argsorted_indices[i]];
   }
 
@@ -149,7 +166,8 @@ split_dataframe_real_column(DataFrame &df, std::vector<int> &partition,
  */
 std::pair<std::vector<int>, std::vector<int>>
 split_dataframe_categorical_column(DataFrame &df, std::vector<int> &partition,
-                                   std::string column) {
+                                   std::string column)
+{
 
   vector<string> tmp_columns;
   tmp_columns.push_back(column);
@@ -169,10 +187,12 @@ split_dataframe_categorical_column(DataFrame &df, std::vector<int> &partition,
   size_t n_unique = unique_values.size();
   std::set<string> left_set;
   std::set<string> right_set;
-  for (size_t i = 0; i < n_unique / 2; i++) {
+  for (size_t i = 0; i < n_unique / 2; i++)
+  {
     left_set.insert(unique_values[i]);
   }
-  for (size_t i = n_unique / 2; i < n_unique; i++) {
+  for (size_t i = n_unique / 2; i < n_unique; i++)
+  {
     right_set.insert(unique_values[i]);
   }
 
@@ -183,13 +203,17 @@ split_dataframe_categorical_column(DataFrame &df, std::vector<int> &partition,
   right_partition.reserve(n);
   size_t left_size = 0;
   size_t right_size = 0;
-  for (size_t i = 0; i < n; i++) {
+  for (size_t i = 0; i < n; i++)
+  {
     std::set<string>::iterator it =
         left_set.find(dfp.data_categorical[column][i]);
-    if (it != left_set.end()) {
+    if (it != left_set.end())
+    {
       left_partition.push_back(partition[i]);
       left_size++;
-    } else {
+    }
+    else
+    {
       right_partition.push_back(partition[i]);
       right_size++;
     }
@@ -210,10 +234,39 @@ split_dataframe_categorical_column(DataFrame &df, std::vector<int> &partition,
  */
 std::pair<std::vector<int>, std::vector<int>>
 split_dataframe(DataFrame &df, std::vector<int> &partition,
-                std::string column) {
-  if (df.is_real[column]) {
+                std::string column)
+{
+  if (df.is_real[column])
+  {
     return split_dataframe_real_column(df, partition, column);
-  } else {
+  }
+  else
+  {
     return split_dataframe_categorical_column(df, partition, column);
   }
+}
+
+/**
+ * @brief Sorts a map by value (descending order)
+ *
+ * @tparam K
+ * @tparam V
+ * @param m
+ * @return std::vector<std::pair<K, V>>
+ */
+template <typename K, typename V>
+std::vector<std::pair<K, V>> sort_map_by_value(std::map<K, V> &m)
+{
+  std::vector<std::pair<K, V>> arr;
+  arr.reserve(m.size());
+  for (const auto &item : m)
+  {
+    arr.push_back(item);
+  }
+
+  std::sort(arr.begin(), arr.end(),
+            [](const auto &x, const auto &y)
+            { return x.second > y.second; });
+
+  return arr;
 }
