@@ -159,7 +159,7 @@ PYBIND11_MODULE(aijack_cpp_core, m)
     m.def("partition_dataframe",
           &partition_dataframe, R"pbdoc(partition_dataframe)pbdoc");
 
-    m.def("_greedy_search_frac",
+    m.def("anonymize_dataframe",
           &anonymize_dataframe, R"pbdoc(anonymize_dataframe)pbdoc");
 
 #ifdef VERSION_INFO
