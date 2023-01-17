@@ -1,5 +1,4 @@
 def test_mondrian():
-    import numpy as np
     import pandas as pd
 
     from aijack.defense.kanonymity import Mondrian
@@ -40,40 +39,34 @@ def test_mondrian():
     )
 
     test_adf_data_ignore_unused_features = pd.DataFrame(
-        np.array(
-            [
-                [3.0, "1", "test3", "z"],
-                [3.0, "1", "test3", "y"],
-                [3.0, "2", "test3", "y"],
-                [3.0, "2", "test3", "y"],
-                [6.666666507720947, "1", "test1_test2", "x"],
-                [6.666666507720947, "1", "test1_test2", "x"],
-                [6.666666507720947, "1", "test1_test2", "y"],
-                [8.0, "2", "test2_test3", "x"],
-                [8.0, "2", "test2_test3", "w"],
-            ],
-            dtype=object,
-        ),
+        [
+            [3.0, "1", "test3", "z"],
+            [3.0, "1", "test3", "y"],
+            [3.0, "2", "test3", "y"],
+            [3.0, "2", "test3", "y"],
+            [6.666666507720947, "1", "test1_test2", "x"],
+            [6.666666507720947, "1", "test1_test2", "x"],
+            [6.666666507720947, "1", "test1_test2", "y"],
+            [8.0, "2", "test2_test3", "x"],
+            [8.0, "2", "test2_test3", "w"],
+        ],
         columns=["col1", "col2", "col3", "col4"],
     )
 
     assert adf_ignore_unused_features.equals(test_adf_data_ignore_unused_features)
 
     test_adf_data_not_ignore_unused_features = pd.DataFrame(
-        np.array(
-            [
-                [3.0, "1", "test3", "z", 20],
-                [3.0, "1", "test3", "y", 30],
-                [3.0, "2", "test3", "y", 50],
-                [3.0, "2", "test3", "y", 45],
-                [6.666666507720947, "1", "test1_test2", "x", 35],
-                [6.666666507720947, "1", "test1_test2", "x", 20],
-                [6.666666507720947, "1", "test1_test2", "y", 20],
-                [8.0, "2", "test2_test3", "x", 22],
-                [8.0, "2", "test2_test3", "w", 32],
-            ],
-            dtype=object,
-        ),
+        [
+            [3.0, "1", "test3", "z", 20],
+            [3.0, "1", "test3", "y", 30],
+            [3.0, "2", "test3", "y", 50],
+            [3.0, "2", "test3", "y", 45],
+            [6.666666507720947, "1", "test1_test2", "x", 35],
+            [6.666666507720947, "1", "test1_test2", "x", 20],
+            [6.666666507720947, "1", "test1_test2", "y", 20],
+            [8.0, "2", "test2_test3", "x", 22],
+            [8.0, "2", "test2_test3", "w", 32],
+        ],
         columns=["col1", "col2", "col3", "col4", "col5"],
         index=[7, 6, 8, 5, 0, 1, 4, 2, 3],
     )
