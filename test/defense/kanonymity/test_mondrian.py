@@ -54,7 +54,7 @@ def test_mondrian():
             ],
             dtype=object,
         ),
-        columns=["col1", "col2", "col3", "col4", "col5"],
+        columns=["col1", "col2", "col3", "col4"],
     )
 
     assert adf_ignore_unused_features.equals(test_adf_data_ignore_unused_features)
