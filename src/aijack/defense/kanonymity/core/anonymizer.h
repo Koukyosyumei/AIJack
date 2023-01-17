@@ -36,7 +36,7 @@ bool is_k_anonymous(DataFrame &df, std::vector<int> &partition,
  * @param column
  * @param is_continuous_flag
  */
-void insert_anonymized_feature(DataFrame &df, DataFrame &anonymized_df,
+void insert_anonymized_quasiid(DataFrame &df, DataFrame &anonymized_df,
                                std::vector<int> &indices, std::string column,
                                bool is_continuous_flag) {
   int tmp_partition_size = indices.size();
@@ -105,13 +105,13 @@ struct Mondrian {
    * k-anonymous
    *
    * @param df
-   * @param feature_columns
+   * @param quasiid_columns
    * @param sensitive_column
    * @param scale_map
    * @return std::vector<std::vector<int>>
    */
   std::vector<std::vector<int>>
-  partition_dataframe(DataFrame &df, std::vector<string> &feature_columns,
+  partition_dataframe(DataFrame &df, std::vector<string> &quasiid_columns,
                       std::string sensitive_column,
                       std::map<string, float> scale_map) {
     std::vector<std::vector<int>> final_partitions;
@@ -144,33 +144,33 @@ struct Mondrian {
    *
    * @param df
    * @param partition
-   * @param feature_columns
+   * @param quasiid_columns
    * @param sensitive_column
    * @return DataFrame
    */
   DataFrame anonymize_dataframe_with_partition(
       DataFrame &df, std::vector<std::vector<int>> &partition,
-      std::vector<string> &feature_columns, std::string sensitive_column) {
+      std::vector<string> &quasiid_columns, std::string sensitive_column) {
     int num_partition = partition.size();
-    int num_features = feature_columns.size();
-    std::vector<string> new_columns(num_features + 1);
+    int num_quasiids = quasiid_columns.size();
+    std::vector<string> new_columns(num_quasiids + 1);
     std::map<std::string, bool> new_is_continuous;
-    for (int j = 0; j < num_features; j++) {
-      new_columns[j] = feature_columns[j];
-      new_is_continuous.insert(
-          std::make_pair(feature_columns[j], df.is_continuous[feature_columns[j]]));
+    for (int j = 0; j < num_quasiids; j++) {
+      new_columns[j] = quasiid_columns[j];
+      new_is_continuous.insert(std::make_pair(
+          quasiid_columns[j], df.is_continuous[quasiid_columns[j]]));
     }
-    new_columns[num_features] = sensitive_column;
+    new_columns[num_quasiids] = sensitive_column;
     new_is_continuous.insert(std::make_pair(sensitive_column, false));
 
     DataFrame anonymized_df =
         DataFrame(new_columns, new_is_continuous, df.get_num_row());
     for (int i = 0; i < num_partition; i++) {
       int tmp_partition_size = partition[i].size();
-      for (int j = 0; j < num_features; j++) {
-        insert_anonymized_feature(df, anonymized_df, partition[i],
-                                  feature_columns[j],
-                                  new_is_continuous[feature_columns[j]]);
+      for (int j = 0; j < num_quasiids; j++) {
+        insert_anonymized_quasiid(df, anonymized_df, partition[i],
+                                  quasiid_columns[j],
+                                  new_is_continuous[quasiid_columns[j]]);
       }
 
       for (int k = 0; k < tmp_partition_size; k++) {
@@ -182,10 +182,10 @@ struct Mondrian {
     return anonymized_df;
   }
 
-  DataFrame anonymize(DataFrame &df, std::vector<string> &feature_columns,
+  DataFrame anonymize(DataFrame &df, std::vector<string> &quasiid_columns,
                       std::string sensitive_column) {
     std::map<std::string, float> init_scale;
-    for (std::string col : feature_columns) {
+    for (std::string col : quasiid_columns) {
       init_scale.insert(std::make_pair(col, 1.0));
     }
     std::vector<int> init_idx(df.get_num_row());
@@ -194,9 +194,9 @@ struct Mondrian {
     std::map<std::string, float> init_spans =
         get_spans(df, init_idx, init_scale);
     this->final_partitions =
-        partition_dataframe(df, feature_columns, sensitive_column, init_spans);
+        partition_dataframe(df, quasiid_columns, sensitive_column, init_spans);
     DataFrame anonymized_df = anonymize_dataframe_with_partition(
-        df, final_partitions, feature_columns, sensitive_column);
+        df, final_partitions, quasiid_columns, sensitive_column);
     return anonymized_df;
   }
 };

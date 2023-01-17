@@ -16,11 +16,11 @@ def convert_pddataframe_to_anodataframe(pd_df, is_continuous_map):
     return ano_df
 
 
-def convert_anodataframe_to_pddataframe(ano_df, feature_columns, is_continuous_map):
+def convert_anodataframe_to_pddataframe(ano_df, columns, is_continuous_map):
     data_continuous = ano_df.get_data_continuous()
     data_categorical = ano_df.get_data_categorical()
     df = pd.DataFrame()
-    for col in feature_columns:
+    for col in columns:
         if is_continuous_map[col]:
             df[col] = data_continuous[col]
         else:
@@ -41,18 +41,36 @@ class Mondrian:
     def get_final_partitions(self):
         return self.api.get_final_partitions()
 
-    def anonymize(self, df, feature_columns, sensitive_column, is_continuous_map):
+    def anonymize(
+        self,
+        df,
+        quasiid_columns,
+        sensitive_column,
+        is_continuous_map,
+        include_unused_features=False,
+    ):
         ano_df = convert_pddataframe_to_anodataframe(df, is_continuous_map)
         ano_anonymized_df = self.api.anonymize(
-            ano_df, feature_columns, sensitive_column
+            ano_df, quasiid_columns, sensitive_column
         )
-        pd_df_anonymized_features = convert_anodataframe_to_pddataframe(
-            ano_anonymized_df, feature_columns, is_continuous_map
+        pd_df_anonymized = convert_anodataframe_to_pddataframe(
+            ano_anonymized_df, quasiid_columns +
+            [sensitive_column], is_continuous_map
         )
-        pd_df_unused_and_sensitive_columns = df[
-            list(set(df.columns) - set(feature_columns))
-        ]
-        result_df = pd.concat(
-            [pd_df_anonymized_features, pd_df_unused_and_sensitive_columns], axis=1
-        )
-        return result_df
+        if include_unused_features:
+            return pd_df_anonymized
+        else:
+            pd_df_unused_and_sensitive_columns = df[
+                list(set(df.columns) -
+                     set(quasiid_columns + [sensitive_column]))
+            ]
+            result_df = pd.concat(
+                [
+                    pd_df_anonymized,
+                    pd_df_unused_and_sensitive_columns.iloc[
+                        sum(self.get_final_partitions(), [])
+                    ],
+                ],
+                axis=1,
+            )
+            return result_df

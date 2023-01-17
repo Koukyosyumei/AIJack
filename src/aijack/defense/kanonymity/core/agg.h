@@ -45,7 +45,7 @@ std::string aggregate_categorical_column(DataFrame &df,
  * @return float
  */
 float aggregte_continuous_column(DataFrame &df, std::vector<int> &indices,
-                           std::string column) {
+                                 std::string column) {
   int n = indices.size();
   float sum_val = 0;
   for (int i = 0; i < n; i++) {
