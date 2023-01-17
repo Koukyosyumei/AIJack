@@ -151,11 +151,11 @@ PYBIND11_MODULE(aijack_cpp_core, m)
 
     py::class_<DataFrame>(m, "DataFrame")
         .def(py::init<vector<string>, map<string, bool>, int>())
-        .def("insert_real", &DataFrame::insert_real)
+        .def("insert_continuous", &DataFrame::insert_continuous)
         .def("insert_categorical", &DataFrame::insert_categorical)
-        .def("insert_real_column", &DataFrame::insert_real_column)
+        .def("insert_continuous_column", &DataFrame::insert_continuous_column)
         .def("insert_categorical_column", &DataFrame::insert_categorical_column)
-        .def("get_data_real", &DataFrame::get_data_real)
+        .def("get_data_continuous", &DataFrame::get_data_continuous)
         .def("get_data_categorical", &DataFrame::get_data_categorical);
 
     py::class_<Mondrian>(m, "Mondrian")
