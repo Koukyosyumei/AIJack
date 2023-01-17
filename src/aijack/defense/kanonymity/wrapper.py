@@ -1,4 +1,5 @@
 import pandas as pd
+
 from aijack_cpp_core import DataFrame as AnoDataFrame
 from aijack_cpp_core import Mondrian as MondrianCore
 
@@ -52,6 +53,6 @@ class Mondrian:
             list(set(df.columns) - set(feature_columns))
         ]
         result_df = pd.concat(
-            [pd_df_anonymized_features, pd_df_unused_and_sensitive_columns]
+            [pd_df_anonymized_features, pd_df_unused_and_sensitive_columns], axis=1
         )
         return result_df
