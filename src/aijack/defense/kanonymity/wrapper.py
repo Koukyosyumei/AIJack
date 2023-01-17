@@ -32,7 +32,7 @@ class Mondrian:
     def __init__(self, k=3):
         self.api = MondrianCore(k)
 
-    def ano_df(self, df, feature_columns, sensitive_column, is_real_map):
+    def anonymize(self, df, feature_columns, sensitive_column, is_real_map):
         ano_df = convert_pddataframe_to_anodataframe(df, is_real_map)
         ano_anonymized_df = self.api.anonymize(
             ano_df, feature_columns, sensitive_column
