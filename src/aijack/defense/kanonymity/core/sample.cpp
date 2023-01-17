@@ -7,26 +7,26 @@ int main()
     std::cin >> num_row >> num_col;
 
     std::vector<std::string> columns(num_col);
-    std::map<std::string, bool> is_real;
-    bool tmp_real_flag;
+    std::map<std::string, bool> is_continuous;
+    bool tmp_continuous_flag;
     for (int j = 0; j < num_col; j++)
     {
         std::cin >> columns[j];
-        std::cin >> tmp_real_flag;
-        is_real.insert(std::make_pair(columns[j], tmp_real_flag));
+        std::cin >> tmp_continuous_flag;
+        is_continuous.insert(std::make_pair(columns[j], tmp_continuous_flag));
     }
 
-    DataFrame df = DataFrame(columns, is_real);
+    DataFrame df = DataFrame(columns, is_continuous);
 
     for (int i = 0; i < num_row; i++)
     {
         for (int j = 0; j < num_col; j++)
         {
-            if (is_real[columns[j]])
+            if (is_continuous[columns[j]])
             {
                 float tmp_value;
                 std::cin >> tmp_value;
-                df.insert_real(columns[j], tmp_value);
+                df.insert_continuous(columns[j], tmp_value);
             }
             else
             {

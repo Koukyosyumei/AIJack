@@ -34,16 +34,16 @@ bool is_k_anonymous(DataFrame &df, std::vector<int> &partition,
  * @param anonymized_df
  * @param indices
  * @param column
- * @param is_real_flag
+ * @param is_continuous_flag
  */
 void insert_anonymized_feature(DataFrame &df, DataFrame &anonymized_df,
                                std::vector<int> &indices, std::string column,
-                               bool is_real_flag) {
+                               bool is_continuous_flag) {
   int tmp_partition_size = indices.size();
-  if (is_real_flag) {
-    float agg_val = aggregte_real_column(df, indices, column);
+  if (is_continuous_flag) {
+    float agg_val = aggregte_continuous_column(df, indices, column);
     for (int k = 0; k < tmp_partition_size; k++) {
-      anonymized_df.insert_real(column, agg_val);
+      anonymized_df.insert_continuous(column, agg_val);
     }
   } else {
     std::string agg_val = aggregate_categorical_column(df, indices, column);
@@ -154,23 +154,23 @@ struct Mondrian {
     int num_partition = partition.size();
     int num_features = feature_columns.size();
     std::vector<string> new_columns(num_features + 1);
-    std::map<std::string, bool> new_is_real;
+    std::map<std::string, bool> new_is_continuous;
     for (int j = 0; j < num_features; j++) {
       new_columns[j] = feature_columns[j];
-      new_is_real.insert(
-          std::make_pair(feature_columns[j], df.is_real[feature_columns[j]]));
+      new_is_continuous.insert(
+          std::make_pair(feature_columns[j], df.is_continuous[feature_columns[j]]));
     }
     new_columns[num_features] = sensitive_column;
-    new_is_real.insert(std::make_pair(sensitive_column, false));
+    new_is_continuous.insert(std::make_pair(sensitive_column, false));
 
     DataFrame anonymized_df =
-        DataFrame(new_columns, new_is_real, df.get_num_row());
+        DataFrame(new_columns, new_is_continuous, df.get_num_row());
     for (int i = 0; i < num_partition; i++) {
       int tmp_partition_size = partition[i].size();
       for (int j = 0; j < num_features; j++) {
         insert_anonymized_feature(df, anonymized_df, partition[i],
                                   feature_columns[j],
-                                  new_is_real[feature_columns[j]]);
+                                  new_is_continuous[feature_columns[j]]);
       }
 
       for (int k = 0; k < tmp_partition_size; k++) {

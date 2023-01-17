@@ -37,19 +37,19 @@ std::string aggregate_categorical_column(DataFrame &df,
 }
 
 /**
- * @brief Aggregates real column
+ * @brief Aggregates continuous column
  *
  * @param df
  * @param indices
  * @param column
  * @return float
  */
-float aggregte_real_column(DataFrame &df, std::vector<int> &indices,
+float aggregte_continuous_column(DataFrame &df, std::vector<int> &indices,
                            std::string column) {
   int n = indices.size();
   float sum_val = 0;
   for (int i = 0; i < n; i++) {
-    sum_val += df.data_real[column][indices[i]];
+    sum_val += df.data_continuous[column][indices[i]];
   }
   return sum_val / float(n);
 }
