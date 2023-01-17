@@ -91,23 +91,19 @@ api = API(extended_client, extended_server)
 api.run() # execute training
 ```
 
-For example, the bellow code implements the scenario where the server in Federated Learning tries to steal the training data with model inversion attack, and one client aims to mitigate this attack with differential privacy.
+For example, the bellow code implements the scenario where the server in Federated Learning tries to steal the training data with gradient-based model inversion attack.
 
 ```Python
-from aijack.collaborative.fedavg import FedAVGClient, FedAVGServer, FedAVGAPI
-from aijack.defense.dp import DPSGDClientManager
+from aijack.collaborative.fedavg import FedAVGAPI, FedAVGClient, FedAVGServer
+from aijack.attack.inversion import GradientInversionAttackServerManager
 
-manager = DPSGDClientManager(...)
-DPSGDFedAVGClient = manager.attach(FedAVGClient)
+manager = GradientInversionAttackServerManager(input_shape)
+FedAVGServerAttacker = manager.attach(FedAVGServer)
 
-manager = GradientInversionAttackServerManager(...)
-GradientInversionAttackFedAVGServer = manager.attach(FedAVGServer)
+clients = [FedAVGClient(model_1), FedAVGClient(model_2)]
+server = FedAVGServerAttacker(clients, model_3)
 
-
-clients = [FedAVGClient(...), DPSGDFedAVGClient(...)]
-server = GradientInversionAttackFedAVGServer(...)
-
-api = FedAVGAPI(extended_client, extended_server)
+api = FedAVGAPI(server, clients, criterion, optimizers, dataloaders)
 api.run()
 ```
 
@@ -134,6 +130,7 @@ You can also find more examples in our tutorials and documentation.
 | Attack        | Membership Inference   | [Shaddow Attack](https://arxiv.org/abs/1610.05820)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
 | Defense       | Homomorphic Encryption | [Paiilier](https://link.springer.com/chapter/10.1007/3-540-48910-X_16), [CKKS](https://eprint.iacr.org/2016/421.pdf)                                                                                                                                                                                                                                                                                                                                                                                                                                             |
 | Defense       | Differential Privacy   | [DPSGD](https://arxiv.org/abs/1607.00133)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
+| Defense       | Anonymization          | [Mondrian](https://ieeexplore.ieee.org/document/1617393)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
 | Defense       | Others                 | [Soteria](https://openaccess.thecvf.com/content/CVPR2021/papers/Sun_Soteria_Provable_Defense_Against_Privacy_Leakage_in_Federated_Learning_From_CVPR_2021_paper.pdf), [FoolsGold](https://arxiv.org/abs/1808.04866), [MID](https://arxiv.org/abs/2009.05241), [Sparse Gradient](https://aclanthology.org/D17-1045/)                                                                                                                                                                                                                                              |
 
 -----------------------------------------------------------------------
