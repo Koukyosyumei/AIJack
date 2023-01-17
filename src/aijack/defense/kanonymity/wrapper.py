@@ -1,5 +1,4 @@
 import pandas as pd
-
 from aijack_cpp_core import DataFrame as AnoDataFrame
 from aijack_cpp_core import Mondrian as MondrianCore
 
@@ -16,12 +15,12 @@ def convert_pddataframe_to_anodataframe(pd_df, is_continuous_map):
     return ano_df
 
 
-def convert_anodataframe_to_pddataframe(ano_df, is_continuous_map):
+def convert_anodataframe_to_pddataframe(ano_df, feature_columns, is_continuous_map):
     data_continuous = ano_df.get_data_continuous()
     data_categorical = ano_df.get_data_categorical()
     df = pd.DataFrame()
-    for col, is_continuous in is_continuous_map.items():
-        if is_continuous:
+    for col in feature_columns:
+        if is_continuous_map[col]:
             df[col] = data_continuous[col]
         else:
             df[col] = data_categorical[col]
@@ -42,14 +41,17 @@ class Mondrian:
         return self.api.get_final_partitions()
 
     def anonymize(self, df, feature_columns, sensitive_column, is_continuous_map):
-        df_used = df[feature_columns + [sensitive_column]]
-        df_unused = df[list(set(df.columns) - set(df_used.columns))]
         ano_df = convert_pddataframe_to_anodataframe(df, is_continuous_map)
         ano_anonymized_df = self.api.anonymize(
             ano_df, feature_columns, sensitive_column
         )
-        pd_anonymized_df = convert_anodataframe_to_pddataframe(
-            ano_anonymized_df, is_continuous_map
+        pd_df_anonymized_features = convert_anodataframe_to_pddataframe(
+            ano_anonymized_df, feature_columns, is_continuous_map
         )
-        result_df = pd.concat([pd_anonymized_df, df_unused])
+        pd_df_unused_and_sensitive_columns = df[
+            list(set(df.columns) - set(feature_columns))
+        ]
+        result_df = pd.concat(
+            [pd_df_anonymized_features, pd_df_unused_and_sensitive_columns]
+        )
         return result_df
