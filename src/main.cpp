@@ -160,6 +160,7 @@ PYBIND11_MODULE(aijack_cpp_core, m)
 
     py::class_<Mondrian>(m, "Mondrian")
         .def(py::init<int>())
+        .def("get_final_partitions", &Mondrian::get_final_partitions)
         .def("anonymize", &Mondrian::anonymize);
 
 #ifdef VERSION_INFO

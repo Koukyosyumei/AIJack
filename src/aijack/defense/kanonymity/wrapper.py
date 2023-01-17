@@ -35,6 +35,9 @@ class Mondrian:
     def __init__(self, k=3):
         self.api = MondrianCore(k)
 
+    def get_final_partitions(self):
+        return self.api.get_final_partitions()
+
     def anonymize(self, df, feature_columns, sensitive_column, is_continuous_map):
         ano_df = convert_pddataframe_to_anodataframe(df, is_continuous_map)
         ano_anonymized_df = self.api.anonymize(
