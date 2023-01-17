@@ -32,7 +32,7 @@ def test_mondrian():
 
     mondrian = Mondrian(k=2)
     adf_ignore_unused_features = mondrian.anonymize(
-        df, feature_columns, sensitive_column, is_continuous_map, False
+        df, feature_columns, sensitive_column, is_continuous_map, True
     )
     adf_not_ignore_unused_features = mondrian.anonymize(
         df, feature_columns, sensitive_column, is_continuous_map, False
