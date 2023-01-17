@@ -54,15 +54,13 @@ class Mondrian:
             ano_df, quasiid_columns, sensitive_column
         )
         pd_df_anonymized = convert_anodataframe_to_pddataframe(
-            ano_anonymized_df, quasiid_columns +
-            [sensitive_column], is_continuous_map
+            ano_anonymized_df, quasiid_columns + [sensitive_column], is_continuous_map
         )
         if ignore_unused_features:
             return pd_df_anonymized
         else:
             pd_df_unused_and_sensitive_columns = df[
-                list(set(df.columns) -
-                     set(quasiid_columns + [sensitive_column]))
+                list(set(df.columns) - set(quasiid_columns + [sensitive_column]))
             ]
             idx = sum(self.get_final_partitions(), [])
             result_df = pd.concat(
