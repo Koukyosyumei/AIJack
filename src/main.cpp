@@ -7,6 +7,7 @@
 
 #include "aijack/defense/dp/core//rdp.cpp"
 #include "aijack/defense/dp/core//search.cpp"
+#include "aijack/defense/kanonymity/core/anonymizer.h"
 #include "aijack/defense/paillier/src/paillier.h"
 #include "aijack/defense/paillier/src/keygenerator.h"
 #include "aijack/collaborative/tree/xgboost/xgboost.h"
@@ -24,7 +25,7 @@ using overload_cast_ = pybind11::detail::overload_cast_impl<Args...>;
 PYBIND11_MODULE(aijack_cpp_core, m)
 {
     m.doc() = R"pbdoc(
-        core of diferential_privacy
+        c++ backend for aijack
     )pbdoc";
 
     m.def("eps_gaussian",
@@ -147,6 +148,20 @@ PYBIND11_MODULE(aijack_cpp_core, m)
         .def("get_estimators", &SecureBoostClassifier::get_estimators)
         .def("predict_raw", &SecureBoostClassifier::predict_raw)
         .def("predict_proba", &SecureBoostClassifier::predict_proba);
+
+    py::class_<DataFrame>(m, "DataFrame")
+        .def(py::init<vector<string>, map<string, bool>, int>())
+        .def("insert_continuous", &DataFrame::insert_continuous)
+        .def("insert_categorical", &DataFrame::insert_categorical)
+        .def("insert_continuous_column", &DataFrame::insert_continuous_column)
+        .def("insert_categorical_column", &DataFrame::insert_categorical_column)
+        .def("get_data_continuous", &DataFrame::get_data_continuous)
+        .def("get_data_categorical", &DataFrame::get_data_categorical);
+
+    py::class_<Mondrian>(m, "Mondrian")
+        .def(py::init<int>())
+        .def("get_final_partitions", &Mondrian::get_final_partitions)
+        .def("anonymize", &Mondrian::anonymize);
 
 #ifdef VERSION_INFO
     m.attr("__version__") = MACRO_STRINGIFY(VERSION_INFO);
