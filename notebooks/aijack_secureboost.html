@@ -1,0 +1,801 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>SecureBoost: Vertically Federated XGBoost with Paillier Encryption &#8212; AIJack  documentation</title>
+    
+  <link href="../_static/css/theme.css" rel="stylesheet">
+  <link href="../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/style.css" />
+    <link rel="stylesheet" href="../_static/style.css" type="text/css" />
+    
+  <link rel="preload" as="script" href="../_static/js/index.be7d3bbb2ef33a8344ce.js">
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../_static/design-tabs.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../_static/sphinx-book-theme.d59cb220de22ca1c485ebbdc042f0030.js"></script>
+    <link rel="shortcut icon" href="../_static/logo.png"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Model Inversion" href="modelinversion.html" />
+    <link rel="prev" title="FedMD: Federated Learning with Model Distillation" href="aijack_fedmd.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../index.html">
+      
+        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+        
+      
+      
+      <img src="../_static/logo.png" class="logo" alt="logo">
+      
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <ul class="current nav bd-sidenav">
+ <li class="toctree-l1 current active has-children">
+  <a class="reference internal" href="../tutorial.html">
+   Tutorial
+  </a>
+  <input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul class="current">
+   <li class="toctree-l2 current active has-children">
+    <a class="reference internal" href="federated_learning.html">
+     Federated Learning
+    </a>
+    <input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+    <label for="toctree-checkbox-2">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul class="current">
+     <li class="toctree-l3">
+      <a class="reference internal" href="aijack_fedavg.html">
+       FedAVG
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="aijack_fedmd.html">
+       FedMD: Federated Learning with Model Distillation
+      </a>
+     </li>
+     <li class="toctree-l3 current active">
+      <a class="current reference internal" href="#">
+       SecureBoost: Vertically Federated XGBoost with Paillier Encryption
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="modelinversion.html">
+     Model Inversion
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
+    <label for="toctree-checkbox-3">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="aijack_miface.html">
+       MI-FACE Model Inversion Attack vs Differentially Private SGD
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="aijack_gradient_inversion_attack.html">
+       Gradient-based Model Inversion Attack against Federated Learning
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="aijack_ganattack.html">
+       GAN Attack
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="aijack_soteria.html">
+       Soteria: : Provable Defense against Privacy Leakage in Federated Learning g from Representation Perspective
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="aijack_mid.html">
+       Mutual Information-based Defense
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="labelleakage.html">
+     Label Leakage
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
+    <label for="toctree-checkbox-4">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="aijack_split_learning.html">
+       Split Learning and Label Leakage
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="membershipinference.html">
+     Membership Inference
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/>
+    <label for="toctree-checkbox-5">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="aijack_membership_inference.html">
+       Memership inference
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="poisoning.html">
+     Poisoning Attack
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/>
+    <label for="toctree-checkbox-6">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="aijack_poisoning_federated_learning.html">
+       Poisoning Attack against Federated Learning
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="aijack_poisoning_attack_svm.html">
+       Poisoning Attack against SVM
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="evasion.html">
+     Evasion Attack
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/>
+    <label for="toctree-checkbox-7">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="aijack_evasion_attack.html">
+       Evasion Attack against SVM
+      </a>
+     </li>
+    </ul>
+   </li>
+  </ul>
+ </li>
+</ul>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../api.html">
+   API Docs
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/>
+  <label for="toctree-checkbox-8">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../aijack.attack.html">
+     aijack.attack package
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/>
+    <label for="toctree-checkbox-9">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../aijack.attack.backdoor.html">
+       aijack.attack.backdoor package
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../aijack.attack.evasion.html">
+       aijack.attack.evasion package
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../aijack.attack.freerider.html">
+       aijack.attack.freerider package
+      </a>
+     </li>
+     <li class="toctree-l3 has-children">
+      <a class="reference internal" href="../aijack.attack.inversion.html">
+       aijack.attack.inversion package
+      </a>
+      <input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/>
+      <label for="toctree-checkbox-10">
+       <i class="fas fa-chevron-down">
+       </i>
+      </label>
+      <ul>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../aijack.attack.inversion.utils.html">
+         aijack.attack.inversion.utils package
+        </a>
+       </li>
+      </ul>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../aijack.attack.labelleakage.html">
+       aijack.attack.labelleakage package
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../aijack.attack.membership.html">
+       aijack.attack.membership package
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../aijack.attack.poison.html">
+       aijack.attack.poison package
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../aijack.defense.html">
+     aijack.defense package
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" type="checkbox"/>
+    <label for="toctree-checkbox-11">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../aijack.defense.ckks.html">
+       aijack.defense.ckks package
+      </a>
+     </li>
+     <li class="toctree-l3 has-children">
+      <a class="reference internal" href="../aijack.defense.dp.html">
+       aijack.defense.dp package
+      </a>
+      <input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" type="checkbox"/>
+      <label for="toctree-checkbox-12">
+       <i class="fas fa-chevron-down">
+       </i>
+      </label>
+      <ul>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../aijack.defense.dp.manager.html">
+         aijack.defense.dp.manager package
+        </a>
+       </li>
+      </ul>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../aijack.defense.foolsgold.html">
+       aijack.defense.foolsgold package
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../aijack.defense.kanonymity.html">
+       aijack.defense.kanonymity package
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../aijack.defense.mid.html">
+       aijack.defense.mid package
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../aijack.defense.paillier.html">
+       aijack.defense.paillier package
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../aijack.defense.soteria.html">
+       aijack.defense.soteria package
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../aijack.defense.sparse.html">
+       aijack.defense.sparse package
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../aijack.collaborative.html">
+     aijack.collaborative package
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" type="checkbox"/>
+    <label for="toctree-checkbox-13">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../aijack.collaborative.core.html">
+       aijack.collaborative.core package
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../aijack.collaborative.dsfl.html">
+       aijack.collaborative.dsfl package
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../aijack.collaborative.fedavg.html">
+       aijack.collaborative.fedavg package
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../aijack.collaborative.fedgems.html">
+       aijack.collaborative.fedgems package
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../aijack.collaborative.fedkd.html">
+       aijack.collaborative.fedkd package
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../aijack.collaborative.fedmd.html">
+       aijack.collaborative.fedmd package
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../aijack.collaborative.fedprox.html">
+       aijack.collaborative.fedprox package
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../aijack.collaborative.optimizer.html">
+       aijack.collaborative.optimizer package
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../aijack.collaborative.splitnn.html">
+       aijack.collaborative.splitnn package
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../aijack.collaborative.tree.html">
+       aijack.collaborative.tree package
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../aijack.utils.html">
+     aijack.utils package
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../contribution.html">
+   Developer Docs
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Theme by the <a href="https://ebp.jupyterbook.org">Executable Book Project</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="../_sources/notebooks/aijack_secureboost.ipynb.txt"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.ipynb</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+                onclick="printPdf(this)" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/Koukyosyumei/AIJack"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        
+        
+    </div>
+</div>
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show noprint">
+            
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
+            </div>
+            <nav id="bd-toc-nav" aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#paillier-encryption">
+   Paillier Encryption
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#secureboost">
+   SecureBoost
+  </a>
+ </li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1>SecureBoost: Vertically Federated XGBoost with Paillier Encryption</h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#paillier-encryption">
+   Paillier Encryption
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#secureboost">
+   SecureBoost
+  </a>
+ </li>
+</ul>
+
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            
+              <div>
+                
+  <section class="tex2jax_ignore mathjax_ignore" id="secureboost-vertically-federated-xgboost-with-paillier-encryption">
+<h1>SecureBoost: Vertically Federated XGBoost with Paillier Encryption<a class="headerlink" href="#secureboost-vertically-federated-xgboost-with-paillier-encryption" title="Permalink to this headline">¶</a></h1>
+<p>original paper: https://arxiv.org/abs/1901.08755</p>
+<p>SecureBoost allows multiple parties to train the same model as normal XGBoost without disclosing their local datasets.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">aijack.defense.paillier</span> <span class="kn">import</span> <span class="n">PaillierKeyGenerator</span>
+<span class="kn">from</span> <span class="nn">aijack.collaborative.tree</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">SecureBoostClassifierAPI</span><span class="p">,</span>
+    <span class="n">SecureBoostClient</span><span class="p">,</span>
+    <span class="n">XGBoostClassifierAPI</span><span class="p">,</span>
+    <span class="n">XGBoostClient</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="paillier-encryption">
+<h2>Paillier Encryption<a class="headerlink" href="#paillier-encryption" title="Permalink to this headline">¶</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">keygenerator</span> <span class="o">=</span> <span class="n">PaillierKeyGenerator</span><span class="p">(</span><span class="mi">512</span><span class="p">)</span>
+<span class="n">pk</span><span class="p">,</span> <span class="n">sk</span> <span class="o">=</span> <span class="n">keygenerator</span><span class="o">.</span><span class="n">generate_keypair</span><span class="p">()</span>
+
+<span class="n">pk</span><span class="o">.</span><span class="n">get_publickeyvalues</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(&#39;75242327359052187572169010861692481547454348330868546066717438408853157480428647976190531420312698828694087675121469049411809985056891481101471011077945157641578304180814676083157925906917435382632123247869197335370689139712763870678635308347455305720914931243235831753850053494946430764740457718377179707311&#39;,
+ &#39;75242327359052187572169010861692481547454348330868546066717438408853157480428647976190531420312698828694087675121469049411809985056891481101471011077945157641578304180814676083157925906917435382632123247869197335370689139712763870678635308347455305720914931243235831753850053494946430764740457718377179707312&#39;)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">ct_1</span> <span class="o">=</span> <span class="n">pk</span><span class="o">.</span><span class="n">encrypt</span><span class="p">(</span><span class="mi">13</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;ct_1 = &quot;</span><span class="p">,</span> <span class="n">sk</span><span class="o">.</span><span class="n">decrypt2int</span><span class="p">(</span><span class="n">ct_1</span><span class="p">))</span>
+
+<span class="n">ct_2</span> <span class="o">=</span> <span class="n">ct_1</span> <span class="o">*</span> <span class="mi">2</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;ct_2 = &quot;</span><span class="p">,</span> <span class="n">sk</span><span class="o">.</span><span class="n">decrypt2int</span><span class="p">(</span><span class="n">ct_2</span><span class="p">))</span>
+
+<span class="n">ct_3</span> <span class="o">=</span> <span class="n">ct_1</span> <span class="o">+</span> <span class="mf">5.6</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;ct_3 = &quot;</span><span class="p">,</span> <span class="n">sk</span><span class="o">.</span><span class="n">decrypt2float</span><span class="p">(</span><span class="n">ct_3</span><span class="p">))</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;ct_1 + ct_3 = &quot;</span><span class="p">,</span> <span class="n">sk</span><span class="o">.</span><span class="n">decrypt2float</span><span class="p">(</span><span class="n">ct_1</span> <span class="o">+</span> <span class="n">ct_3</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>ct_1 =  13
+ct_2 =  26
+ct_3 =  18.600000381469727
+ct_1 + ct_3 =  31.600000381469727
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="secureboost">
+<h2>SecureBoost<a class="headerlink" href="#secureboost" title="Permalink to this headline">¶</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">min_leaf</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">depth</span> <span class="o">=</span> <span class="mi">3</span>
+<span class="n">learning_rate</span> <span class="o">=</span> <span class="mf">0.4</span>
+<span class="n">boosting_rounds</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="n">lam</span> <span class="o">=</span> <span class="mf">1.0</span>
+<span class="n">gamma</span> <span class="o">=</span> <span class="mf">0.0</span>
+<span class="n">eps</span> <span class="o">=</span> <span class="mf">1.0</span>
+<span class="n">min_child_weight</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span> <span class="o">*</span> <span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">)</span>
+<span class="n">subsample_cols</span> <span class="o">=</span> <span class="mf">1.0</span>
+
+<span class="c1"># dummy data</span>
+
+<span class="n">x1</span> <span class="o">=</span> <span class="p">[</span><span class="mi">12</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">24</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">17</span><span class="p">,</span> <span class="mi">16</span><span class="p">]</span>
+<span class="n">x1</span> <span class="o">=</span> <span class="p">[[</span><span class="n">x</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">x1</span><span class="p">]</span>
+<span class="n">x2</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+<span class="n">x2</span> <span class="o">=</span> <span class="p">[[</span><span class="n">x</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">x2</span><span class="p">]</span>
+<span class="n">y</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+
+<span class="n">x3</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">12</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">32</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">15</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">24</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">20</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">25</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">17</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">16</span><span class="p">,</span> <span class="mi">1</span><span class="p">]]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">p1</span> <span class="o">=</span> <span class="n">XGBoostClient</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">0</span><span class="p">,</span> <span class="n">min_leaf</span><span class="p">,</span> <span class="n">subsample_cols</span><span class="p">,</span> <span class="mi">256</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">p2</span> <span class="o">=</span> <span class="n">XGBoostClient</span><span class="p">(</span><span class="n">x2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">1</span><span class="p">,</span> <span class="n">min_leaf</span><span class="p">,</span> <span class="n">subsample_cols</span><span class="p">,</span> <span class="mi">256</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">parties</span> <span class="o">=</span> <span class="p">[</span><span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">]</span>
+
+<span class="n">clf</span> <span class="o">=</span> <span class="n">XGBoostClassifierAPI</span><span class="p">(</span>
+    <span class="mi">2</span><span class="p">,</span>
+    <span class="n">subsample_cols</span><span class="p">,</span>
+    <span class="n">min_child_weight</span><span class="p">,</span>
+    <span class="n">depth</span><span class="p">,</span>
+    <span class="n">min_leaf</span><span class="p">,</span>
+    <span class="n">learning_rate</span><span class="p">,</span>
+    <span class="n">boosting_rounds</span><span class="p">,</span>
+    <span class="n">lam</span><span class="p">,</span>
+    <span class="n">gamma</span><span class="p">,</span>
+    <span class="n">eps</span><span class="p">,</span>
+    <span class="o">-</span><span class="mi">1</span><span class="p">,</span>
+    <span class="mi">0</span><span class="p">,</span>
+    <span class="mf">1.0</span><span class="p">,</span>
+    <span class="mi">1</span><span class="p">,</span>
+    <span class="kc">True</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">parties</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<span class="n">clf</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">x3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[0.20040041208267212, 0.7995995879173279],
+ [0.3700332045555115, 0.6299667954444885],
+ [0.20040041208267212, 0.7995995879173279],
+ [0.44300776720046997, 0.55699223279953],
+ [0.3700332045555115, 0.6299667954444885],
+ [0.3700332045555115, 0.6299667954444885],
+ [0.44300776720046997, 0.55699223279953],
+ [0.20040041208267212, 0.7995995879173279]]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">keygenerator</span> <span class="o">=</span> <span class="n">PaillierKeyGenerator</span><span class="p">(</span><span class="mi">512</span><span class="p">)</span>
+<span class="n">pk</span><span class="p">,</span> <span class="n">sk</span> <span class="o">=</span> <span class="n">keygenerator</span><span class="o">.</span><span class="n">generate_keypair</span><span class="p">()</span>
+
+<span class="n">sp1</span> <span class="o">=</span> <span class="n">SecureBoostClient</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">0</span><span class="p">,</span> <span class="n">min_leaf</span><span class="p">,</span> <span class="n">subsample_cols</span><span class="p">,</span> <span class="mi">256</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">sp2</span> <span class="o">=</span> <span class="n">SecureBoostClient</span><span class="p">(</span><span class="n">x2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">1</span><span class="p">,</span> <span class="n">min_leaf</span><span class="p">,</span> <span class="n">subsample_cols</span><span class="p">,</span> <span class="mi">256</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">sparties</span> <span class="o">=</span> <span class="p">[</span><span class="n">sp1</span><span class="p">,</span> <span class="n">sp2</span><span class="p">]</span>
+
+<span class="n">sparties</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_publickey</span><span class="p">(</span><span class="n">pk</span><span class="p">)</span>
+<span class="n">sparties</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_publickey</span><span class="p">(</span><span class="n">pk</span><span class="p">)</span>
+<span class="n">sparties</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_secretkey</span><span class="p">(</span><span class="n">sk</span><span class="p">)</span>
+
+<span class="n">sclf</span> <span class="o">=</span> <span class="n">SecureBoostClassifierAPI</span><span class="p">(</span>
+    <span class="mi">2</span><span class="p">,</span>
+    <span class="n">subsample_cols</span><span class="p">,</span>
+    <span class="n">min_child_weight</span><span class="p">,</span>
+    <span class="n">depth</span><span class="p">,</span>
+    <span class="n">min_leaf</span><span class="p">,</span>
+    <span class="n">learning_rate</span><span class="p">,</span>
+    <span class="n">boosting_rounds</span><span class="p">,</span>
+    <span class="n">lam</span><span class="p">,</span>
+    <span class="n">gamma</span><span class="p">,</span>
+    <span class="n">eps</span><span class="p">,</span>
+    <span class="mi">0</span><span class="p">,</span>
+    <span class="mi">0</span><span class="p">,</span>
+    <span class="mf">1.0</span><span class="p">,</span>
+    <span class="mi">1</span><span class="p">,</span>
+    <span class="kc">True</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">sclf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">sparties</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<span class="n">sclf</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">x3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[0.20040041208267212, 0.7995995879173279],
+ [0.3700332045555115, 0.6299667954444885],
+ [0.20040041208267212, 0.7995995879173279],
+ [0.44300776720046997, 0.55699223279953],
+ [0.3700332045555115, 0.6299667954444885],
+ [0.3700332045555115, 0.6299667954444885],
+ [0.44300776720046997, 0.55699223279953],
+ [0.20040041208267212, 0.7995995879173279]]
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+
+
+              </div>
+              
+            
+                <!-- Previous / next buttons -->
+<div class='prev-next-area'> 
+    <a class='left-prev' id="prev-link" href="aijack_fedmd.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">FedMD: Federated Learning with Model Distillation</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="modelinversion.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Model Inversion</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+            
+        </div>
+    </div>
+    <footer class="footer">
+  <p>
+    
+      By Hideaki Takahashi<br/>
+    
+        &copy; Copyright 2023, Hideaki Takahashi.<br/>
+  </p>
+</footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="../_static/js/index.be7d3bbb2ef33a8344ce.js"></script>
+
+  </body>
+</html>

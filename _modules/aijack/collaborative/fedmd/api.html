@@ -1,0 +1,701 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>aijack.collaborative.fedmd.api &#8212; AIJack  documentation</title>
+    
+  <link href="../../../../_static/css/theme.css" rel="stylesheet">
+  <link href="../../../../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="../../../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/mystnb.css" />
+    
+  <link rel="preload" as="script" href="../../../../_static/js/index.be7d3bbb2ef33a8344ce.js">
+
+    <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+    <script src="../../../../_static/doctools.js"></script>
+    <script src="../../../../_static/sphinx_highlight.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../../../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../../../_static/sphinx-book-theme.d59cb220de22ca1c485ebbdc042f0030.js"></script>
+    <link rel="icon" href="../../../../_static/logo.png"/>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../../../../index.html">
+      
+      
+      <img src="../../../../_static/../../../../_static/logo.png" class="logo" alt="logo">
+      
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../../../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <ul class="nav bd-sidenav">
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../../../tutorial.html">
+   Tutorial
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../../notebooks/aijack_fedavg.html">
+     FedAVG
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../../notebooks/aijack_fedmd.html">
+     FedMD: Federated Learning with Model Distillation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../../notebooks/aijack_secureboost.html">
+     SecureBoost: Vertically Federated XGBoost with Paillier Encryption
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../../notebooks/aijack_miface.html">
+     MI-FACE Model Inversion Attack vs Differentially Private SGD
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../../notebooks/aijack_gradient_inversion_attack.html">
+     Gradient-based Model Inversion Attack against Federated Learning
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../../notebooks/aijack_ganattack.html">
+     GAN Attack
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../../notebooks/aijack_soteria.html">
+     Soteria: : Provable Defense against Privacy Leakage in Federated Learning g from Representation Perspective
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../../notebooks/aijack_mid.html">
+     Mutual Information-based Defense
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../../notebooks/aijack_poisoning_federated_learning.html">
+     Poisoning Attack against Federated Learning
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../../notebooks/aijack_poisoning_attack_svm.html">
+     Poisoning Attack against SVM
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../../notebooks/aijack_split_learning.html">
+     Split Learning and Label Leakage
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../../notebooks/aijack_membership_inference.html">
+     Memership inference
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../../notebooks/aijack_evasion_attack.html">
+     Evasion Attack against SVM
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../../notebooks/aijack_dp.html">
+     Differential Privacy and Moment Accountant
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../../../api.html">
+   API Document
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+  <label for="toctree-checkbox-2">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../../../aijack.attack.html">
+     aijack.attack package
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
+    <label for="toctree-checkbox-3">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../../aijack.attack.backdoor.html">
+       aijack.attack.backdoor package
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../../aijack.attack.evasion.html">
+       aijack.attack.evasion package
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../../aijack.attack.freerider.html">
+       aijack.attack.freerider package
+      </a>
+     </li>
+     <li class="toctree-l3 has-children">
+      <a class="reference internal" href="../../../../aijack.attack.inversion.html">
+       aijack.attack.inversion package
+      </a>
+      <input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
+      <label for="toctree-checkbox-4">
+       <i class="fas fa-chevron-down">
+       </i>
+      </label>
+      <ul>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../aijack.attack.inversion.utils.html">
+         aijack.attack.inversion.utils package
+        </a>
+       </li>
+      </ul>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../../aijack.attack.labelleakage.html">
+       aijack.attack.labelleakage package
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../../aijack.attack.membership.html">
+       aijack.attack.membership package
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../../aijack.attack.poison.html">
+       aijack.attack.poison package
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../../../aijack.defense.html">
+     aijack.defense package
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/>
+    <label for="toctree-checkbox-5">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../../aijack.defense.ckks.html">
+       aijack.defense.ckks package
+      </a>
+     </li>
+     <li class="toctree-l3 has-children">
+      <a class="reference internal" href="../../../../aijack.defense.dp.html">
+       aijack.defense.dp package
+      </a>
+      <input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/>
+      <label for="toctree-checkbox-6">
+       <i class="fas fa-chevron-down">
+       </i>
+      </label>
+      <ul>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../aijack.defense.dp.manager.html">
+         aijack.defense.dp.manager package
+        </a>
+       </li>
+      </ul>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../../aijack.defense.foolsgold.html">
+       aijack.defense.foolsgold package
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../../aijack.defense.kanonymity.html">
+       aijack.defense.kanonymity package
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../../aijack.defense.mid.html">
+       aijack.defense.mid package
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../../aijack.defense.paillier.html">
+       aijack.defense.paillier package
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../../aijack.defense.soteria.html">
+       aijack.defense.soteria package
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../../aijack.defense.sparse.html">
+       aijack.defense.sparse package
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../../../aijack.collaborative.html">
+     aijack.collaborative package
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/>
+    <label for="toctree-checkbox-7">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../../aijack.collaborative.core.html">
+       aijack.collaborative.core package
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../../aijack.collaborative.dsfl.html">
+       aijack.collaborative.dsfl package
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../../aijack.collaborative.fedavg.html">
+       aijack.collaborative.fedavg package
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../../aijack.collaborative.fedgems.html">
+       aijack.collaborative.fedgems package
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../../aijack.collaborative.fedkd.html">
+       aijack.collaborative.fedkd package
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../../aijack.collaborative.fedmd.html">
+       aijack.collaborative.fedmd package
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../../aijack.collaborative.fedprox.html">
+       aijack.collaborative.fedprox package
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../../aijack.collaborative.optimizer.html">
+       aijack.collaborative.optimizer package
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../../aijack.collaborative.splitnn.html">
+       aijack.collaborative.splitnn package
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../../aijack.collaborative.tree.html">
+       aijack.collaborative.tree package
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../../aijack.utils.html">
+     aijack.utils package
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Theme by the <a href="https://ebp.jupyterbook.org">Executable Book Project</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/Koukyosyumei/AIJack"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        
+        
+    </div>
+</div>
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show noprint">
+            
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1></h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                    </div>
+                </div>
+            </div>
+            
+              <div>
+                
+  <h1>Source code for aijack.collaborative.fedmd.api</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">copy</span>
+
+<span class="kn">import</span> <span class="nn">torch</span>
+
+<span class="kn">from</span> <span class="nn">..core.api</span> <span class="kn">import</span> <span class="n">BaseFedAPI</span><span class="p">,</span> <span class="n">BaseFLKnowledgeDistillationAPI</span>
+
+
+<div class="viewcode-block" id="FedMDAPI"><a class="viewcode-back" href="../../../../aijack.collaborative.fedmd.html#aijack.collaborative.fedmd.api.FedMDAPI">[docs]</a><span class="k">class</span> <span class="nc">FedMDAPI</span><span class="p">(</span><span class="n">BaseFLKnowledgeDistillationAPI</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Implementation of `Fedmd: Heterogenous federated learning via model distillation`&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">server</span><span class="p">,</span>
+        <span class="n">clients</span><span class="p">,</span>
+        <span class="n">public_dataloader</span><span class="p">,</span>
+        <span class="n">local_dataloaders</span><span class="p">,</span>
+        <span class="n">criterion</span><span class="p">,</span>
+        <span class="n">client_optimizers</span><span class="p">,</span>
+        <span class="n">validation_dataloader</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">server_optimizer</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">num_communication</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+        <span class="n">device</span><span class="o">=</span><span class="s2">&quot;cpu&quot;</span><span class="p">,</span>
+        <span class="n">consensus_epoch</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+        <span class="n">revisit_epoch</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+        <span class="n">transfer_epoch_public</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+        <span class="n">transfer_epoch_private</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+        <span class="n">server_training_epoch</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+        <span class="n">custom_action</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="n">server</span><span class="p">,</span>
+            <span class="n">clients</span><span class="p">,</span>
+            <span class="n">public_dataloader</span><span class="p">,</span>
+            <span class="n">local_dataloaders</span><span class="p">,</span>
+            <span class="n">validation_dataloader</span><span class="p">,</span>
+            <span class="n">criterion</span><span class="p">,</span>
+            <span class="n">num_communication</span><span class="p">,</span>
+            <span class="n">device</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">client_optimizers</span> <span class="o">=</span> <span class="n">client_optimizers</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">server_optimizer</span> <span class="o">=</span> <span class="n">server_optimizer</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">consensus_epoch</span> <span class="o">=</span> <span class="n">consensus_epoch</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">revisit_epoch</span> <span class="o">=</span> <span class="n">revisit_epoch</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">transfer_epoch_public</span> <span class="o">=</span> <span class="n">transfer_epoch_public</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">transfer_epoch_private</span> <span class="o">=</span> <span class="n">transfer_epoch_private</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">server_training_epoch</span> <span class="o">=</span> <span class="n">server_training_epoch</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">custom_action</span> <span class="o">=</span> <span class="n">custom_action</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">epoch</span> <span class="o">=</span> <span class="mi">0</span>
+
+<div class="viewcode-block" id="FedMDAPI.train_server"><a class="viewcode-back" href="../../../../aijack.collaborative.fedmd.html#aijack.collaborative.fedmd.api.FedMDAPI.train_server">[docs]</a>    <span class="k">def</span> <span class="nf">train_server</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">server_optimizer</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mf">0.0</span>
+
+        <span class="n">running_loss</span> <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="k">for</span> <span class="n">data</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">public_dataloader</span><span class="p">:</span>
+            <span class="n">_</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">data</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
+            <span class="n">y</span> <span class="o">=</span> <span class="n">y</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">server_optimizer</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
+            <span class="n">loss</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">criterion</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">server</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">y</span><span class="p">)</span>
+            <span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">server_optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+
+            <span class="n">running_loss</span> <span class="o">+=</span> <span class="n">loss</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+
+        <span class="n">running_loss</span> <span class="o">/=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">public_dataloader</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">running_loss</span></div>
+
+<div class="viewcode-block" id="FedMDAPI.transfer_phase"><a class="viewcode-back" href="../../../../aijack.collaborative.fedmd.html#aijack.collaborative.fedmd.api.FedMDAPI.transfer_phase">[docs]</a>    <span class="k">def</span> <span class="nf">transfer_phase</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">logging</span><span class="p">):</span>
+        <span class="c1"># Transfer</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">transfer_epoch_public</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="n">loss_public</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">train_client</span><span class="p">(</span><span class="n">public</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;epoch </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2"> (public - pretrain): </span><span class="si">{</span><span class="n">loss_public</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">logging</span><span class="p">[</span><span class="s2">&quot;loss_client_public_dataset_transfer&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">loss_public</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">validation_dataloader</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">acc_val</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">score</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">validation_dataloader</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">server_optimizer</span> <span class="ow">is</span> <span class="kc">None</span>
+            <span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;acc on validation dataset: &quot;</span><span class="p">,</span> <span class="n">acc_val</span><span class="p">)</span>
+            <span class="n">logging</span><span class="p">[</span><span class="s2">&quot;acc_val&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">acc_val</span><span class="p">))</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">transfer_epoch_private</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="n">loss_local</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">train_client</span><span class="p">(</span><span class="n">public</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;epoch </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2"> (local - pretrain): </span><span class="si">{</span><span class="n">loss_local</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">logging</span><span class="p">[</span><span class="s2">&quot;loss_client_local_dataset_transfer&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">loss_local</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">validation_dataloader</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">acc_val</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">score</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">validation_dataloader</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">server_optimizer</span> <span class="ow">is</span> <span class="kc">None</span>
+            <span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;acc on validation dataset: &quot;</span><span class="p">,</span> <span class="n">acc_val</span><span class="p">)</span>
+            <span class="n">logging</span><span class="p">[</span><span class="s2">&quot;acc_val&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">acc_val</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="n">logging</span></div>
+
+<div class="viewcode-block" id="FedMDAPI.digest_phase"><a class="viewcode-back" href="../../../../aijack.collaborative.fedmd.html#aijack.collaborative.fedmd.api.FedMDAPI.digest_phase">[docs]</a>    <span class="k">def</span> <span class="nf">digest_phase</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">logging</span><span class="p">):</span>
+        <span class="n">temp_consensus_loss</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">client</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">clients</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">consensus_epoch</span><span class="p">):</span>
+                <span class="n">consensus_loss</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">approach_consensus</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">client_optimizers</span><span class="p">[</span><span class="n">j</span><span class="p">])</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;epoch </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">, client </span><span class="si">{</span><span class="n">j</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">consensus_loss</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">temp_consensus_loss</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">consensus_loss</span><span class="p">)</span>
+        <span class="n">logging</span><span class="p">[</span><span class="s2">&quot;loss_client_consensus&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">temp_consensus_loss</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">logging</span></div>
+
+<div class="viewcode-block" id="FedMDAPI.revisit_phase"><a class="viewcode-back" href="../../../../aijack.collaborative.fedmd.html#aijack.collaborative.fedmd.api.FedMDAPI.revisit_phase">[docs]</a>    <span class="k">def</span> <span class="nf">revisit_phase</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">logging</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">revisit_epoch</span><span class="p">):</span>
+            <span class="n">loss_local_revisit</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">train_client</span><span class="p">(</span><span class="n">public</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">logging</span><span class="p">[</span><span class="s2">&quot;loss_client_revisit&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">loss_local_revisit</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">logging</span></div>
+
+<div class="viewcode-block" id="FedMDAPI.server_side_training"><a class="viewcode-back" href="../../../../aijack.collaborative.fedmd.html#aijack.collaborative.fedmd.api.FedMDAPI.server_side_training">[docs]</a>    <span class="k">def</span> <span class="nf">server_side_training</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">logging</span><span class="p">):</span>
+        <span class="c1"># Train a server-side model if it exists (different from the original paper)</span>
+        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">server_training_epoch</span><span class="p">):</span>
+            <span class="n">loss_server_public</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">train_server</span><span class="p">()</span>
+        <span class="n">logging</span><span class="p">[</span><span class="s2">&quot;loss_server_public_dataset&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">loss_server_public</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">logging</span></div>
+
+<div class="viewcode-block" id="FedMDAPI.evaluation"><a class="viewcode-back" href="../../../../aijack.collaborative.fedmd.html#aijack.collaborative.fedmd.api.FedMDAPI.evaluation">[docs]</a>    <span class="k">def</span> <span class="nf">evaluation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">logging</span><span class="p">):</span>
+        <span class="n">acc_on_local_dataset</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">local_score</span><span class="p">()</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;epoch=</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2"> acc on local datasets: &quot;</span><span class="p">,</span> <span class="n">acc_on_local_dataset</span><span class="p">)</span>
+        <span class="n">logging</span><span class="p">[</span><span class="s2">&quot;acc_local&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">acc_on_local_dataset</span><span class="p">)</span>
+        <span class="n">acc_pub</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">public_dataloader</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">server_optimizer</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;epoch=</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2"> acc on public dataset: &quot;</span><span class="p">,</span> <span class="n">acc_pub</span><span class="p">)</span>
+        <span class="n">logging</span><span class="p">[</span><span class="s2">&quot;acc_pub&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">acc_pub</span><span class="p">))</span>
+        <span class="c1"># evaluation</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">validation_dataloader</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">acc_val</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">score</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">validation_dataloader</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">server_optimizer</span> <span class="ow">is</span> <span class="kc">None</span>
+            <span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;epoch=</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2"> acc on validation dataset: &quot;</span><span class="p">,</span> <span class="n">acc_val</span><span class="p">)</span>
+            <span class="n">logging</span><span class="p">[</span><span class="s2">&quot;acc_val&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">acc_val</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="n">logging</span></div>
+
+<div class="viewcode-block" id="FedMDAPI.run"><a class="viewcode-back" href="../../../../aijack.collaborative.fedmd.html#aijack.collaborative.fedmd.api.FedMDAPI.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">logging</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;loss_client_local_dataset_transfer&quot;</span><span class="p">:</span> <span class="p">[],</span>
+            <span class="s2">&quot;loss_client_public_dataset_transfer&quot;</span><span class="p">:</span> <span class="p">[],</span>
+            <span class="s2">&quot;loss_client_consensus&quot;</span><span class="p">:</span> <span class="p">[],</span>
+            <span class="s2">&quot;loss_client_revisit&quot;</span><span class="p">:</span> <span class="p">[],</span>
+            <span class="s2">&quot;loss_server_public_dataset&quot;</span><span class="p">:</span> <span class="p">[],</span>
+            <span class="s2">&quot;acc_local&quot;</span><span class="p">:</span> <span class="p">[],</span>
+            <span class="s2">&quot;acc_pub&quot;</span><span class="p">:</span> <span class="p">[],</span>
+            <span class="s2">&quot;acc_val&quot;</span><span class="p">:</span> <span class="p">[],</span>
+        <span class="p">}</span>
+
+        <span class="n">logging</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">transfer_phase</span><span class="p">(</span><span class="n">logging</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_communication</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">epoch</span> <span class="o">=</span> <span class="n">i</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">server</span><span class="o">.</span><span class="n">action</span><span class="p">()</span>
+            <span class="n">logging</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">digest_phase</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">logging</span><span class="p">)</span>
+            <span class="n">logging</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">revisit_phase</span><span class="p">(</span><span class="n">logging</span><span class="p">)</span>
+            <span class="n">logging</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">server_side_training</span><span class="p">(</span><span class="n">logging</span><span class="p">)</span>
+            <span class="n">logging</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">evaluation</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">logging</span><span class="p">)</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">custom_action</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">logging</span></div></div>
+
+
+<div class="viewcode-block" id="MPIFedMDAPI"><a class="viewcode-back" href="../../../../aijack.collaborative.fedmd.html#aijack.collaborative.fedmd.api.MPIFedMDAPI">[docs]</a><span class="k">class</span> <span class="nc">MPIFedMDAPI</span><span class="p">(</span><span class="n">BaseFedAPI</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">comm</span><span class="p">,</span>
+        <span class="n">party</span><span class="p">,</span>
+        <span class="n">is_server</span><span class="p">,</span>
+        <span class="n">criterion</span><span class="p">,</span>
+        <span class="n">local_optimizer</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">local_dataloader</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">public_dataloader</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">num_communication</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+        <span class="n">local_epoch</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+        <span class="n">consensus_epoch</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+        <span class="n">revisit_epoch</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+        <span class="n">transfer_epoch_public</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+        <span class="n">transfer_epoch_private</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+        <span class="n">custom_action</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">,</span>
+        <span class="n">device</span><span class="o">=</span><span class="s2">&quot;cpu&quot;</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">comm</span> <span class="o">=</span> <span class="n">comm</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">party</span> <span class="o">=</span> <span class="n">party</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">is_server</span> <span class="o">=</span> <span class="n">is_server</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">criterion</span> <span class="o">=</span> <span class="n">criterion</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">local_optimizer</span> <span class="o">=</span> <span class="n">local_optimizer</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">local_dataloader</span> <span class="o">=</span> <span class="n">local_dataloader</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">public_dataloader</span> <span class="o">=</span> <span class="n">public_dataloader</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">num_communication</span> <span class="o">=</span> <span class="n">num_communication</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">local_epoch</span> <span class="o">=</span> <span class="n">local_epoch</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">consensus_epoch</span> <span class="o">=</span> <span class="n">consensus_epoch</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">revisit_epoch</span> <span class="o">=</span> <span class="n">revisit_epoch</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">transfer_epoch_public</span> <span class="o">=</span> <span class="n">transfer_epoch_public</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">transfer_epoch_private</span> <span class="o">=</span> <span class="n">transfer_epoch_private</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">custom_action</span> <span class="o">=</span> <span class="n">custom_action</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">device</span> <span class="o">=</span> <span class="n">device</span>
+
+<div class="viewcode-block" id="MPIFedMDAPI.run"><a class="viewcode-back" href="../../../../aijack.collaborative.fedmd.html#aijack.collaborative.fedmd.api.MPIFedMDAPI.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Transfer phase</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_server</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">local_train</span><span class="p">(</span><span class="n">epoch</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">transfer_epoch_public</span><span class="p">,</span> <span class="n">public</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">local_train</span><span class="p">(</span><span class="n">epoch</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">transfer_epoch_private</span><span class="p">,</span> <span class="n">public</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_communication</span><span class="p">):</span>
+            <span class="c1"># Updata global logits</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">party</span><span class="o">.</span><span class="n">action</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">comm</span><span class="o">.</span><span class="n">Barrier</span><span class="p">()</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">digest_phase</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">revisit_phase</span><span class="p">()</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">custom_action</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">comm</span><span class="o">.</span><span class="n">Barrier</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="MPIFedMDAPI.digest_phase"><a class="viewcode-back" href="../../../../aijack.collaborative.fedmd.html#aijack.collaborative.fedmd.api.MPIFedMDAPI.digest_phase">[docs]</a>    <span class="k">def</span> <span class="nf">digest_phase</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_server</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">consensus_epoch</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">party</span><span class="o">.</span><span class="n">approach_consensus</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">local_optimizer</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="MPIFedMDAPI.revisit_phase"><a class="viewcode-back" href="../../../../aijack.collaborative.fedmd.html#aijack.collaborative.fedmd.api.MPIFedMDAPI.revisit_phase">[docs]</a>    <span class="k">def</span> <span class="nf">revisit_phase</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_server</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">revisit_epoch</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">local_train</span><span class="p">(</span><span class="n">public</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="MPIFedMDAPI.local_train"><a class="viewcode-back" href="../../../../aijack.collaborative.fedmd.html#aijack.collaborative.fedmd.api.MPIFedMDAPI.local_train">[docs]</a>    <span class="k">def</span> <span class="nf">local_train</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">epoch</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">public</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="n">trainloader</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">public_dataloader</span> <span class="k">if</span> <span class="n">public</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">local_dataloader</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">party</span><span class="o">.</span><span class="n">local_train</span><span class="p">(</span><span class="n">epoch</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">criterion</span><span class="p">,</span> <span class="n">trainloader</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">local_optimizer</span><span class="p">)</span></div></div>
+</pre></div>
+
+              </div>
+              
+            
+                <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+</div>
+            
+        </div>
+    </div>
+    <footer class="footer">
+  <p>
+    
+      By Hideaki Takahashi<br/>
+    
+        &copy; Copyright 2023, Hideaki Takahashi.<br/>
+  </p>
+</footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="../../../../_static/js/index.be7d3bbb2ef33a8344ce.js"></script>
+
+  </body>
+</html>

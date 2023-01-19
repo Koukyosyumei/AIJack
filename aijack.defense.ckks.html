@@ -1,0 +1,936 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>aijack.defense.ckks package &#8212; AIJack  documentation</title>
+    
+  <link href="_static/css/theme.css" rel="stylesheet">
+  <link href="_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" />
+    <link rel="stylesheet" type="text/css" href="_static/style.css" />
+    <link rel="stylesheet" href="_static/style.css" type="text/css" />
+    
+  <link rel="preload" as="script" href="_static/js/index.be7d3bbb2ef33a8344ce.js">
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="_static/design-tabs.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="_static/sphinx-book-theme.d59cb220de22ca1c485ebbdc042f0030.js"></script>
+    <link rel="shortcut icon" href="_static/logo.png"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="aijack.defense.dp package" href="aijack.defense.dp.html" />
+    <link rel="prev" title="aijack.defense package" href="aijack.defense.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="index.html">
+      
+        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+        
+      
+      
+      <img src="_static/logo.png" class="logo" alt="logo">
+      
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <ul class="nav bd-sidenav">
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="tutorial.html">
+   Tutorial
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="notebooks/federated_learning.html">
+     Federated Learning
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+    <label for="toctree-checkbox-2">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="notebooks/aijack_fedavg.html">
+       FedAVG
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="notebooks/aijack_fedmd.html">
+       FedMD: Federated Learning with Model Distillation
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="notebooks/aijack_secureboost.html">
+       SecureBoost: Vertically Federated XGBoost with Paillier Encryption
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="notebooks/modelinversion.html">
+     Model Inversion
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
+    <label for="toctree-checkbox-3">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="notebooks/aijack_miface.html">
+       MI-FACE Model Inversion Attack vs Differentially Private SGD
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="notebooks/aijack_gradient_inversion_attack.html">
+       Gradient-based Model Inversion Attack against Federated Learning
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="notebooks/aijack_ganattack.html">
+       GAN Attack
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="notebooks/aijack_soteria.html">
+       Soteria: : Provable Defense against Privacy Leakage in Federated Learning g from Representation Perspective
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="notebooks/aijack_mid.html">
+       Mutual Information-based Defense
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="notebooks/labelleakage.html">
+     Label Leakage
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
+    <label for="toctree-checkbox-4">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="notebooks/aijack_split_learning.html">
+       Split Learning and Label Leakage
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="notebooks/membershipinference.html">
+     Membership Inference
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/>
+    <label for="toctree-checkbox-5">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="notebooks/aijack_membership_inference.html">
+       Memership inference
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="notebooks/poisoning.html">
+     Poisoning Attack
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/>
+    <label for="toctree-checkbox-6">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="notebooks/aijack_poisoning_federated_learning.html">
+       Poisoning Attack against Federated Learning
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="notebooks/aijack_poisoning_attack_svm.html">
+       Poisoning Attack against SVM
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="notebooks/evasion.html">
+     Evasion Attack
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/>
+    <label for="toctree-checkbox-7">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="notebooks/aijack_evasion_attack.html">
+       Evasion Attack against SVM
+      </a>
+     </li>
+    </ul>
+   </li>
+  </ul>
+ </li>
+</ul>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1 current active has-children">
+  <a class="reference internal" href="api.html">
+   API Docs
+  </a>
+  <input checked="" class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/>
+  <label for="toctree-checkbox-8">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul class="current">
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="aijack.attack.html">
+     aijack.attack package
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/>
+    <label for="toctree-checkbox-9">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="aijack.attack.backdoor.html">
+       aijack.attack.backdoor package
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="aijack.attack.evasion.html">
+       aijack.attack.evasion package
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="aijack.attack.freerider.html">
+       aijack.attack.freerider package
+      </a>
+     </li>
+     <li class="toctree-l3 has-children">
+      <a class="reference internal" href="aijack.attack.inversion.html">
+       aijack.attack.inversion package
+      </a>
+      <input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/>
+      <label for="toctree-checkbox-10">
+       <i class="fas fa-chevron-down">
+       </i>
+      </label>
+      <ul>
+       <li class="toctree-l4">
+        <a class="reference internal" href="aijack.attack.inversion.utils.html">
+         aijack.attack.inversion.utils package
+        </a>
+       </li>
+      </ul>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="aijack.attack.labelleakage.html">
+       aijack.attack.labelleakage package
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="aijack.attack.membership.html">
+       aijack.attack.membership package
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="aijack.attack.poison.html">
+       aijack.attack.poison package
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 current active has-children">
+    <a class="reference internal" href="aijack.defense.html">
+     aijack.defense package
+    </a>
+    <input checked="" class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" type="checkbox"/>
+    <label for="toctree-checkbox-11">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul class="current">
+     <li class="toctree-l3 current active">
+      <a class="current reference internal" href="#">
+       aijack.defense.ckks package
+      </a>
+     </li>
+     <li class="toctree-l3 has-children">
+      <a class="reference internal" href="aijack.defense.dp.html">
+       aijack.defense.dp package
+      </a>
+      <input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" type="checkbox"/>
+      <label for="toctree-checkbox-12">
+       <i class="fas fa-chevron-down">
+       </i>
+      </label>
+      <ul>
+       <li class="toctree-l4">
+        <a class="reference internal" href="aijack.defense.dp.manager.html">
+         aijack.defense.dp.manager package
+        </a>
+       </li>
+      </ul>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="aijack.defense.foolsgold.html">
+       aijack.defense.foolsgold package
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="aijack.defense.kanonymity.html">
+       aijack.defense.kanonymity package
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="aijack.defense.mid.html">
+       aijack.defense.mid package
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="aijack.defense.paillier.html">
+       aijack.defense.paillier package
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="aijack.defense.soteria.html">
+       aijack.defense.soteria package
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="aijack.defense.sparse.html">
+       aijack.defense.sparse package
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="aijack.collaborative.html">
+     aijack.collaborative package
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" type="checkbox"/>
+    <label for="toctree-checkbox-13">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="aijack.collaborative.core.html">
+       aijack.collaborative.core package
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="aijack.collaborative.dsfl.html">
+       aijack.collaborative.dsfl package
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="aijack.collaborative.fedavg.html">
+       aijack.collaborative.fedavg package
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="aijack.collaborative.fedgems.html">
+       aijack.collaborative.fedgems package
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="aijack.collaborative.fedkd.html">
+       aijack.collaborative.fedkd package
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="aijack.collaborative.fedmd.html">
+       aijack.collaborative.fedmd package
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="aijack.collaborative.fedprox.html">
+       aijack.collaborative.fedprox package
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="aijack.collaborative.optimizer.html">
+       aijack.collaborative.optimizer package
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="aijack.collaborative.splitnn.html">
+       aijack.collaborative.splitnn package
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="aijack.collaborative.tree.html">
+       aijack.collaborative.tree package
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="aijack.utils.html">
+     aijack.utils package
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="contribution.html">
+   Developer Docs
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Theme by the <a href="https://ebp.jupyterbook.org">Executable Book Project</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="_sources/aijack.defense.ckks.rst.txt"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.rst</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+                onclick="printPdf(this)" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/Koukyosyumei/AIJack"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        
+        
+    </div>
+</div>
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show noprint">
+            
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
+            </div>
+            <nav id="bd-toc-nav" aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#submodules">
+   Submodules
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#module-aijack.defense.ckks.ciphertext">
+   aijack.defense.ckks.ciphertext module
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#module-aijack.defense.ckks.encoder">
+   aijack.defense.ckks.encoder module
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#module-aijack.defense.ckks.encrypter">
+   aijack.defense.ckks.encrypter module
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#module-aijack.defense.ckks.plaintext">
+   aijack.defense.ckks.plaintext module
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#module-aijack.defense.ckks.random">
+   aijack.defense.ckks.random module
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#module-aijack.defense.ckks.utils">
+   aijack.defense.ckks.utils module
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#module-aijack.defense.ckks">
+   Module contents
+  </a>
+ </li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1>aijack.defense.ckks package</h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#submodules">
+   Submodules
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#module-aijack.defense.ckks.ciphertext">
+   aijack.defense.ckks.ciphertext module
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#module-aijack.defense.ckks.encoder">
+   aijack.defense.ckks.encoder module
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#module-aijack.defense.ckks.encrypter">
+   aijack.defense.ckks.encrypter module
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#module-aijack.defense.ckks.plaintext">
+   aijack.defense.ckks.plaintext module
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#module-aijack.defense.ckks.random">
+   aijack.defense.ckks.random module
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#module-aijack.defense.ckks.utils">
+   aijack.defense.ckks.utils module
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#module-aijack.defense.ckks">
+   Module contents
+  </a>
+ </li>
+</ul>
+
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            
+              <div>
+                
+  <section id="aijack-defense-ckks-package">
+<h1>aijack.defense.ckks package<a class="headerlink" href="#aijack-defense-ckks-package" title="Permalink to this headline">¶</a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="module-aijack.defense.ckks.ciphertext">
+<span id="aijack-defense-ckks-ciphertext-module"></span><h2>aijack.defense.ckks.ciphertext module<a class="headerlink" href="#module-aijack.defense.ckks.ciphertext" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="aijack.defense.ckks.ciphertext.CKKSCiphertext">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">aijack.defense.ckks.ciphertext.</span></span><span class="sig-name descname"><span class="pre">CKKSCiphertext</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">c0</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.polynomial.polynomial.Polynomial</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">c1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.polynomial.polynomial.Polynomial</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">N</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">q</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scale</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/defense/ckks/ciphertext.html#CKKSCiphertext"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.defense.ckks.ciphertext.CKKSCiphertext" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+</dd></dl>
+
+</section>
+<section id="module-aijack.defense.ckks.encoder">
+<span id="aijack-defense-ckks-encoder-module"></span><h2>aijack.defense.ckks.encoder module<a class="headerlink" href="#module-aijack.defense.ckks.encoder" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="aijack.defense.ckks.encoder.CKKSEncoder">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">aijack.defense.ckks.encoder.</span></span><span class="sig-name descname"><span class="pre">CKKSEncoder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">M</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scale</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/defense/ckks/encoder.html#CKKSEncoder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.defense.ckks.encoder.CKKSEncoder" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Basic CKKS encoder to encode complex vectors into polynomials.
+This class is mainly based on <a class="reference external" href="https://blog.openmined.org/ckks-explained-part-1-simple-encoding-and-decoding/">https://blog.openmined.org/ckks-explained-part-1-simple-encoding-and-decoding/</a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="aijack.defense.ckks.encoder.CKKSEncoder.compute_basis_coordinates">
+<span class="sig-name descname"><span class="pre">compute_basis_coordinates</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">z</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/defense/ckks/encoder.html#CKKSEncoder.compute_basis_coordinates"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.defense.ckks.encoder.CKKSEncoder.compute_basis_coordinates" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes the coordinates of a vector with respect to the orthogonal lattice basis.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="aijack.defense.ckks.encoder.CKKSEncoder.decode">
+<span class="sig-name descname"><span class="pre">decode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pt</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#aijack.defense.ckks.plaintext.CKKSPlaintext" title="aijack.defense.ckks.plaintext.CKKSPlaintext"><span class="pre">aijack.defense.ckks.plaintext.CKKSPlaintext</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">numpy.array</span></span></span><a class="reference internal" href="_modules/aijack/defense/ckks/encoder.html#CKKSEncoder.decode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.defense.ckks.encoder.CKKSEncoder.decode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decodes a polynomial by removing the scale,
+evaluating on the roots, and project it on C^(N/2)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="aijack.defense.ckks.encoder.CKKSEncoder.encode">
+<span class="sig-name descname"><span class="pre">encode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">z</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.array</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#aijack.defense.ckks.plaintext.CKKSPlaintext" title="aijack.defense.ckks.plaintext.CKKSPlaintext"><span class="pre">aijack.defense.ckks.plaintext.CKKSPlaintext</span></a></span></span><a class="reference internal" href="_modules/aijack/defense/ckks/encoder.html#CKKSEncoder.encode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.defense.ckks.encoder.CKKSEncoder.encode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Encodes a vector by expanding it first to H,
+scale it, project it on the lattice of sigma(R), and performs
+sigma inverse.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="aijack.defense.ckks.encoder.CKKSEncoder.pi">
+<span class="sig-name descname"><span class="pre">pi</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">z</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.array</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">numpy.array</span></span></span><a class="reference internal" href="_modules/aijack/defense/ckks/encoder.html#CKKSEncoder.pi"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.defense.ckks.encoder.CKKSEncoder.pi" title="Permalink to this definition">¶</a></dt>
+<dd><p>Projects a vector of H into C^{N/2}.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>z</strong> – </p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>np.array</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="aijack.defense.ckks.encoder.CKKSEncoder.pi_inverse">
+<span class="sig-name descname"><span class="pre">pi_inverse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">z</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.array</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">numpy.array</span></span></span><a class="reference internal" href="_modules/aijack/defense/ckks/encoder.html#CKKSEncoder.pi_inverse"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.defense.ckks.encoder.CKKSEncoder.pi_inverse" title="Permalink to this definition">¶</a></dt>
+<dd><p>Expands a vector of C^{N/2} by expanding it with its
+complex conjugate.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="aijack.defense.ckks.encoder.CKKSEncoder.sigma">
+<span class="sig-name descname"><span class="pre">sigma</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">p</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.polynomial.polynomial.Polynomial</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">numpy.array</span></span></span><a class="reference internal" href="_modules/aijack/defense/ckks/encoder.html#CKKSEncoder.sigma"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.defense.ckks.encoder.CKKSEncoder.sigma" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decodes a polynomial to a vector (C^{N/2})</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>p</strong> – encoded polinoimial</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>decoded vector</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>np.array</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="aijack.defense.ckks.encoder.CKKSEncoder.sigma_R_discretization">
+<span class="sig-name descname"><span class="pre">sigma_R_discretization</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">z</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/defense/ckks/encoder.html#CKKSEncoder.sigma_R_discretization"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.defense.ckks.encoder.CKKSEncoder.sigma_R_discretization" title="Permalink to this definition">¶</a></dt>
+<dd><p>Projects a vector on the lattice using coordinate wise random rounding.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="aijack.defense.ckks.encoder.CKKSEncoder.sigma_inverse">
+<span class="sig-name descname"><span class="pre">sigma_inverse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">z</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.array</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">numpy.polynomial.polynomial.Polynomial</span></span></span><a class="reference internal" href="_modules/aijack/defense/ckks/encoder.html#CKKSEncoder.sigma_inverse"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.defense.ckks.encoder.CKKSEncoder.sigma_inverse" title="Permalink to this definition">¶</a></dt>
+<dd><p>Encodes the vector z (C^{N/2}) to a polinomial ().</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>z</strong> (<em>np.array</em>) – target vector</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the encoded polinoimial</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Polynomial</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-aijack.defense.ckks.encrypter">
+<span id="aijack-defense-ckks-encrypter-module"></span><h2>aijack.defense.ckks.encrypter module<a class="headerlink" href="#module-aijack.defense.ckks.encrypter" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="aijack.defense.ckks.encrypter.CKKSEncrypter">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">aijack.defense.ckks.encrypter.</span></span><span class="sig-name descname"><span class="pre">CKKSEncrypter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">encoder</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">q</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/defense/ckks/encrypter.html#CKKSEncrypter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.defense.ckks.encrypter.CKKSEncrypter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="aijack.defense.ckks.encrypter.CKKSEncrypter.decrypt">
+<span class="sig-name descname"><span class="pre">decrypt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ct</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/defense/ckks/encrypter.html#CKKSEncrypter.decrypt"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.defense.ckks.encrypter.CKKSEncrypter.decrypt" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="aijack.defense.ckks.encrypter.CKKSEncrypter.decrypt_to_plaintext">
+<span class="sig-name descname"><span class="pre">decrypt_to_plaintext</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ct</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/defense/ckks/encrypter.html#CKKSEncrypter.decrypt_to_plaintext"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.defense.ckks.encrypter.CKKSEncrypter.decrypt_to_plaintext" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="aijack.defense.ckks.encrypter.CKKSEncrypter.encrypt">
+<span class="sig-name descname"><span class="pre">encrypt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">z</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/defense/ckks/encrypter.html#CKKSEncrypter.encrypt"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.defense.ckks.encrypter.CKKSEncrypter.encrypt" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="aijack.defense.ckks.encrypter.CKKSEncrypter.encrypt_from_plaintext">
+<span class="sig-name descname"><span class="pre">encrypt_from_plaintext</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pt</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/defense/ckks/encrypter.html#CKKSEncrypter.encrypt_from_plaintext"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.defense.ckks.encrypter.CKKSEncrypter.encrypt_from_plaintext" title="Permalink to this definition">¶</a></dt>
+<dd><p>Encrypt an integer.
+:param pk: public-key.
+:param pt: plaintext to be encrypted.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Tuple representing a ciphertext.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="aijack.defense.ckks.encrypter.CKKSEncrypter.keygen">
+<span class="sig-name descname"><span class="pre">keygen</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/defense/ckks/encrypter.html#CKKSEncrypter.keygen"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.defense.ckks.encrypter.CKKSEncrypter.keygen" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate a public and secret keys
+:param size: size of the polynoms for the public and secret keys.
+:param q: coefficient modulus.
+:param poly_mod: polynomial modulus.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Public and secret key.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="aijack.defense.ckks.encrypter.CKKSEncrypter.set_pk">
+<span class="sig-name descname"><span class="pre">set_pk</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pk</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/defense/ckks/encrypter.html#CKKSEncrypter.set_pk"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.defense.ckks.encrypter.CKKSEncrypter.set_pk" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="aijack.defense.ckks.encrypter.CKKSEncrypter.set_sk">
+<span class="sig-name descname"><span class="pre">set_sk</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sk</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/defense/ckks/encrypter.html#CKKSEncrypter.set_sk"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.defense.ckks.encrypter.CKKSEncrypter.set_sk" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-aijack.defense.ckks.plaintext">
+<span id="aijack-defense-ckks-plaintext-module"></span><h2>aijack.defense.ckks.plaintext module<a class="headerlink" href="#module-aijack.defense.ckks.plaintext" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="aijack.defense.ckks.plaintext.CKKSPlaintext">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">aijack.defense.ckks.plaintext.</span></span><span class="sig-name descname"><span class="pre">CKKSPlaintext</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">p</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.polynomial.polynomial.Polynomial</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">N</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scale</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/defense/ckks/plaintext.html#CKKSPlaintext"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.defense.ckks.plaintext.CKKSPlaintext" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+</dd></dl>
+
+</section>
+<section id="module-aijack.defense.ckks.random">
+<span id="aijack-defense-ckks-random-module"></span><h2>aijack.defense.ckks.random module<a class="headerlink" href="#module-aijack.defense.ckks.random" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="aijack.defense.ckks.random.gen_binary_poly">
+<span class="sig-prename descclassname"><span class="pre">aijack.defense.ckks.random.</span></span><span class="sig-name descname"><span class="pre">gen_binary_poly</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/defense/ckks/random.html#gen_binary_poly"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.defense.ckks.random.gen_binary_poly" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates a polynomial with coeffecients in [0, 1]
+:param size: number of coeffcients, size-1 being the degree of the</p>
+<blockquote>
+<div><p>polynomial.</p>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>array of coefficients with the coeff[i] being
+the coeff of x ^ i.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="aijack.defense.ckks.random.gen_normal_poly">
+<span class="sig-prename descclassname"><span class="pre">aijack.defense.ckks.random.</span></span><span class="sig-name descname"><span class="pre">gen_normal_poly</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mean</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">std</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/defense/ckks/random.html#gen_normal_poly"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.defense.ckks.random.gen_normal_poly" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates a polynomial with coeffecients in a normal distribution
+of mean 0 and a standard deviation of 2, then discretize it.
+:param size: number of coeffcients, size-1 being the degree of the</p>
+<blockquote>
+<div><p>polynomial.</p>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>array of coefficients with the coeff[i] being
+the coeff of x ^ i.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="aijack.defense.ckks.random.gen_uniform_poly">
+<span class="sig-prename descclassname"><span class="pre">aijack.defense.ckks.random.</span></span><span class="sig-name descname"><span class="pre">gen_uniform_poly</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">modulus</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/defense/ckks/random.html#gen_uniform_poly"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.defense.ckks.random.gen_uniform_poly" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates a polynomial with coeffecients being integers in Z_modulus
+:param size: number of coeffcients, size-1 being the degree of the</p>
+<blockquote>
+<div><p>polynomial.</p>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>array of coefficients with the coeff[i] being
+the coeff of x ^ i.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-aijack.defense.ckks.utils">
+<span id="aijack-defense-ckks-utils-module"></span><h2>aijack.defense.ckks.utils module<a class="headerlink" href="#module-aijack.defense.ckks.utils" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="aijack.defense.ckks.utils.coordinate_wise_random_rounding">
+<span class="sig-prename descclassname"><span class="pre">aijack.defense.ckks.utils.</span></span><span class="sig-name descname"><span class="pre">coordinate_wise_random_rounding</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coordinates</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/defense/ckks/utils.html#coordinate_wise_random_rounding"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.defense.ckks.utils.coordinate_wise_random_rounding" title="Permalink to this definition">¶</a></dt>
+<dd><p>Rounds coordinates randonmly.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="aijack.defense.ckks.utils.polydiv_coef">
+<span class="sig-prename descclassname"><span class="pre">aijack.defense.ckks.utils.</span></span><span class="sig-name descname"><span class="pre">polydiv_coef</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">p</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.polynomial.polynomial.Polynomial</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mod</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">numpy.polynomial.polynomial.Polynomial</span></span></span><a class="reference internal" href="_modules/aijack/defense/ckks/utils.html#polydiv_coef"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.defense.ckks.utils.polydiv_coef" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="aijack.defense.ckks.utils.round_coordinates">
+<span class="sig-prename descclassname"><span class="pre">aijack.defense.ckks.utils.</span></span><span class="sig-name descname"><span class="pre">round_coordinates</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coordinates</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/defense/ckks/utils.html#round_coordinates"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.defense.ckks.utils.round_coordinates" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gives the integral rest.</p>
+</dd></dl>
+
+</section>
+<section id="module-aijack.defense.ckks">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-aijack.defense.ckks" title="Permalink to this headline">¶</a></h2>
+</section>
+</section>
+
+
+              </div>
+              
+            
+                <!-- Previous / next buttons -->
+<div class='prev-next-area'> 
+    <a class='left-prev' id="prev-link" href="aijack.defense.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">aijack.defense package</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="aijack.defense.dp.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">aijack.defense.dp package</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+            
+        </div>
+    </div>
+    <footer class="footer">
+  <p>
+    
+      By Hideaki Takahashi<br/>
+    
+        &copy; Copyright 2023, Hideaki Takahashi.<br/>
+  </p>
+</footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="_static/js/index.be7d3bbb2ef33a8344ce.js"></script>
+
+  </body>
+</html>

@@ -1,0 +1,573 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>aijack.attack.membership.membership_inference &#8212; AIJack  documentation</title>
+    
+  <link href="../../../../_static/css/theme.css" rel="stylesheet">
+  <link href="../../../../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="../../../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/mystnb.css" />
+    
+  <link rel="preload" as="script" href="../../../../_static/js/index.be7d3bbb2ef33a8344ce.js">
+
+    <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+    <script src="../../../../_static/doctools.js"></script>
+    <script src="../../../../_static/sphinx_highlight.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../../../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../../../_static/sphinx-book-theme.d59cb220de22ca1c485ebbdc042f0030.js"></script>
+    <link rel="icon" href="../../../../_static/logo.png"/>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../../../../index.html">
+      
+      
+      <img src="../../../../_static/../../../../_static/logo.png" class="logo" alt="logo">
+      
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../../../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <ul class="nav bd-sidenav">
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../../../tutorial.html">
+   Tutorial
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../../notebooks/aijack_fedavg.html">
+     FedAVG
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../../notebooks/aijack_fedmd.html">
+     FedMD: Federated Learning with Model Distillation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../../notebooks/aijack_secureboost.html">
+     SecureBoost: Vertically Federated XGBoost with Paillier Encryption
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../../notebooks/aijack_miface.html">
+     MI-FACE Model Inversion Attack vs Differentially Private SGD
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../../notebooks/aijack_gradient_inversion_attack.html">
+     Gradient-based Model Inversion Attack against Federated Learning
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../../notebooks/aijack_ganattack.html">
+     GAN Attack
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../../notebooks/aijack_soteria.html">
+     Soteria: : Provable Defense against Privacy Leakage in Federated Learning g from Representation Perspective
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../../notebooks/aijack_mid.html">
+     Mutual Information-based Defense
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../../notebooks/aijack_poisoning_federated_learning.html">
+     Poisoning Attack against Federated Learning
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../../notebooks/aijack_poisoning_attack_svm.html">
+     Poisoning Attack against SVM
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../../notebooks/aijack_split_learning.html">
+     Split Learning and Label Leakage
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../../notebooks/aijack_membership_inference.html">
+     Memership inference
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../../notebooks/aijack_evasion_attack.html">
+     Evasion Attack against SVM
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../../notebooks/aijack_dp.html">
+     Differential Privacy and Moment Accountant
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../../../api.html">
+   API Document
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+  <label for="toctree-checkbox-2">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../../../aijack.attack.html">
+     aijack.attack package
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
+    <label for="toctree-checkbox-3">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../../aijack.attack.backdoor.html">
+       aijack.attack.backdoor package
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../../aijack.attack.evasion.html">
+       aijack.attack.evasion package
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../../aijack.attack.freerider.html">
+       aijack.attack.freerider package
+      </a>
+     </li>
+     <li class="toctree-l3 has-children">
+      <a class="reference internal" href="../../../../aijack.attack.inversion.html">
+       aijack.attack.inversion package
+      </a>
+      <input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
+      <label for="toctree-checkbox-4">
+       <i class="fas fa-chevron-down">
+       </i>
+      </label>
+      <ul>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../aijack.attack.inversion.utils.html">
+         aijack.attack.inversion.utils package
+        </a>
+       </li>
+      </ul>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../../aijack.attack.labelleakage.html">
+       aijack.attack.labelleakage package
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../../aijack.attack.membership.html">
+       aijack.attack.membership package
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../../aijack.attack.poison.html">
+       aijack.attack.poison package
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../../../aijack.defense.html">
+     aijack.defense package
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/>
+    <label for="toctree-checkbox-5">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../../aijack.defense.ckks.html">
+       aijack.defense.ckks package
+      </a>
+     </li>
+     <li class="toctree-l3 has-children">
+      <a class="reference internal" href="../../../../aijack.defense.dp.html">
+       aijack.defense.dp package
+      </a>
+      <input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/>
+      <label for="toctree-checkbox-6">
+       <i class="fas fa-chevron-down">
+       </i>
+      </label>
+      <ul>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../aijack.defense.dp.manager.html">
+         aijack.defense.dp.manager package
+        </a>
+       </li>
+      </ul>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../../aijack.defense.foolsgold.html">
+       aijack.defense.foolsgold package
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../../aijack.defense.kanonymity.html">
+       aijack.defense.kanonymity package
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../../aijack.defense.mid.html">
+       aijack.defense.mid package
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../../aijack.defense.paillier.html">
+       aijack.defense.paillier package
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../../aijack.defense.soteria.html">
+       aijack.defense.soteria package
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../../aijack.defense.sparse.html">
+       aijack.defense.sparse package
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../../../aijack.collaborative.html">
+     aijack.collaborative package
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/>
+    <label for="toctree-checkbox-7">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../../aijack.collaborative.core.html">
+       aijack.collaborative.core package
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../../aijack.collaborative.dsfl.html">
+       aijack.collaborative.dsfl package
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../../aijack.collaborative.fedavg.html">
+       aijack.collaborative.fedavg package
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../../aijack.collaborative.fedgems.html">
+       aijack.collaborative.fedgems package
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../../aijack.collaborative.fedkd.html">
+       aijack.collaborative.fedkd package
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../../aijack.collaborative.fedmd.html">
+       aijack.collaborative.fedmd package
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../../aijack.collaborative.fedprox.html">
+       aijack.collaborative.fedprox package
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../../aijack.collaborative.optimizer.html">
+       aijack.collaborative.optimizer package
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../../aijack.collaborative.splitnn.html">
+       aijack.collaborative.splitnn package
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../../aijack.collaborative.tree.html">
+       aijack.collaborative.tree package
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../../aijack.utils.html">
+     aijack.utils package
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Theme by the <a href="https://ebp.jupyterbook.org">Executable Book Project</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/Koukyosyumei/AIJack"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        
+        
+    </div>
+</div>
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show noprint">
+            
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1></h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                    </div>
+                </div>
+            </div>
+            
+              <div>
+                
+  <h1>Source code for aijack.attack.membership.membership_inference</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">..base_attack</span> <span class="kn">import</span> <span class="n">BaseAttacker</span>
+<span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">AttackerModel</span><span class="p">,</span> <span class="n">ShadowModel</span>
+
+
+<div class="viewcode-block" id="Membership_Inference"><a class="viewcode-back" href="../../../../aijack.attack.membership.html#aijack.attack.membership.membership_inference.Membership_Inference">[docs]</a><span class="k">class</span> <span class="nc">Membership_Inference</span><span class="p">(</span><span class="n">BaseAttacker</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">target_model</span><span class="p">,</span>
+        <span class="n">shadow_models</span><span class="p">,</span>
+        <span class="n">attack_models</span><span class="p">,</span>
+        <span class="n">shadow_data_size</span><span class="p">,</span>
+        <span class="n">shadow_transform</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Implementation of membership inference</span>
+<span class="sd">           reference https://arxiv.org/abs/1610.05820</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            target_model: the model of the victim</span>
+<span class="sd">            shadow_models: shadow model for attack</span>
+<span class="sd">            attack_models: attacker model for attack</span>
+<span class="sd">            shadow_data_size: the size of datasets for</span>
+<span class="sd">                              training the shadow models</span>
+<span class="sd">            shadow_transform: the transformation function for shadow datasets</span>
+
+<span class="sd">        Attributes:</span>
+<span class="sd">            shadow_models</span>
+<span class="sd">            attack_models</span>
+<span class="sd">            shadow_data_size</span>
+<span class="sd">            shadow_trnasform</span>
+<span class="sd">            sm</span>
+<span class="sd">            shadow_result</span>
+<span class="sd">            am</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">target_model</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">shadow_models</span> <span class="o">=</span> <span class="n">shadow_models</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">attack_models</span> <span class="o">=</span> <span class="n">attack_models</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">shadow_data_size</span> <span class="o">=</span> <span class="n">shadow_data_size</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">shadow_trasform</span> <span class="o">=</span> <span class="n">shadow_transform</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">sm</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">shadow_result</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">am</span> <span class="o">=</span> <span class="kc">None</span>
+
+<div class="viewcode-block" id="Membership_Inference.train_shadow"><a class="viewcode-back" href="../../../../aijack.attack.membership.html#aijack.attack.membership.membership_inference.Membership_Inference.train_shadow">[docs]</a>    <span class="k">def</span> <span class="nf">train_shadow</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">num_itr</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;train shadow models</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            X (np.array): training data for shadow models</span>
+<span class="sd">            y (np.array): training label for shadow models</span>
+<span class="sd">            num_itr (int): number of iteration for training</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sm</span> <span class="o">=</span> <span class="n">ShadowModel</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">shadow_models</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">shadow_data_size</span><span class="p">,</span>
+            <span class="n">shadow_transform</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">shadow_trasform</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">shadow_result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sm</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">num_itr</span><span class="o">=</span><span class="n">num_itr</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Membership_Inference.train_attacker"><a class="viewcode-back" href="../../../../aijack.attack.membership.html#aijack.attack.membership.membership_inference.Membership_Inference.train_attacker">[docs]</a>    <span class="k">def</span> <span class="nf">train_attacker</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Train attacker models&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">am</span> <span class="o">=</span> <span class="n">AttackerModel</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">attack_models</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">am</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">shadow_result</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Membership_Inference.attack"><a class="viewcode-back" href="../../../../aijack.attack.membership.html#aijack.attack.membership.membership_inference.Membership_Inference.attack">[docs]</a>    <span class="k">def</span> <span class="nf">attack</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">proba</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Attack victim model</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            x: target datasets which the attacker wants to classify</span>
+<span class="sd">            y: target labels which the attacker wants to classify</span>
+<span class="sd">            proba: the format of the output</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">prediction_of_taregt_model</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">target_model</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">proba</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">predit_proba</span><span class="p">(</span><span class="n">prediction_of_taregt_model</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">predit</span><span class="p">(</span><span class="n">prediction_of_taregt_model</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Membership_Inference.predict"><a class="viewcode-back" href="../../../../aijack.attack.membership.html#aijack.attack.membership.membership_inference.Membership_Inference.predict">[docs]</a>    <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pred</span><span class="p">,</span> <span class="n">label</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Predict whether the given prediction came from training data or not</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            pred (torch.Tensor): predicted probabilities on the data</span>
+<span class="sd">            label (torch.Tensor): true label of the data which y_pred_prob</span>
+<span class="sd">                                     is predicted on</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            predicted binaru labels</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">am</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">pred</span><span class="p">,</span> <span class="n">label</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Membership_Inference.predict_proba"><a class="viewcode-back" href="../../../../aijack.attack.membership.html#aijack.attack.membership.membership_inference.Membership_Inference.predict_proba">[docs]</a>    <span class="k">def</span> <span class="nf">predict_proba</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pred</span><span class="p">,</span> <span class="n">label</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;get probabilities of whether the given prediction came from</span>
+<span class="sd">           training data or not</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            pred (torch.Tensor): predicted probabilities on the data</span>
+<span class="sd">            label (torch.Tensor): true label of the data which y_pred_prob</span>
+<span class="sd">                                     is predicted on</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            predicted probabilities</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">am</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">pred</span><span class="p">,</span> <span class="n">label</span><span class="p">)</span></div></div>
+</pre></div>
+
+              </div>
+              
+            
+                <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+</div>
+            
+        </div>
+    </div>
+    <footer class="footer">
+  <p>
+    
+      By Hideaki Takahashi<br/>
+    
+        &copy; Copyright 2023, Hideaki Takahashi.<br/>
+  </p>
+</footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="../../../../_static/js/index.be7d3bbb2ef33a8344ce.js"></script>
+
+  </body>
+</html>
