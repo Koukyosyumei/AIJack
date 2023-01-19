@@ -1,4 +1,3 @@
-jupyter-book build docs
-sphinx-apidoc -f -o ./docs/api/source ./src/aijack
-sphinx-build -b html ./docs/api/source ./docs/_build/html/api
+sphinx-apidoc -f -o ./docs/source ./src/aijack
+sphinx-build -b html ./docs/source ./docs/_build/html
 ghp-import -n -p -f docs/_build/html

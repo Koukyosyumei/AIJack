@@ -35,6 +35,7 @@ extensions = [
     "sphinx.ext.napoleon",
     "nbsphinx",
     "myst_nb",
+    "sphinx_design",
 ]
 
 mathjax_config = {"TeX": {"extensions": ["tables.js"]}}
@@ -65,13 +66,18 @@ html_theme_options = {
     "use_repository_button": True,  # add a "link to repository" button
 }
 
-# The name of an image file (relative to this directory) to place at the top
-# of the sidebar.
-html_logo = "logo.png"
-
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ["_static"]
+
+# The name of an image file (relative to this directory) to place at the top
+# of the sidebar.
+html_logo = "_static/logo.png"
+html_favicon = "_static/logo.png"
+
+html_css_files = [
+    "style.css",
+]
 
 jupyter_execute_notebooks = "off"

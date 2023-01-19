@@ -1,8 +1,12 @@
-API Document
-============
+:orphan:
+
+.. _api:
+
+API Docs
+========
 
 .. toctree::
-   :maxdepth: 1
+   :maxdepth: 2
 
    aijack.attack
    aijack.defense

@@ -10,6 +10,7 @@ Subpackages
    aijack.defense.ckks
    aijack.defense.dp
    aijack.defense.foolsgold
+   aijack.defense.kanonymity
    aijack.defense.mid
    aijack.defense.paillier
    aijack.defense.soteria
