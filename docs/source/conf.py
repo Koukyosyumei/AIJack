@@ -13,7 +13,7 @@
 import os
 import sys
 
-sys.path.insert(0, os.path.abspath("../../../src/"))
+sys.path.insert(0, os.path.abspath("../../../src/aijack"))
 
 
 # -- Project information -----------------------------------------------------
@@ -30,11 +30,20 @@ author = "Hideaki Takahashi"
 # ones.
 extensions = [
     "sphinx.ext.autodoc",
+    "sphinx.ext.autosummary",
+    "sphinx.ext.viewcode",
     "sphinx.ext.napoleon",
+    "nbsphinx",
+    "myst_nb",
 ]
+
+mathjax_config = {"TeX": {"extensions": ["tables.js"]}}
+
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ["_templates"]
+
+source_suffix = [".rst", ".ipynb", ".md"]
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
@@ -47,9 +56,22 @@ exclude_patterns = []
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = "sphinx_rtd_theme"
+html_theme = "sphinx_book_theme"
+
+html_theme_options = {
+    "logo_only": True,
+    "show_toc_level": 2,
+    "repository_url": "https://github.com/Koukyosyumei/AIJack",
+    "use_repository_button": True,  # add a "link to repository" button
+}
+
+# The name of an image file (relative to this directory) to place at the top
+# of the sidebar.
+html_logo = "logo.png"
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ["_static"]
+
+jupyter_execute_notebooks = "off"
