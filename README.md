@@ -113,7 +113,7 @@ You can also find more examples in our tutorials and documentation.
 
 -   [Blog](https://dev.to/koukyosyumei/privacy-preserving-machine-learning-with-aijack-1-federated-learning-on-pytorch-3i5m)
 -   [Documentation](https://koukyosyumei.github.io/AIJack/)
--   [API Reference]https://koukyosyumei.github.io/AIJack/api.html)
+-   [API Reference](https://koukyosyumei.github.io/AIJack/api.html)
 
 # Supported Algorithms
 
