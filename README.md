@@ -21,7 +21,7 @@
 <h1 align="center">
 
   <br>
-  <img src="logo/logo_wide_gif.gif" width=1000>
+  <img src="docs/source/_static/logo_wide_gif.gif" width=1000>
   <br>
   <br>
 
@@ -120,6 +120,7 @@ You can also find more examples in our tutorials and documentation.
 -   [Blog](https://dev.to/koukyosyumei/privacy-preserving-machine-learning-with-aijack-1-federated-learning-on-pytorch-3i5m)
 -   [Documentation](https://koukyosyumei.github.io/AIJack/intro.html)
 -   [API Reference](https://koukyosyumei.github.io/AIJack/api/index.html)
+-   [Developer Docs]()
 
 # Supported Algorithms
 
