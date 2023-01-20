@@ -18,7 +18,9 @@
 
 ❤️ <i>If you like AIJack, please consider <a href="https://github.com/sponsors/Koukyosyumei">becoming a GitHub Sponsor</a></i> ❤️
 
-<img src="logo/logo_wide_gif.gif" width=1000 align="center">
+<center>
+<img src="logo/logo_wide_gif.gif" width=1000>
+</center>
 
 # What is AIJack?
 
