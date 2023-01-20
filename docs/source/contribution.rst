@@ -2,5 +2,5 @@
 
 .. _contribution:
 
-Developer Docs
-==============
+Contribution Guide
+==================

@@ -130,6 +130,7 @@ You can install aijack via pip.
 
    pip install aijack
 
+
 Indices
 =======
 
@@ -138,19 +139,34 @@ Indices
 * :ref:`search`
 
 .. toctree::
+   :caption: Tutorial
    :hidden:
+   :numbered:
    :maxdepth: 2
 
-   tutorial
+   notebooks/federated_learning
+   notebooks/modelinversion
+   notebooks/labelleakage
+   notebooks/membershipinference
+   notebooks/poisoning
+   notebooks/evasion
+   notebooks/diferentialprivacy
 
 .. toctree::
+   :caption: API Docs
    :hidden:
+   :numbered:
    :maxdepth: 2
 
-   api
+   aijack.attack
+   aijack.defense
+   aijack.collaborative
+   aijack.utils
 
 .. toctree::
+   :caption: Developer Docs
    :hidden:
+   :numbered:
    :maxdepth: 2
 
    contribution
