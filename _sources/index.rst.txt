@@ -6,6 +6,29 @@
 Welcome to AIJack's documentation!
 ==================================
 
+.. raw:: html
+
+   <div align="left">
+   <img src="https://badgen.net/github/stars/Koukyosyumei/AIjack?color=green">
+   <img src="https://badgen.net/github/forks/Koukyosyumei/AIjack">
+   <img src="https://badgen.net/github/watchers/Koukyosyumei/AIjack">
+   <img src="https://img.shields.io/github/commit-activity/m/Koukyosyumei/AIJack">
+   <img src="https://img.shields.io/github/languages/code-size/Koukyosyumei/AIJack">
+   <img src="https://app.codacy.com/project/badge/Grade/529a33e6523e4bf2a79c26e815a070f4"/>
+   <img src="https://img.shields.io/github/license/Koukyosyumei/AIJack">
+   </div>
+
+.. raw:: html
+
+   <h1 align="center">
+
+   <br>
+   <img src="_static/logo_wide_gif.gif" width=1000>
+   <br>
+   <br>
+
+   </h1>
+
 AIJack is an easy-to-use open-source simulation tool for testing the security of your AI system against hijackers.
 It provides advanced security techniques like Differential Privacy, Homomorphic Encryption, and Federated Learning to guarantee protection for your AI.
 With AIJack, you can test and simulate defenses against various attacks such as Poisoning, Model Inversion, Backdoor, and Free-Rider. We support more than 30 state-of-the-art methods.
@@ -107,6 +130,7 @@ You can install aijack via pip.
 
    pip install aijack
 
+
 Indices
 =======
 
@@ -115,19 +139,34 @@ Indices
 * :ref:`search`
 
 .. toctree::
+   :caption: Tutorial
    :hidden:
+   :numbered:
    :maxdepth: 2
 
-   tutorial
+   notebooks/federated_learning
+   notebooks/modelinversion
+   notebooks/labelleakage
+   notebooks/membershipinference
+   notebooks/poisoning
+   notebooks/evasion
+   notebooks/differentialprivacy
 
 .. toctree::
+   :caption: API Docs
    :hidden:
+   :numbered:
    :maxdepth: 2
 
-   api
+   aijack.attack
+   aijack.defense
+   aijack.collaborative
+   aijack.utils
 
 .. toctree::
+   :caption: Developer Docs
    :hidden:
+   :numbered:
    :maxdepth: 2
 
    contribution
