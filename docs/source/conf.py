@@ -73,8 +73,8 @@ html_static_path = ["_static"]
 
 # The name of an image file (relative to this directory) to place at the top
 # of the sidebar.
-html_logo = "_static/logo.png"
-html_favicon = "_static/logo.png"
+html_logo = "_static/AIJACK_LOGO_SQUARE_NEW.png"
+html_favicon = "_static/AIJACK_LOGO_SQUARE_NEW.png"
 
 html_css_files = [
     "style.css",
