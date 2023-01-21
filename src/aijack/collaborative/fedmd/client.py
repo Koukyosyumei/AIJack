@@ -2,9 +2,13 @@ import torch
 from torch import nn
 
 from ...manager import BaseManager
-from ...utils.utils import torch_round_x_decimal
+from ...utils.utils import default_local_train_for_client, torch_round_x_decimal
 from ..core import BaseClient
 from ..core.utils import GLOBAL_LOGIT_TAG, LOCAL_LOGIT_TAG
+
+
+def initialize_global_logit(len_public_dataloader, output_dim, device):
+    return torch.ones((len_public_dataloader, output_dim)).to(device) * float("inf")
 
 
 class FedMDClient(BaseClient):
@@ -31,9 +35,9 @@ class FedMDClient(BaseClient):
         self.predicted_values_of_server = None
 
         len_public_dataloader = len(self.public_dataloader.dataset)
-        self.logit2server = torch.ones((len_public_dataloader, output_dim)).to(
-            self.device
-        ) * float("inf")
+        self.logit2server = initialize_global_logit(
+            len_public_dataloader, output_dim, self.device
+        )
 
     def upload(self):
         for data in self.public_dataloader:
@@ -51,22 +55,9 @@ class FedMDClient(BaseClient):
         self.predicted_values_of_server = predicted_values_of_server
 
     def local_train(self, local_epoch, criterion, trainloader, optimizer):
-
-        running_loss = 0.0
-        for _ in range(local_epoch):
-            for data in trainloader:
-                _, x, y = data
-                x = x.to(self.device)
-                y = y.to(self.device).to(torch.int64)
-
-                optimizer.zero_grad()
-                loss = criterion(self(x), y)
-                loss.backward()
-                optimizer.step()
-
-                running_loss += loss.item()
-
-        return running_loss
+        return default_local_train_for_client(
+            self, local_epoch, criterion, trainloader, optimizer
+        )
 
     def approach_consensus(self, consensus_optimizer):
         running_loss = 0
@@ -112,9 +103,5 @@ def attach_mpi_to_fedmdclient(cls):
 
 
 class MPIFedMDClientManager(BaseManager):
-    def __init__(self, *args, **kwargs):
-        self.args = args
-        self.kwargs = kwargs
-
     def attach(self, cls):
         return attach_mpi_to_fedmdclient(cls, *self.args, **self.kwargs)

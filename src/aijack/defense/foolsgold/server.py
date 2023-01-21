@@ -7,6 +7,27 @@ from ...manager import BaseManager
 EPS = 1e-8
 
 
+def calculate_cs(cs, num_clients, aggregate_historical_gradients):
+    for i_idx in range(num_clients):
+        for j_idx in range(i_idx + 1, num_clients):
+            cs[i_idx][j_idx] = F.cosine_similarity(
+                aggregate_historical_gradients[i_idx],
+                aggregate_historical_gradients[j_idx],
+                0,
+                EPS,
+            )
+            cs[j_idx][i_idx] = cs[i_idx][j_idx]
+    return cs
+
+
+def normalize_cs(cs, v, num_clients):
+    for i_idx in range(num_clients):
+        for j_idx in range(num_clients):
+            if v[j_idx] > v[i_idx]:
+                cs[i_idx][j_idx] *= v[i_idx] / v[j_idx]
+    return cs
+
+
 def attach_foolsgold_to_server(cls):
     """Wraps the given class in FoolsGoldServerWrapper.
 
@@ -33,7 +54,7 @@ def attach_foolsgold_to_server(cls):
 
         def update(self):
             self.update_weight()
-            self.update_from_gradients(self.alpha)
+            self.update_from_gradients()
 
         def update_weight(self):
             """Updates weight for each client given the received local gradients."""
@@ -43,36 +64,21 @@ def attach_foolsgold_to_server(cls):
                 ).to(self.device)
 
             num_clients = len(self.uploaded_gradients)
-
-            for i_idx in range(num_clients):
-                for j_idx in range(i + 1, num_clients):
-                    self.cs[i_idx][j_idx] = F.cosine_similarity(
-                        self.aggregate_historical_gradients[i_idx],
-                        self.aggregate_historical_gradients[j_idx],
-                        0,
-                        EPS,
-                    )
+            self.cs = self.calculate_cs(
+                self.cs, num_clients, self.aggregate_historical_gradients
+            )
             self.v = np.max(self.cs, axis=1)
-
-            for i_idx in range(num_clients):
-                for j_idx in range(num_clients):
-                    if i_idx == j_idx:
-                        continue
-                    if self.v[j_idx] > self.v[i_idx]:
-                        self.cs[i_idx][j_idx] *= self.v[i_idx] / self.v[j_idx]
+            self.cs = self.normalize_cs(self.cs, self.v, num_clients)
 
             self.alpha = np.max(self.cs, axis=1)
             self.alpha = self.alpha / (np.max(self.alpha) + EPS)
+            self.weight = self.alpha
 
     return FoolsGoldServerWrapper
 
 
 class FoolsGoldServerManager(BaseManager):
     """Manager class for FoolsGold proposed in https://arxiv.org/abs/1808.04866."""
-
-    def __init__(self, *args, **kwargs):
-        self.args = args
-        self.kwargs = kwargs
 
     def attach(self, cls):
         """Wraps the given class in FoolsGoldServerWrapper.

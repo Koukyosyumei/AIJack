@@ -5,6 +5,26 @@ import torch
 from torch.utils.data.dataset import Dataset
 
 
+def default_local_train_for_client(
+    self, local_epoch, criterion, trainloader, optimizer
+):
+    running_loss = 0.0
+    for _ in range(local_epoch):
+        for data in trainloader:
+            _, x, y = data
+            x = x.to(self.device)
+            y = y.to(self.device).to(torch.int64)
+
+            optimizer.zero_grad()
+            loss = criterion(self(x), y)
+            loss.backward()
+            optimizer.step()
+
+            running_loss += loss.item()
+
+    return running_loss
+
+
 def try_gpu(e):
     """Send given tensor to gpu if it is available
 

@@ -33,23 +33,22 @@ def attach_paillier_to_client_for_encrypted_grad(cls, pk, sk):
                 # initial parameters are not encrypted
                 return super().download(global_grad)
             else:
-                decrypted_global_grad = []
-                for grad in global_grad:
-                    if type(grad) == PaillierTensor:
-                        decrypted_global_grad.append(grad.decrypt(sk, self.device))
-                    else:
-                        decrypted_global_grad.append(grad)
-                return super().download(decrypted_global_grad)
+                return super().download(self.decrypt_grad(global_grad))
+
+        def decrypt_grad(self, global_grad):
+            decrypted_global_grad = []
+            for grad in global_grad:
+                if type(grad) == PaillierTensor:
+                    decrypted_global_grad.append(grad.decrypt(sk, self.device))
+                else:
+                    decrypted_global_grad.append(grad)
+            return decrypted_global_grad
 
     return PaillierClientWrapper
 
 
 class PaillierGradientClientManager(BaseManager):
     """Client Manager for secure aggregation with Paillier Encryption"""
-
-    def __init__(self, *args, **kwargs):
-        self.args = args
-        self.kwargs = kwargs
 
     def attach(self, cls):
         return attach_paillier_to_client_for_encrypted_grad(

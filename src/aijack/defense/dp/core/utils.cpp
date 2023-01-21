@@ -2,8 +2,7 @@
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
 #include <pybind11/functional.h>
-#include <boost/math/special_functions/beta.hpp>
-#include <boost/math/special_functions/gamma.hpp>
+#include <complex>
 #include <cmath>
 #include <vector>
 #include <limits>
@@ -14,7 +13,17 @@ namespace py = pybind11;
 
 constexpr double pi = 3.14159265358979323846;
 
-double binom(double n, double k)
+double beta(double a, double b)
+{
+    return std::tgamma(a) * std::tgamma(b) / std::tgamma(a + b);
+}
+
+double lbeta(double a, double b)
+{
+    return std::lgamma(a) + std::lgamma(b) - std::lgamma(a + b);
+}
+
+inline double binom(double n, double k)
 {
     double kx, nx, num, den, dk, sgn;
     int i;
@@ -24,16 +33,24 @@ double binom(double n, double k)
         nx = std::floor(n);
         if (n == nx)
         {
-            return std::nan("");
+            // undefined
+            return NAN;
         }
     }
 
     kx = std::floor(k);
-    if ((k == kx) && (fabs(n) > 1e-8 or n == 0))
+    if (k == kx && (std::fabs(n) > 1e-8 || n == 0))
     {
+        // Integer case: use multiplication formula for less rounding error
+        // for cases where the result is an integer.
+        //
+        // This cannot be used for small nonzero n due to loss of
+        // precision.
+
         nx = std::floor(n);
         if (nx == n && kx > nx / 2 && nx > 0)
         {
+            // Reduce kx by symmetry
             kx = nx - kx;
         }
 
@@ -41,7 +58,7 @@ double binom(double n, double k)
         {
             num = 1.0;
             den = 1.0;
-            for (int i = 1; i < 1 + (int)kx; i++)
+            for (i = 1; i <= (int)kx; i++)
             {
                 num *= i + n - kx;
                 den *= i;
@@ -55,35 +72,31 @@ double binom(double n, double k)
         }
     }
 
-    if ((n >= 1e10 * k) && (k > 0))
+    // general case:
+    if (n >= 1e10 * k && k > 0)
     {
-        return std::exp(-std::log(boost::math::beta(1 + n - k, 1 + k))) - std::log(n + 1);
+        // avoid under/overflows in intermediate results
+        return std::exp(-lbeta(1 + n - k, 1 + k) - std::log1p(n));
     }
     else if (k > 1e8 * std::fabs(n))
     {
-        num = boost::math::tgamma(1 + n) / std::fabs(k) + boost::math::tgamma(1 + n) * n / (2 * (k * k));
-        num /= pi * pow(std::fabs(k), n);
+        // avoid loss of precision
+        num = std::tgamma(1 + n) / std::fabs(k) + std::tgamma(1 + n) * n / (2 * k * k); // + ...
+        num /= M_PI * std::fabs(k) * n;
         if (k > 0)
         {
             kx = std::floor(k);
             if ((int)kx == kx)
             {
                 dk = k - kx;
-                if ((int)kx % 2 == 0)
-                {
-                    sgn = 1;
-                }
-                else
-                {
-                    sgn = -1;
-                }
+                sgn = (int)kx % 2 == 0 ? 1 : -1;
             }
             else
             {
                 dk = k;
                 sgn = 1;
             }
-            return num * std::sin((dk - n) * pi) * sgn;
+            return num * std::sin((dk - n) * M_PI) * sgn;
         }
         else
         {
@@ -94,13 +107,13 @@ double binom(double n, double k)
             }
             else
             {
-                return num * std::sin(k * pi);
+                return num * std::sin(k * M_PI);
             }
         }
     }
     else
     {
-        return 1 / (n + 1) / boost::math::beta(1 + n - k, 1 + k);
+        return 1 / (n + 1) / beta(1 + n - k, 1 + k);
     }
 }
 
@@ -113,7 +126,7 @@ double _log_add(double logx, double logy)
     {
         return b;
     }
-    return std::log(1 + std::exp(a - b)) + b;
+    return std::log1p(std::exp(a - b)) + b;
 }
 
 double _log_sub(double logx, double logy)
@@ -126,7 +139,7 @@ double _log_sub(double logx, double logy)
     {
         return -1 * std::numeric_limits<double>::infinity();
     }
-    double result = std::log(std::exp((logx - logy) - 1)) + logy;
+    double result = std::log(std::expm1(logx - logy)) + logy;
     if (std::fetestexcept(FE_OVERFLOW))
     {
         return logx;

@@ -1,8 +1,7 @@
-import torch
-
 from ...utils.metrics import crossentropyloss_between_logits
-from ...utils.utils import torch_round_x_decimal
+from ...utils.utils import default_local_train_for_client, torch_round_x_decimal
 from ..core import BaseClient
+from ..fedmd.client import initialize_global_logit
 
 
 class DSFLClient(BaseClient):
@@ -36,9 +35,9 @@ class DSFLClient(BaseClient):
         self.consensus_scale = consensus_scale
 
         len_public_dataloader = len(self.public_dataloader.dataset)
-        self.logit2server = torch.ones((len_public_dataloader, output_dim)).to(
-            self.device
-        ) * float("inf")
+        self.logit2server = initialize_global_logit(
+            len_public_dataloader, output_dim, self.device
+        )
 
     def upload(self):
         """Upload the output logits on the public dataset to the server.
@@ -66,22 +65,9 @@ class DSFLClient(BaseClient):
         self.global_logit = global_logit
 
     def local_train(self, local_epoch, criterion, trainloader, optimizer):
-
-        running_loss = 0.0
-        for _ in range(local_epoch):
-            for data in trainloader:
-                _, x, y = data
-                x = x.to(self.device)
-                y = y.to(self.device).to(torch.int64)
-
-                optimizer.zero_grad()
-                loss = criterion(self(x), y)
-                loss.backward()
-                optimizer.step()
-
-                running_loss += loss.item()
-
-        return running_loss
+        return default_local_train_for_client(
+            self, local_epoch, criterion, trainloader, optimizer
+        )
 
     def approach_consensus(self, consensus_optimizer):
         """Train the own local model to minimize the distance between the global logits and

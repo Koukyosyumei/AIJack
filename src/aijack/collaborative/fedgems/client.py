@@ -1,7 +1,7 @@
 import torch
 from torch import nn
 
-from ...utils.utils import torch_round_x_decimal
+from ...utils.utils import default_local_train_for_client, torch_round_x_decimal
 from ..core import BaseClient
 
 
@@ -35,22 +35,9 @@ class FedGEMSClient(BaseClient):
         self.predicted_values_of_server = predicted_values_of_server
 
     def local_train(self, local_epoch, criterion, trainloader, optimizer):
-
-        running_loss = 0.0
-        for _ in range(local_epoch):
-            for data in trainloader:
-                _, x, y = data
-                x = x.to(self.device)
-                y = y.to(self.device).to(torch.int64)
-
-                optimizer.zero_grad()
-                loss = criterion(self(x), y)
-                loss.backward()
-                optimizer.step()
-
-                running_loss += loss.item()
-
-        return running_loss
+        return default_local_train_for_client(
+            self, local_epoch, criterion, trainloader, optimizer
+        )
 
     def culc_loss_on_public_dataset(self, idx, y_pred, y):
         y_pred_server = self.predicted_values_of_server[idx]

@@ -125,9 +125,5 @@ def attach_soteria_to_client(
 
 
 class SoteriaClientManager(BaseManager):
-    def __init__(self, *args, **kwargs):
-        self.args = args
-        self.kwargs = kwargs
-
     def attach(self, cls):
         return attach_soteria_to_client(cls, *self.args, **self.kwargs)

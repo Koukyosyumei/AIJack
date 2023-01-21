@@ -49,7 +49,7 @@ class FedAVGAPI(BaseFedAPI):
             len(dataloader.dataset) for dataloader in self.local_dataloaders
         ]
         sum_local_dataset_sizes = sum(local_dataset_sizes)
-        self.clients_weight = [
+        self.server.weight = [
             dataset_size / sum_local_dataset_sizes
             for dataset_size in local_dataset_sizes
         ]
@@ -73,9 +73,9 @@ class FedAVGAPI(BaseFedAPI):
             self.local_train(i)
             self.server.receive(use_gradients=self.use_gradients)
             if self.use_gradients:
-                self.server.update_from_gradients(weight=self.clients_weight)
+                self.server.update_from_gradients()
             else:
-                self.server.update_from_parameters(weight=self.clients_weight)
+                self.server.update_from_parameters()
             self.server.distribute()
 
             self.custom_action(self)

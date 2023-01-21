@@ -4,6 +4,7 @@
 #include <pybind11/functional.h>
 #include <cmath>
 #include <vector>
+#include <string>
 #include "utils.cpp"
 
 using namespace std;
@@ -85,6 +86,7 @@ double culc_upperbound_of_rdp_with_Sampled_Gaussian_Mechanism_int(int alpha,
         double s = log_coef_i + (i * i - i) * inv_double_sigma_square;
         log_a = _log_add(log_a, s);
     }
+
     return log_a / (alpha - 1);
 }
 
@@ -114,7 +116,7 @@ double culc_upperbound_of_rdp_with_Sampled_Gaussian_Mechanism_frac(double alpha,
         {
             auto warnings = py::module::import("warnings");
             warnings.attr("warn")(
-                "Culculation of RDP did not converge. Please consider using backend=python");
+                "RDP did not converge. Please consider using backend=python " + to_string(alpha) + "_" + to_string(i));
             return std::nan("");
         }
 

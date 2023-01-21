@@ -79,20 +79,12 @@ def attach_sparse_gradient_to_server(cls):
 class SparseGradientClientManager(BaseManager):
     """Client-side Manager for sparse gradients."""
 
-    def __init__(self, *args, **kwargs):
-        self.args = args
-        self.kwargs = kwargs
-
     def attach(self, cls):
         return attach_sparse_gradient_to_client(cls, *self.args, **self.kwargs)
 
 
 class SparseGradientServerManager(BaseManager):
     """Server-side Manager for sparse gradients."""
-
-    def __init__(self, *args, **kwargs):
-        self.args = args
-        self.kwargs = kwargs
 
     def attach(self, cls):
         return attach_sparse_gradient_to_server(cls, *self.args, **self.kwargs)

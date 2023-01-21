@@ -40,9 +40,5 @@ def attach_dpsgd_to_client(cls, privacy_manager, sigma):
 
 
 class DPSGDClientManager(BaseManager):
-    def __init__(self, *args, **kwargs):
-        self.args = args
-        self.kwargs = kwargs
-
     def attach(self, cls):
         return attach_dpsgd_to_client(cls, *self.args, **self.kwargs)

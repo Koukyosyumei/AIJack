@@ -4,7 +4,7 @@ import numpy as np
 from scipy import special
 from scipy.special import logsumexp
 
-from .utils import _log_add, _log_erfc, _log_sub
+from .utils import _log_add, _log_coef_i, _log_e, _log_s, _log_sub, _log_t
 
 
 def eps_gaussian(alpha, params):
@@ -97,14 +97,14 @@ def culc_upperbound_of_rdp_with_Sampled_Gaussian_Mechanism_float(
         log_coef = np.log(abs(coef))
         j = alpha - i
 
-        log_t0 = log_coef + i * np.log(sampling_rate) + j * np.log(1 - sampling_rate)
-        log_t1 = log_coef + j * np.log(sampling_rate) + i * np.log(1 - sampling_rate)
+        log_t0 = _log_t(log_coef, i, j, sampling_rate)
+        log_t1 = _log_t(log_coef, j, i, sampling_rate)
 
-        log_e0 = np.log(0.5) + _log_erfc((i - z0) / (math.sqrt(2) * params["sigma"]))
-        log_e1 = np.log(0.5) + _log_erfc((z0 - j) / (math.sqrt(2) * params["sigma"]))
+        log_e0 = _log_e(i, z0, params["sigma"])
+        log_e1 = _log_e(z0, j, params["sigma"])
 
-        log_s0 = log_t0 + (i * i - i) / (2 * (params["sigma"] ** 2)) + log_e0
-        log_s1 = log_t1 + (j * j - j) / (2 * (params["sigma"] ** 2)) + log_e1
+        log_s0 = _log_s(i, log_t0, log_e0, params["sigma"])
+        log_s1 = _log_s(j, log_t1, log_e1, params["sigma"])
 
         if coef > 0:
             log_a0 = _log_add(log_a0, log_s0)
@@ -176,6 +176,12 @@ def culc_upperbound_of_rdp_with_theorem27_of_wang_2019(
     return (1 / (alpha - 1)) * logsumexp(terms, b=signs)
 
 
+def culc_first_term_of_general_upper_bound_of_rdp(alpha, sampling_rate):
+    return ((alpha - 1) * np.log(1 - sampling_rate)) + np.log(
+        alpha * sampling_rate - sampling_rate + 1
+    )
+
+
 def culc_general_upperbound_of_rdp_with_theorem5_of_zhu_2019(
     alpha, params, sampling_rate, _eps
 ):
@@ -183,9 +189,7 @@ def culc_general_upperbound_of_rdp_with_theorem5_of_zhu_2019(
     terms = []
     signs = []
 
-    first = ((alpha - 1) * np.log(1 - sampling_rate)) + np.log(
-        alpha * sampling_rate - sampling_rate + 1
-    )
+    first = culc_first_term_of_general_upper_bound_of_rdp(alpha, sampling_rate)
     terms.append(first)
     signs.append(1)
 
@@ -202,10 +206,7 @@ def culc_general_upperbound_of_rdp_with_theorem5_of_zhu_2019(
     if alpha >= 3:
         for el in range(3, alpha + 1):
             third = np.log(3) + (
-                np.log(special.binom(alpha, el))
-                + (alpha - el) * np.log(1 - sampling_rate)
-                + (el * np.log(sampling_rate))
-                + ((el - 1) * _eps(el, params))
+                _log_coef_i(alpha, el, sampling_rate) + ((el - 1) * _eps(el, params))
             )
             terms.append(third)
             signs.append(1)
@@ -219,19 +220,14 @@ def culc_tightupperbound_lowerbound_of_rdp_with_theorem6and8_of_zhu_2019(
     terms = []
     signs = []
 
-    first = ((alpha - 1) * np.log(1 - sampling_rate)) + np.log(
-        alpha * sampling_rate - sampling_rate + 1
-    )
+    first = culc_first_term_of_general_upper_bound_of_rdp(alpha, sampling_rate)
     terms.append(first)
     signs.append(1)
 
     if alpha >= 2:
         for el in range(2, alpha + 1):
-            second = (
-                np.log(special.binom(alpha, el))
-                + (el * np.log(sampling_rate))
-                + ((alpha - el) * np.log(1 - sampling_rate))
-                + ((el - 1) * _eps(el, params))
+            second = _log_coef_i(alpha, el, sampling_rate) + (
+                (el - 1) * _eps(el, params)
             )
             terms.append(second)
             signs.append(1)
@@ -266,26 +262,16 @@ def culc_tightupperbound_lowerbound_of_rdp_with_theorem6and8_of_zhu_2019_with_ta
     signs.append(1)
 
     for el in range(2, tau):
-        third = (
-            np.log(special.binom(alpha, el))
-            + (alpha - el) * np.log(1 - sampling_rate)
-            + el * np.log(sampling_rate)
-            + logsumexp(
-                [(el - 1) * eps_alpha_minus_tau, (el - 1) * _eps(el, params)], b=[1, -1]
-            )
+        third = _log_coef_i(alpha, el, sampling_rate) + logsumexp(
+            [(el - 1) * eps_alpha_minus_tau, (el - 1) * _eps(el, params)], b=[1, -1]
         )
         terms.append(third)
         signs.append(-1)
 
     for el in range(alpha - tau + 1, alpha + 1):
-        fourth = (
-            np.log(special.binom(alpha, el))
-            + (alpha - el) * np.log(1 - sampling_rate)
-            + el * np.log(sampling_rate)
-            + logsumexp(
-                [(el - 1) * _eps(el, params), (el - 1) * eps_alpha_minus_tau],
-                b=[1, -1],
-            )
+        fourth = _log_coef_i(alpha, el, sampling_rate) + logsumexp(
+            [(el - 1) * _eps(el, params), (el - 1) * eps_alpha_minus_tau],
+            b=[1, -1],
         )
         terms.append(fourth)
         signs.append(1)

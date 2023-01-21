@@ -7,3 +7,5 @@ pre-commit
 pandas
 sphinx
 sphinx_rtd_theme
+sphinx-design
+sphinx-book-theme

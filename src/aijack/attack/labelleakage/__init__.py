@@ -4,3 +4,5 @@ from .normattack import (  # noqa: F401
     NormAttackSplitNNManager,
     attach_normattack_to_splitnn,
 )
+
+__all__ = ["NormAttackSplitNNManager", "attach_normattack_to_splitnn"]

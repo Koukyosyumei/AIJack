@@ -18,10 +18,16 @@
 
 ❤️ <i>If you like AIJack, please consider <a href="https://github.com/sponsors/Koukyosyumei">becoming a GitHub Sponsor</a></i> ❤️
 
+<h1 align="center">
+
+  <br>
+  <img src="docs/source/_static/logo_wide_png.png" width=1000>
+  <br>
+  <br>
+
+</h1>
+
 # What is AIJack?
-
-<img src="logo/AIJACK-NEON-LOGO.png" width=380 align="right">
-
 
 AIJack is an easy-to-use open-source simulation tool for testing the security of your AI system against hijackers. It provides advanced security techniques like *Differential Privacy*, *Homomorphic Encryption*, *K-anonymity* and *Federated Learning* to guarantee protection for your AI. With AIJack, you can test and simulate defenses against various attacks such as *Poisoning*, *Model Inversion*, *Backdoor*, and *Free-Rider*. We support more than 30 state-of-the-art methods. For more information, check our [documentation](https://koukyosyumei.github.io/AIJack/) and start securing your AI today with AIJack.
 

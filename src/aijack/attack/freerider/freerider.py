@@ -53,10 +53,6 @@ def attach_freerider_to_client(cls, mu, sigma):
 class FreeRiderClientManager(BaseManager):
     """Manager class for Free-Rider Attack (https://arxiv.org/abs/1911.12560)"""
 
-    def __init__(self, *args, **kwargs):
-        self.args = args
-        self.kwargs = kwargs
-
     def attach(self, cls):
         """Wraps the given class in FreeRiderClientWrapper.
 
