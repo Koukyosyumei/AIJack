@@ -21,7 +21,7 @@
 <h1 align="center">
 
   <br>
-  <img src="docs/source/_static/logo_wide_gif.gif" width=1000>
+  <img src="docs/source/_static/logo_wide_png.png" width=1000>
   <br>
   <br>
 
