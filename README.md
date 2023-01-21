@@ -29,7 +29,7 @@
 
 # What is AIJack?
 
-AIJack is an easy-to-use open-source simulation tool for testing the security of your AI system against hijackers. It provides advanced security techniques like *Differential Privacy*, *Homomorphic Encryption*, *K-anonymity* and *Federated Learning* to guarantee protection for your AI. With AIJack, you can test and simulate defenses against various attacks such as *Poisoning*, *Model Inversion*, *Backdoor*, and *Free-Rider*. We support more than 30 state-of-the-art methods. For more information, check our [documentation](https://koukyosyumei.github.io/AIJack/intro.html) and start securing your AI today with AIJack.
+AIJack is an easy-to-use open-source simulation tool for testing the security of your AI system against hijackers. It provides advanced security techniques like *Differential Privacy*, *Homomorphic Encryption*, *K-anonymity* and *Federated Learning* to guarantee protection for your AI. With AIJack, you can test and simulate defenses against various attacks such as *Poisoning*, *Model Inversion*, *Backdoor*, and *Free-Rider*. We support more than 30 state-of-the-art methods. For more information, check our [documentation](https://koukyosyumei.github.io/AIJack/) and start securing your AI today with AIJack.
 
 # Installation
 
@@ -118,9 +118,8 @@ api.run()
 You can also find more examples in our tutorials and documentation.
 
 -   [Blog](https://dev.to/koukyosyumei/privacy-preserving-machine-learning-with-aijack-1-federated-learning-on-pytorch-3i5m)
--   [Documentation](https://koukyosyumei.github.io/AIJack/intro.html)
--   [API Reference](https://koukyosyumei.github.io/AIJack/api/index.html)
--   [Developer Docs]()
+-   [Documentation](https://koukyosyumei.github.io/AIJack/)
+-   [API Reference](https://koukyosyumei.github.io/AIJack/api.html)
 
 # Supported Algorithms
 
