@@ -45,6 +45,9 @@
     <script src="../_static/design-tabs.js"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="../_static/sphinx-book-theme.d59cb220de22ca1c485ebbdc042f0030.js"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"TeX": {"extensions": ["tables.js"]}, "tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "tex2jax_ignore|mathjax_ignore|document", "processClass": "tex2jax_process|mathjax_process|math|output_area"}})</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="shortcut icon" href="../_static/logo_square.png"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -227,6 +230,23 @@
    </li>
   </ul>
  </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="diferentialprivacy.html">
+   7. Differential Privacy
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/>
+  <label for="toctree-checkbox-7">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="aijack_dp.html">
+     7.1. Differential Privacy and Moment Accountant
+    </a>
+   </li>
+  </ul>
+ </li>
 </ul>
 <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
@@ -238,8 +258,8 @@
   <a class="reference internal" href="../aijack.attack.html">
    1. aijack.attack package
   </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/>
-  <label for="toctree-checkbox-7">
+  <input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/>
+  <label for="toctree-checkbox-8">
    <i class="fas fa-chevron-down">
    </i>
   </label>
@@ -263,8 +283,8 @@
     <a class="reference internal" href="../aijack.attack.inversion.html">
      1.1.4. aijack.attack.inversion package
     </a>
-    <input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/>
-    <label for="toctree-checkbox-8">
+    <input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/>
+    <label for="toctree-checkbox-9">
      <i class="fas fa-chevron-down">
      </i>
     </label>
@@ -297,8 +317,8 @@
   <a class="reference internal" href="../aijack.defense.html">
    2. aijack.defense package
   </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/>
-  <label for="toctree-checkbox-9">
+  <input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/>
+  <label for="toctree-checkbox-10">
    <i class="fas fa-chevron-down">
    </i>
   </label>
@@ -312,8 +332,8 @@
     <a class="reference internal" href="../aijack.defense.dp.html">
      2.1.2. aijack.defense.dp package
     </a>
-    <input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/>
-    <label for="toctree-checkbox-10">
+    <input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" type="checkbox"/>
+    <label for="toctree-checkbox-11">
      <i class="fas fa-chevron-down">
      </i>
     </label>
@@ -361,8 +381,8 @@
   <a class="reference internal" href="../aijack.collaborative.html">
    3. aijack.collaborative package
   </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" type="checkbox"/>
-  <label for="toctree-checkbox-11">
+  <input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" type="checkbox"/>
+  <label for="toctree-checkbox-12">
    <i class="fas fa-chevron-down">
    </i>
   </label>
@@ -600,6 +620,22 @@
   <section class="tex2jax_ignore mathjax_ignore" id="fedavg">
 <h1><span class="section-number">1.1. </span>FedAVG<a class="headerlink" href="#fedavg" title="Permalink to this headline">¶</a></h1>
 <p>In this tutorial, you will learn how to simulate FedAVG, a representative scheme of Federated Learning, with AIJack. You can choose the single process or MPI as the backend. We will also demonstrate that you can add various defense methods to FedAVG with only a few additional lines.</p>
+<p>While deep learning achieves substantial success in various areas, training deep learning models requires much data. Thus, acquiring high performance in deep learning while preserving privacy is challenging. One way to solve this problem is Federated Learning, where multiple clients collaboratively train a single global model without sharing their local dataset.</p>
+<p>The procedure of typical Federated Learning is as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mf">1.</span> <span class="n">The</span> <span class="n">central</span> <span class="n">server</span> <span class="n">initializes</span> <span class="n">the</span> <span class="k">global</span> <span class="n">model</span><span class="o">.</span>
+<span class="mf">2.</span> <span class="n">The</span> <span class="n">server</span> <span class="n">distributes</span> <span class="k">global</span> <span class="n">model</span> <span class="n">to</span> <span class="n">each</span> <span class="n">client</span><span class="o">.</span>
+<span class="mf">3.</span> <span class="n">Each</span> <span class="n">client</span> <span class="n">locally</span> <span class="n">calculates</span> <span class="n">the</span> <span class="n">gradient</span> <span class="n">of</span> <span class="n">the</span> <span class="n">loss</span> <span class="n">function</span> <span class="n">on</span> <span class="n">their</span> <span class="n">dataset</span><span class="o">.</span>
+<span class="mf">4.</span> <span class="n">Each</span> <span class="n">client</span> <span class="n">sends</span> <span class="n">the</span> <span class="n">gradient</span> <span class="n">to</span> <span class="n">the</span> <span class="n">server</span><span class="o">.</span>
+<span class="mf">5.</span> <span class="n">The</span> <span class="n">server</span> <span class="n">aggregates</span> <span class="n">the</span> <span class="n">received</span> <span class="n">gradients</span> <span class="k">with</span> <span class="n">some</span> <span class="n">method</span> <span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">g</span><span class="o">.</span><span class="p">,</span> <span class="n">average</span><span class="p">)</span> <span class="ow">and</span> <span class="n">updates</span> <span class="n">the</span> <span class="k">global</span> <span class="n">model</span> <span class="k">with</span> <span class="n">the</span> <span class="n">aggregated</span> <span class="n">gradient</span><span class="o">.</span>
+<span class="mf">6.</span> <span class="n">Repeat</span> <span class="mi">2</span> <span class="o">~</span> <span class="mi">5</span> <span class="n">until</span> <span class="n">converge</span><span class="o">.</span>
+</pre></div>
+</div>
+<p>The mathematical notification when the aggregation is the weighted average is as follows:</p>
+<div class="math notranslate nohighlight">
+\[
+w_{t} \leftarrow w_{t - 1} - \eta \sum_{c=1}^{C} \frac{n_{c}}{N} \nabla \mathcal{l}(w_{t - 1}, X_{c}, Y_{c})
+\]</div>
+<p>, where <span class="math notranslate nohighlight">\(w_{t}\)</span> is the parameter of the global model in <span class="math notranslate nohighlight">\(t\)</span>-th round, <span class="math notranslate nohighlight">\(\nabla \mathcal{l}(w_{t - 1}, X_{c}, Y_{c})\)</span> is the gradient calculated on <span class="math notranslate nohighlight">\(c\)</span>-th client’s dataset <span class="math notranslate nohighlight">\(((X_{c}, Y_{c}))\)</span>, <span class="math notranslate nohighlight">\(n_{c}\)</span> is the number of <span class="math notranslate nohighlight">\(c\)</span>-th client’s dataset, and N is the total number of samples.</p>
 <section id="single-process">
 <h2><span class="section-number">1.1.1. </span>Single Process<a class="headerlink" href="#single-process" title="Permalink to this headline">¶</a></h2>
 <div class="cell docutils container">
@@ -723,7 +759,7 @@ Downloading http://yann.lecun.com/exdb/mnist/train-images-idx3-ubyte.gz to MNIST
 </pre></div>
 </div>
 <script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "8abe4a4210364d3c85fbad8e06cc61c6", "version_major": 2, "version_minor": 0}
+{"model_id": "0ba2cfa3ded34acdb818e86b1def3ed9", "version_major": 2, "version_minor": 0}
 </script><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Extracting MNIST/raw/train-images-idx3-ubyte.gz to MNIST/raw
 
 Downloading http://yann.lecun.com/exdb/mnist/train-labels-idx1-ubyte.gz
@@ -731,7 +767,7 @@ Downloading http://yann.lecun.com/exdb/mnist/train-labels-idx1-ubyte.gz to MNIST
 </pre></div>
 </div>
 <script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "c0fd9998a2ce486aa00c9a0d3dea0cb8", "version_major": 2, "version_minor": 0}
+{"model_id": "f685703ef0b04301abdfd32126772f8f", "version_major": 2, "version_minor": 0}
 </script><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Extracting MNIST/raw/train-labels-idx1-ubyte.gz to MNIST/raw
 
 Downloading http://yann.lecun.com/exdb/mnist/t10k-images-idx3-ubyte.gz
@@ -739,7 +775,7 @@ Downloading http://yann.lecun.com/exdb/mnist/t10k-images-idx3-ubyte.gz to MNIST/
 </pre></div>
 </div>
 <script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "fc14eb95d9184d72aa6eaefa7e2fa95f", "version_major": 2, "version_minor": 0}
+{"model_id": "ba4bb8a0be0e496795d6e19a8ec5a341", "version_major": 2, "version_minor": 0}
 </script><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Extracting MNIST/raw/t10k-images-idx3-ubyte.gz to MNIST/raw
 
 Downloading http://yann.lecun.com/exdb/mnist/t10k-labels-idx1-ubyte.gz
@@ -747,7 +783,7 @@ Downloading http://yann.lecun.com/exdb/mnist/t10k-labels-idx1-ubyte.gz to MNIST/
 </pre></div>
 </div>
 <script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "7e6fd43b5bf845d2b877ccd856045c7a", "version_major": 2, "version_minor": 0}
+{"model_id": "fdbda50a72a14536884c4ba5135f17fc", "version_major": 2, "version_minor": 0}
 </script><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Extracting MNIST/raw/t10k-labels-idx1-ubyte.gz to MNIST/raw
 </pre></div>
 </div>
@@ -774,21 +810,21 @@ Downloading http://yann.lecun.com/exdb/mnist/t10k-labels-idx1-ubyte.gz to MNIST/
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>communication 0, epoch 0: client-1 0.019623182545105616
-communication 0, epoch 0: client-2 0.019723439192771912
-Test set: Average loss: 0.7824367607116699, Accuracy: 83.71
-communication 1, epoch 0: client-1 0.010717547312378884
-communication 1, epoch 0: client-2 0.01085114210943381
-Test set: Average loss: 0.5854546638488769, Accuracy: 86.49
-communication 2, epoch 0: client-1 0.008766427417596182
-communication 2, epoch 0: client-2 0.008916550938288371
-Test set: Average loss: 0.5077689335346222, Accuracy: 87.54
-communication 3, epoch 0: client-1 0.007839484986662865
-communication 3, epoch 0: client-2 0.007999675015608469
-Test set: Average loss: 0.4647755696773529, Accuracy: 88.25
-communication 4, epoch 0: client-1 0.00727825770676136
-communication 4, epoch 0: client-2 0.007445397703349591
-Test set: Average loss: 0.4369198709487915, Accuracy: 88.63
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>communication 0, epoch 0: client-1 0.019623182541131972
+communication 0, epoch 0: client-2 0.019723439224561056
+Test set: Average loss: 0.7824367880821228, Accuracy: 83.71
+communication 1, epoch 0: client-1 0.01071754728158315
+communication 1, epoch 0: client-2 0.010851142065723737
+Test set: Average loss: 0.58545467877388, Accuracy: 86.49
+communication 2, epoch 0: client-1 0.008766427374879518
+communication 2, epoch 0: client-2 0.00891655088464419
+Test set: Average loss: 0.507768925857544, Accuracy: 87.54
+communication 3, epoch 0: client-1 0.007839484961827596
+communication 3, epoch 0: client-2 0.00799967499623696
+Test set: Average loss: 0.46477557654380797, Accuracy: 88.25
+communication 4, epoch 0: client-1 0.0072782577464977904
+communication 4, epoch 0: client-2 0.007445397683481375
+Test set: Average loss: 0.436919868183136, Accuracy: 88.63
 </pre></div>
 </div>
 </div>
@@ -827,27 +863,27 @@ Test set: Average loss: 0.4369198709487915, Accuracy: 88.63
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>communication 0, epoch 0: client-1 0.01997546571890513
-communication 0, epoch 0: client-2 0.020125101908047994
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>communication 0, epoch 0: client-1 0.019975465472539266
+communication 0, epoch 0: client-2 0.02012510192791621
 </pre></div>
 </div>
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/usr/local/lib/python3.8/dist-packages/aijack/defense/paillier/torch_wrapper.py:70: RuntimeWarning: invalid value encountered in add
   input._paillier_np_array + other.detach().cpu().numpy()
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Test set: Average loss: 0.5059196502208709, Accuracy: 84.52
-communication 1, epoch 0: client-1 0.007643952090044816
-communication 1, epoch 0: client-2 0.007840833148360253
-Test set: Average loss: 0.44262871532440184, Accuracy: 87.33
-communication 2, epoch 0: client-1 0.006744246105353038
-communication 2, epoch 0: client-2 0.006942570747931798
-Test set: Average loss: 0.40395034172534944, Accuracy: 88.34
-communication 3, epoch 0: client-1 0.006300356099506219
-communication 3, epoch 0: client-2 0.006500222749014696
-Test set: Average loss: 0.3897844295024872, Accuracy: 89.0
-communication 4, epoch 0: client-1 0.0060082643752296765
-communication 4, epoch 0: client-2 0.006209123346706232
-Test set: Average loss: 0.3705228189945221, Accuracy: 89.22
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Test set: Average loss: 0.5059196739673615, Accuracy: 84.52
+communication 1, epoch 0: client-1 0.007643952136238416
+communication 1, epoch 0: client-2 0.007840833098689715
+Test set: Average loss: 0.44262871017456057, Accuracy: 87.33
+communication 2, epoch 0: client-1 0.006744246077537537
+communication 2, epoch 0: client-2 0.0069425707697868344
+Test set: Average loss: 0.4039503321409225, Accuracy: 88.34
+communication 3, epoch 0: client-1 0.006300356082618237
+communication 3, epoch 0: client-2 0.006500222743054231
+Test set: Average loss: 0.38978441171646117, Accuracy: 89.0
+communication 4, epoch 0: client-1 0.006008264410495758
+communication 4, epoch 0: client-2 0.006209123303989569
+Test set: Average loss: 0.3705228031635284, Accuracy: 89.22
 </pre></div>
 </div>
 </div>
@@ -945,7 +981,6 @@ Test set: Average loss: 0.3705228189945221, Accuracy: 89.22
 
     <span class="k">return</span> <span class="n">_evaluate_global_model</span>
 
-
 <span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
     <span class="n">fix_seed</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
 
@@ -993,7 +1028,6 @@ Test set: Average loss: 0.3705228189945221, Accuracy: 89.22
             <span class="mi">1</span><span class="p">,</span>
             <span class="n">device</span><span class="o">=</span><span class="n">device</span>
         <span class="p">)</span>
-
     <span class="n">api</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
 
 
@@ -1003,14 +1037,14 @@ Test set: Average loss: 0.3705228189945221, Accuracy: 89.22
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Writing mpi_FedAVG.py
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Overwriting mpi_FedAVG.py
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>!mpiexec -np 3 --allow-run-as-root python /content/mpi_FedAVG.py
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>!sudo mpiexec -np 3 --allow-run-as-root python /content/mpi_FedAVG.py
 </pre></div>
 </div>
 </div>
@@ -1018,8 +1052,8 @@ Test set: Average loss: 0.3705228189945221, Accuracy: 89.22
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>communication 0, epoch 0: client-2 0.02008056694070498
 communication 0, epoch 0: client-3 0.019996537216504413
 Round: 1, Test set: Average loss: 0.7860309104919434, Accuracy: 82.72
-communication 1, epoch 0: client-3 0.010822976715366046
 communication 1, epoch 0: client-2 0.010937693453828494
+communication 1, epoch 0: client-3 0.010822976715366046
 Round: 2, Test set: Average loss: 0.5885528886795044, Accuracy: 86.04
 communication 2, epoch 0: client-2 0.008990796900788942
 communication 2, epoch 0: client-3 0.008850129560629527
@@ -1027,8 +1061,8 @@ Round: 3, Test set: Average loss: 0.5102099328994751, Accuracy: 87.33
 communication 3, epoch 0: client-2 0.008069112183650334
 communication 3, epoch 0: client-3 0.00791173183619976
 Round: 4, Test set: Average loss: 0.4666414333820343, Accuracy: 88.01
-communication 4, epoch 0: client-3 0.007343090359369914
 communication 4, epoch 0: client-2 0.007512268128991127
+communication 4, epoch 0: client-3 0.007343090359369914
 Round: 5, Test set: Average loss: 0.4383064950466156, Accuracy: 88.65
 </pre></div>
 </div>
@@ -1192,14 +1226,14 @@ Round: 5, Test set: Average loss: 0.4383064950466156, Accuracy: 88.65
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Writing mpi_FedAVG_sparse.py
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Overwriting mpi_FedAVG_sparse.py
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>!mpiexec -np 3 --allow-run-as-root python /content/mpi_FedAVG_sparse.py
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>!sudo mpiexec -np 3 --allow-run-as-root python /content/mpi_FedAVG_sparse.py
 </pre></div>
 </div>
 </div>
@@ -1210,8 +1244,8 @@ Round: 1, Test set: Average loss: 1.7728474597930908, Accuracy: 38.47
 communication 1, epoch 0: client-2 0.016343721010287603
 communication 1, epoch 0: client-3 0.016255500958363214
 Round: 2, Test set: Average loss: 1.4043720769882202, Accuracy: 60.5
-communication 2, epoch 0: client-3 0.014260987114906311
 communication 2, epoch 0: client-2 0.014353630113601685
+communication 2, epoch 0: client-3 0.014260987114906311
 Round: 3, Test set: Average loss: 1.1684634439468384, Accuracy: 70.27
 communication 3, epoch 0: client-2 0.013123111790418624
 communication 3, epoch 0: client-3 0.013032549581925075

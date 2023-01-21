@@ -1,7 +1,6 @@
 {
   "cells": [
     {
-      "attachments": {},
       "cell_type": "markdown",
       "metadata": {
         "id": "-Raof1tSFHmV"
@@ -129,163 +128,9 @@
       "cell_type": "code",
       "execution_count": 5,
       "metadata": {
-        "colab": {
-          "base_uri": "https://localhost:8080/",
-          "height": 423,
-          "referenced_widgets": [
-            "71200790faa54441b156d43c33795366",
-            "e26247a66c97450cacb8156b61ed74b4",
-            "3a446b54e6584d82ac690cd290c46aed",
-            "3e79d779a68b4953a46ca52449e52f24",
-            "fe686344a9f047818e1f6549460d020a",
-            "3481611f2c9f46048c1450cbd210ab25",
-            "99a468473c4845528580b3ac7578268c",
-            "d641283bf53741dea791020760a84272",
-            "e16dec22563a4ea2b4c267244ed47723",
-            "787085e4349a4d228a60eb6d446b1c7f",
-            "6c1a0fa45f25488993a865f0b5a315d9",
-            "03ca00dcd6f34c7588fd826131df6919",
-            "86be49128aa744ca93dd5b259c9834a3",
-            "31a464e5919c457a90246891e7b6e6fc",
-            "565de8de16ac463d9dda3370ad27c0c0",
-            "8df973c458c6490aae4e5b66df29780d",
-            "6b24a8dde86944a7ae8ec5ad6f65a35b",
-            "9c438ce8792842b79da6726de1623222",
-            "cdbefc13779c4484999a200579c4895e",
-            "2ca0ee655b38471da5db1978b71680e1",
-            "98b0e8a510f14286bc01996ff92478a9",
-            "4bf74c9cd62b4a6699508f6a1fbd1082",
-            "4e928c6ca9d74ad4bd2da6c7025939f2",
-            "b0e69cba3f484d7ab1f349bcf58dc87d",
-            "73a8f82ef0bc49ed8ae32b3e41f820c4",
-            "f6dc1af8543a4ca58126e744485f86de",
-            "2e5171e9240543578b7fa015430955d0",
-            "c61b0aa64d6b4e0b829026816e13597e",
-            "cccbb95a6e584c6ca6b7e2ffa7167e63",
-            "f537bc943b594796866035da95b699a0",
-            "80fc9eaeccac497fbd104142101f95e3",
-            "ca169870e09b45dd9d158141ca90a150",
-            "50a6d8e28626437b9684f22abfc59eee",
-            "b9f82f60b05143f78fc0f7b03e6f39a2",
-            "2e4bccb4ef4348579d897a8b3c2864a0",
-            "6d153d749265478aa53f9e5fb68916ad",
-            "7f038b9f588b4e88aca888ba00a75f11",
-            "7514e57165754fa6bc0cc30663a0e0aa",
-            "af57f137fb3d4663a4086aefbce536fe",
-            "8116f33593f94546b11bce373a753ccc",
-            "186e8a1aed4a4fef907e5971d07dd0fe",
-            "e60ebebe030545809549bdb7924cebb2",
-            "18dfb7f1aff74c1f90e4a2688a616a84",
-            "b7b4dd00bf3e4e7ab26443c37759e935"
-          ]
-        },
-        "id": "d1aSXndyO9rv",
-        "outputId": "02ba657e-ac35-4ba1-d483-567a9ce0f38f"
+        "id": "d1aSXndyO9rv"
       },
-      "outputs": [
-        {
-          "name": "stdout",
-          "output_type": "stream",
-          "text": [
-            "Downloading http://yann.lecun.com/exdb/mnist/train-images-idx3-ubyte.gz\n",
-            "Downloading http://yann.lecun.com/exdb/mnist/train-images-idx3-ubyte.gz to MNIST/raw/train-images-idx3-ubyte.gz\n"
-          ]
-        },
-        {
-          "data": {
-            "application/vnd.jupyter.widget-view+json": {
-              "model_id": "71200790faa54441b156d43c33795366",
-              "version_major": 2,
-              "version_minor": 0
-            },
-            "text/plain": [
-              "  0%|          | 0/9912422 [00:00<?, ?it/s]"
-            ]
-          },
-          "metadata": {},
-          "output_type": "display_data"
-        },
-        {
-          "name": "stdout",
-          "output_type": "stream",
-          "text": [
-            "Extracting MNIST/raw/train-images-idx3-ubyte.gz to MNIST/raw\n",
-            "\n",
-            "Downloading http://yann.lecun.com/exdb/mnist/train-labels-idx1-ubyte.gz\n",
-            "Downloading http://yann.lecun.com/exdb/mnist/train-labels-idx1-ubyte.gz to MNIST/raw/train-labels-idx1-ubyte.gz\n"
-          ]
-        },
-        {
-          "data": {
-            "application/vnd.jupyter.widget-view+json": {
-              "model_id": "03ca00dcd6f34c7588fd826131df6919",
-              "version_major": 2,
-              "version_minor": 0
-            },
-            "text/plain": [
-              "  0%|          | 0/28881 [00:00<?, ?it/s]"
-            ]
-          },
-          "metadata": {},
-          "output_type": "display_data"
-        },
-        {
-          "name": "stdout",
-          "output_type": "stream",
-          "text": [
-            "Extracting MNIST/raw/train-labels-idx1-ubyte.gz to MNIST/raw\n",
-            "\n",
-            "Downloading http://yann.lecun.com/exdb/mnist/t10k-images-idx3-ubyte.gz\n",
-            "Downloading http://yann.lecun.com/exdb/mnist/t10k-images-idx3-ubyte.gz to MNIST/raw/t10k-images-idx3-ubyte.gz\n"
-          ]
-        },
-        {
-          "data": {
-            "application/vnd.jupyter.widget-view+json": {
-              "model_id": "4e928c6ca9d74ad4bd2da6c7025939f2",
-              "version_major": 2,
-              "version_minor": 0
-            },
-            "text/plain": [
-              "  0%|          | 0/1648877 [00:00<?, ?it/s]"
-            ]
-          },
-          "metadata": {},
-          "output_type": "display_data"
-        },
-        {
-          "name": "stdout",
-          "output_type": "stream",
-          "text": [
-            "Extracting MNIST/raw/t10k-images-idx3-ubyte.gz to MNIST/raw\n",
-            "\n",
-            "Downloading http://yann.lecun.com/exdb/mnist/t10k-labels-idx1-ubyte.gz\n",
-            "Downloading http://yann.lecun.com/exdb/mnist/t10k-labels-idx1-ubyte.gz to MNIST/raw/t10k-labels-idx1-ubyte.gz\n"
-          ]
-        },
-        {
-          "data": {
-            "application/vnd.jupyter.widget-view+json": {
-              "model_id": "b9f82f60b05143f78fc0f7b03e6f39a2",
-              "version_major": 2,
-              "version_minor": 0
-            },
-            "text/plain": [
-              "  0%|          | 0/4542 [00:00<?, ?it/s]"
-            ]
-          },
-          "metadata": {},
-          "output_type": "display_data"
-        },
-        {
-          "name": "stdout",
-          "output_type": "stream",
-          "text": [
-            "Extracting MNIST/raw/t10k-labels-idx1-ubyte.gz to MNIST/raw\n",
-            "\n"
-          ]
-        }
-      ],
+      "outputs": [],
       "source": [
         "dataloaders = [prepare_dataloader(client_size + 1, c) for c in range(client_size + 1)]\n",
         "public_dataloader = dataloaders[0]\n",
@@ -301,27 +146,27 @@
           "base_uri": "https://localhost:8080/"
         },
         "id": "ozQ6dObgO_B-",
-        "outputId": "083e761e-1019-4443-a369-abc9c90d172a"
+        "outputId": "da7a56e0-1497-414c-da92-9d0f9e7f2b3f"
       },
       "outputs": [
         {
           "name": "stdout",
           "output_type": "stream",
           "text": [
-            "epoch 1 (public - pretrain): [1.473225961858853, 1.5095995597945997]\n",
+            "epoch 1 (public - pretrain): [1.4732259569076684, 1.509599570077829]\n",
             "acc on validation dataset:  {'clients_score': [0.7988, 0.7907]}\n",
-            "epoch 1 (local - pretrain): [0.831909927316367, 0.8403522956866426]\n",
+            "epoch 1 (local - pretrain): [0.8319099252216351, 0.8403522926397597]\n",
             "acc on validation dataset:  {'clients_score': [0.8431, 0.8406]}\n",
-            "epoch 1, client 0: 248.21629628539085\n",
-            "epoch 1, client 1: 269.46991488337517\n",
+            "epoch 1, client 0: 248.21629917621613\n",
+            "epoch 1, client 1: 269.46992498636246\n",
             "epoch=1 acc on local datasets:  {'clients_score': [0.84605, 0.85175]}\n",
             "epoch=1 acc on public dataset:  {'clients_score': [0.84925, 0.8516]}\n",
             "epoch=1 acc on validation dataset:  {'clients_score': [0.8568, 0.8594]}\n",
-            "epoch 2, client 0: 348.2690239548683\n",
-            "epoch 2, client 1: 364.190059453249\n",
-            "epoch=2 acc on local datasets:  {'clients_score': [0.85075, 0.85555]}\n",
+            "epoch 2, client 0: 348.2699541449547\n",
+            "epoch 2, client 1: 364.1900661587715\n",
+            "epoch=2 acc on local datasets:  {'clients_score': [0.8508, 0.85555]}\n",
             "epoch=2 acc on public dataset:  {'clients_score': [0.85395, 0.8567]}\n",
-            "epoch=2 acc on validation dataset:  {'clients_score': [0.8601, 0.8641]}\n"
+            "epoch=2 acc on validation dataset:  {'clients_score': [0.8598, 0.8641]}\n"
           ]
         }
       ],
@@ -348,7 +193,6 @@
       ]
     },
     {
-      "attachments": {},
       "cell_type": "markdown",
       "metadata": {
         "id": "LhrAmm6RFNSH"
@@ -367,14 +211,14 @@
           "base_uri": "https://localhost:8080/"
         },
         "id": "978eu16pT3Ci",
-        "outputId": "bbde739f-4437-4024-c788-41d26ecc917b"
+        "outputId": "a9351915-fb0b-4ed8-c6bf-38fef9aed6c8"
       },
       "outputs": [
         {
           "name": "stdout",
           "output_type": "stream",
           "text": [
-            "Writing mpi_fedmd.py\n"
+            "Overwriting mpi_fedmd.py\n"
           ]
         }
       ],
@@ -504,33 +348,33 @@
     },
     {
       "cell_type": "code",
-      "execution_count": 8,
+      "execution_count": 11,
       "metadata": {
         "colab": {
           "base_uri": "https://localhost:8080/"
         },
         "id": "Hv4eSXSud8mg",
-        "outputId": "ed14fde5-7f2c-4db4-c06a-3c1cca204416"
+        "outputId": "fb15bbcc-7d23-4310-bd9c-c6d2417e50ac"
       },
       "outputs": [
         {
           "name": "stdout",
           "output_type": "stream",
           "text": [
-            "client_id=1: Accuracy on local dataset is  0.8734666666666666\n",
-            "client_id=2: Accuracy on local dataset is  0.8708\n"
+            "client_id=2: Accuracy on local dataset is  0.8587333333333333\n",
+            "client_id=1: Accuracy on local dataset is  0.8579333333333333\n"
           ]
         }
       ],
       "source": [
-        "!mpiexec -np 3 --allow-run-as-root python /content/mpi_fedmd.py"
+        "!sudo mpiexec -np 3 --allow-run-as-root python mpi_fedmd.py"
       ]
     },
     {
       "cell_type": "code",
-      "execution_count": 8,
+      "execution_count": null,
       "metadata": {
-        "id": "FEvcX6BLs-SJ"
+        "id": "8juSW9GjZ5Kx"
       },
       "outputs": [],
       "source": []
@@ -538,8 +382,10 @@
   ],
   "metadata": {
     "colab": {
+      "machine_shape": "hm",
       "provenance": []
     },
+    "gpuClass": "standard",
     "kernelspec": {
       "display_name": "Python 3",
       "language": "python",
@@ -561,9 +407,6 @@
       "interpreter": {
         "hash": "caa2b01f75ba60e629eaa9e4dabde0c46b243c9a0484934eeb17ad8b3fc9c91a"
       }
-    },
-    "widgets": {
-      "application/vnd.jupyter.widget-state+json": {}
     }
   },
   "nbformat": 4,

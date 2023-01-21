@@ -1,911 +1,937 @@
 {
- "cells": [
-  {
-   "attachments": {},
-   "cell_type": "markdown",
-   "metadata": {
-    "id": "SROAZ9dO80s8"
-   },
-   "source": [
-    "# FedAVG\n",
-    "\n",
-    "In this tutorial, you will learn how to simulate FedAVG, a representative scheme of Federated Learning, with AIJack. You can choose the single process or MPI as the backend. We will also demonstrate that you can add various defense methods to FedAVG with only a few additional lines."
-   ]
-  },
-  {
-   "cell_type": "markdown",
-   "metadata": {
-    "id": "FNMDQuH49CBO"
-   },
-   "source": [
-    "## Single Process"
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": 2,
-   "metadata": {
-    "id": "J4s0w9rHwOd8"
-   },
-   "outputs": [],
-   "source": [
-    "import random\n",
-    "\n",
-    "import numpy as np\n",
-    "import torch\n",
-    "import torch.nn as nn\n",
-    "import torch.nn.functional as F\n",
-    "import torch.optim as optim\n",
-    "from mpi4py import MPI\n",
-    "from torchvision import datasets, transforms\n",
-    "\n",
-    "from aijack.collaborative.fedavg import FedAVGClient, FedAVGServer, FedAVGAPI\n",
-    "\n",
-    "\n",
-    "def evaluate_gloal_model(dataloader, client_id=-1):\n",
-    "    def _evaluate_global_model(api):\n",
-    "        test_loss = 0\n",
-    "        correct = 0\n",
-    "        with torch.no_grad():\n",
-    "            for data, target in dataloader:\n",
-    "                data, target = data.to(api.device), target.to(api.device)\n",
-    "                if client_id == -1:\n",
-    "                    output = api.server(data)\n",
-    "                else:\n",
-    "                    output = api.clients[client_id](data)\n",
-    "                test_loss += F.nll_loss(\n",
-    "                    output, target, reduction=\"sum\"\n",
-    "                ).item()  # sum up batch loss\n",
-    "                pred = output.argmax(\n",
-    "                    dim=1, keepdim=True\n",
-    "                )  # get the index of the max log-probability\n",
-    "                correct += pred.eq(target.view_as(pred)).sum().item()\n",
-    "\n",
-    "        test_loss /= len(dataloader.dataset)\n",
-    "        accuracy = 100.0 * correct / len(dataloader.dataset)\n",
-    "        print(f\"Test set: Average loss: {test_loss}, Accuracy: {accuracy}\")\n",
-    "\n",
-    "    return _evaluate_global_model"
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": 3,
-   "metadata": {
-    "id": "idlkuHjjULVz"
-   },
-   "outputs": [],
-   "source": [
-    "training_batch_size = 64\n",
-    "test_batch_size = 64\n",
-    "num_rounds = 5\n",
-    "lr = 0.001\n",
-    "seed = 0\n",
-    "client_size = 2\n",
-    "criterion = F.nll_loss"
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": 4,
-   "metadata": {
-    "id": "gsh_CjamwqfV"
-   },
-   "outputs": [],
-   "source": [
-    "def fix_seed(seed):\n",
-    "    random.seed(seed)\n",
-    "    np.random.seed(seed)\n",
-    "    torch.manual_seed(seed)\n",
-    "    torch.cuda.manual_seed_all(seed)\n",
-    "    torch.backends.cudnn.deterministic = True\n",
-    "\n",
-    "\n",
-    "def prepare_dataloader(num_clients, myid, train=True, path=\"\"):\n",
-    "    transform = transforms.Compose(\n",
-    "        [transforms.ToTensor(), transforms.Normalize((0.1307,), (0.3081,))]\n",
-    "    )\n",
-    "    if train:\n",
-    "        dataset = datasets.MNIST(path, train=True, download=True, transform=transform)\n",
-    "        idxs = list(range(len(dataset.data)))\n",
-    "        random.shuffle(idxs)\n",
-    "        idx = np.array_split(idxs, num_clients, 0)[myid - 1]\n",
-    "        dataset.data = dataset.data[idx]\n",
-    "        dataset.targets = dataset.targets[idx]\n",
-    "        train_loader = torch.utils.data.DataLoader(\n",
-    "            dataset, batch_size=training_batch_size\n",
-    "        )\n",
-    "        return train_loader\n",
-    "    else:\n",
-    "        dataset = datasets.MNIST(path, train=False, download=True, transform=transform)\n",
-    "        test_loader = torch.utils.data.DataLoader(dataset, batch_size=test_batch_size)\n",
-    "        return test_loader\n",
-    "\n",
-    "\n",
-    "class Net(nn.Module):\n",
-    "    def __init__(self):\n",
-    "        super(Net, self).__init__()\n",
-    "        self.ln = nn.Linear(28 * 28, 10)\n",
-    "\n",
-    "    def forward(self, x):\n",
-    "        x = self.ln(x.reshape(-1, 28 * 28))\n",
-    "        output = F.log_softmax(x, dim=1)\n",
-    "        return output"
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": 5,
-   "metadata": {
-    "id": "UX-5FPlbxs4z"
-   },
-   "outputs": [],
-   "source": [
-    "device = torch.device(\"cuda\" if torch.cuda.is_available() else \"cpu\")\n",
-    "fix_seed(seed)"
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": 6,
-   "metadata": {
-    "colab": {
-     "base_uri": "https://localhost:8080/",
-     "height": 423,
-     "referenced_widgets": [
-      "8abe4a4210364d3c85fbad8e06cc61c6",
-      "c4dc781f75604de2a5c729c66fb0a39f",
-      "9c939716a60d4df19bed6fa36a01c8ff",
-      "c6541bf2f0c545778908611bf0951fef",
-      "dbbde10cf3e94a73a3475de18b62de3e",
-      "56d0b0ff0aa1455882f539b4a8f6f439",
-      "5f44e97567e7421182fc3769e2d80e03",
-      "e40e53472c814649a0f68911b1bbd4e4",
-      "b7a9dee5beea43ac87b25c8f23838520",
-      "1a615bce717c4234b0a65d024b81a26f",
-      "25cb9ca0c24c47c18305291fa2622634",
-      "c0fd9998a2ce486aa00c9a0d3dea0cb8",
-      "b2e2e585a4d04488bbed95d5d687ae46",
-      "91841ece10fc4f5aa9f335190c5e9931",
-      "594dca6265134d7e93065d26e417874c",
-      "38e8f16eedd643619ee3b1da3718289b",
-      "71a2cf4c70564a128386a146129f7b0f",
-      "ef8caddf8fa44370918ee972a3a5e9c2",
-      "90cb4a7e92514385892927980f8e236d",
-      "23d75a21c85a4cf6b3d27d48c1ab44f3",
-      "e5165c23e8774a4db2025927c610b653",
-      "8c60976e6d53490a84618f994732eb47",
-      "fc14eb95d9184d72aa6eaefa7e2fa95f",
-      "828d2fb308ce473883a6cfb91f1016c3",
-      "63d0b1afa0974bb09ca83d047b874c34",
-      "f7eb47ceb960459eb42383ed8f207fb9",
-      "0909111a0c2c4295b8a9ca486aed4157",
-      "19c307cd12a448c7af69d774e7779626",
-      "c275f82631f241309aceb27b35444d84",
-      "1cb694f3c3994b3081819e34276f35ee",
-      "ee4c72e6911240eab08554bdd57233f8",
-      "43ad9d65ada64d90aa51401d553e09b4",
-      "c0628936379b498fa49408eea26c020e",
-      "7e6fd43b5bf845d2b877ccd856045c7a",
-      "e87ba8cb95a64ae7a868b909ed6980bf",
-      "bdd1e374aeda4f2cb6088326b1956a58",
-      "3018c498aa09437692761a6d51403b8f",
-      "28bfe2bfa8cb4c0cbfc14df9eabf26eb",
-      "82f156a3d62c4c648bb82df670c4474f",
-      "faa7aeb0d68f48a18632b2920b446118",
-      "5f023ee871ce4224be7d4317a2908038",
-      "dbf67e6c29924a24a9a5a4930db26f82",
-      "dcfa8b77d9b74da6978794479fa83a13",
-      "e7978553e9b94df181166a64f8aad722"
-     ]
-    },
-    "id": "zz_YjoioAcLD",
-    "outputId": "07297f99-ef01-4317-c817-815485d3be77"
-   },
-   "outputs": [
+  "cells": [
     {
-     "name": "stdout",
-     "output_type": "stream",
-     "text": [
-      "Downloading http://yann.lecun.com/exdb/mnist/train-images-idx3-ubyte.gz\n",
-      "Downloading http://yann.lecun.com/exdb/mnist/train-images-idx3-ubyte.gz to MNIST/raw/train-images-idx3-ubyte.gz\n"
-     ]
-    },
-    {
-     "data": {
-      "application/vnd.jupyter.widget-view+json": {
-       "model_id": "8abe4a4210364d3c85fbad8e06cc61c6",
-       "version_major": 2,
-       "version_minor": 0
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "SROAZ9dO80s8"
       },
-      "text/plain": [
-       "  0%|          | 0/9912422 [00:00<?, ?it/s]"
+      "source": [
+        "# FedAVG\n",
+        "\n",
+        "In this tutorial, you will learn how to simulate FedAVG, a representative scheme of Federated Learning, with AIJack. You can choose the single process or MPI as the backend. We will also demonstrate that you can add various defense methods to FedAVG with only a few additional lines."
       ]
-     },
-     "metadata": {},
-     "output_type": "display_data"
     },
     {
-     "name": "stdout",
-     "output_type": "stream",
-     "text": [
-      "Extracting MNIST/raw/train-images-idx3-ubyte.gz to MNIST/raw\n",
-      "\n",
-      "Downloading http://yann.lecun.com/exdb/mnist/train-labels-idx1-ubyte.gz\n",
-      "Downloading http://yann.lecun.com/exdb/mnist/train-labels-idx1-ubyte.gz to MNIST/raw/train-labels-idx1-ubyte.gz\n"
-     ]
+      "attachments": {},
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "While deep learning achieves substantial success in various areas, training deep learning models requires much data. Thus, acquiring high performance in deep learning while preserving privacy is challenging. One way to solve this problem is Federated Learning, where multiple clients collaboratively train a single global model without sharing their local dataset.\n",
+        "\n",
+        "The procedure of typical Federated Learning is as follows:\n",
+        "\n",
+        "```\n",
+        "1. The central server initializes the global model.\n",
+        "2. The server distributes global model to each client.\n",
+        "3. Each client locally calculates the gradient of the loss function on their dataset.\n",
+        "4. Each client sends the gradient to the server.\n",
+        "5. The server aggregates the received gradients with some method (e.g., average) and updates the global model with the aggregated gradient.\n",
+        "6. Repeat 2 ~ 5 until converge.\n",
+        "```\n",
+        "\n",
+        "The mathematical notification when the aggregation is the weighted average is as follows:\n",
+        "\n",
+        "$$\n",
+        "w_{t} \\leftarrow w_{t - 1} - \\eta \\sum_{c=1}^{C} \\frac{n_{c}}{N} \\nabla \\mathcal{l}(w_{t - 1}, X_{c}, Y_{c})\n",
+        "$$\n",
+        "\n",
+        ", where $w_{t}$ is the parameter of the global model in $t$-th round, $\\nabla \\mathcal{l}(w_{t - 1}, X_{c}, Y_{c})$ is the gradient calculated on $c$-th client's dataset $((X_{c}, Y_{c}))$, $n_{c}$ is the number of $c$-th client's dataset, and N is the total number of samples."
+      ]
     },
     {
-     "data": {
-      "application/vnd.jupyter.widget-view+json": {
-       "model_id": "c0fd9998a2ce486aa00c9a0d3dea0cb8",
-       "version_major": 2,
-       "version_minor": 0
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "FNMDQuH49CBO"
       },
-      "text/plain": [
-       "  0%|          | 0/28881 [00:00<?, ?it/s]"
+      "source": [
+        "## Single Process"
       ]
-     },
-     "metadata": {},
-     "output_type": "display_data"
     },
     {
-     "name": "stdout",
-     "output_type": "stream",
-     "text": [
-      "Extracting MNIST/raw/train-labels-idx1-ubyte.gz to MNIST/raw\n",
-      "\n",
-      "Downloading http://yann.lecun.com/exdb/mnist/t10k-images-idx3-ubyte.gz\n",
-      "Downloading http://yann.lecun.com/exdb/mnist/t10k-images-idx3-ubyte.gz to MNIST/raw/t10k-images-idx3-ubyte.gz\n"
-     ]
-    },
-    {
-     "data": {
-      "application/vnd.jupyter.widget-view+json": {
-       "model_id": "fc14eb95d9184d72aa6eaefa7e2fa95f",
-       "version_major": 2,
-       "version_minor": 0
+      "cell_type": "code",
+      "execution_count": 2,
+      "metadata": {
+        "id": "J4s0w9rHwOd8"
       },
-      "text/plain": [
-       "  0%|          | 0/1648877 [00:00<?, ?it/s]"
+      "outputs": [],
+      "source": [
+        "import random\n",
+        "\n",
+        "import numpy as np\n",
+        "import torch\n",
+        "import torch.nn as nn\n",
+        "import torch.nn.functional as F\n",
+        "import torch.optim as optim\n",
+        "from mpi4py import MPI\n",
+        "from torchvision import datasets, transforms\n",
+        "\n",
+        "from aijack.collaborative.fedavg import FedAVGClient, FedAVGServer, FedAVGAPI\n",
+        "\n",
+        "\n",
+        "def evaluate_gloal_model(dataloader, client_id=-1):\n",
+        "    def _evaluate_global_model(api):\n",
+        "        test_loss = 0\n",
+        "        correct = 0\n",
+        "        with torch.no_grad():\n",
+        "            for data, target in dataloader:\n",
+        "                data, target = data.to(api.device), target.to(api.device)\n",
+        "                if client_id == -1:\n",
+        "                    output = api.server(data)\n",
+        "                else:\n",
+        "                    output = api.clients[client_id](data)\n",
+        "                test_loss += F.nll_loss(\n",
+        "                    output, target, reduction=\"sum\"\n",
+        "                ).item()  # sum up batch loss\n",
+        "                pred = output.argmax(\n",
+        "                    dim=1, keepdim=True\n",
+        "                )  # get the index of the max log-probability\n",
+        "                correct += pred.eq(target.view_as(pred)).sum().item()\n",
+        "\n",
+        "        test_loss /= len(dataloader.dataset)\n",
+        "        accuracy = 100.0 * correct / len(dataloader.dataset)\n",
+        "        print(f\"Test set: Average loss: {test_loss}, Accuracy: {accuracy}\")\n",
+        "\n",
+        "    return _evaluate_global_model"
       ]
-     },
-     "metadata": {},
-     "output_type": "display_data"
     },
     {
-     "name": "stdout",
-     "output_type": "stream",
-     "text": [
-      "Extracting MNIST/raw/t10k-images-idx3-ubyte.gz to MNIST/raw\n",
-      "\n",
-      "Downloading http://yann.lecun.com/exdb/mnist/t10k-labels-idx1-ubyte.gz\n",
-      "Downloading http://yann.lecun.com/exdb/mnist/t10k-labels-idx1-ubyte.gz to MNIST/raw/t10k-labels-idx1-ubyte.gz\n"
-     ]
-    },
-    {
-     "data": {
-      "application/vnd.jupyter.widget-view+json": {
-       "model_id": "7e6fd43b5bf845d2b877ccd856045c7a",
-       "version_major": 2,
-       "version_minor": 0
+      "cell_type": "code",
+      "execution_count": 3,
+      "metadata": {
+        "id": "idlkuHjjULVz"
       },
-      "text/plain": [
-       "  0%|          | 0/4542 [00:00<?, ?it/s]"
+      "outputs": [],
+      "source": [
+        "training_batch_size = 64\n",
+        "test_batch_size = 64\n",
+        "num_rounds = 5\n",
+        "lr = 0.001\n",
+        "seed = 0\n",
+        "client_size = 2\n",
+        "criterion = F.nll_loss"
       ]
-     },
-     "metadata": {},
-     "output_type": "display_data"
     },
     {
-     "name": "stdout",
-     "output_type": "stream",
-     "text": [
-      "Extracting MNIST/raw/t10k-labels-idx1-ubyte.gz to MNIST/raw\n",
-      "\n"
-     ]
+      "cell_type": "code",
+      "execution_count": 4,
+      "metadata": {
+        "id": "gsh_CjamwqfV"
+      },
+      "outputs": [],
+      "source": [
+        "def fix_seed(seed):\n",
+        "    random.seed(seed)\n",
+        "    np.random.seed(seed)\n",
+        "    torch.manual_seed(seed)\n",
+        "    torch.cuda.manual_seed_all(seed)\n",
+        "    torch.backends.cudnn.deterministic = True\n",
+        "\n",
+        "\n",
+        "def prepare_dataloader(num_clients, myid, train=True, path=\"\"):\n",
+        "    transform = transforms.Compose(\n",
+        "        [transforms.ToTensor(), transforms.Normalize((0.1307,), (0.3081,))]\n",
+        "    )\n",
+        "    if train:\n",
+        "        dataset = datasets.MNIST(path, train=True, download=True, transform=transform)\n",
+        "        idxs = list(range(len(dataset.data)))\n",
+        "        random.shuffle(idxs)\n",
+        "        idx = np.array_split(idxs, num_clients, 0)[myid - 1]\n",
+        "        dataset.data = dataset.data[idx]\n",
+        "        dataset.targets = dataset.targets[idx]\n",
+        "        train_loader = torch.utils.data.DataLoader(\n",
+        "            dataset, batch_size=training_batch_size\n",
+        "        )\n",
+        "        return train_loader\n",
+        "    else:\n",
+        "        dataset = datasets.MNIST(path, train=False, download=True, transform=transform)\n",
+        "        test_loader = torch.utils.data.DataLoader(dataset, batch_size=test_batch_size)\n",
+        "        return test_loader\n",
+        "\n",
+        "\n",
+        "class Net(nn.Module):\n",
+        "    def __init__(self):\n",
+        "        super(Net, self).__init__()\n",
+        "        self.ln = nn.Linear(28 * 28, 10)\n",
+        "\n",
+        "    def forward(self, x):\n",
+        "        x = self.ln(x.reshape(-1, 28 * 28))\n",
+        "        output = F.log_softmax(x, dim=1)\n",
+        "        return output"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 5,
+      "metadata": {
+        "id": "UX-5FPlbxs4z"
+      },
+      "outputs": [],
+      "source": [
+        "device = torch.device(\"cuda\" if torch.cuda.is_available() else \"cpu\")\n",
+        "fix_seed(seed)"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 6,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 431,
+          "referenced_widgets": [
+            "0ba2cfa3ded34acdb818e86b1def3ed9",
+            "158c8a3816aa4852bc2b5b7cc3cedd6e",
+            "6b38be228ec64f9f9e6a338318eb1c7e",
+            "eb3fa2101f364247b3878fa4c9f2e389",
+            "14168369ad194280bf7e76926680f3a5",
+            "b39c85de3b344c04b85ce5508cbd319e",
+            "37cef878f2c34dc98b9f18670c4108a5",
+            "2fa5757b396c4e13b22f11f697b2d2ba",
+            "6126dc94d75140309979206d5ab88913",
+            "e9b78f2211b94b219b7255a5ca1f33bc",
+            "7fba15560cb84df6b3faba54e4e9989d",
+            "f685703ef0b04301abdfd32126772f8f",
+            "1844ed9e85dd4147a6d2d400559ff7d1",
+            "9b60ca89856643d08494d031316ab2f4",
+            "fa16556d6efc407b9c98ffcec9201cfe",
+            "5a7acbeac71341c08e463b6904d73bf2",
+            "3825522737e94b9db00e5b805c4931b7",
+            "b5ba6eb3286a4b099be56be6b1a23c5f",
+            "1227f2089daf46348ef2f5d71a57ae59",
+            "81f28b4ded6f4111a3dd68aace8f2bc8",
+            "18b1a18354524dc0a937027e49632837",
+            "a830d471f9b04222a2d57bc77fbed1b9",
+            "ba4bb8a0be0e496795d6e19a8ec5a341",
+            "6dd2657eb8e74b23b191826fe5731a48",
+            "915af931cfa04d29bb14a09508cb84e9",
+            "adee6fb657d144eca71bb1e831b9f597",
+            "88a4a5a037274a29a559848857936ae0",
+            "ed7087a0a4c8468d916efc0c66f80956",
+            "9a34bd26814a40e593ae5e172bda9a3d",
+            "c444603ac3fc4124a285898d89718b3c",
+            "1b0e258ef3bf410495d94d7bc8019791",
+            "4aaa43ef8af14c6ba1affabbf4b18566",
+            "f626de43244d4b44bb6489e916ecca8d",
+            "fdbda50a72a14536884c4ba5135f17fc",
+            "6f3ac3ea42454a5098ced5807838a56e",
+            "90af511f656c4e76ab2dd31ec12e4cf8",
+            "af347ebdb2a6493385296575f3c54e2e",
+            "bd46c8f4dbee402385c0899e37b91538",
+            "6bfd2dcc9a544108a798db56a38a7bbd",
+            "7805da1c183547f9a9bbec54360d93d4",
+            "65db1badd72d42caa7b7aea0f42da117",
+            "0b963da752bf4675af36413b9e0c549d",
+            "ce132652a15849798a98f1acaa099279",
+            "ed5666e7c94b4d70b85160b9b6d069d4"
+          ]
+        },
+        "id": "zz_YjoioAcLD",
+        "outputId": "c03619e9-63d4-4c08-fac7-b24f74606166"
+      },
+      "outputs": [
+        {
+          "name": "stdout",
+          "output_type": "stream",
+          "text": [
+            "Downloading http://yann.lecun.com/exdb/mnist/train-images-idx3-ubyte.gz\n",
+            "Downloading http://yann.lecun.com/exdb/mnist/train-images-idx3-ubyte.gz to MNIST/raw/train-images-idx3-ubyte.gz\n"
+          ]
+        },
+        {
+          "data": {
+            "application/vnd.jupyter.widget-view+json": {
+              "model_id": "0ba2cfa3ded34acdb818e86b1def3ed9",
+              "version_major": 2,
+              "version_minor": 0
+            },
+            "text/plain": [
+              "  0%|          | 0/9912422 [00:00<?, ?it/s]"
+            ]
+          },
+          "metadata": {},
+          "output_type": "display_data"
+        },
+        {
+          "name": "stdout",
+          "output_type": "stream",
+          "text": [
+            "Extracting MNIST/raw/train-images-idx3-ubyte.gz to MNIST/raw\n",
+            "\n",
+            "Downloading http://yann.lecun.com/exdb/mnist/train-labels-idx1-ubyte.gz\n",
+            "Downloading http://yann.lecun.com/exdb/mnist/train-labels-idx1-ubyte.gz to MNIST/raw/train-labels-idx1-ubyte.gz\n"
+          ]
+        },
+        {
+          "data": {
+            "application/vnd.jupyter.widget-view+json": {
+              "model_id": "f685703ef0b04301abdfd32126772f8f",
+              "version_major": 2,
+              "version_minor": 0
+            },
+            "text/plain": [
+              "  0%|          | 0/28881 [00:00<?, ?it/s]"
+            ]
+          },
+          "metadata": {},
+          "output_type": "display_data"
+        },
+        {
+          "name": "stdout",
+          "output_type": "stream",
+          "text": [
+            "Extracting MNIST/raw/train-labels-idx1-ubyte.gz to MNIST/raw\n",
+            "\n",
+            "Downloading http://yann.lecun.com/exdb/mnist/t10k-images-idx3-ubyte.gz\n",
+            "Downloading http://yann.lecun.com/exdb/mnist/t10k-images-idx3-ubyte.gz to MNIST/raw/t10k-images-idx3-ubyte.gz\n"
+          ]
+        },
+        {
+          "data": {
+            "application/vnd.jupyter.widget-view+json": {
+              "model_id": "ba4bb8a0be0e496795d6e19a8ec5a341",
+              "version_major": 2,
+              "version_minor": 0
+            },
+            "text/plain": [
+              "  0%|          | 0/1648877 [00:00<?, ?it/s]"
+            ]
+          },
+          "metadata": {},
+          "output_type": "display_data"
+        },
+        {
+          "name": "stdout",
+          "output_type": "stream",
+          "text": [
+            "Extracting MNIST/raw/t10k-images-idx3-ubyte.gz to MNIST/raw\n",
+            "\n",
+            "Downloading http://yann.lecun.com/exdb/mnist/t10k-labels-idx1-ubyte.gz\n",
+            "Downloading http://yann.lecun.com/exdb/mnist/t10k-labels-idx1-ubyte.gz to MNIST/raw/t10k-labels-idx1-ubyte.gz\n"
+          ]
+        },
+        {
+          "data": {
+            "application/vnd.jupyter.widget-view+json": {
+              "model_id": "fdbda50a72a14536884c4ba5135f17fc",
+              "version_major": 2,
+              "version_minor": 0
+            },
+            "text/plain": [
+              "  0%|          | 0/4542 [00:00<?, ?it/s]"
+            ]
+          },
+          "metadata": {},
+          "output_type": "display_data"
+        },
+        {
+          "name": "stdout",
+          "output_type": "stream",
+          "text": [
+            "Extracting MNIST/raw/t10k-labels-idx1-ubyte.gz to MNIST/raw\n",
+            "\n"
+          ]
+        }
+      ],
+      "source": [
+        "local_dataloaders = [prepare_dataloader(client_size, c) for c in range(client_size)]\n",
+        "test_dataloader = prepare_dataloader(client_size, -1, train=False)"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 7,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "UEzYT3tex0Nm",
+        "outputId": "35813171-fe14-4045-9816-a24fdb9eb761"
+      },
+      "outputs": [
+        {
+          "name": "stdout",
+          "output_type": "stream",
+          "text": [
+            "communication 0, epoch 0: client-1 0.019623182541131972\n",
+            "communication 0, epoch 0: client-2 0.019723439224561056\n",
+            "Test set: Average loss: 0.7824367880821228, Accuracy: 83.71\n",
+            "communication 1, epoch 0: client-1 0.01071754728158315\n",
+            "communication 1, epoch 0: client-2 0.010851142065723737\n",
+            "Test set: Average loss: 0.58545467877388, Accuracy: 86.49\n",
+            "communication 2, epoch 0: client-1 0.008766427374879518\n",
+            "communication 2, epoch 0: client-2 0.00891655088464419\n",
+            "Test set: Average loss: 0.507768925857544, Accuracy: 87.54\n",
+            "communication 3, epoch 0: client-1 0.007839484961827596\n",
+            "communication 3, epoch 0: client-2 0.00799967499623696\n",
+            "Test set: Average loss: 0.46477557654380797, Accuracy: 88.25\n",
+            "communication 4, epoch 0: client-1 0.0072782577464977904\n",
+            "communication 4, epoch 0: client-2 0.007445397683481375\n",
+            "Test set: Average loss: 0.436919868183136, Accuracy: 88.63\n"
+          ]
+        }
+      ],
+      "source": [
+        "clients = [FedAVGClient(Net().to(device), user_id=c) for c in range(client_size)]\n",
+        "local_optimizers = [optim.SGD(client.parameters(), lr=lr) for client in clients]\n",
+        "\n",
+        "server = FedAVGServer(clients, Net().to(device))\n",
+        "\n",
+        "api = FedAVGAPI(\n",
+        "    server,\n",
+        "    clients,\n",
+        "    criterion,\n",
+        "    local_optimizers,\n",
+        "    local_dataloaders,\n",
+        "    num_communication=num_rounds,\n",
+        "    custom_action=evaluate_gloal_model(test_dataloader),\n",
+        ")\n",
+        "api.run()"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "HkWsPf49FYv0"
+      },
+      "source": [
+        "### Federated Learning with Paillier Encryption"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 8,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "JE9boSiRoKWq",
+        "outputId": "3cdf43fd-bb5f-4bf3-800b-b8252c01b602"
+      },
+      "outputs": [
+        {
+          "name": "stdout",
+          "output_type": "stream",
+          "text": [
+            "communication 0, epoch 0: client-1 0.019975465472539266\n",
+            "communication 0, epoch 0: client-2 0.02012510192791621\n"
+          ]
+        },
+        {
+          "name": "stderr",
+          "output_type": "stream",
+          "text": [
+            "/usr/local/lib/python3.8/dist-packages/aijack/defense/paillier/torch_wrapper.py:70: RuntimeWarning: invalid value encountered in add\n",
+            "  input._paillier_np_array + other.detach().cpu().numpy()\n"
+          ]
+        },
+        {
+          "name": "stdout",
+          "output_type": "stream",
+          "text": [
+            "Test set: Average loss: 0.5059196739673615, Accuracy: 84.52\n",
+            "communication 1, epoch 0: client-1 0.007643952136238416\n",
+            "communication 1, epoch 0: client-2 0.007840833098689715\n",
+            "Test set: Average loss: 0.44262871017456057, Accuracy: 87.33\n",
+            "communication 2, epoch 0: client-1 0.006744246077537537\n",
+            "communication 2, epoch 0: client-2 0.0069425707697868344\n",
+            "Test set: Average loss: 0.4039503321409225, Accuracy: 88.34\n",
+            "communication 3, epoch 0: client-1 0.006300356082618237\n",
+            "communication 3, epoch 0: client-2 0.006500222743054231\n",
+            "Test set: Average loss: 0.38978441171646117, Accuracy: 89.0\n",
+            "communication 4, epoch 0: client-1 0.006008264410495758\n",
+            "communication 4, epoch 0: client-2 0.006209123303989569\n",
+            "Test set: Average loss: 0.3705228031635284, Accuracy: 89.22\n"
+          ]
+        }
+      ],
+      "source": [
+        "from aijack.defense import PaillierGradientClientManager, PaillierKeyGenerator\n",
+        "\n",
+        "keygenerator = PaillierKeyGenerator(64)\n",
+        "pk, sk = keygenerator.generate_keypair()\n",
+        "\n",
+        "manager = PaillierGradientClientManager(pk, sk)\n",
+        "PaillierGradFedAVGClient = manager.attach(FedAVGClient)\n",
+        "\n",
+        "clients = [\n",
+        "    PaillierGradFedAVGClient(Net().to(device), user_id=c, server_side_update=False)\n",
+        "    for c in range(client_size)\n",
+        "]\n",
+        "local_optimizers = [optim.SGD(client.parameters(), lr=lr) for client in clients]\n",
+        "\n",
+        "server = FedAVGServer(clients, Net().to(device), server_side_update=False)\n",
+        "\n",
+        "api = FedAVGAPI(\n",
+        "    server,\n",
+        "    clients,\n",
+        "    criterion,\n",
+        "    local_optimizers,\n",
+        "    local_dataloaders,\n",
+        "    num_communication=num_rounds,\n",
+        "    custom_action=evaluate_gloal_model(test_dataloader, 0),\n",
+        ")\n",
+        "api.run()"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "smTKPDVx9Dt4"
+      },
+      "source": [
+        "## MPI"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 14,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "pzKLDKNw820p",
+        "outputId": "b15ed0be-d44c-48a9-97ad-61132003c117"
+      },
+      "outputs": [
+        {
+          "name": "stdout",
+          "output_type": "stream",
+          "text": [
+            "Overwriting mpi_FedAVG.py\n"
+          ]
+        }
+      ],
+      "source": [
+        "%%writefile mpi_FedAVG.py\n",
+        "import random\n",
+        "from logging import getLogger\n",
+        "\n",
+        "import numpy as np\n",
+        "import torch\n",
+        "import torch.nn as nn\n",
+        "import torch.nn.functional as F\n",
+        "import torch.optim as optim\n",
+        "from mpi4py import MPI\n",
+        "from torchvision import datasets, transforms\n",
+        "\n",
+        "from aijack.collaborative import FedAVGClient, FedAVGServer, MPIFedAVGAPI, MPIFedAVGClientManager, MPIFedAVGServerManager\n",
+        "\n",
+        "logger = getLogger(__name__)\n",
+        "\n",
+        "training_batch_size = 64\n",
+        "test_batch_size = 64\n",
+        "num_rounds = 5\n",
+        "lr = 0.001\n",
+        "seed = 0\n",
+        "\n",
+        "\n",
+        "def fix_seed(seed):\n",
+        "    random.seed(seed)\n",
+        "    np.random.seed(seed)\n",
+        "    torch.manual_seed(seed)\n",
+        "    torch.cuda.manual_seed_all(seed)\n",
+        "    torch.backends.cudnn.deterministic = True\n",
+        "\n",
+        "\n",
+        "def prepare_dataloader(num_clients, myid, train=True, path=\"\"):\n",
+        "    transform = transforms.Compose(\n",
+        "        [transforms.ToTensor(), transforms.Normalize((0.1307,), (0.3081,))]\n",
+        "    )\n",
+        "    if train:\n",
+        "        dataset = datasets.MNIST(path, train=True, download=False, transform=transform)\n",
+        "        idxs = list(range(len(dataset.data)))\n",
+        "        random.shuffle(idxs)\n",
+        "        idx = np.array_split(idxs, num_clients, 0)[myid - 1]\n",
+        "        dataset.data = dataset.data[idx]\n",
+        "        dataset.targets = dataset.targets[idx]\n",
+        "        train_loader = torch.utils.data.DataLoader(\n",
+        "            dataset, batch_size=training_batch_size\n",
+        "        )\n",
+        "        return train_loader\n",
+        "    else:\n",
+        "        dataset = datasets.MNIST(path, train=False, download=False, transform=transform)\n",
+        "        test_loader = torch.utils.data.DataLoader(dataset, batch_size=test_batch_size)\n",
+        "        return test_loader\n",
+        "\n",
+        "\n",
+        "class Net(nn.Module):\n",
+        "    def __init__(self):\n",
+        "        super(Net, self).__init__()\n",
+        "        self.ln = nn.Linear(28 * 28, 10)\n",
+        "\n",
+        "    def forward(self, x):\n",
+        "        x = self.ln(x.reshape(-1, 28 * 28))\n",
+        "        output = F.log_softmax(x, dim=1)\n",
+        "        return output\n",
+        "\n",
+        "\n",
+        "def evaluate_gloal_model(dataloader):\n",
+        "    def _evaluate_global_model(api):\n",
+        "        test_loss = 0\n",
+        "        correct = 0\n",
+        "        with torch.no_grad():\n",
+        "            for data, target in dataloader:\n",
+        "                data, target = data.to(api.device), target.to(api.device)\n",
+        "                output = api.party(data)\n",
+        "                test_loss += F.nll_loss(\n",
+        "                    output, target, reduction=\"sum\"\n",
+        "                ).item()  # sum up batch loss\n",
+        "                pred = output.argmax(\n",
+        "                    dim=1, keepdim=True\n",
+        "                )  # get the index of the max log-probability\n",
+        "                correct += pred.eq(target.view_as(pred)).sum().item()\n",
+        "\n",
+        "        test_loss /= len(dataloader.dataset)\n",
+        "        accuracy = 100.0 * correct / len(dataloader.dataset)\n",
+        "        print(\n",
+        "            f\"Round: {api.party.round}, Test set: Average loss: {test_loss}, Accuracy: {accuracy}\"\n",
+        "        )\n",
+        "\n",
+        "    return _evaluate_global_model\n",
+        "\n",
+        "def main():\n",
+        "    fix_seed(seed)\n",
+        "\n",
+        "    comm = MPI.COMM_WORLD\n",
+        "    myid = comm.Get_rank()\n",
+        "    size = comm.Get_size()\n",
+        "\n",
+        "    device = torch.device(\"cuda\" if torch.cuda.is_available() else \"cpu\")\n",
+        "    model = Net()\n",
+        "    model = model.to(device)\n",
+        "    optimizer = optim.SGD(model.parameters(), lr=lr)\n",
+        "\n",
+        "    mpi_client_manager = MPIFedAVGClientManager()\n",
+        "    mpi_server_manager = MPIFedAVGServerManager()\n",
+        "    MPIFedAVGClient = mpi_client_manager.attach(FedAVGClient)\n",
+        "    MPIFedAVGServer = mpi_server_manager.attach(FedAVGServer)\n",
+        "\n",
+        "    if myid == 0:\n",
+        "        dataloader = prepare_dataloader(size - 1, myid, train=False)\n",
+        "        client_ids = list(range(1, size))\n",
+        "        server = MPIFedAVGServer(comm, [1, 2], model)\n",
+        "        api = MPIFedAVGAPI(\n",
+        "            comm,\n",
+        "            server,\n",
+        "            True,\n",
+        "            F.nll_loss,\n",
+        "            None,\n",
+        "            None,\n",
+        "            num_rounds,\n",
+        "            1,\n",
+        "            custom_action=evaluate_gloal_model(dataloader),\n",
+        "            device=device\n",
+        "        )\n",
+        "    else:\n",
+        "        dataloader = prepare_dataloader(size - 1, myid, train=True)\n",
+        "        client = MPIFedAVGClient(comm, model, user_id=myid)\n",
+        "        api = MPIFedAVGAPI(\n",
+        "            comm,\n",
+        "            client,\n",
+        "            False,\n",
+        "            F.nll_loss,\n",
+        "            optimizer,\n",
+        "            dataloader,\n",
+        "            num_rounds,\n",
+        "            1,\n",
+        "            device=device\n",
+        "        )\n",
+        "    api.run()\n",
+        "\n",
+        "\n",
+        "if __name__ == \"__main__\":\n",
+        "    main()"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 15,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "UDBFHwAsvCv3",
+        "outputId": "d4603fa6-91f4-494e-ba9e-3afb423d2b74"
+      },
+      "outputs": [
+        {
+          "name": "stdout",
+          "output_type": "stream",
+          "text": [
+            "communication 0, epoch 0: client-2 0.02008056694070498\n",
+            "communication 0, epoch 0: client-3 0.019996537216504413\n",
+            "Round: 1, Test set: Average loss: 0.7860309104919434, Accuracy: 82.72\n",
+            "communication 1, epoch 0: client-2 0.010937693453828494\n",
+            "communication 1, epoch 0: client-3 0.010822976715366046\n",
+            "Round: 2, Test set: Average loss: 0.5885528886795044, Accuracy: 86.04\n",
+            "communication 2, epoch 0: client-2 0.008990796900788942\n",
+            "communication 2, epoch 0: client-3 0.008850129560629527\n",
+            "Round: 3, Test set: Average loss: 0.5102099328994751, Accuracy: 87.33\n",
+            "communication 3, epoch 0: client-2 0.008069112183650334\n",
+            "communication 3, epoch 0: client-3 0.00791173183619976\n",
+            "Round: 4, Test set: Average loss: 0.4666414333820343, Accuracy: 88.01\n",
+            "communication 4, epoch 0: client-2 0.007512268128991127\n",
+            "communication 4, epoch 0: client-3 0.007343090359369914\n",
+            "Round: 5, Test set: Average loss: 0.4383064950466156, Accuracy: 88.65\n"
+          ]
+        }
+      ],
+      "source": [
+        "!sudo mpiexec -np 3 --allow-run-as-root python /content/mpi_FedAVG.py"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "_Gb-Bks1FKD5"
+      },
+      "source": [
+        "### MPI + Sparse Gradient"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 16,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "PEv5pT_ABsPt",
+        "outputId": "f89d73f0-d6ca-43c2-9109-0e83e22b7c43"
+      },
+      "outputs": [
+        {
+          "name": "stdout",
+          "output_type": "stream",
+          "text": [
+            "Overwriting mpi_FedAVG_sparse.py\n"
+          ]
+        }
+      ],
+      "source": [
+        "%%writefile mpi_FedAVG_sparse.py\n",
+        "import random\n",
+        "from logging import getLogger\n",
+        "\n",
+        "import numpy as np\n",
+        "import torch\n",
+        "import torch.nn as nn\n",
+        "import torch.nn.functional as F\n",
+        "import torch.optim as optim\n",
+        "from mpi4py import MPI\n",
+        "from torchvision import datasets, transforms\n",
+        "\n",
+        "from aijack.collaborative import FedAVGClient, FedAVGServer, MPIFedAVGAPI, MPIFedAVGClientManager, MPIFedAVGServerManager\n",
+        "from aijack.defense.sparse import (\n",
+        "    SparseGradientClientManager,\n",
+        "    SparseGradientServerManager,\n",
+        ")\n",
+        "\n",
+        "logger = getLogger(__name__)\n",
+        "\n",
+        "training_batch_size = 64\n",
+        "test_batch_size = 64\n",
+        "num_rounds = 5\n",
+        "lr = 0.001\n",
+        "seed = 0\n",
+        "\n",
+        "\n",
+        "def fix_seed(seed):\n",
+        "    random.seed(seed)\n",
+        "    np.random.seed(seed)\n",
+        "    torch.manual_seed(seed)\n",
+        "    torch.cuda.manual_seed_all(seed)\n",
+        "    torch.backends.cudnn.deterministic = True\n",
+        "\n",
+        "\n",
+        "def prepare_dataloader(num_clients, myid, train=True, path=\"\"):\n",
+        "    transform = transforms.Compose(\n",
+        "        [transforms.ToTensor(), transforms.Normalize((0.1307,), (0.3081,))]\n",
+        "    )\n",
+        "    if train:\n",
+        "        dataset = datasets.MNIST(path, train=True, download=False, transform=transform)\n",
+        "        idxs = list(range(len(dataset.data)))\n",
+        "        random.shuffle(idxs)\n",
+        "        idx = np.array_split(idxs, num_clients, 0)[myid - 1]\n",
+        "        dataset.data = dataset.data[idx]\n",
+        "        dataset.targets = dataset.targets[idx]\n",
+        "        train_loader = torch.utils.data.DataLoader(\n",
+        "            dataset, batch_size=training_batch_size\n",
+        "        )\n",
+        "        return train_loader\n",
+        "    else:\n",
+        "        dataset = datasets.MNIST(path, train=False, download=False, transform=transform)\n",
+        "        test_loader = torch.utils.data.DataLoader(dataset, batch_size=test_batch_size)\n",
+        "        return test_loader\n",
+        "\n",
+        "\n",
+        "class Net(nn.Module):\n",
+        "    def __init__(self):\n",
+        "        super(Net, self).__init__()\n",
+        "        self.ln = nn.Linear(28 * 28, 10)\n",
+        "\n",
+        "    def forward(self, x):\n",
+        "        x = self.ln(x.reshape(-1, 28 * 28))\n",
+        "        output = F.log_softmax(x, dim=1)\n",
+        "        return output\n",
+        "\n",
+        "\n",
+        "def evaluate_gloal_model(dataloader):\n",
+        "    def _evaluate_global_model(api):\n",
+        "        test_loss = 0\n",
+        "        correct = 0\n",
+        "        with torch.no_grad():\n",
+        "            for data, target in dataloader:\n",
+        "                data, target = data.to(api.device), target.to(api.device)\n",
+        "                output = api.party(data)\n",
+        "                test_loss += F.nll_loss(\n",
+        "                    output, target, reduction=\"sum\"\n",
+        "                ).item()  # sum up batch loss\n",
+        "                pred = output.argmax(\n",
+        "                    dim=1, keepdim=True\n",
+        "                )  # get the index of the max log-probability\n",
+        "                correct += pred.eq(target.view_as(pred)).sum().item()\n",
+        "\n",
+        "        test_loss /= len(dataloader.dataset)\n",
+        "        accuracy = 100.0 * correct / len(dataloader.dataset)\n",
+        "        print(\n",
+        "            f\"Round: {api.party.round}, Test set: Average loss: {test_loss}, Accuracy: {accuracy}\"\n",
+        "        )\n",
+        "\n",
+        "    return _evaluate_global_model\n",
+        "\n",
+        "\n",
+        "def main():\n",
+        "    fix_seed(seed)\n",
+        "\n",
+        "    comm = MPI.COMM_WORLD\n",
+        "    myid = comm.Get_rank()\n",
+        "    size = comm.Get_size()\n",
+        "\n",
+        "    device = torch.device(\"cuda\" if torch.cuda.is_available() else \"cpu\")\n",
+        "    model = Net()\n",
+        "    model = model.to(device)\n",
+        "    optimizer = optim.SGD(model.parameters(), lr=lr)\n",
+        "\n",
+        "    sg_client_manager = SparseGradientClientManager(k=0.03)\n",
+        "    mpi_client_manager = MPIFedAVGClientManager()\n",
+        "    SparseGradientFedAVGClient = sg_client_manager.attach(FedAVGClient)\n",
+        "    MPISparseGradientFedAVGClient = mpi_client_manager.attach(SparseGradientFedAVGClient)\n",
+        "\n",
+        "    sg_server_manager = SparseGradientServerManager()\n",
+        "    mpi_server_manager = MPIFedAVGServerManager()\n",
+        "    SparseGradientFedAVGServer = sg_server_manager.attach(FedAVGServer)\n",
+        "    MPISparseGradientFedAVGServer = mpi_server_manager.attach(SparseGradientFedAVGServer)\n",
+        "\n",
+        "    if myid == 0:\n",
+        "        dataloader = prepare_dataloader(size - 1, myid, train=False)\n",
+        "        client_ids = list(range(1, size))\n",
+        "        server = MPISparseGradientFedAVGServer(comm, [1, 2], model)\n",
+        "        api = MPIFedAVGAPI(\n",
+        "            comm,\n",
+        "            server,\n",
+        "            True,\n",
+        "            F.nll_loss,\n",
+        "            None,\n",
+        "            None,\n",
+        "            num_rounds,\n",
+        "            1,\n",
+        "            custom_action=evaluate_gloal_model(dataloader),\n",
+        "            device=device,\n",
+        "        )\n",
+        "    else:\n",
+        "        dataloader = prepare_dataloader(size - 1, myid, train=True)\n",
+        "        client = MPISparseGradientFedAVGClient(comm, model, user_id=myid)\n",
+        "        api = MPIFedAVGAPI(\n",
+        "            comm,\n",
+        "            client,\n",
+        "            False,\n",
+        "            F.nll_loss,\n",
+        "            optimizer,\n",
+        "            dataloader,\n",
+        "            num_rounds,\n",
+        "            1,\n",
+        "            device=device,\n",
+        "        )\n",
+        "\n",
+        "    api.run()\n",
+        "\n",
+        "\n",
+        "if __name__ == \"__main__\":\n",
+        "    main()"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 17,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "g9xKbw0_eDSD",
+        "outputId": "8ae3f594-b0a1-48f6-b4c5-445da1a4ab90"
+      },
+      "outputs": [
+        {
+          "name": "stdout",
+          "output_type": "stream",
+          "text": [
+            "communication 0, epoch 0: client-2 0.02008056694070498\n",
+            "communication 0, epoch 0: client-3 0.019996537216504413\n",
+            "Round: 1, Test set: Average loss: 1.7728474597930908, Accuracy: 38.47\n",
+            "communication 1, epoch 0: client-2 0.016343721010287603\n",
+            "communication 1, epoch 0: client-3 0.016255500958363214\n",
+            "Round: 2, Test set: Average loss: 1.4043720769882202, Accuracy: 60.5\n",
+            "communication 2, epoch 0: client-2 0.014353630113601685\n",
+            "communication 2, epoch 0: client-3 0.014260987114906311\n",
+            "Round: 3, Test set: Average loss: 1.1684634439468384, Accuracy: 70.27\n",
+            "communication 3, epoch 0: client-2 0.013123111790418624\n",
+            "communication 3, epoch 0: client-3 0.013032549581925075\n",
+            "Round: 4, Test set: Average loss: 1.0258800836563111, Accuracy: 75.0\n",
+            "communication 4, epoch 0: client-3 0.012150899289051692\n",
+            "communication 4, epoch 0: client-2 0.012242827371756236\n",
+            "Round: 5, Test set: Average loss: 0.9197616576194764, Accuracy: 77.6\n"
+          ]
+        }
+      ],
+      "source": [
+        "!sudo mpiexec -np 3 --allow-run-as-root python /content/mpi_FedAVG_sparse.py"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 12,
+      "metadata": {
+        "id": "nBPih2JPaxPJ"
+      },
+      "outputs": [],
+      "source": []
     }
-   ],
-   "source": [
-    "local_dataloaders = [prepare_dataloader(client_size, c) for c in range(client_size)]\n",
-    "test_dataloader = prepare_dataloader(client_size, -1, train=False)"
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": 7,
-   "metadata": {
+  ],
+  "metadata": {
     "colab": {
-     "base_uri": "https://localhost:8080/"
+      "machine_shape": "hm",
+      "provenance": []
     },
-    "id": "UEzYT3tex0Nm",
-    "outputId": "cda4b76d-6114-4617-8351-e1a6c2101373"
-   },
-   "outputs": [
-    {
-     "name": "stdout",
-     "output_type": "stream",
-     "text": [
-      "communication 0, epoch 0: client-1 0.019623182545105616\n",
-      "communication 0, epoch 0: client-2 0.019723439192771912\n",
-      "Test set: Average loss: 0.7824367607116699, Accuracy: 83.71\n",
-      "communication 1, epoch 0: client-1 0.010717547312378884\n",
-      "communication 1, epoch 0: client-2 0.01085114210943381\n",
-      "Test set: Average loss: 0.5854546638488769, Accuracy: 86.49\n",
-      "communication 2, epoch 0: client-1 0.008766427417596182\n",
-      "communication 2, epoch 0: client-2 0.008916550938288371\n",
-      "Test set: Average loss: 0.5077689335346222, Accuracy: 87.54\n",
-      "communication 3, epoch 0: client-1 0.007839484986662865\n",
-      "communication 3, epoch 0: client-2 0.007999675015608469\n",
-      "Test set: Average loss: 0.4647755696773529, Accuracy: 88.25\n",
-      "communication 4, epoch 0: client-1 0.00727825770676136\n",
-      "communication 4, epoch 0: client-2 0.007445397703349591\n",
-      "Test set: Average loss: 0.4369198709487915, Accuracy: 88.63\n"
-     ]
+    "gpuClass": "standard",
+    "kernelspec": {
+      "display_name": "Python 3",
+      "language": "python",
+      "name": "python3"
+    },
+    "language_info": {
+      "name": "python",
+      "version": "3.9.1 (tags/v3.9.1:1e5d33e, Dec  7 2020, 17:08:21) [MSC v.1927 64 bit (AMD64)]"
+    },
+    "vscode": {
+      "interpreter": {
+        "hash": "caa2b01f75ba60e629eaa9e4dabde0c46b243c9a0484934eeb17ad8b3fc9c91a"
+      }
+    },
+    "widgets": {
+      "application/vnd.jupyter.widget-state+json": {}
     }
-   ],
-   "source": [
-    "clients = [FedAVGClient(Net().to(device), user_id=c) for c in range(client_size)]\n",
-    "local_optimizers = [optim.SGD(client.parameters(), lr=lr) for client in clients]\n",
-    "\n",
-    "server = FedAVGServer(clients, Net().to(device))\n",
-    "\n",
-    "api = FedAVGAPI(\n",
-    "    server,\n",
-    "    clients,\n",
-    "    criterion,\n",
-    "    local_optimizers,\n",
-    "    local_dataloaders,\n",
-    "    num_communication=num_rounds,\n",
-    "    custom_action=evaluate_gloal_model(test_dataloader),\n",
-    ")\n",
-    "api.run()"
-   ]
   },
-  {
-   "cell_type": "markdown",
-   "metadata": {
-    "id": "HkWsPf49FYv0"
-   },
-   "source": [
-    "### Federated Learning with Paillier Encryption"
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": 8,
-   "metadata": {
-    "colab": {
-     "base_uri": "https://localhost:8080/"
-    },
-    "id": "JE9boSiRoKWq",
-    "outputId": "9d408c83-0490-4df6-f9cb-b8a3c190bcaf"
-   },
-   "outputs": [
-    {
-     "name": "stdout",
-     "output_type": "stream",
-     "text": [
-      "communication 0, epoch 0: client-1 0.01997546571890513\n",
-      "communication 0, epoch 0: client-2 0.020125101908047994\n"
-     ]
-    },
-    {
-     "name": "stderr",
-     "output_type": "stream",
-     "text": [
-      "/usr/local/lib/python3.8/dist-packages/aijack/defense/paillier/torch_wrapper.py:70: RuntimeWarning: invalid value encountered in add\n",
-      "  input._paillier_np_array + other.detach().cpu().numpy()\n"
-     ]
-    },
-    {
-     "name": "stdout",
-     "output_type": "stream",
-     "text": [
-      "Test set: Average loss: 0.5059196502208709, Accuracy: 84.52\n",
-      "communication 1, epoch 0: client-1 0.007643952090044816\n",
-      "communication 1, epoch 0: client-2 0.007840833148360253\n",
-      "Test set: Average loss: 0.44262871532440184, Accuracy: 87.33\n",
-      "communication 2, epoch 0: client-1 0.006744246105353038\n",
-      "communication 2, epoch 0: client-2 0.006942570747931798\n",
-      "Test set: Average loss: 0.40395034172534944, Accuracy: 88.34\n",
-      "communication 3, epoch 0: client-1 0.006300356099506219\n",
-      "communication 3, epoch 0: client-2 0.006500222749014696\n",
-      "Test set: Average loss: 0.3897844295024872, Accuracy: 89.0\n",
-      "communication 4, epoch 0: client-1 0.0060082643752296765\n",
-      "communication 4, epoch 0: client-2 0.006209123346706232\n",
-      "Test set: Average loss: 0.3705228189945221, Accuracy: 89.22\n"
-     ]
-    }
-   ],
-   "source": [
-    "from aijack.defense import PaillierGradientClientManager, PaillierKeyGenerator\n",
-    "\n",
-    "keygenerator = PaillierKeyGenerator(64)\n",
-    "pk, sk = keygenerator.generate_keypair()\n",
-    "\n",
-    "manager = PaillierGradientClientManager(pk, sk)\n",
-    "PaillierGradFedAVGClient = manager.attach(FedAVGClient)\n",
-    "\n",
-    "clients = [\n",
-    "    PaillierGradFedAVGClient(Net().to(device), user_id=c, server_side_update=False)\n",
-    "    for c in range(client_size)\n",
-    "]\n",
-    "local_optimizers = [optim.SGD(client.parameters(), lr=lr) for client in clients]\n",
-    "\n",
-    "server = FedAVGServer(clients, Net().to(device), server_side_update=False)\n",
-    "\n",
-    "api = FedAVGAPI(\n",
-    "    server,\n",
-    "    clients,\n",
-    "    criterion,\n",
-    "    local_optimizers,\n",
-    "    local_dataloaders,\n",
-    "    num_communication=num_rounds,\n",
-    "    custom_action=evaluate_gloal_model(test_dataloader, 0),\n",
-    ")\n",
-    "api.run()"
-   ]
-  },
-  {
-   "cell_type": "markdown",
-   "metadata": {
-    "id": "smTKPDVx9Dt4"
-   },
-   "source": [
-    "## MPI"
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": 9,
-   "metadata": {
-    "colab": {
-     "base_uri": "https://localhost:8080/"
-    },
-    "id": "pzKLDKNw820p",
-    "outputId": "ce85e3d6-ca5f-4baa-8b75-e2e9fd5635e4"
-   },
-   "outputs": [
-    {
-     "name": "stdout",
-     "output_type": "stream",
-     "text": [
-      "Writing mpi_FedAVG.py\n"
-     ]
-    }
-   ],
-   "source": [
-    "%%writefile mpi_FedAVG.py\n",
-    "import random\n",
-    "from logging import getLogger\n",
-    "\n",
-    "import numpy as np\n",
-    "import torch\n",
-    "import torch.nn as nn\n",
-    "import torch.nn.functional as F\n",
-    "import torch.optim as optim\n",
-    "from mpi4py import MPI\n",
-    "from torchvision import datasets, transforms\n",
-    "\n",
-    "from aijack.collaborative import FedAVGClient, FedAVGServer, MPIFedAVGAPI, MPIFedAVGClientManager, MPIFedAVGServerManager\n",
-    "\n",
-    "logger = getLogger(__name__)\n",
-    "\n",
-    "training_batch_size = 64\n",
-    "test_batch_size = 64\n",
-    "num_rounds = 5\n",
-    "lr = 0.001\n",
-    "seed = 0\n",
-    "\n",
-    "\n",
-    "def fix_seed(seed):\n",
-    "    random.seed(seed)\n",
-    "    np.random.seed(seed)\n",
-    "    torch.manual_seed(seed)\n",
-    "    torch.cuda.manual_seed_all(seed)\n",
-    "    torch.backends.cudnn.deterministic = True\n",
-    "\n",
-    "\n",
-    "def prepare_dataloader(num_clients, myid, train=True, path=\"\"):\n",
-    "    transform = transforms.Compose(\n",
-    "        [transforms.ToTensor(), transforms.Normalize((0.1307,), (0.3081,))]\n",
-    "    )\n",
-    "    if train:\n",
-    "        dataset = datasets.MNIST(path, train=True, download=False, transform=transform)\n",
-    "        idxs = list(range(len(dataset.data)))\n",
-    "        random.shuffle(idxs)\n",
-    "        idx = np.array_split(idxs, num_clients, 0)[myid - 1]\n",
-    "        dataset.data = dataset.data[idx]\n",
-    "        dataset.targets = dataset.targets[idx]\n",
-    "        train_loader = torch.utils.data.DataLoader(\n",
-    "            dataset, batch_size=training_batch_size\n",
-    "        )\n",
-    "        return train_loader\n",
-    "    else:\n",
-    "        dataset = datasets.MNIST(path, train=False, download=False, transform=transform)\n",
-    "        test_loader = torch.utils.data.DataLoader(dataset, batch_size=test_batch_size)\n",
-    "        return test_loader\n",
-    "\n",
-    "\n",
-    "class Net(nn.Module):\n",
-    "    def __init__(self):\n",
-    "        super(Net, self).__init__()\n",
-    "        self.ln = nn.Linear(28 * 28, 10)\n",
-    "\n",
-    "    def forward(self, x):\n",
-    "        x = self.ln(x.reshape(-1, 28 * 28))\n",
-    "        output = F.log_softmax(x, dim=1)\n",
-    "        return output\n",
-    "\n",
-    "\n",
-    "def evaluate_gloal_model(dataloader):\n",
-    "    def _evaluate_global_model(api):\n",
-    "        test_loss = 0\n",
-    "        correct = 0\n",
-    "        with torch.no_grad():\n",
-    "            for data, target in dataloader:\n",
-    "                data, target = data.to(api.device), target.to(api.device)\n",
-    "                output = api.party(data)\n",
-    "                test_loss += F.nll_loss(\n",
-    "                    output, target, reduction=\"sum\"\n",
-    "                ).item()  # sum up batch loss\n",
-    "                pred = output.argmax(\n",
-    "                    dim=1, keepdim=True\n",
-    "                )  # get the index of the max log-probability\n",
-    "                correct += pred.eq(target.view_as(pred)).sum().item()\n",
-    "\n",
-    "        test_loss /= len(dataloader.dataset)\n",
-    "        accuracy = 100.0 * correct / len(dataloader.dataset)\n",
-    "        print(\n",
-    "            f\"Round: {api.party.round}, Test set: Average loss: {test_loss}, Accuracy: {accuracy}\"\n",
-    "        )\n",
-    "\n",
-    "    return _evaluate_global_model\n",
-    "\n",
-    "\n",
-    "def main():\n",
-    "    fix_seed(seed)\n",
-    "\n",
-    "    comm = MPI.COMM_WORLD\n",
-    "    myid = comm.Get_rank()\n",
-    "    size = comm.Get_size()\n",
-    "\n",
-    "    device = torch.device(\"cuda\" if torch.cuda.is_available() else \"cpu\")\n",
-    "    model = Net()\n",
-    "    model = model.to(device)\n",
-    "    optimizer = optim.SGD(model.parameters(), lr=lr)\n",
-    "\n",
-    "    mpi_client_manager = MPIFedAVGClientManager()\n",
-    "    mpi_server_manager = MPIFedAVGServerManager()\n",
-    "    MPIFedAVGClient = mpi_client_manager.attach(FedAVGClient)\n",
-    "    MPIFedAVGServer = mpi_server_manager.attach(FedAVGServer)\n",
-    "\n",
-    "    if myid == 0:\n",
-    "        dataloader = prepare_dataloader(size - 1, myid, train=False)\n",
-    "        client_ids = list(range(1, size))\n",
-    "        server = MPIFedAVGServer(comm, [1, 2], model)\n",
-    "        api = MPIFedAVGAPI(\n",
-    "            comm,\n",
-    "            server,\n",
-    "            True,\n",
-    "            F.nll_loss,\n",
-    "            None,\n",
-    "            None,\n",
-    "            num_rounds,\n",
-    "            1,\n",
-    "            custom_action=evaluate_gloal_model(dataloader),\n",
-    "            device=device\n",
-    "        )\n",
-    "    else:\n",
-    "        dataloader = prepare_dataloader(size - 1, myid, train=True)\n",
-    "        client = MPIFedAVGClient(comm, model, user_id=myid)\n",
-    "        api = MPIFedAVGAPI(\n",
-    "            comm,\n",
-    "            client,\n",
-    "            False,\n",
-    "            F.nll_loss,\n",
-    "            optimizer,\n",
-    "            dataloader,\n",
-    "            num_rounds,\n",
-    "            1,\n",
-    "            device=device\n",
-    "        )\n",
-    "\n",
-    "    api.run()\n",
-    "\n",
-    "\n",
-    "if __name__ == \"__main__\":\n",
-    "    main()"
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": 10,
-   "metadata": {
-    "colab": {
-     "base_uri": "https://localhost:8080/"
-    },
-    "id": "UDBFHwAsvCv3",
-    "outputId": "ef9e4cfe-1351-466c-d3c2-7b806b34c9cc"
-   },
-   "outputs": [
-    {
-     "name": "stdout",
-     "output_type": "stream",
-     "text": [
-      "communication 0, epoch 0: client-2 0.02008056694070498\n",
-      "communication 0, epoch 0: client-3 0.019996537216504413\n",
-      "Round: 1, Test set: Average loss: 0.7860309104919434, Accuracy: 82.72\n",
-      "communication 1, epoch 0: client-3 0.010822976715366046\n",
-      "communication 1, epoch 0: client-2 0.010937693453828494\n",
-      "Round: 2, Test set: Average loss: 0.5885528886795044, Accuracy: 86.04\n",
-      "communication 2, epoch 0: client-2 0.008990796900788942\n",
-      "communication 2, epoch 0: client-3 0.008850129560629527\n",
-      "Round: 3, Test set: Average loss: 0.5102099328994751, Accuracy: 87.33\n",
-      "communication 3, epoch 0: client-2 0.008069112183650334\n",
-      "communication 3, epoch 0: client-3 0.00791173183619976\n",
-      "Round: 4, Test set: Average loss: 0.4666414333820343, Accuracy: 88.01\n",
-      "communication 4, epoch 0: client-3 0.007343090359369914\n",
-      "communication 4, epoch 0: client-2 0.007512268128991127\n",
-      "Round: 5, Test set: Average loss: 0.4383064950466156, Accuracy: 88.65\n"
-     ]
-    }
-   ],
-   "source": [
-    "!mpiexec -np 3 --allow-run-as-root python /content/mpi_FedAVG.py"
-   ]
-  },
-  {
-   "cell_type": "markdown",
-   "metadata": {
-    "id": "_Gb-Bks1FKD5"
-   },
-   "source": [
-    "### MPI + Sparse Gradient"
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": 11,
-   "metadata": {
-    "colab": {
-     "base_uri": "https://localhost:8080/"
-    },
-    "id": "PEv5pT_ABsPt",
-    "outputId": "c16f3ff1-0b64-47c9-c1e8-96c8b5055d8b"
-   },
-   "outputs": [
-    {
-     "name": "stdout",
-     "output_type": "stream",
-     "text": [
-      "Writing mpi_FedAVG_sparse.py\n"
-     ]
-    }
-   ],
-   "source": [
-    "%%writefile mpi_FedAVG_sparse.py\n",
-    "import random\n",
-    "from logging import getLogger\n",
-    "\n",
-    "import numpy as np\n",
-    "import torch\n",
-    "import torch.nn as nn\n",
-    "import torch.nn.functional as F\n",
-    "import torch.optim as optim\n",
-    "from mpi4py import MPI\n",
-    "from torchvision import datasets, transforms\n",
-    "\n",
-    "from aijack.collaborative import FedAVGClient, FedAVGServer, MPIFedAVGAPI, MPIFedAVGClientManager, MPIFedAVGServerManager\n",
-    "from aijack.defense.sparse import (\n",
-    "    SparseGradientClientManager,\n",
-    "    SparseGradientServerManager,\n",
-    ")\n",
-    "\n",
-    "logger = getLogger(__name__)\n",
-    "\n",
-    "training_batch_size = 64\n",
-    "test_batch_size = 64\n",
-    "num_rounds = 5\n",
-    "lr = 0.001\n",
-    "seed = 0\n",
-    "\n",
-    "\n",
-    "def fix_seed(seed):\n",
-    "    random.seed(seed)\n",
-    "    np.random.seed(seed)\n",
-    "    torch.manual_seed(seed)\n",
-    "    torch.cuda.manual_seed_all(seed)\n",
-    "    torch.backends.cudnn.deterministic = True\n",
-    "\n",
-    "\n",
-    "def prepare_dataloader(num_clients, myid, train=True, path=\"\"):\n",
-    "    transform = transforms.Compose(\n",
-    "        [transforms.ToTensor(), transforms.Normalize((0.1307,), (0.3081,))]\n",
-    "    )\n",
-    "    if train:\n",
-    "        dataset = datasets.MNIST(path, train=True, download=False, transform=transform)\n",
-    "        idxs = list(range(len(dataset.data)))\n",
-    "        random.shuffle(idxs)\n",
-    "        idx = np.array_split(idxs, num_clients, 0)[myid - 1]\n",
-    "        dataset.data = dataset.data[idx]\n",
-    "        dataset.targets = dataset.targets[idx]\n",
-    "        train_loader = torch.utils.data.DataLoader(\n",
-    "            dataset, batch_size=training_batch_size\n",
-    "        )\n",
-    "        return train_loader\n",
-    "    else:\n",
-    "        dataset = datasets.MNIST(path, train=False, download=False, transform=transform)\n",
-    "        test_loader = torch.utils.data.DataLoader(dataset, batch_size=test_batch_size)\n",
-    "        return test_loader\n",
-    "\n",
-    "\n",
-    "class Net(nn.Module):\n",
-    "    def __init__(self):\n",
-    "        super(Net, self).__init__()\n",
-    "        self.ln = nn.Linear(28 * 28, 10)\n",
-    "\n",
-    "    def forward(self, x):\n",
-    "        x = self.ln(x.reshape(-1, 28 * 28))\n",
-    "        output = F.log_softmax(x, dim=1)\n",
-    "        return output\n",
-    "\n",
-    "\n",
-    "def evaluate_gloal_model(dataloader):\n",
-    "    def _evaluate_global_model(api):\n",
-    "        test_loss = 0\n",
-    "        correct = 0\n",
-    "        with torch.no_grad():\n",
-    "            for data, target in dataloader:\n",
-    "                data, target = data.to(api.device), target.to(api.device)\n",
-    "                output = api.party(data)\n",
-    "                test_loss += F.nll_loss(\n",
-    "                    output, target, reduction=\"sum\"\n",
-    "                ).item()  # sum up batch loss\n",
-    "                pred = output.argmax(\n",
-    "                    dim=1, keepdim=True\n",
-    "                )  # get the index of the max log-probability\n",
-    "                correct += pred.eq(target.view_as(pred)).sum().item()\n",
-    "\n",
-    "        test_loss /= len(dataloader.dataset)\n",
-    "        accuracy = 100.0 * correct / len(dataloader.dataset)\n",
-    "        print(\n",
-    "            f\"Round: {api.party.round}, Test set: Average loss: {test_loss}, Accuracy: {accuracy}\"\n",
-    "        )\n",
-    "\n",
-    "    return _evaluate_global_model\n",
-    "\n",
-    "\n",
-    "def main():\n",
-    "    fix_seed(seed)\n",
-    "\n",
-    "    comm = MPI.COMM_WORLD\n",
-    "    myid = comm.Get_rank()\n",
-    "    size = comm.Get_size()\n",
-    "\n",
-    "    device = torch.device(\"cuda\" if torch.cuda.is_available() else \"cpu\")\n",
-    "    model = Net()\n",
-    "    model = model.to(device)\n",
-    "    optimizer = optim.SGD(model.parameters(), lr=lr)\n",
-    "\n",
-    "    sg_client_manager = SparseGradientClientManager(k=0.03)\n",
-    "    mpi_client_manager = MPIFedAVGClientManager()\n",
-    "    SparseGradientFedAVGClient = sg_client_manager.attach(FedAVGClient)\n",
-    "    MPISparseGradientFedAVGClient = mpi_client_manager.attach(SparseGradientFedAVGClient)\n",
-    "\n",
-    "    sg_server_manager = SparseGradientServerManager()\n",
-    "    mpi_server_manager = MPIFedAVGServerManager()\n",
-    "    SparseGradientFedAVGServer = sg_server_manager.attach(FedAVGServer)\n",
-    "    MPISparseGradientFedAVGServer = mpi_server_manager.attach(SparseGradientFedAVGServer)\n",
-    "\n",
-    "    if myid == 0:\n",
-    "        dataloader = prepare_dataloader(size - 1, myid, train=False)\n",
-    "        client_ids = list(range(1, size))\n",
-    "        server = MPISparseGradientFedAVGServer(comm, [1, 2], model)\n",
-    "        api = MPIFedAVGAPI(\n",
-    "            comm,\n",
-    "            server,\n",
-    "            True,\n",
-    "            F.nll_loss,\n",
-    "            None,\n",
-    "            None,\n",
-    "            num_rounds,\n",
-    "            1,\n",
-    "            custom_action=evaluate_gloal_model(dataloader),\n",
-    "            device=device,\n",
-    "        )\n",
-    "    else:\n",
-    "        dataloader = prepare_dataloader(size - 1, myid, train=True)\n",
-    "        client = MPISparseGradientFedAVGClient(comm, model, user_id=myid)\n",
-    "        api = MPIFedAVGAPI(\n",
-    "            comm,\n",
-    "            client,\n",
-    "            False,\n",
-    "            F.nll_loss,\n",
-    "            optimizer,\n",
-    "            dataloader,\n",
-    "            num_rounds,\n",
-    "            1,\n",
-    "            device=device,\n",
-    "        )\n",
-    "\n",
-    "    api.run()\n",
-    "\n",
-    "\n",
-    "if __name__ == \"__main__\":\n",
-    "    main()"
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": 12,
-   "metadata": {
-    "colab": {
-     "base_uri": "https://localhost:8080/"
-    },
-    "id": "g9xKbw0_eDSD",
-    "outputId": "92605e40-6239-44d0-b6d4-2ae950882da1"
-   },
-   "outputs": [
-    {
-     "name": "stdout",
-     "output_type": "stream",
-     "text": [
-      "communication 0, epoch 0: client-2 0.02008056694070498\n",
-      "communication 0, epoch 0: client-3 0.019996537216504413\n",
-      "Round: 1, Test set: Average loss: 1.7728474597930908, Accuracy: 38.47\n",
-      "communication 1, epoch 0: client-2 0.016343721010287603\n",
-      "communication 1, epoch 0: client-3 0.016255500958363214\n",
-      "Round: 2, Test set: Average loss: 1.4043720769882202, Accuracy: 60.5\n",
-      "communication 2, epoch 0: client-3 0.014260987114906311\n",
-      "communication 2, epoch 0: client-2 0.014353630113601685\n",
-      "Round: 3, Test set: Average loss: 1.1684634439468384, Accuracy: 70.27\n",
-      "communication 3, epoch 0: client-2 0.013123111790418624\n",
-      "communication 3, epoch 0: client-3 0.013032549581925075\n",
-      "Round: 4, Test set: Average loss: 1.0258800836563111, Accuracy: 75.0\n",
-      "communication 4, epoch 0: client-3 0.012150899289051692\n",
-      "communication 4, epoch 0: client-2 0.012242827371756236\n",
-      "Round: 5, Test set: Average loss: 0.9197616576194764, Accuracy: 77.6\n"
-     ]
-    }
-   ],
-   "source": [
-    "!mpiexec -np 3 --allow-run-as-root python /content/mpi_FedAVG_sparse.py"
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": 12,
-   "metadata": {
-    "id": "nBPih2JPaxPJ"
-   },
-   "outputs": [],
-   "source": []
-  }
- ],
- "metadata": {
-  "colab": {
-   "provenance": []
-  },
-  "kernelspec": {
-   "display_name": "Python 3",
-   "language": "python",
-   "name": "python3"
-  },
-  "language_info": {
-   "name": "python",
-   "version": "3.9.1 (tags/v3.9.1:1e5d33e, Dec  7 2020, 17:08:21) [MSC v.1927 64 bit (AMD64)]"
-  },
-  "vscode": {
-   "interpreter": {
-    "hash": "caa2b01f75ba60e629eaa9e4dabde0c46b243c9a0484934eeb17ad8b3fc9c91a"
-   }
-  },
-  "widgets": {
-   "application/vnd.jupyter.widget-state+json": {}
-  }
- },
- "nbformat": 4,
- "nbformat_minor": 0
+  "nbformat": 4,
+  "nbformat_minor": 0
 }
