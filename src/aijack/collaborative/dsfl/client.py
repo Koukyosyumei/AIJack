@@ -1,5 +1,3 @@
-import torch
-
 from ...utils.metrics import crossentropyloss_between_logits
 from ...utils.utils import default_local_train_for_client, torch_round_x_decimal
 from ..core import BaseClient
