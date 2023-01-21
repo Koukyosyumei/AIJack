@@ -227,6 +227,23 @@
    </li>
   </ul>
  </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="notebooks/diferentialprivacy.html">
+   7. Differential Privacy
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/>
+  <label for="toctree-checkbox-7">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="notebooks/aijack_dp.html">
+     7.1. Differential Privacy and Moment Accountant
+    </a>
+   </li>
+  </ul>
+ </li>
 </ul>
 <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
@@ -238,8 +255,8 @@
   <a class="reference internal" href="aijack.attack.html">
    1. aijack.attack package
   </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/>
-  <label for="toctree-checkbox-7">
+  <input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/>
+  <label for="toctree-checkbox-8">
    <i class="fas fa-chevron-down">
    </i>
   </label>
@@ -263,8 +280,8 @@
     <a class="reference internal" href="aijack.attack.inversion.html">
      1.1.4. aijack.attack.inversion package
     </a>
-    <input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/>
-    <label for="toctree-checkbox-8">
+    <input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/>
+    <label for="toctree-checkbox-9">
      <i class="fas fa-chevron-down">
      </i>
     </label>
@@ -297,8 +314,8 @@
   <a class="reference internal" href="aijack.defense.html">
    2. aijack.defense package
   </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/>
-  <label for="toctree-checkbox-9">
+  <input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/>
+  <label for="toctree-checkbox-10">
    <i class="fas fa-chevron-down">
    </i>
   </label>
@@ -312,8 +329,8 @@
     <a class="reference internal" href="aijack.defense.dp.html">
      2.1.2. aijack.defense.dp package
     </a>
-    <input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/>
-    <label for="toctree-checkbox-10">
+    <input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" type="checkbox"/>
+    <label for="toctree-checkbox-11">
      <i class="fas fa-chevron-down">
      </i>
     </label>
@@ -361,8 +378,8 @@
   <a class="reference internal" href="aijack.collaborative.html">
    3. aijack.collaborative package
   </a>
-  <input checked="" class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" type="checkbox"/>
-  <label for="toctree-checkbox-11">
+  <input checked="" class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" type="checkbox"/>
+  <label for="toctree-checkbox-12">
    <i class="fas fa-chevron-down">
    </i>
   </label>
@@ -882,6 +899,240 @@ registered hooks while the latter silently ignores them.</p>
 </section>
 <section id="module-aijack.collaborative.fedmd">
 <span id="module-contents"></span><h2><span class="section-number">3.1.6.6. </span>Module contents<a class="headerlink" href="#module-aijack.collaborative.fedmd" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="aijack.collaborative.fedmd.FedMDAPI">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">aijack.collaborative.fedmd.</span></span><span class="sig-name descname"><span class="pre">FedMDAPI</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">server</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clients</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">public_dataloader</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">local_dataloaders</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">criterion</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">client_optimizers</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">validation_dataloader=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">server_optimizer=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_communication=1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device='cpu'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">consensus_epoch=1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">revisit_epoch=1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transfer_epoch_public=1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transfer_epoch_private=1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">server_training_epoch=1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">custom_action=&lt;function</span> <span class="pre">FedMDAPI.&lt;lambda&gt;&gt;</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/collaborative/fedmd/api.html#FedMDAPI"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.collaborative.fedmd.FedMDAPI" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="aijack.collaborative.core.html#aijack.collaborative.core.api.BaseFLKnowledgeDistillationAPI" title="aijack.collaborative.core.api.BaseFLKnowledgeDistillationAPI"><code class="xref py py-class docutils literal notranslate"><span class="pre">aijack.collaborative.core.api.BaseFLKnowledgeDistillationAPI</span></code></a></p>
+<p>Implementation of <cite>Fedmd: Heterogenous federated learning via model distillation</cite></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="aijack.collaborative.fedmd.FedMDAPI.digest_phase">
+<span class="sig-name descname"><span class="pre">digest_phase</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">i</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logging</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/collaborative/fedmd/api.html#FedMDAPI.digest_phase"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.collaborative.fedmd.FedMDAPI.digest_phase" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="aijack.collaborative.fedmd.FedMDAPI.evaluation">
+<span class="sig-name descname"><span class="pre">evaluation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">i</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logging</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/collaborative/fedmd/api.html#FedMDAPI.evaluation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.collaborative.fedmd.FedMDAPI.evaluation" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="aijack.collaborative.fedmd.FedMDAPI.revisit_phase">
+<span class="sig-name descname"><span class="pre">revisit_phase</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">logging</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/collaborative/fedmd/api.html#FedMDAPI.revisit_phase"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.collaborative.fedmd.FedMDAPI.revisit_phase" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="aijack.collaborative.fedmd.FedMDAPI.run">
+<span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/collaborative/fedmd/api.html#FedMDAPI.run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.collaborative.fedmd.FedMDAPI.run" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="aijack.collaborative.fedmd.FedMDAPI.server_side_training">
+<span class="sig-name descname"><span class="pre">server_side_training</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">logging</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/collaborative/fedmd/api.html#FedMDAPI.server_side_training"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.collaborative.fedmd.FedMDAPI.server_side_training" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="aijack.collaborative.fedmd.FedMDAPI.train_server">
+<span class="sig-name descname"><span class="pre">train_server</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/collaborative/fedmd/api.html#FedMDAPI.train_server"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.collaborative.fedmd.FedMDAPI.train_server" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="aijack.collaborative.fedmd.FedMDAPI.transfer_phase">
+<span class="sig-name descname"><span class="pre">transfer_phase</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">logging</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/collaborative/fedmd/api.html#FedMDAPI.transfer_phase"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.collaborative.fedmd.FedMDAPI.transfer_phase" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="aijack.collaborative.fedmd.FedMDClient">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">aijack.collaborative.fedmd.</span></span><span class="sig-name descname"><span class="pre">FedMDClient</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">public_dataloader</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_dim</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">8</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">base_loss_func</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">CrossEntropyLoss()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">consensus_loss_func</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">L1Loss()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">round_decimal</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'cpu'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/collaborative/fedmd/client.html#FedMDClient"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.collaborative.fedmd.FedMDClient" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="aijack.collaborative.core.html#aijack.collaborative.core.client.BaseClient" title="aijack.collaborative.core.client.BaseClient"><code class="xref py py-class docutils literal notranslate"><span class="pre">aijack.collaborative.core.client.BaseClient</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="aijack.collaborative.fedmd.FedMDClient.approach_consensus">
+<span class="sig-name descname"><span class="pre">approach_consensus</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">consensus_optimizer</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/collaborative/fedmd/client.html#FedMDClient.approach_consensus"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.collaborative.fedmd.FedMDClient.approach_consensus" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="aijack.collaborative.fedmd.FedMDClient.download">
+<span class="sig-name descname"><span class="pre">download</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">predicted_values_of_server</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/collaborative/fedmd/client.html#FedMDClient.download"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.collaborative.fedmd.FedMDClient.download" title="Permalink to this definition">¶</a></dt>
+<dd><p>Download the global model from the server.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="aijack.collaborative.fedmd.FedMDClient.local_train">
+<span class="sig-name descname"><span class="pre">local_train</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">local_epoch</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">criterion</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trainloader</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">optimizer</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/collaborative/fedmd/client.html#FedMDClient.local_train"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.collaborative.fedmd.FedMDClient.local_train" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="aijack.collaborative.fedmd.FedMDClient.training">
+<span class="sig-name descname"><span class="pre">training</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#aijack.collaborative.fedmd.FedMDClient.training" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="aijack.collaborative.fedmd.FedMDClient.upload">
+<span class="sig-name descname"><span class="pre">upload</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/collaborative/fedmd/client.html#FedMDClient.upload"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.collaborative.fedmd.FedMDClient.upload" title="Permalink to this definition">¶</a></dt>
+<dd><p>Upload the locally learned informatino to the server.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="aijack.collaborative.fedmd.FedMDServer">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">aijack.collaborative.fedmd.</span></span><span class="sig-name descname"><span class="pre">FedMDServer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">clients</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">server_model</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">server_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'cpu'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/collaborative/fedmd/server.html#FedMDServer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.collaborative.fedmd.FedMDServer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="aijack.collaborative.core.html#aijack.collaborative.core.server.BaseServer" title="aijack.collaborative.core.server.BaseServer"><code class="xref py py-class docutils literal notranslate"><span class="pre">aijack.collaborative.core.server.BaseServer</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="aijack.collaborative.fedmd.FedMDServer.action">
+<span class="sig-name descname"><span class="pre">action</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/collaborative/fedmd/server.html#FedMDServer.action"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.collaborative.fedmd.FedMDServer.action" title="Permalink to this definition">¶</a></dt>
+<dd><p>Execute thr routine of each communication.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="aijack.collaborative.fedmd.FedMDServer.distribute">
+<span class="sig-name descname"><span class="pre">distribute</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/collaborative/fedmd/server.html#FedMDServer.distribute"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.collaborative.fedmd.FedMDServer.distribute" title="Permalink to this definition">¶</a></dt>
+<dd><p>Distribute the logits of public dataset to each client.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="aijack.collaborative.fedmd.FedMDServer.forward">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/collaborative/fedmd/server.html#FedMDServer.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.collaborative.fedmd.FedMDServer.forward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Defines the computation performed at every call.</p>
+<p>Should be overridden by all subclasses.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Although the recipe for forward pass needs to be defined within
+this function, one should call the <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code> instance afterwards
+instead of this since the former takes care of running the
+registered hooks while the latter silently ignores them.</p>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="aijack.collaborative.fedmd.FedMDServer.receive">
+<span class="sig-name descname"><span class="pre">receive</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/collaborative/fedmd/server.html#FedMDServer.receive"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.collaborative.fedmd.FedMDServer.receive" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="aijack.collaborative.fedmd.FedMDServer.training">
+<span class="sig-name descname"><span class="pre">training</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#aijack.collaborative.fedmd.FedMDServer.training" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="aijack.collaborative.fedmd.FedMDServer.update">
+<span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/collaborative/fedmd/server.html#FedMDServer.update"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.collaborative.fedmd.FedMDServer.update" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update the global model.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="aijack.collaborative.fedmd.MPIFedMDAPI">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">aijack.collaborative.fedmd.</span></span><span class="sig-name descname"><span class="pre">MPIFedMDAPI</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">comm</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">party</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_server</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">criterion</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">local_optimizer=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">local_dataloader=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">public_dataloader=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_communication=1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">local_epoch=1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">consensus_epoch=1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">revisit_epoch=1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transfer_epoch_public=1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transfer_epoch_private=1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">custom_action=&lt;function</span> <span class="pre">MPIFedMDAPI.&lt;lambda&gt;&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device='cpu'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/collaborative/fedmd/api.html#MPIFedMDAPI"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.collaborative.fedmd.MPIFedMDAPI" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="aijack.collaborative.core.html#aijack.collaborative.core.api.BaseFedAPI" title="aijack.collaborative.core.api.BaseFedAPI"><code class="xref py py-class docutils literal notranslate"><span class="pre">aijack.collaborative.core.api.BaseFedAPI</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="aijack.collaborative.fedmd.MPIFedMDAPI.digest_phase">
+<span class="sig-name descname"><span class="pre">digest_phase</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/collaborative/fedmd/api.html#MPIFedMDAPI.digest_phase"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.collaborative.fedmd.MPIFedMDAPI.digest_phase" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="aijack.collaborative.fedmd.MPIFedMDAPI.local_train">
+<span class="sig-name descname"><span class="pre">local_train</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">epoch</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">public</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/collaborative/fedmd/api.html#MPIFedMDAPI.local_train"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.collaborative.fedmd.MPIFedMDAPI.local_train" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="aijack.collaborative.fedmd.MPIFedMDAPI.revisit_phase">
+<span class="sig-name descname"><span class="pre">revisit_phase</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/collaborative/fedmd/api.html#MPIFedMDAPI.revisit_phase"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.collaborative.fedmd.MPIFedMDAPI.revisit_phase" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="aijack.collaborative.fedmd.MPIFedMDAPI.run">
+<span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/collaborative/fedmd/api.html#MPIFedMDAPI.run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.collaborative.fedmd.MPIFedMDAPI.run" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="aijack.collaborative.fedmd.MPIFedMDClientManager">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">aijack.collaborative.fedmd.</span></span><span class="sig-name descname"><span class="pre">MPIFedMDClientManager</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/collaborative/fedmd/client.html#MPIFedMDClientManager"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.collaborative.fedmd.MPIFedMDClientManager" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="aijack.manager.html#aijack.manager.base.BaseManager" title="aijack.manager.base.BaseManager"><code class="xref py py-class docutils literal notranslate"><span class="pre">aijack.manager.base.BaseManager</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="aijack.collaborative.fedmd.MPIFedMDClientManager.attach">
+<span class="sig-name descname"><span class="pre">attach</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cls</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/collaborative/fedmd/client.html#MPIFedMDClientManager.attach"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.collaborative.fedmd.MPIFedMDClientManager.attach" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="aijack.collaborative.fedmd.MPIFedMDServerManager">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">aijack.collaborative.fedmd.</span></span><span class="sig-name descname"><span class="pre">MPIFedMDServerManager</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/collaborative/fedmd/server.html#MPIFedMDServerManager"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.collaborative.fedmd.MPIFedMDServerManager" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="aijack.manager.html#aijack.manager.base.BaseManager" title="aijack.manager.base.BaseManager"><code class="xref py py-class docutils literal notranslate"><span class="pre">aijack.manager.base.BaseManager</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="aijack.collaborative.fedmd.MPIFedMDServerManager.attach">
+<span class="sig-name descname"><span class="pre">attach</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cls</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/collaborative/fedmd/server.html#MPIFedMDServerManager.attach"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.collaborative.fedmd.MPIFedMDServerManager.attach" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="aijack.collaborative.fedmd.get_delta_of_fedmd_nfdp">
+<span class="sig-prename descclassname"><span class="pre">aijack.collaborative.fedmd.</span></span><span class="sig-name descname"><span class="pre">get_delta_of_fedmd_nfdp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">replacement</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/collaborative/fedmd/nfdp.html#get_delta_of_fedmd_nfdp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.collaborative.fedmd.get_delta_of_fedmd_nfdp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return delta of FedMD-NFDP</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>n</strong> (<em>int</em>) – training set size</p></li>
+<li><p><strong>k</strong> (<em>int</em>) – sampling size</p></li>
+<li><p><strong>replacement</strong> (<em>bool</em><em>, </em><em>optional</em>) – sampling w/o replacement. Defaults to True.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>delta of FedMD-NFDP</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="aijack.collaborative.fedmd.get_epsilon_of_fedmd_nfdp">
+<span class="sig-prename descclassname"><span class="pre">aijack.collaborative.fedmd.</span></span><span class="sig-name descname"><span class="pre">get_epsilon_of_fedmd_nfdp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">replacement</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/collaborative/fedmd/nfdp.html#get_epsilon_of_fedmd_nfdp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.collaborative.fedmd.get_epsilon_of_fedmd_nfdp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return epsilon of FedMD-NFDP</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>n</strong> (<em>int</em>) – training set size</p></li>
+<li><p><strong>k</strong> (<em>int</em>) – sampling size</p></li>
+<li><p><strong>replacement</strong> (<em>bool</em><em>, </em><em>optional</em>) – sampling w/o replacement. Defaults to True.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>epsilon of FedMD-NFDP</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="aijack.collaborative.fedmd.get_k_of_fedmd_nfdp">
+<span class="sig-prename descclassname"><span class="pre">aijack.collaborative.fedmd.</span></span><span class="sig-name descname"><span class="pre">get_k_of_fedmd_nfdp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">epsilon</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">replacement</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/collaborative/fedmd/nfdp.html#get_k_of_fedmd_nfdp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.collaborative.fedmd.get_k_of_fedmd_nfdp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return k of FedMD-NFDP</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>epsilon</strong> (<em>float</em>) – epsilon</p></li>
+<li><p><strong>n</strong> (<em>int</em>) – training set size</p></li>
+<li><p><strong>replacement</strong> (<em>bool</em><em>, </em><em>optional</em>) – sampling w/o replacement. Defaults to True.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>k</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
 </section>
 </section>
 

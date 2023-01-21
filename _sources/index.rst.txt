@@ -150,7 +150,7 @@ Indices
    notebooks/membershipinference
    notebooks/poisoning
    notebooks/evasion
-   notebooks/differentialprivacy
+   notebooks/diferentialprivacy
 
 .. toctree::
    :caption: API Docs

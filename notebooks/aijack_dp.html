@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>Differential Privacy and Moment Accountant &#8212; AIJack  documentation</title>
+    <title>7.1. Differential Privacy and Moment Accountant &#8212; AIJack  documentation</title>
     
   <link href="../_static/css/theme.css" rel="stylesheet">
   <link href="../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
@@ -51,6 +51,8 @@
     <link rel="shortcut icon" href="../_static/logo_square.png"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="1. aijack.attack package" href="../aijack.attack.html" />
+    <link rel="prev" title="7. Differential Privacy" href="diferentialprivacy.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
     
@@ -90,7 +92,7 @@
   Tutorial
  </span>
 </p>
-<ul class="nav bd-sidenav">
+<ul class="current nav bd-sidenav">
  <li class="toctree-l1 has-children">
   <a class="reference internal" href="federated_learning.html">
    1. Federated Learning
@@ -228,6 +230,23 @@
    </li>
   </ul>
  </li>
+ <li class="toctree-l1 current active has-children">
+  <a class="reference internal" href="diferentialprivacy.html">
+   7. Differential Privacy
+  </a>
+  <input checked="" class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/>
+  <label for="toctree-checkbox-7">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul class="current">
+   <li class="toctree-l2 current active">
+    <a class="current reference internal" href="#">
+     7.1. Differential Privacy and Moment Accountant
+    </a>
+   </li>
+  </ul>
+ </li>
 </ul>
 <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
@@ -239,8 +258,8 @@
   <a class="reference internal" href="../aijack.attack.html">
    1. aijack.attack package
   </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/>
-  <label for="toctree-checkbox-7">
+  <input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/>
+  <label for="toctree-checkbox-8">
    <i class="fas fa-chevron-down">
    </i>
   </label>
@@ -264,8 +283,8 @@
     <a class="reference internal" href="../aijack.attack.inversion.html">
      1.1.4. aijack.attack.inversion package
     </a>
-    <input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/>
-    <label for="toctree-checkbox-8">
+    <input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/>
+    <label for="toctree-checkbox-9">
      <i class="fas fa-chevron-down">
      </i>
     </label>
@@ -298,8 +317,8 @@
   <a class="reference internal" href="../aijack.defense.html">
    2. aijack.defense package
   </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/>
-  <label for="toctree-checkbox-9">
+  <input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/>
+  <label for="toctree-checkbox-10">
    <i class="fas fa-chevron-down">
    </i>
   </label>
@@ -313,8 +332,8 @@
     <a class="reference internal" href="../aijack.defense.dp.html">
      2.1.2. aijack.defense.dp package
     </a>
-    <input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/>
-    <label for="toctree-checkbox-10">
+    <input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" type="checkbox"/>
+    <label for="toctree-checkbox-11">
      <i class="fas fa-chevron-down">
      </i>
     </label>
@@ -362,8 +381,8 @@
   <a class="reference internal" href="../aijack.collaborative.html">
    3. aijack.collaborative package
   </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" type="checkbox"/>
-  <label for="toctree-checkbox-11">
+  <input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" type="checkbox"/>
+  <label for="toctree-checkbox-12">
    <i class="fas fa-chevron-down">
    </i>
   </label>
@@ -523,7 +542,7 @@
                 <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#get">
-   Get
+   7.1.1. Get
    <span class="math notranslate nohighlight">
     \(ϵ\)
    </span>
@@ -531,7 +550,7 @@
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#id1">
-   Get
+   7.1.2. Get
    <span class="math notranslate nohighlight">
     \(σ\)
    </span>
@@ -559,7 +578,7 @@
                             <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#get">
-   Get
+   7.1.1. Get
    <span class="math notranslate nohighlight">
     \(ϵ\)
    </span>
@@ -567,7 +586,7 @@
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#id1">
-   Get
+   7.1.2. Get
    <span class="math notranslate nohighlight">
     \(σ\)
    </span>
@@ -583,7 +602,7 @@
               <div>
                 
   <section class="tex2jax_ignore mathjax_ignore" id="differential-privacy-and-moment-accountant">
-<h1>Differential Privacy and Moment Accountant<a class="headerlink" href="#differential-privacy-and-moment-accountant" title="Permalink to this headline">¶</a></h1>
+<h1><span class="section-number">7.1. </span>Differential Privacy and Moment Accountant<a class="headerlink" href="#differential-privacy-and-moment-accountant" title="Permalink to this headline">¶</a></h1>
 <p>AIJack supports Moment Accountant for Differential Privacy with python or c++ backend. C++ backend is much faster but numerically unstable. We will improve these imeplementations as soon as possible.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -603,7 +622,7 @@
 </div>
 </div>
 <section id="get">
-<h2>Get <span class="math notranslate nohighlight">\(ϵ\)</span><a class="headerlink" href="#get" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">7.1.1. </span>Get <span class="math notranslate nohighlight">\(ϵ\)</span><a class="headerlink" href="#get" title="Permalink to this headline">¶</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># get epsilon</span>
@@ -692,7 +711,7 @@
 </div>
 </section>
 <section id="id1">
-<h2>Get <span class="math notranslate nohighlight">\(σ\)</span><a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">7.1.2. </span>Get <span class="math notranslate nohighlight">\(σ\)</span><a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">ga</span> <span class="o">=</span> <span class="n">GeneralMomentAccountant</span><span class="p">(</span>
@@ -732,7 +751,21 @@
               
             
                 <!-- Previous / next buttons -->
-<div class='prev-next-area'>
+<div class='prev-next-area'> 
+    <a class='left-prev' id="prev-link" href="diferentialprivacy.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title"><span class="section-number">7. </span>Differential Privacy</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="../aijack.attack.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">1. </span>aijack.attack package</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
 </div>
             
         </div>
