@@ -10,3 +10,14 @@ from .gradientinversion_server import (  # noqa: F401
 )
 from .mi_face import MI_FACE  # noqa: F401
 from .utils import DataRepExtractor  # noqa: F401
+
+__all__ = [
+    "GANAttackClientManager",
+    "attach_ganattack_to_client",
+    "Generator_Attack",
+    "GradientInversion_Attack",
+    "GradientInversionAttackServerManager",
+    "attach_gradient_inversion_attack_to_server",
+    "MI_FACE",
+    "DataRepExtractor",
+]
