@@ -4,4 +4,5 @@ Differential Privacy
 .. toctree::
    :maxdepth: 1
 
-   aijack_dp
+   aijack_moments_accountant
+   aijack_miface_dpsgd
