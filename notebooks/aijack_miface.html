@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>2.1. MI-FACE Model Inversion Attack vs Differentially Private SGD &#8212; AIJack  documentation</title>
+    <title>2.1. MI-FACE &#8212; AIJack  documentation</title>
     
   <link href="../_static/css/theme.css" rel="stylesheet">
   <link href="../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
@@ -106,13 +106,23 @@
     </a>
    </li>
    <li class="toctree-l2">
+    <a class="reference internal" href="aijack_fedavg_paillier.html">
+     1.2. FedAVG with Paillier Encryption
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="aijack_fedavg_sparsegradient.html">
+     1.3. FedAVG with Sparse Gradient
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="aijack_fedmd.html">
-     1.2. FedMD: Federated Learning with Model Distillation
+     1.4. FedMD: Federated Learning with Model Distillation
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="aijack_secureboost.html">
-     1.3. SecureBoost: Vertically Federated XGBoost with Paillier Encryption
+     1.5. SecureBoost: Vertically Federated XGBoost with Paillier Encryption
     </a>
    </li>
   </ul>
@@ -129,7 +139,7 @@
   <ul class="current">
    <li class="toctree-l2 current active">
     <a class="current reference internal" href="#">
-     2.1. MI-FACE Model Inversion Attack vs Differentially Private SGD
+     2.1. MI-FACE
     </a>
    </li>
    <li class="toctree-l2">
@@ -238,8 +248,13 @@
   </label>
   <ul>
    <li class="toctree-l2">
-    <a class="reference internal" href="aijack_dp.html">
+    <a class="reference internal" href="aijack_moments_accountant.html">
      7.1. Differential Privacy and Moment Accountant
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="aijack_miface_dpsgd.html">
+     7.2. MI-FACE vs DPSGD
     </a>
    </li>
   </ul>
@@ -538,25 +553,18 @@
             <nav id="bd-toc-nav" aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#no-defense">
-   2.1.1. No defense
+  <a class="reference internal nav-link" href="#setup">
+   2.1.1. Setup
   </a>
-  <ul class="visible nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#setup">
-     2.1.1.1. Setup
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#training-the-target-model">
-     2.1.1.2. Training the target model
-    </a>
-   </li>
-  </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#with-dpsgd">
-   2.1.2. With DPSGD
+  <a class="reference internal nav-link" href="#training-the-target-model">
+   2.1.2. Training the target model
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#attack">
+   2.1.3. Attack
   </a>
  </li>
 </ul>
@@ -569,7 +577,7 @@
         <div class="col-12 col-md-9 pl-md-3 pr-md-0">
             <!-- Table of contents that is only displayed when printing the page -->
             <div id="jb-print-docs-body" class="onlyprint">
-                <h1>MI-FACE Model Inversion Attack vs Differentially Private SGD</h1>
+                <h1>MI-FACE</h1>
                 <!-- Table of contents -->
                 <div id="print-main-content">
                     <div id="jb-print-toc">
@@ -580,25 +588,18 @@
                         <nav aria-label="Page">
                             <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#no-defense">
-   2.1.1. No defense
+  <a class="reference internal nav-link" href="#setup">
+   2.1.1. Setup
   </a>
-  <ul class="visible nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#setup">
-     2.1.1.1. Setup
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#training-the-target-model">
-     2.1.1.2. Training the target model
-    </a>
-   </li>
-  </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#with-dpsgd">
-   2.1.2. With DPSGD
+  <a class="reference internal nav-link" href="#training-the-target-model">
+   2.1.2. Training the target model
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#attack">
+   2.1.3. Attack
   </a>
  </li>
 </ul>
@@ -610,9 +611,9 @@
             
               <div>
                 
-  <section class="tex2jax_ignore mathjax_ignore" id="mi-face-model-inversion-attack-vs-differentially-private-sgd">
-<h1><span class="section-number">2.1. </span>MI-FACE Model Inversion Attack vs Differentially Private SGD<a class="headerlink" href="#mi-face-model-inversion-attack-vs-differentially-private-sgd" title="Permalink to this headline">¶</a></h1>
-<p>In this tutorial, we introduce the basic model inversion algorithm MI-FACE and the popular privatization tool DPSGD, which makes the trained model differentially private. DPSGD injects noise into the gradients and prevents information leakage.</p>
+  <section class="tex2jax_ignore mathjax_ignore" id="mi-face">
+<h1><span class="section-number">2.1. </span>MI-FACE<a class="headerlink" href="#mi-face" title="Permalink to this headline">¶</a></h1>
+<p>In this tutorial, we introduce the basic model inversion algorithm MI-FACE, which reconstruct the class representation within the training dataset.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span>!git clone https://github.com/harveyslash/Facial-Similarity-with-Siamese-Networks-in-Pytorch.git
@@ -623,13 +624,10 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Cloning into &#39;Facial-Similarity-with-Siamese-Networks-in-Pytorch&#39;...
-remote: Enumerating objects: 550, done.
-remote: Counting objects: 100% (18/18), done.
-remote: Compressing objects: 100% (10/10), done.
-remote: Total 550 (delta 6), reused 18 (delta 6), pack-reused 532
-Receiving objects: 100% (550/550), 6.32 MiB | 21.66 MiB/s, done.
-Resolving deltas: 100% (27/27), done.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>fatal: destination path &#39;Facial-Similarity-with-Siamese-Networks-in-Pytorch&#39; already exists and is not an empty directory.
+mkdir: cannot create directory ‘data’: File exists
+mv: cannot stat &#39;Facial-Similarity-with-Siamese-Networks-in-Pytorch/data/faces/testing/*&#39;: No such file or directory
+mv: cannot stat &#39;Facial-Similarity-with-Siamese-Networks-in-Pytorch/data/faces/training/*&#39;: No such file or directory
 </pre></div>
 </div>
 </div>
@@ -645,6 +643,7 @@ Resolving deltas: 100% (27/27), done.
 <span class="kn">import</span> <span class="nn">torchvision.transforms</span> <span class="k">as</span> <span class="nn">transforms</span>
 <span class="kn">from</span> <span class="nn">torch.utils.data</span> <span class="kn">import</span> <span class="n">TensorDataset</span>
 <span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="kn">import</span> <span class="nn">glob</span>
 <span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">accuracy_score</span>
 
 <span class="kn">from</span> <span class="nn">aijack.attack</span> <span class="kn">import</span> <span class="n">MI_FACE</span>
@@ -673,10 +672,8 @@ Resolving deltas: 100% (27/27), done.
 </div>
 </div>
 </div>
-<section id="no-defense">
-<h2><span class="section-number">2.1.1. </span>No defense<a class="headerlink" href="#no-defense" title="Permalink to this headline">¶</a></h2>
 <section id="setup">
-<h3><span class="section-number">2.1.1.1. </span>Setup<a class="headerlink" href="#setup" title="Permalink to this headline">¶</a></h3>
+<h2><span class="section-number">2.1.1. </span>Setup<a class="headerlink" href="#setup" title="Permalink to this headline">¶</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">imgs</span> <span class="o">=</span> <span class="p">[]</span>
@@ -708,7 +705,7 @@ Resolving deltas: 100% (27/27), done.
 </div>
 </section>
 <section id="training-the-target-model">
-<h3><span class="section-number">2.1.1.2. </span>Training the target model<a class="headerlink" href="#training-the-target-model" title="Permalink to this headline">¶</a></h3>
+<h2><span class="section-number">2.1.2. </span>Training the target model<a class="headerlink" href="#training-the-target-model" title="Permalink to this headline">¶</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>  <span class="c1"># loop over the dataset multiple times</span>
@@ -751,26 +748,29 @@ Resolving deltas: 100% (27/27), done.
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>epoch 0: loss is 0.9156735908985137
-epoch 1: loss is 0.8619398236274719
-epoch 2: loss is 0.81106709420681
-epoch 3: loss is 0.7768852257728577
-epoch 4: loss is 0.7660594815015793
-epoch 5: loss is 0.7590363520383835
-epoch 6: loss is 0.7473625355958938
-epoch 7: loss is 0.7374473077058792
-epoch 8: loss is 0.7262152290344238
-epoch 9: loss is 0.7187826019525528
-Test Accuracy is:  0.87
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>epoch 0: loss is 0.9158830660581588
+epoch 1: loss is 0.8644785904884338
+epoch 2: loss is 0.8073549878597259
+epoch 3: loss is 0.7737618207931518
+epoch 4: loss is 0.7515438687801361
+epoch 5: loss is 0.7337622374296189
+epoch 6: loss is 0.7225443947315217
+epoch 7: loss is 0.7174954098463059
+epoch 8: loss is 0.7157024312019348
+epoch 9: loss is 0.7153458887338638
+Test Accuracy is:  0.8725
 </pre></div>
 </div>
 </div>
 </div>
+</section>
+<section id="attack">
+<h2><span class="section-number">2.1.3. </span>Attack<a class="headerlink" href="#attack" title="Permalink to this headline">¶</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">input_shape</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">112</span><span class="p">,</span> <span class="mi">92</span><span class="p">)</span>
-<span class="n">target_label</span> <span class="o">=</span> <span class="mi">1</span>
-<span class="n">lam</span> <span class="o">=</span> <span class="mf">0.1</span>
+<span class="n">target_label</span> <span class="o">=</span> <span class="mi">11</span>
+<span class="n">lam</span> <span class="o">=</span> <span class="mf">0.03</span>
 <span class="n">num_itr</span> <span class="o">=</span> <span class="mi">100</span>
 
 <span class="n">mi</span> <span class="o">=</span> <span class="n">MI_FACE</span><span class="p">(</span>
@@ -789,7 +789,10 @@ Test Accuracy is:  0.87
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">nrows</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
-<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">BASE</span> <span class="o">+</span> <span class="s2">&quot;s2/1.pgm&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;gray&quot;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span>
+    <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">([</span><span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="n">BASE</span> <span class="o">+</span> <span class="s2">&quot;s12/*.pgm&quot;</span><span class="p">)],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span>
+    <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;gray&quot;</span><span class="p">,</span>
+<span class="p">)</span>
 <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">&quot;off&quot;</span><span class="p">)</span>
 <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;original image&quot;</span><span class="p">)</span>
 <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">x_result_1</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;gray&quot;</span><span class="p">)</span>
@@ -802,161 +805,6 @@ Test Accuracy is:  0.87
 </div>
 <div class="cell_output docutils container">
 <img alt="../_images/aijack_miface_10_0.png" src="../_images/aijack_miface_10_0.png" />
-</div>
-</div>
-</section>
-</section>
-<section id="with-dpsgd">
-<h2><span class="section-number">2.1.2. </span>With DPSGD<a class="headerlink" href="#with-dpsgd" title="Permalink to this headline">¶</a></h2>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">lot_size</span> <span class="o">=</span> <span class="mi">40</span>
-<span class="n">batch_size</span> <span class="o">=</span> <span class="mi">1</span>
-<span class="n">iterations</span> <span class="o">=</span> <span class="mi">10</span>
-<span class="n">sigma</span> <span class="o">=</span> <span class="mf">0.5</span>
-<span class="n">l2_norm_clip</span> <span class="o">=</span> <span class="mi">1</span>
-<span class="n">delta</span> <span class="o">=</span> <span class="mf">1e-5</span>
-
-<span class="n">accountant</span> <span class="o">=</span> <span class="n">GeneralMomentAccountant</span><span class="p">(</span>
-    <span class="n">noise_type</span><span class="o">=</span><span class="s2">&quot;Gaussian&quot;</span><span class="p">,</span>
-    <span class="n">search</span><span class="o">=</span><span class="s2">&quot;ternary&quot;</span><span class="p">,</span>
-    <span class="n">precision</span><span class="o">=</span><span class="mf">0.001</span><span class="p">,</span>
-    <span class="n">order_max</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-    <span class="n">order_min</span><span class="o">=</span><span class="mi">72</span><span class="p">,</span>
-    <span class="n">max_iterations</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
-    <span class="n">bound_type</span><span class="o">=</span><span class="s2">&quot;rdp_upperbound_closedformula&quot;</span><span class="p">,</span>
-    <span class="n">backend</span><span class="o">=</span><span class="s2">&quot;python&quot;</span><span class="p">,</span>
-<span class="p">)</span>
-
-<span class="n">privacy_manager</span> <span class="o">=</span> <span class="n">DPSGDManager</span><span class="p">(</span>
-    <span class="n">accountant</span><span class="p">,</span>
-    <span class="n">optim</span><span class="o">.</span><span class="n">SGD</span><span class="p">,</span>
-    <span class="n">l2_norm_clip</span><span class="o">=</span><span class="n">l2_norm_clip</span><span class="p">,</span>
-    <span class="n">dataset</span><span class="o">=</span><span class="n">trainset</span><span class="p">,</span>
-    <span class="n">lot_size</span><span class="o">=</span><span class="n">lot_size</span><span class="p">,</span>
-    <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span>
-    <span class="n">iterations</span><span class="o">=</span><span class="n">iterations</span><span class="p">,</span>
-<span class="p">)</span>
-
-<span class="n">accountant</span><span class="o">.</span><span class="n">reset_step_info</span><span class="p">()</span>
-<span class="n">accountant</span><span class="o">.</span><span class="n">add_step_info</span><span class="p">(</span>
-    <span class="p">{</span><span class="s2">&quot;sigma&quot;</span><span class="p">:</span> <span class="n">sigma</span><span class="p">},</span>
-    <span class="n">lot_size</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">trainset</span><span class="p">),</span>
-    <span class="n">iterations</span> <span class="o">*</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">trainset</span><span class="p">)</span> <span class="o">/</span> <span class="n">lot_size</span><span class="p">),</span>
-<span class="p">)</span>
-<span class="n">estimated_epsilon</span> <span class="o">=</span> <span class="n">accountant</span><span class="o">.</span><span class="n">get_epsilon</span><span class="p">(</span><span class="n">delta</span><span class="o">=</span><span class="n">delta</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;estimated epsilon is </span><span class="si">{</span><span class="n">estimated_epsilon</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-
-<span class="n">accountant</span><span class="o">.</span><span class="n">reset_step_info</span><span class="p">()</span>
-<span class="n">dpoptimizer_cls</span><span class="p">,</span> <span class="n">lot_loader</span><span class="p">,</span> <span class="n">batch_loader</span> <span class="o">=</span> <span class="n">privacy_manager</span><span class="o">.</span><span class="n">privatize</span><span class="p">(</span>
-    <span class="n">noise_multiplier</span><span class="o">=</span><span class="n">sigma</span>
-<span class="p">)</span>
-
-<span class="n">net</span> <span class="o">=</span> <span class="n">Net</span><span class="p">()</span>
-<span class="n">criterion</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">CrossEntropyLoss</span><span class="p">()</span>
-<span class="n">optimizer</span> <span class="o">=</span> <span class="n">dpoptimizer_cls</span><span class="p">(</span><span class="n">net</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">momentum</span><span class="o">=</span><span class="mf">0.9</span><span class="p">)</span>
-
-<span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">iterations</span><span class="p">):</span>  <span class="c1"># loop over the dataset multiple times</span>
-
-    <span class="n">running_loss</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="n">data_size</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="n">preds</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">labels</span> <span class="o">=</span> <span class="p">[]</span>
-
-    <span class="k">for</span> <span class="n">X_lot</span><span class="p">,</span> <span class="n">y_lot</span> <span class="ow">in</span> <span class="n">lot_loader</span><span class="p">(</span><span class="n">optimizer</span><span class="p">):</span>
-        <span class="k">for</span> <span class="n">X_batch</span><span class="p">,</span> <span class="n">y_batch</span> <span class="ow">in</span> <span class="n">batch_loader</span><span class="p">(</span><span class="n">TensorDataset</span><span class="p">(</span><span class="n">X_lot</span><span class="p">,</span> <span class="n">y_lot</span><span class="p">)):</span>
-            <span class="n">optimizer</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
-            <span class="n">pred</span> <span class="o">=</span> <span class="n">net</span><span class="p">(</span><span class="n">X_batch</span><span class="p">)</span>
-            <span class="n">loss</span> <span class="o">=</span> <span class="n">criterion</span><span class="p">(</span><span class="n">pred</span><span class="p">,</span> <span class="n">y_batch</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">int64</span><span class="p">))</span>
-            <span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
-            <span class="n">optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
-
-            <span class="n">running_loss</span> <span class="o">+=</span> <span class="n">loss</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
-            <span class="n">data_size</span> <span class="o">+=</span> <span class="n">X_batch</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-            <span class="n">preds</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pred</span><span class="p">)</span>
-            <span class="n">labels</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">y_batch</span><span class="p">)</span>
-
-    <span class="n">preds</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">(</span><span class="n">preds</span><span class="p">)</span>
-    <span class="n">labels</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">(</span><span class="n">labels</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;epoch </span><span class="si">{</span><span class="n">epoch</span><span class="si">}</span><span class="s2">: loss is </span><span class="si">{</span><span class="n">running_loss</span><span class="o">/</span><span class="n">data_size</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;final epsilon is </span><span class="si">{</span><span class="n">accountant</span><span class="o">.</span><span class="n">get_epsilon</span><span class="p">(</span><span class="n">delta</span><span class="o">=</span><span class="n">delta</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>estimated epsilon is 35.149970335258836
-epoch 0: loss is 3.681807665568788
-epoch 1: loss is 3.635799625376963
-epoch 2: loss is 3.543356508305929
-epoch 3: loss is 3.427740032739615
-epoch 4: loss is 3.336359556889374
-epoch 5: loss is 3.175302603028037
-epoch 6: loss is 3.1255192260694384
-epoch 7: loss is 3.0658171386446917
-epoch 8: loss is 2.9871931764685993
-epoch 9: loss is 2.949955497386951
-final epsilon is 35.14997033525883
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">in_preds</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="n">in_label</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
-    <span class="k">for</span> <span class="n">data</span> <span class="ow">in</span> <span class="n">trainloader</span><span class="p">:</span>
-        <span class="n">inputs</span><span class="p">,</span> <span class="n">labels</span> <span class="o">=</span> <span class="n">data</span>
-        <span class="n">outputs</span> <span class="o">=</span> <span class="n">net</span><span class="p">(</span><span class="n">inputs</span><span class="p">)</span>
-        <span class="n">in_preds</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">outputs</span><span class="p">)</span>
-        <span class="n">in_label</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">labels</span><span class="p">)</span>
-    <span class="n">in_preds</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">(</span><span class="n">in_preds</span><span class="p">)</span>
-    <span class="n">in_label</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">(</span><span class="n">in_label</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span>
-    <span class="s2">&quot;Test Accuracy is: &quot;</span><span class="p">,</span>
-    <span class="n">accuracy_score</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">in_preds</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">in_label</span><span class="p">)),</span>
-<span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Test Accuracy is:  0.895
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">mi</span> <span class="o">=</span> <span class="n">MI_FACE</span><span class="p">(</span>
-    <span class="n">net</span><span class="p">,</span>
-    <span class="n">input_shape</span><span class="p">,</span>
-    <span class="n">target_label</span><span class="o">=</span><span class="n">target_label</span><span class="p">,</span>
-    <span class="n">num_itr</span><span class="o">=</span><span class="n">num_itr</span><span class="p">,</span>
-    <span class="n">lam</span><span class="o">=</span><span class="n">lam</span><span class="p">,</span>
-    <span class="n">log_interval</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-<span class="p">)</span>
-<span class="n">x_result_1</span><span class="p">,</span> <span class="n">log</span> <span class="o">=</span> <span class="n">mi</span><span class="o">.</span><span class="n">attack</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">nrows</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
-<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">BASE</span> <span class="o">+</span> <span class="s2">&quot;s2/1.pgm&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;gray&quot;</span><span class="p">)</span>
-<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">&quot;off&quot;</span><span class="p">)</span>
-<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;original image&quot;</span><span class="p">)</span>
-<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">x_result_1</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;gray&quot;</span><span class="p">)</span>
-<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">&quot;off&quot;</span><span class="p">)</span>
-<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;extracted image&quot;</span><span class="p">)</span>
-<span class="n">fig</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
-<span class="n">fig</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<img alt="../_images/aijack_miface_15_0.png" src="../_images/aijack_miface_15_0.png" />
 </div>
 </div>
 </section>

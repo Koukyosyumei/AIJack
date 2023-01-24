@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>1.2. FedMD: Federated Learning with Model Distillation &#8212; AIJack  documentation</title>
+    <title>1.4. FedMD: Federated Learning with Model Distillation &#8212; AIJack  documentation</title>
     
   <link href="../_static/css/theme.css" rel="stylesheet">
   <link href="../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
@@ -48,8 +48,8 @@
     <link rel="shortcut icon" href="../_static/logo_square.png"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="1.3. SecureBoost: Vertically Federated XGBoost with Paillier Encryption" href="aijack_secureboost.html" />
-    <link rel="prev" title="1.1. FedAVG" href="aijack_fedavg.html" />
+    <link rel="next" title="1.5. SecureBoost: Vertically Federated XGBoost with Paillier Encryption" href="aijack_secureboost.html" />
+    <link rel="prev" title="1.3. FedAVG with Sparse Gradient" href="aijack_fedavg_sparsegradient.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
     
@@ -105,14 +105,24 @@
      1.1. FedAVG
     </a>
    </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="aijack_fedavg_paillier.html">
+     1.2. FedAVG with Paillier Encryption
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="aijack_fedavg_sparsegradient.html">
+     1.3. FedAVG with Sparse Gradient
+    </a>
+   </li>
    <li class="toctree-l2 current active">
     <a class="current reference internal" href="#">
-     1.2. FedMD: Federated Learning with Model Distillation
+     1.4. FedMD: Federated Learning with Model Distillation
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="aijack_secureboost.html">
-     1.3. SecureBoost: Vertically Federated XGBoost with Paillier Encryption
+     1.5. SecureBoost: Vertically Federated XGBoost with Paillier Encryption
     </a>
    </li>
   </ul>
@@ -129,7 +139,7 @@
   <ul>
    <li class="toctree-l2">
     <a class="reference internal" href="aijack_miface.html">
-     2.1. MI-FACE Model Inversion Attack vs Differentially Private SGD
+     2.1. MI-FACE
     </a>
    </li>
    <li class="toctree-l2">
@@ -238,8 +248,13 @@
   </label>
   <ul>
    <li class="toctree-l2">
-    <a class="reference internal" href="aijack_dp.html">
+    <a class="reference internal" href="aijack_moments_accountant.html">
      7.1. Differential Privacy and Moment Accountant
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="aijack_miface_dpsgd.html">
+     7.2. MI-FACE vs DPSGD
     </a>
    </li>
   </ul>
@@ -539,12 +554,12 @@
                 <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#single-process">
-   1.2.1. Single Process
+   1.4.1. Single Process
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#mpi">
-   1.2.2. MPI
+   1.4.2. MPI
   </a>
  </li>
 </ul>
@@ -569,12 +584,12 @@
                             <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#single-process">
-   1.2.1. Single Process
+   1.4.1. Single Process
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#mpi">
-   1.2.2. MPI
+   1.4.2. MPI
   </a>
  </li>
 </ul>
@@ -587,10 +602,10 @@
               <div>
                 
   <section class="tex2jax_ignore mathjax_ignore" id="fedmd-federated-learning-with-model-distillation">
-<h1><span class="section-number">1.2. </span>FedMD: Federated Learning with Model Distillation<a class="headerlink" href="#fedmd-federated-learning-with-model-distillation" title="Permalink to this headline">¶</a></h1>
+<h1><span class="section-number">1.4. </span>FedMD: Federated Learning with Model Distillation<a class="headerlink" href="#fedmd-federated-learning-with-model-distillation" title="Permalink to this headline">¶</a></h1>
 <p>This tutorial implements FedMD (Federated Learning with Model Distillation), proposed in https://arxiv.org/abs/1910.03581. AIJack supports both single-process and MPI as the backend of FedMD. While FedAVG communicates local gradients to collaboratively train a model without sharing local datasets, malicious servers might be able to recover the training data from the shared gradient (see <em>Gradient-based Model Inversion Attack against Federated Learning</em> for the detail). In addition, sending and receiving gradients of the model requires much communication power. To solve these challenges, FedMD communicates not gradients but predicted logits on the global dataset and uses the model-distillation method to share each party’s knowledge.</p>
 <section id="single-process">
-<h2><span class="section-number">1.2.1. </span>Single Process<a class="headerlink" href="#single-process" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">1.4.1. </span>Single Process<a class="headerlink" href="#single-process" title="Permalink to this headline">¶</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">random</span>
@@ -738,7 +753,7 @@ epoch=2 acc on validation dataset:  {&#39;clients_score&#39;: [0.8598, 0.8641]}
 </div>
 </section>
 <section id="mpi">
-<h2><span class="section-number">1.2.2. </span>MPI<a class="headerlink" href="#mpi" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">1.4.2. </span>MPI<a class="headerlink" href="#mpi" title="Permalink to this headline">¶</a></h2>
 <p>You can execute FedMD with MPI-backend via <code class="docutils literal notranslate"><span class="pre">MPIFedMDClientManager</span></code>, <code class="docutils literal notranslate"><span class="pre">MPIFedMDServerManager</span></code>, and <code class="docutils literal notranslate"><span class="pre">MPIFedMDAPI</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -894,17 +909,17 @@ client_id=1: Accuracy on local dataset is  0.8579333333333333
             
                 <!-- Previous / next buttons -->
 <div class='prev-next-area'> 
-    <a class='left-prev' id="prev-link" href="aijack_fedavg.html" title="previous page">
+    <a class='left-prev' id="prev-link" href="aijack_fedavg_sparsegradient.html" title="previous page">
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
             <p class="prev-next-subtitle">previous</p>
-            <p class="prev-next-title"><span class="section-number">1.1. </span>FedAVG</p>
+            <p class="prev-next-title"><span class="section-number">1.3. </span>FedAVG with Sparse Gradient</p>
         </div>
     </a>
     <a class='right-next' id="next-link" href="aijack_secureboost.html" title="next page">
     <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title"><span class="section-number">1.3. </span>SecureBoost: Vertically Federated XGBoost with Paillier Encryption</p>
+        <p class="prev-next-title"><span class="section-number">1.5. </span>SecureBoost: Vertically Federated XGBoost with Paillier Encryption</p>
     </div>
     <i class="fas fa-angle-right"></i>
     </a>

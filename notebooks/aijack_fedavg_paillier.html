@@ -1,0 +1,900 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>1.2. FedAVG with Paillier Encryption &#8212; AIJack  documentation</title>
+    
+  <link href="../_static/css/theme.css" rel="stylesheet">
+  <link href="../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/style.css" />
+    <link rel="stylesheet" href="../_static/style.css" type="text/css" />
+    
+  <link rel="preload" as="script" href="../_static/js/index.be7d3bbb2ef33a8344ce.js">
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../_static/design-tabs.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../_static/sphinx-book-theme.d59cb220de22ca1c485ebbdc042f0030.js"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"TeX": {"extensions": ["tables.js"]}, "tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "tex2jax_ignore|mathjax_ignore|document", "processClass": "tex2jax_process|mathjax_process|math|output_area"}})</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="shortcut icon" href="../_static/logo_square.png"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="1.3. FedAVG with Sparse Gradient" href="aijack_fedavg_sparsegradient.html" />
+    <link rel="prev" title="1.1. FedAVG" href="aijack_fedavg.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../index.html">
+      
+        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+        
+      
+      
+      <img src="../_static/logo_wide_simple_white.png" class="logo" alt="logo">
+      
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Tutorial
+ </span>
+</p>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1 current active has-children">
+  <a class="reference internal" href="federated_learning.html">
+   1. Federated Learning
+  </a>
+  <input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul class="current">
+   <li class="toctree-l2">
+    <a class="reference internal" href="aijack_fedavg.html">
+     1.1. FedAVG
+    </a>
+   </li>
+   <li class="toctree-l2 current active">
+    <a class="current reference internal" href="#">
+     1.2. FedAVG with Paillier Encryption
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="aijack_fedavg_sparsegradient.html">
+     1.3. FedAVG with Sparse Gradient
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="aijack_fedmd.html">
+     1.4. FedMD: Federated Learning with Model Distillation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="aijack_secureboost.html">
+     1.5. SecureBoost: Vertically Federated XGBoost with Paillier Encryption
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="modelinversion.html">
+   2. Model Inversion
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+  <label for="toctree-checkbox-2">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="aijack_miface.html">
+     2.1. MI-FACE
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="aijack_gradient_inversion_attack.html">
+     2.2. Gradient-based Model Inversion Attack against Federated Learning
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="aijack_ganattack.html">
+     2.3. GAN Attack
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="aijack_soteria.html">
+     2.4. Soteria: : Provable Defense against Privacy Leakage in Federated Learning g from Representation Perspective
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="aijack_mid.html">
+     2.5. Mutual Information-based Defense
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="labelleakage.html">
+   3. Label Leakage
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
+  <label for="toctree-checkbox-3">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="aijack_split_learning.html">
+     3.1. Split Learning and Label Leakage
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="membershipinference.html">
+   4. Membership Inference
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
+  <label for="toctree-checkbox-4">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="aijack_membership_inference.html">
+     4.1. Memership inference
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="poisoning.html">
+   5. Poisoning Attack
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/>
+  <label for="toctree-checkbox-5">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="aijack_poisoning_federated_learning.html">
+     5.1. Poisoning Attack against Federated Learning
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="aijack_poisoning_attack_svm.html">
+     5.2. Poisoning Attack against SVM
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="evasion.html">
+   6. Evasion Attack
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/>
+  <label for="toctree-checkbox-6">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="aijack_evasion_attack.html">
+     6.1. Evasion Attack against SVM
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="diferentialprivacy.html">
+   7. Differential Privacy
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/>
+  <label for="toctree-checkbox-7">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="aijack_moments_accountant.html">
+     7.1. Differential Privacy and Moment Accountant
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="aijack_miface_dpsgd.html">
+     7.2. MI-FACE vs DPSGD
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  API Docs
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../aijack.attack.html">
+   1. aijack.attack package
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/>
+  <label for="toctree-checkbox-8">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../aijack.attack.backdoor.html">
+     1.1.1. aijack.attack.backdoor package
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../aijack.attack.evasion.html">
+     1.1.2. aijack.attack.evasion package
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../aijack.attack.freerider.html">
+     1.1.3. aijack.attack.freerider package
+    </a>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../aijack.attack.inversion.html">
+     1.1.4. aijack.attack.inversion package
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/>
+    <label for="toctree-checkbox-9">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../aijack.attack.inversion.utils.html">
+       1.1.4.1.1. aijack.attack.inversion.utils package
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../aijack.attack.labelleakage.html">
+     1.1.5. aijack.attack.labelleakage package
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../aijack.attack.membership.html">
+     1.1.6. aijack.attack.membership package
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../aijack.attack.poison.html">
+     1.1.7. aijack.attack.poison package
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../aijack.defense.html">
+   2. aijack.defense package
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/>
+  <label for="toctree-checkbox-10">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../aijack.defense.ckks.html">
+     2.1.1. aijack.defense.ckks package
+    </a>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../aijack.defense.dp.html">
+     2.1.2. aijack.defense.dp package
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" type="checkbox"/>
+    <label for="toctree-checkbox-11">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../aijack.defense.dp.manager.html">
+       2.1.2.1.1. aijack.defense.dp.manager package
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../aijack.defense.foolsgold.html">
+     2.1.3. aijack.defense.foolsgold package
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../aijack.defense.kanonymity.html">
+     2.1.4. aijack.defense.kanonymity package
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../aijack.defense.mid.html">
+     2.1.5. aijack.defense.mid package
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../aijack.defense.paillier.html">
+     2.1.6. aijack.defense.paillier package
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../aijack.defense.soteria.html">
+     2.1.7. aijack.defense.soteria package
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../aijack.defense.sparse.html">
+     2.1.8. aijack.defense.sparse package
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../aijack.collaborative.html">
+   3. aijack.collaborative package
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" type="checkbox"/>
+  <label for="toctree-checkbox-12">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../aijack.collaborative.core.html">
+     3.1.1. aijack.collaborative.core package
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../aijack.collaborative.dsfl.html">
+     3.1.2. aijack.collaborative.dsfl package
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../aijack.collaborative.fedavg.html">
+     3.1.3. aijack.collaborative.fedavg package
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../aijack.collaborative.fedgems.html">
+     3.1.4. aijack.collaborative.fedgems package
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../aijack.collaborative.fedkd.html">
+     3.1.5. aijack.collaborative.fedkd package
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../aijack.collaborative.fedmd.html">
+     3.1.6. aijack.collaborative.fedmd package
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../aijack.collaborative.fedprox.html">
+     3.1.7. aijack.collaborative.fedprox package
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../aijack.collaborative.optimizer.html">
+     3.1.8. aijack.collaborative.optimizer package
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../aijack.collaborative.splitnn.html">
+     3.1.9. aijack.collaborative.splitnn package
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../aijack.collaborative.tree.html">
+     3.1.10. aijack.collaborative.tree package
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../aijack.utils.html">
+   4. aijack.utils package
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Developer Docs
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../contribution.html">
+   1. Contribution Guide
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Theme by the <a href="https://ebp.jupyterbook.org">Executable Book Project</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="../_sources/notebooks/aijack_fedavg_paillier.ipynb.txt"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.ipynb</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+                onclick="printPdf(this)" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/Koukyosyumei/AIJack"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        
+        
+    </div>
+</div>
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show noprint">
+            
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
+            </div>
+            <nav id="bd-toc-nav" aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#single-process">
+   1.2.1. Single Process
+  </a>
+  <ul class="visible nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#federated-learning-with-paillier-encryption">
+     1.2.1.1. Federated Learning with Paillier Encryption
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1>FedAVG with Paillier Encryption</h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#single-process">
+   1.2.1. Single Process
+  </a>
+  <ul class="visible nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#federated-learning-with-paillier-encryption">
+     1.2.1.1. Federated Learning with Paillier Encryption
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            
+              <div>
+                
+  <section class="tex2jax_ignore mathjax_ignore" id="fedavg-with-paillier-encryption">
+<h1><span class="section-number">1.2. </span>FedAVG with Paillier Encryption<a class="headerlink" href="#fedavg-with-paillier-encryption" title="Permalink to this headline">¶</a></h1>
+<p>Homomorphic Encryption is one type of encryption scheme where you can execute some arithmetic operations on cipher texts. For example, Paillier Encryption Scheme has the following properties;</p>
+<div class="math notranslate nohighlight">
+\[
+\begin{align}
+&amp;\mathcal{D}(\mathcal{E}(x) + \mathcal{E}(y)) = x + y \newline
+&amp;\mathcal{D}(\mathcal{E}(x) + y) = x + y \newline
+&amp;\mathcal{D}(\mathcal{E}(x) * y) = x * y
+\end{align}
+\]</div>
+<p>, where <span class="math notranslate nohighlight">\( \mathcal{E} \)</span> and <span class="math notranslate nohighlight">\( \mathcal{D} \)</span> represent encryption and decryption, respectively.</p>
+<p>Recall that the server in FedAVG averages the received gradients to update the global model.</p>
+<div class="math notranslate nohighlight">
+\[
+w_{t} \leftarrow w_{t - 1} - \eta \sum_{c=1}^{C} \frac{n_{c}}{N} \nabla \mathcal{l}(w_{t - 1}, X_{c}, Y_{c})
+\]</div>
+<p>To mitigate the potential private information leakage from the gradient, one option for the client is to encrypt the gradient with Paillier Encryption Scheme.</p>
+<div class="math notranslate nohighlight">
+\[
+\mathcal{E}(w_{t}) \leftarrow \mathcal{E}(w_{t - 1}) - \eta \sum_{c=1}^{C} \frac{n_{c}}{N} \mathcal{E} (\nabla \mathcal{l}(w_{t - 1}, X_{c}, Y_{c}))
+\]</div>
+<p>The details procedure of Federated Learning with Paillier Encryption is as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mf">1.</span> <span class="n">The</span> <span class="n">central</span> <span class="n">server</span> <span class="n">initializes</span> <span class="n">the</span> <span class="k">global</span> <span class="n">model</span><span class="o">.</span>
+<span class="mf">2.</span> <span class="n">Clients</span> <span class="n">publish</span> <span class="ow">and</span> <span class="n">share</span> <span class="n">private</span> <span class="ow">and</span> <span class="n">public</span> <span class="n">keys</span><span class="o">.</span>
+<span class="mf">3.</span> <span class="n">The</span> <span class="n">server</span> <span class="n">distributes</span> <span class="n">the</span> <span class="k">global</span> <span class="n">model</span> <span class="n">to</span> <span class="n">each</span> <span class="n">client</span><span class="o">.</span>
+<span class="mf">4.</span> <span class="n">Except</span> <span class="k">for</span> <span class="n">the</span> <span class="n">first</span> <span class="nb">round</span><span class="p">,</span> <span class="n">each</span> <span class="n">client</span> <span class="n">decrypts</span> <span class="n">the</span> <span class="k">global</span> <span class="n">model</span><span class="o">.</span>
+<span class="mf">5.</span> <span class="n">Each</span> <span class="n">client</span> <span class="n">locally</span> <span class="n">calculates</span> <span class="n">the</span> <span class="n">gradient</span> <span class="n">of</span> <span class="n">the</span> <span class="n">loss</span> <span class="n">function</span> <span class="n">on</span> <span class="n">their</span> <span class="n">dataset</span><span class="o">.</span>
+<span class="mf">6.</span> <span class="n">Each</span> <span class="n">client</span> <span class="n">encrypts</span> <span class="n">the</span> <span class="n">gradient</span> <span class="ow">and</span> <span class="n">sends</span> <span class="n">it</span> <span class="n">to</span> <span class="n">the</span> <span class="n">server</span><span class="o">.</span>
+<span class="mf">7.</span> <span class="n">The</span> <span class="n">server</span> <span class="n">aggregates</span> <span class="n">the</span> <span class="n">received</span> <span class="n">gradients</span> <span class="k">with</span> <span class="n">some</span> <span class="n">method</span> <span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">g</span><span class="o">.</span><span class="p">,</span> <span class="n">average</span><span class="p">)</span> <span class="ow">and</span> <span class="n">updates</span> <span class="n">the</span> <span class="k">global</span> <span class="n">model</span> <span class="k">with</span> <span class="n">the</span> <span class="n">aggregated</span> <span class="n">gradient</span><span class="o">.</span>
+<span class="mf">8.</span> <span class="n">Repeat</span> <span class="mi">3</span> <span class="o">~</span> <span class="mi">7</span> <span class="n">until</span> <span class="n">converge</span><span class="o">.</span>
+</pre></div>
+</div>
+<section id="single-process">
+<h2><span class="section-number">1.2.1. </span>Single Process<a class="headerlink" href="#single-process" title="Permalink to this headline">¶</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">random</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">import</span> <span class="nn">torch.nn</span> <span class="k">as</span> <span class="nn">nn</span>
+<span class="kn">import</span> <span class="nn">torch.nn.functional</span> <span class="k">as</span> <span class="nn">F</span>
+<span class="kn">import</span> <span class="nn">torch.optim</span> <span class="k">as</span> <span class="nn">optim</span>
+<span class="kn">from</span> <span class="nn">mpi4py</span> <span class="kn">import</span> <span class="n">MPI</span>
+<span class="kn">from</span> <span class="nn">torchvision</span> <span class="kn">import</span> <span class="n">datasets</span><span class="p">,</span> <span class="n">transforms</span>
+
+<span class="kn">from</span> <span class="nn">aijack.collaborative.fedavg</span> <span class="kn">import</span> <span class="n">FedAVGClient</span><span class="p">,</span> <span class="n">FedAVGServer</span><span class="p">,</span> <span class="n">FedAVGAPI</span>
+<span class="kn">from</span> <span class="nn">aijack.defense</span> <span class="kn">import</span> <span class="n">PaillierGradientClientManager</span><span class="p">,</span> <span class="n">PaillierKeyGenerator</span>
+
+
+<span class="k">def</span> <span class="nf">evaluate_gloal_model</span><span class="p">(</span><span class="n">dataloader</span><span class="p">,</span> <span class="n">client_id</span><span class="o">=-</span><span class="mi">1</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_evaluate_global_model</span><span class="p">(</span><span class="n">api</span><span class="p">):</span>
+        <span class="n">test_loss</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">correct</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
+            <span class="k">for</span> <span class="n">data</span><span class="p">,</span> <span class="n">target</span> <span class="ow">in</span> <span class="n">dataloader</span><span class="p">:</span>
+                <span class="n">data</span><span class="p">,</span> <span class="n">target</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">api</span><span class="o">.</span><span class="n">device</span><span class="p">),</span> <span class="n">target</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">api</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">client_id</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+                    <span class="n">output</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">server</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">output</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">clients</span><span class="p">[</span><span class="n">client_id</span><span class="p">](</span><span class="n">data</span><span class="p">)</span>
+                <span class="n">test_loss</span> <span class="o">+=</span> <span class="n">F</span><span class="o">.</span><span class="n">nll_loss</span><span class="p">(</span>
+                    <span class="n">output</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">reduction</span><span class="o">=</span><span class="s2">&quot;sum&quot;</span>
+                <span class="p">)</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>  <span class="c1"># sum up batch loss</span>
+                <span class="n">pred</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span>
+                    <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">keepdim</span><span class="o">=</span><span class="kc">True</span>
+                <span class="p">)</span>  <span class="c1"># get the index of the max log-probability</span>
+                <span class="n">correct</span> <span class="o">+=</span> <span class="n">pred</span><span class="o">.</span><span class="n">eq</span><span class="p">(</span><span class="n">target</span><span class="o">.</span><span class="n">view_as</span><span class="p">(</span><span class="n">pred</span><span class="p">))</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+
+        <span class="n">test_loss</span> <span class="o">/=</span> <span class="nb">len</span><span class="p">(</span><span class="n">dataloader</span><span class="o">.</span><span class="n">dataset</span><span class="p">)</span>
+        <span class="n">accuracy</span> <span class="o">=</span> <span class="mf">100.0</span> <span class="o">*</span> <span class="n">correct</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">dataloader</span><span class="o">.</span><span class="n">dataset</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Test set: Average loss: </span><span class="si">{</span><span class="n">test_loss</span><span class="si">}</span><span class="s2">, Accuracy: </span><span class="si">{</span><span class="n">accuracy</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">_evaluate_global_model</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">training_batch_size</span> <span class="o">=</span> <span class="mi">64</span>
+<span class="n">test_batch_size</span> <span class="o">=</span> <span class="mi">64</span>
+<span class="n">num_rounds</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="n">lr</span> <span class="o">=</span> <span class="mf">0.001</span>
+<span class="n">seed</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">client_size</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="n">criterion</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">nll_loss</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">fix_seed</span><span class="p">(</span><span class="n">seed</span><span class="p">):</span>
+    <span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
+    <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
+    <span class="n">torch</span><span class="o">.</span><span class="n">manual_seed</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
+    <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">manual_seed_all</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
+    <span class="n">torch</span><span class="o">.</span><span class="n">backends</span><span class="o">.</span><span class="n">cudnn</span><span class="o">.</span><span class="n">deterministic</span> <span class="o">=</span> <span class="kc">True</span>
+
+
+<span class="k">def</span> <span class="nf">prepare_dataloader</span><span class="p">(</span><span class="n">num_clients</span><span class="p">,</span> <span class="n">myid</span><span class="p">,</span> <span class="n">train</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
+    <span class="n">transform</span> <span class="o">=</span> <span class="n">transforms</span><span class="o">.</span><span class="n">Compose</span><span class="p">(</span>
+        <span class="p">[</span><span class="n">transforms</span><span class="o">.</span><span class="n">ToTensor</span><span class="p">(),</span> <span class="n">transforms</span><span class="o">.</span><span class="n">Normalize</span><span class="p">((</span><span class="mf">0.1307</span><span class="p">,),</span> <span class="p">(</span><span class="mf">0.3081</span><span class="p">,))]</span>
+    <span class="p">)</span>
+    <span class="k">if</span> <span class="n">train</span><span class="p">:</span>
+        <span class="n">dataset</span> <span class="o">=</span> <span class="n">datasets</span><span class="o">.</span><span class="n">MNIST</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">train</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">download</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">transform</span><span class="p">)</span>
+        <span class="n">idxs</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">dataset</span><span class="o">.</span><span class="n">data</span><span class="p">)))</span>
+        <span class="n">random</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">idxs</span><span class="p">)</span>
+        <span class="n">idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array_split</span><span class="p">(</span><span class="n">idxs</span><span class="p">,</span> <span class="n">num_clients</span><span class="p">,</span> <span class="mi">0</span><span class="p">)[</span><span class="n">myid</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>
+        <span class="n">dataset</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+        <span class="n">dataset</span><span class="o">.</span><span class="n">targets</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">targets</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+        <span class="n">train_loader</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">DataLoader</span><span class="p">(</span>
+            <span class="n">dataset</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="n">training_batch_size</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">train_loader</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">dataset</span> <span class="o">=</span> <span class="n">datasets</span><span class="o">.</span><span class="n">MNIST</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">train</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">download</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">transform</span><span class="p">)</span>
+        <span class="n">test_loader</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">DataLoader</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="n">test_batch_size</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">test_loader</span>
+
+
+<span class="k">class</span> <span class="nc">Net</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">Net</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ln</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">28</span> <span class="o">*</span> <span class="mi">28</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ln</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">28</span> <span class="o">*</span> <span class="mi">28</span><span class="p">))</span>
+        <span class="n">output</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">log_softmax</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">output</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">device</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s2">&quot;cuda&quot;</span> <span class="k">if</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">()</span> <span class="k">else</span> <span class="s2">&quot;cpu&quot;</span><span class="p">)</span>
+<span class="n">fix_seed</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">local_dataloaders</span> <span class="o">=</span> <span class="p">[</span><span class="n">prepare_dataloader</span><span class="p">(</span><span class="n">client_size</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">client_size</span><span class="p">)]</span>
+<span class="n">test_dataloader</span> <span class="o">=</span> <span class="n">prepare_dataloader</span><span class="p">(</span><span class="n">client_size</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">train</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Downloading http://yann.lecun.com/exdb/mnist/train-images-idx3-ubyte.gz
+Downloading http://yann.lecun.com/exdb/mnist/train-images-idx3-ubyte.gz to MNIST/raw/train-images-idx3-ubyte.gz
+</pre></div>
+</div>
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "63426a44a1944b2395adcf468faad718", "version_major": 2, "version_minor": 0}
+</script><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Extracting MNIST/raw/train-images-idx3-ubyte.gz to MNIST/raw
+
+Downloading http://yann.lecun.com/exdb/mnist/train-labels-idx1-ubyte.gz
+Downloading http://yann.lecun.com/exdb/mnist/train-labels-idx1-ubyte.gz to MNIST/raw/train-labels-idx1-ubyte.gz
+</pre></div>
+</div>
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "43780b34fd79438c98b27462acb2ee79", "version_major": 2, "version_minor": 0}
+</script><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Extracting MNIST/raw/train-labels-idx1-ubyte.gz to MNIST/raw
+
+Downloading http://yann.lecun.com/exdb/mnist/t10k-images-idx3-ubyte.gz
+Downloading http://yann.lecun.com/exdb/mnist/t10k-images-idx3-ubyte.gz to MNIST/raw/t10k-images-idx3-ubyte.gz
+</pre></div>
+</div>
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "bd4fb53e5b174bea96278362b4798652", "version_major": 2, "version_minor": 0}
+</script><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Extracting MNIST/raw/t10k-images-idx3-ubyte.gz to MNIST/raw
+
+Downloading http://yann.lecun.com/exdb/mnist/t10k-labels-idx1-ubyte.gz
+Downloading http://yann.lecun.com/exdb/mnist/t10k-labels-idx1-ubyte.gz to MNIST/raw/t10k-labels-idx1-ubyte.gz
+</pre></div>
+</div>
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "c283f49002714067ba661415315f326e", "version_major": 2, "version_minor": 0}
+</script><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Extracting MNIST/raw/t10k-labels-idx1-ubyte.gz to MNIST/raw
+</pre></div>
+</div>
+</div>
+</div>
+<section id="federated-learning-with-paillier-encryption">
+<h3><span class="section-number">1.2.1.1. </span>Federated Learning with Paillier Encryption<a class="headerlink" href="#federated-learning-with-paillier-encryption" title="Permalink to this headline">¶</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">keygenerator</span> <span class="o">=</span> <span class="n">PaillierKeyGenerator</span><span class="p">(</span><span class="mi">64</span><span class="p">)</span>
+<span class="n">pk</span><span class="p">,</span> <span class="n">sk</span> <span class="o">=</span> <span class="n">keygenerator</span><span class="o">.</span><span class="n">generate_keypair</span><span class="p">()</span>
+
+<span class="n">manager</span> <span class="o">=</span> <span class="n">PaillierGradientClientManager</span><span class="p">(</span><span class="n">pk</span><span class="p">,</span> <span class="n">sk</span><span class="p">)</span>
+<span class="n">PaillierGradFedAVGClient</span> <span class="o">=</span> <span class="n">manager</span><span class="o">.</span><span class="n">attach</span><span class="p">(</span><span class="n">FedAVGClient</span><span class="p">)</span>
+
+<span class="n">clients</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">PaillierGradFedAVGClient</span><span class="p">(</span><span class="n">Net</span><span class="p">()</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">),</span> <span class="n">user_id</span><span class="o">=</span><span class="n">c</span><span class="p">,</span> <span class="n">server_side_update</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">client_size</span><span class="p">)</span>
+<span class="p">]</span>
+<span class="n">local_optimizers</span> <span class="o">=</span> <span class="p">[</span><span class="n">optim</span><span class="o">.</span><span class="n">SGD</span><span class="p">(</span><span class="n">client</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="n">lr</span><span class="p">)</span> <span class="k">for</span> <span class="n">client</span> <span class="ow">in</span> <span class="n">clients</span><span class="p">]</span>
+
+<span class="n">server</span> <span class="o">=</span> <span class="n">FedAVGServer</span><span class="p">(</span><span class="n">clients</span><span class="p">,</span> <span class="n">Net</span><span class="p">()</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">),</span> <span class="n">server_side_update</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="n">api</span> <span class="o">=</span> <span class="n">FedAVGAPI</span><span class="p">(</span>
+    <span class="n">server</span><span class="p">,</span>
+    <span class="n">clients</span><span class="p">,</span>
+    <span class="n">criterion</span><span class="p">,</span>
+    <span class="n">local_optimizers</span><span class="p">,</span>
+    <span class="n">local_dataloaders</span><span class="p">,</span>
+    <span class="n">num_communication</span><span class="o">=</span><span class="n">num_rounds</span><span class="p">,</span>
+    <span class="n">custom_action</span><span class="o">=</span><span class="n">evaluate_gloal_model</span><span class="p">(</span><span class="n">test_dataloader</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+<span class="p">)</span>
+<span class="n">api</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>communication 0, epoch 0: client-1 0.019623182541131972
+communication 0, epoch 0: client-2 0.019723439224561056
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/usr/local/lib/python3.8/dist-packages/aijack/defense/paillier/torch_wrapper.py:70: RuntimeWarning: invalid value encountered in add
+  input._paillier_np_array + other.detach().cpu().numpy()
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Test set: Average loss: 0.5059418523311615, Accuracy: 84.25
+communication 1, epoch 0: client-1 0.00757011673549811
+communication 1, epoch 0: client-2 0.007764058018724124
+Test set: Average loss: 0.4435205452442169, Accuracy: 87.55
+communication 2, epoch 0: client-1 0.006700039783120155
+communication 2, epoch 0: client-2 0.0069033132503430045
+Test set: Average loss: 0.40868335359096525, Accuracy: 87.98
+communication 3, epoch 0: client-1 0.006276320548355579
+communication 3, epoch 0: client-2 0.006470099781453609
+Test set: Average loss: 0.3903049408197403, Accuracy: 89.17
+communication 4, epoch 0: client-1 0.005988184402386347
+communication 4, epoch 0: client-2 0.0061936042274038
+Test set: Average loss: 0.37640745265483855, Accuracy: 89.14
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+</section>
+
+
+              </div>
+              
+            
+                <!-- Previous / next buttons -->
+<div class='prev-next-area'> 
+    <a class='left-prev' id="prev-link" href="aijack_fedavg.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title"><span class="section-number">1.1. </span>FedAVG</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="aijack_fedavg_sparsegradient.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">1.3. </span>FedAVG with Sparse Gradient</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+            
+        </div>
+    </div>
+    <footer class="footer">
+  <p>
+    
+      By Hideaki Takahashi<br/>
+    
+        &copy; Copyright 2023, Hideaki Takahashi.<br/>
+  </p>
+</footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="../_static/js/index.be7d3bbb2ef33a8344ce.js"></script>
+
+  </body>
+</html>
