@@ -1,6 +1,7 @@
 {
   "cells": [
     {
+      "attachments": {},
       "cell_type": "markdown",
       "metadata": {
         "id": "SROAZ9dO80s8"
@@ -29,7 +30,7 @@
         "To mitigate the potential private information leakage from the gradient, one option for the client is to encrypt the gradient with Paillier Encryption Scheme.\n",
         "\n",
         "$$\n",
-        "\\mathcal{E}(w_{t}) \\leftarrow \\mathcal{E}(w_{t - 1}) - \\eta \\sum_{c=1}^{C} \\frac{n_{c}}{N} \\mathcal{E} (\\nabla \\mathcal{l}(w_{t - 1}, X_{c}, Y_{c}))\n",
+        "w_{t} \\leftarrow w_{t - 1} - \\eta \\sum_{c=1}^{C} \\frac{n_{c}}{N} \\mathcal{E} (\\nabla \\mathcal{l}(w_{t - 1}, X_{c}, Y_{c}))\n",
         "$$\n",
         "\n",
         "The details procedure of Federated Learning with Paillier Encryption is as follows:\n",

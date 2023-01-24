@@ -628,7 +628,7 @@ w_{t} \leftarrow w_{t - 1} - \eta \sum_{c=1}^{C} \frac{n_{c}}{N} \nabla \mathcal
 <p>To mitigate the potential private information leakage from the gradient, one option for the client is to encrypt the gradient with Paillier Encryption Scheme.</p>
 <div class="math notranslate nohighlight">
 \[
-\mathcal{E}(w_{t}) \leftarrow \mathcal{E}(w_{t - 1}) - \eta \sum_{c=1}^{C} \frac{n_{c}}{N} \mathcal{E} (\nabla \mathcal{l}(w_{t - 1}, X_{c}, Y_{c}))
+w_{t} \leftarrow w_{t - 1} - \eta \sum_{c=1}^{C} \frac{n_{c}}{N} \mathcal{E} (\nabla \mathcal{l}(w_{t - 1}, X_{c}, Y_{c}))
 \]</div>
 <p>The details procedure of Federated Learning with Paillier Encryption is as follows:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mf">1.</span> <span class="n">The</span> <span class="n">central</span> <span class="n">server</span> <span class="n">initializes</span> <span class="n">the</span> <span class="k">global</span> <span class="n">model</span><span class="o">.</span>
