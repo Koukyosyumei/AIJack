@@ -31,8 +31,8 @@ class FedMDServer(BaseServer):
         self.uploaded_logits = [client.upload() for client in self.clients]
 
     def update(self):
-        self.consensus = self.uploaded_logits[0]
         len_clients = len(self.clients)
+        self.consensus = self.uploaded_logits[0] / len_clients
         for logit in self.uploaded_logits[1:]:
             self.consensus += logit / len_clients
 
