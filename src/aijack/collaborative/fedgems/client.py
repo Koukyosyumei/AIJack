@@ -15,6 +15,7 @@ class FedGEMSClient(BaseClient):
         kldiv_loss_func=nn.KLDivLoss(),
         epsilon=0.75,
         round_decimal=None,
+        device="cpu"
     ):
         super(FedGEMSClient, self).__init__(model, user_id=user_id)
         self.lr = lr
@@ -23,6 +24,7 @@ class FedGEMSClient(BaseClient):
         self.kldiv_loss_func = kldiv_loss_func
         self.epsilon = epsilon
         self.round_decimal = round_decimal
+        self.device = device
 
     def upload(self, x):
         result = self(x)
