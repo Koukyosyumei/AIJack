@@ -110,6 +110,7 @@ class FedGEMSAPI(BaseFLKnowledgeDistillationAPI):
         server_running_loss = 0
         for data in self.public_dataloader:
             idx, x, y = data
+            idx = idx.to(self.device)
             x = x.to(self.device)
             y = y.to(self.device).to(torch.int64)
 
