@@ -15,7 +15,7 @@ class FedGEMSClient(BaseClient):
         kldiv_loss_func=nn.KLDivLoss(),
         epsilon=0.75,
         round_decimal=None,
-        device="cpu"
+        device="cpu",
     ):
         super(FedGEMSClient, self).__init__(model, user_id=user_id)
         self.lr = lr
