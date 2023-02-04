@@ -68,7 +68,6 @@ class DSFLAPI(BaseFLKnowledgeDistillationAPI):
             "acc_val": [],
         }
         for i in range(1, self.num_communication + 1):
-
             self.epoch = i
 
             for _ in range(self.epoch_local_training):

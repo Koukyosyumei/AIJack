@@ -2,7 +2,6 @@ import numpy as np
 
 
 def test_secureboost():
-
     from aijack.collaborative.tree import (  # noqa:F401
         SecureBoostClassifierAPI,
         SecureBoostClient,

@@ -185,7 +185,6 @@ def culc_first_term_of_general_upper_bound_of_rdp(alpha, sampling_rate):
 def culc_general_upperbound_of_rdp_with_theorem5_of_zhu_2019(
     alpha, params, sampling_rate, _eps
 ):
-
     terms = []
     signs = []
 
@@ -238,7 +237,6 @@ def culc_tightupperbound_lowerbound_of_rdp_with_theorem6and8_of_zhu_2019(
 def culc_tightupperbound_lowerbound_of_rdp_with_theorem6and8_of_zhu_2019_with_tau_estimation(
     alpha, params, sampling_rate, _eps, tau=10
 ):
-
     terms = []
     signs = []
 

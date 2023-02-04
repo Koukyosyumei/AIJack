@@ -151,7 +151,6 @@ class FedMDAPI(BaseFLKnowledgeDistillationAPI):
         logging = self.transfer_phase(logging)
 
         for i in range(1, self.num_communication + 1):
-
             self.epoch = i
             self.server.action()
             logging = self.digest_phase(i, logging)

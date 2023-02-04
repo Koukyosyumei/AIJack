@@ -123,7 +123,7 @@ class AttackerModel:
             shadow_result (dict): key is each class
                                   value is (shadow_data, shadow_label)
         """
-        for (label, (X, y)) in shadow_result.items():
+        for label, (X, y) in shadow_result.items():
             self.models[label].fit(X, y)
 
     def predict(self, y_pred_prob, y_labels):

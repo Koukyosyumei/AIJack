@@ -31,7 +31,6 @@ def attach_normattack_to_splitnn(
             epoch_labels = []
             epoch_g_norm = []
             for i, data in enumerate(dataloader, 0):
-
                 inputs, labels = data
                 inputs = inputs.to(self.device)
                 labels = labels.to(self.device)
