@@ -137,7 +137,6 @@ class TorchClassifier(BaseEstimator, ClassifierMixin):
         )
         self.model.train()
         for _ in range(self.epoch):
-            running_loss = 0
             for x_batch, y_batch in dataloader:
                 x_batch = x_batch.to(self.device)
                 y_batch = y_batch.to(self.device)
@@ -146,9 +145,6 @@ class TorchClassifier(BaseEstimator, ClassifierMixin):
                 loss = self.criterion(y_pred, y_batch)
                 loss.backward()
                 self.optimizer.step()
-                running_loss += loss
-
-            print(running_loss)
 
         return self
 
@@ -166,32 +162,10 @@ class TorchClassifier(BaseEstimator, ClassifierMixin):
                 x_batch = x_batch.to(self.device)
                 y_pred = self.model(x_batch)
                 y_pred_list.append(y_pred)
-        return torch.cat(y_pred_list)
+        return torch.cat(y_pred_list).cpu().detach().numpy()
 
     def predict(self, X):
-        return torch.argmax(self.predict_proba(X), axis=1)
+        return np.argmax(self.predict_proba(X), axis=1)
 
     def score(self, X, y):
-        dataloader = torch.utils.data.DataLoader(
-            NumpyDataset(X, y),
-            batch_size=self.batch_size,
-            shuffle=False,
-            num_workers=self.num_workers,
-        )
-        out_preds = []
-        out_label = []
-        with torch.no_grad():
-            for data in dataloader:
-                inputs, labels = data
-                inputs = inputs.to(self.device)
-                labels = labels.to(self.device)
-                outputs = self.model(inputs)
-                out_preds.append(outputs)
-                out_label.append(labels)
-            out_preds = torch.cat(out_preds)
-            out_label = torch.cat(out_label)
-
-        return accuracy_score(
-            torch.argmax(out_preds, axis=1).cpu().detach().numpy(),
-            out_label.cpu().detach().numpy(),
-        )
+        return accuracy_score(self.predict(X), y)
