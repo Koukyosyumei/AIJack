@@ -139,7 +139,6 @@ class FedGEMSAPI(BaseFLKnowledgeDistillationAPI):
 
         # train FedGEMS
         for epoch in range(1, self.num_communication + 1):
-
             self.epoch = epoch
 
             for _ in range(self.epoch_client_on_localdataset):

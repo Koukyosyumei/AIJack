@@ -1,15 +1,13 @@
 from ..base_attack import BaseAttacker
-from .utils import AttackerModel, ShadowModel
+from .utils import AttackerModel, ShadowModels
 
 
-class Membership_Inference(BaseAttacker):
+class ShadowMembershipInferenceAttack(BaseAttacker):
     def __init__(
         self,
         target_model,
         shadow_models,
         attack_models,
-        shadow_data_size,
-        shadow_transform,
     ):
         """Implementation of membership inference
            reference https://arxiv.org/abs/1610.05820
@@ -18,47 +16,27 @@ class Membership_Inference(BaseAttacker):
             target_model: the model of the victim
             shadow_models: shadow model for attack
             attack_models: attacker model for attack
-            shadow_data_size: the size of datasets for
-                              training the shadow models
-            shadow_transform: the transformation function for shadow datasets
-
-        Attributes:
-            shadow_models
-            attack_models
-            shadow_data_size
-            shadow_trnasform
-            sm
-            shadow_result
-            am
         """
         super().__init__(target_model)
-        self.shadow_models = shadow_models
-        self.attack_models = attack_models
-        self.shadow_data_size = shadow_data_size
-        self.shadow_trasform = shadow_transform
-
-        self.sm = None
+        self.sm = ShadowModels(shadow_models)
+        self.am = AttackerModel(attack_models)
         self.shadow_result = None
-        self.am = None
 
-    def train_shadow(self, X, y, num_itr):
+    def fit(self, X, y):
+        self.train_shadow(X, y)
+        self.train_attacker()
+
+    def train_shadow(self, X, y):
         """train shadow models
 
         Args:
             X (np.array): training data for shadow models
             y (np.array): training label for shadow models
-            num_itr (int): number of iteration for training
         """
-        self.sm = ShadowModel(
-            self.shadow_models,
-            self.shadow_data_size,
-            shadow_transform=self.shadow_trasform,
-        )
-        self.shadow_result = self.sm.fit_transform(X, y, num_itr=num_itr)
+        self.shadow_result = self.sm.fit_transform(X, y)
 
     def train_attacker(self):
         """Train attacker models"""
-        self.am = AttackerModel(self.attack_models)
         self.am.fit(self.shadow_result)
 
     def attack(self, x, y, proba=False):
@@ -69,7 +47,7 @@ class Membership_Inference(BaseAttacker):
             y: target labels which the attacker wants to classify
             proba: the format of the output
         """
-        prediction_of_taregt_model = self.target_model(x)
+        prediction_of_taregt_model = self.target_model.predict_proba(x)
         if proba:
             return self.predit_proba(prediction_of_taregt_model, y)
         else:

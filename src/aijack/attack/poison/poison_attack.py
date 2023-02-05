@@ -109,7 +109,6 @@ class Poison_attack_sklearn(BaseAttacker):
         # best_itr = None
 
         for i in tqdm(range(num_iterations)):
-
             target_model_ = copy.copy(self.target_model)
             target_model_.__init__()
             target_model_.set_params(**self.target_model.get_params())

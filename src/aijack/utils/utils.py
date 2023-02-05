@@ -2,6 +2,8 @@ import random
 
 import numpy as np
 import torch
+from sklearn.base import BaseEstimator, ClassifierMixin
+from sklearn.metrics import accuracy_score
 from torch.utils.data.dataset import Dataset
 
 
@@ -103,3 +105,67 @@ class NumpyDataset(Dataset):
     def __len__(self):
         """get the number of rows of self.x"""
         return len(self.x)
+
+
+class TorchClassifier(BaseEstimator, ClassifierMixin):
+    def __init__(
+        self,
+        model,
+        criterion,
+        optimizer,
+        epoch=1,
+        device="cpu",
+        batch_size=1,
+        shuffle=True,
+        num_workers=2,
+    ):
+        self.model = model
+        self.criterion = criterion
+        self.optimizer = optimizer
+        self.epoch = epoch
+        self.device = device
+        self.batch_size = batch_size
+        self.shuffle = shuffle
+        self.num_workers = num_workers
+
+    def fit(self, X, y):
+        dataloader = torch.utils.data.DataLoader(
+            NumpyDataset(X, y),
+            batch_size=self.batch_size,
+            shuffle=self.shuffle,
+            num_workers=self.num_workers,
+        )
+        self.model.train()
+        for _ in range(self.epoch):
+            for x_batch, y_batch in dataloader:
+                x_batch = x_batch.to(self.device)
+                y_batch = y_batch.to(self.device)
+                self.optimizer.zero_grad()
+                y_pred = self.model(x_batch)
+                loss = self.criterion(y_pred, y_batch)
+                loss.backward()
+                self.optimizer.step()
+
+        return self
+
+    def predict_proba(self, X):
+        dataloader = torch.utils.data.DataLoader(
+            NumpyDataset(X),
+            batch_size=self.batch_size,
+            shuffle=False,
+            num_workers=self.num_workers,
+        )
+        self.model.eval()
+        y_pred_list = []
+        with torch.no_grad():
+            for x_batch in dataloader:
+                x_batch = x_batch.to(self.device)
+                y_pred = self.model(x_batch)
+                y_pred_list.append(y_pred)
+        return torch.cat(y_pred_list).cpu().detach().numpy()
+
+    def predict(self, X):
+        return np.argmax(self.predict_proba(X), axis=1)
+
+    def score(self, X, y):
+        return accuracy_score(self.predict(X), y)
