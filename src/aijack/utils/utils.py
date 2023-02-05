@@ -2,6 +2,7 @@ import random
 
 import numpy as np
 import torch
+from sklearn.base import BaseEstimator, ClassifierMixin
 from torch.utils.data.dataset import Dataset
 
 
@@ -103,3 +104,37 @@ class NumpyDataset(Dataset):
     def __len__(self):
         """get the number of rows of self.x"""
         return len(self.x)
+
+
+class TorchClassifier(BaseEstimator, ClassifierMixin):
+    def __init__(self, model, criterion, optimizer, device="cpu"):
+        self.model = model
+        self.criterion = criterion
+        self.optimizer = optimizer
+        self.device = device
+
+    def fit(self, dataloader):
+        self.model.train()
+        for x, y in dataloader:
+            x = x.to(self.device)
+            y = y.to(self.device)
+            self.optimizer.zero_grad()
+            y_pred = self.model(x)
+            loss = self.criterion(y_pred, y)
+            loss.backward()
+            self.optimizer.step()
+
+        return self
+
+    def predict_proba(self, dataloader):
+        self.model.eval()
+        y_pred_list = []
+        with torch.no_grad():
+            for x in dataloader:
+                x = x.to(self.device)
+                y_pred = self.model(x)
+                y_pred_list.append(y_pred)
+        return torch.cat(y_pred_list)
+
+    def predict(self, dataloader):
+        return torch.argmax(self.predict_proba(dataloader), axis=1)

@@ -2,7 +2,7 @@ from ..base_attack import BaseAttacker
 from .utils import AttackerModel, ShadowModels
 
 
-class Membership_Inference(BaseAttacker):
+class ShadowMembershipInferenceAttack(BaseAttacker):
     def __init__(
         self,
         target_model,

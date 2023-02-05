@@ -164,7 +164,7 @@ class AttackerModel:
         y_pred_prob = np.array(y_pred_prob)
         y_labels = np.array(y_labels)
         unique_labels = np.unique(y_labels)
-        in_out_pred = np.zeros((y_labels.shape[0], 2), dtype=np.float)
+        in_out_pred = np.zeros((y_labels.shape[0], 2), dtype=float)
         for label in unique_labels:
             idx = np.where(y_labels == label)[0]
             in_out_pred[idx] = self.models[label].predict_proba(y_pred_prob[idx])
