@@ -79,6 +79,7 @@ def attach_adadps(
             self.noise_multiplier = noise_multiplier
             self.batch_size = batch_size
             self.lot_size = lot_size
+            self.mode = mode
             self.beta = beta
 
             for group in self.param_groups:
