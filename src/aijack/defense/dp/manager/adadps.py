@@ -19,7 +19,7 @@ def _apply_side_infor_rmsprop(opt):
     for group in opt.param_groups:
         for param, si in zip(group["params"], group["side_information"]):
             if param.requires_grad:
-                param.grad.data.div_(torch.sqrt(si))
+                param.grad.data.div_(torch.sqrt(si) + opt.eps_to_avoid_nan)
 
 
 def _update_side_info_adam(opt):
@@ -38,7 +38,7 @@ def _apply_side_infor_adam(opt):
             group["params"], group["side_information"], group["potential_momentum"]
         ):
             if param.requires_grad:
-                param.grad.data.mul_(pm / torch.sqrt(si))
+                param.grad.data.mul_(pm / (torch.sqrt(si) + opt.eps_to_avoid_nan))
 
 
 def _precondition_grads_with_side_info(opt):
@@ -58,6 +58,7 @@ def attach_adadps(
     dataset_size,
     mode="rmsprop",
     beta=0.9,
+    eps_to_avoid_nan=1e-8,
 ):
     class AdaDPSWrapper(cls):
         """Implementation of AdaDPS proposed in
@@ -81,6 +82,7 @@ def attach_adadps(
             self.lot_size = lot_size
             self.mode = mode
             self.beta = beta
+            self.eps_to_avoid_nan = eps_to_avoid_nan
 
             for group in self.param_groups:
                 group["accum_grads"] = [
