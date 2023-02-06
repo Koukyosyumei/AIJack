@@ -257,6 +257,11 @@
      7.2. MI-FACE vs DPSGD
     </a>
    </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="notebooks/aijack_adadps.html">
+     7.3. AdaDPS
+    </a>
+   </li>
   </ul>
  </li>
 </ul>
@@ -563,38 +568,43 @@
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#aijack-defense-dp-manager-adadps-module">
+   2.1.2.1.1.3. aijack.defense.dp.manager.adadps module
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#aijack-defense-dp-manager-client-module">
-   2.1.2.1.1.3. aijack.defense.dp.manager.client module
+   2.1.2.1.1.4. aijack.defense.dp.manager.client module
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#aijack-defense-dp-manager-dataloader-module">
-   2.1.2.1.1.4. aijack.defense.dp.manager.dataloader module
+   2.1.2.1.1.5. aijack.defense.dp.manager.dataloader module
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#aijack-defense-dp-manager-dp-manager-module">
-   2.1.2.1.1.5. aijack.defense.dp.manager.dp_manager module
+   2.1.2.1.1.6. aijack.defense.dp.manager.dp_manager module
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#aijack-defense-dp-manager-optimizer-module">
-   2.1.2.1.1.6. aijack.defense.dp.manager.optimizer module
+  <a class="reference internal nav-link" href="#aijack-defense-dp-manager-dpoptimizer-module">
+   2.1.2.1.1.7. aijack.defense.dp.manager.dpoptimizer module
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#aijack-defense-dp-manager-rdp-module">
-   2.1.2.1.1.7. aijack.defense.dp.manager.rdp module
+   2.1.2.1.1.8. aijack.defense.dp.manager.rdp module
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#aijack-defense-dp-manager-utils-module">
-   2.1.2.1.1.8. aijack.defense.dp.manager.utils module
+   2.1.2.1.1.9. aijack.defense.dp.manager.utils module
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#module-contents">
-   2.1.2.1.1.9. Module contents
+   2.1.2.1.1.10. Module contents
   </a>
  </li>
 </ul>
@@ -628,38 +638,43 @@
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#aijack-defense-dp-manager-adadps-module">
+   2.1.2.1.1.3. aijack.defense.dp.manager.adadps module
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#aijack-defense-dp-manager-client-module">
-   2.1.2.1.1.3. aijack.defense.dp.manager.client module
+   2.1.2.1.1.4. aijack.defense.dp.manager.client module
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#aijack-defense-dp-manager-dataloader-module">
-   2.1.2.1.1.4. aijack.defense.dp.manager.dataloader module
+   2.1.2.1.1.5. aijack.defense.dp.manager.dataloader module
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#aijack-defense-dp-manager-dp-manager-module">
-   2.1.2.1.1.5. aijack.defense.dp.manager.dp_manager module
+   2.1.2.1.1.6. aijack.defense.dp.manager.dp_manager module
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#aijack-defense-dp-manager-optimizer-module">
-   2.1.2.1.1.6. aijack.defense.dp.manager.optimizer module
+  <a class="reference internal nav-link" href="#aijack-defense-dp-manager-dpoptimizer-module">
+   2.1.2.1.1.7. aijack.defense.dp.manager.dpoptimizer module
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#aijack-defense-dp-manager-rdp-module">
-   2.1.2.1.1.7. aijack.defense.dp.manager.rdp module
+   2.1.2.1.1.8. aijack.defense.dp.manager.rdp module
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#aijack-defense-dp-manager-utils-module">
-   2.1.2.1.1.8. aijack.defense.dp.manager.utils module
+   2.1.2.1.1.9. aijack.defense.dp.manager.utils module
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#module-contents">
-   2.1.2.1.1.9. Module contents
+   2.1.2.1.1.10. Module contents
   </a>
  </li>
 </ul>
@@ -679,26 +694,29 @@
 <section id="aijack-defense-dp-manager-accountant-module">
 <h2><span class="section-number">2.1.2.1.1.2. </span>aijack.defense.dp.manager.accountant module<a class="headerlink" href="#aijack-defense-dp-manager-accountant-module" title="Permalink to this headline">¶</a></h2>
 </section>
+<section id="aijack-defense-dp-manager-adadps-module">
+<h2><span class="section-number">2.1.2.1.1.3. </span>aijack.defense.dp.manager.adadps module<a class="headerlink" href="#aijack-defense-dp-manager-adadps-module" title="Permalink to this headline">¶</a></h2>
+</section>
 <section id="aijack-defense-dp-manager-client-module">
-<h2><span class="section-number">2.1.2.1.1.3. </span>aijack.defense.dp.manager.client module<a class="headerlink" href="#aijack-defense-dp-manager-client-module" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">2.1.2.1.1.4. </span>aijack.defense.dp.manager.client module<a class="headerlink" href="#aijack-defense-dp-manager-client-module" title="Permalink to this headline">¶</a></h2>
 </section>
 <section id="aijack-defense-dp-manager-dataloader-module">
-<h2><span class="section-number">2.1.2.1.1.4. </span>aijack.defense.dp.manager.dataloader module<a class="headerlink" href="#aijack-defense-dp-manager-dataloader-module" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">2.1.2.1.1.5. </span>aijack.defense.dp.manager.dataloader module<a class="headerlink" href="#aijack-defense-dp-manager-dataloader-module" title="Permalink to this headline">¶</a></h2>
 </section>
 <section id="aijack-defense-dp-manager-dp-manager-module">
-<h2><span class="section-number">2.1.2.1.1.5. </span>aijack.defense.dp.manager.dp_manager module<a class="headerlink" href="#aijack-defense-dp-manager-dp-manager-module" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">2.1.2.1.1.6. </span>aijack.defense.dp.manager.dp_manager module<a class="headerlink" href="#aijack-defense-dp-manager-dp-manager-module" title="Permalink to this headline">¶</a></h2>
 </section>
-<section id="aijack-defense-dp-manager-optimizer-module">
-<h2><span class="section-number">2.1.2.1.1.6. </span>aijack.defense.dp.manager.optimizer module<a class="headerlink" href="#aijack-defense-dp-manager-optimizer-module" title="Permalink to this headline">¶</a></h2>
+<section id="aijack-defense-dp-manager-dpoptimizer-module">
+<h2><span class="section-number">2.1.2.1.1.7. </span>aijack.defense.dp.manager.dpoptimizer module<a class="headerlink" href="#aijack-defense-dp-manager-dpoptimizer-module" title="Permalink to this headline">¶</a></h2>
 </section>
 <section id="aijack-defense-dp-manager-rdp-module">
-<h2><span class="section-number">2.1.2.1.1.7. </span>aijack.defense.dp.manager.rdp module<a class="headerlink" href="#aijack-defense-dp-manager-rdp-module" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">2.1.2.1.1.8. </span>aijack.defense.dp.manager.rdp module<a class="headerlink" href="#aijack-defense-dp-manager-rdp-module" title="Permalink to this headline">¶</a></h2>
 </section>
 <section id="aijack-defense-dp-manager-utils-module">
-<h2><span class="section-number">2.1.2.1.1.8. </span>aijack.defense.dp.manager.utils module<a class="headerlink" href="#aijack-defense-dp-manager-utils-module" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">2.1.2.1.1.9. </span>aijack.defense.dp.manager.utils module<a class="headerlink" href="#aijack-defense-dp-manager-utils-module" title="Permalink to this headline">¶</a></h2>
 </section>
 <section id="module-contents">
-<h2><span class="section-number">2.1.2.1.1.9. </span>Module contents<a class="headerlink" href="#module-contents" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">2.1.2.1.1.10. </span>Module contents<a class="headerlink" href="#module-contents" title="Permalink to this headline">¶</a></h2>
 </section>
 </section>
 
