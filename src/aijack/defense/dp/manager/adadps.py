@@ -1,9 +1,10 @@
 import torch
+
 from .dpoptimizer import (
-    _privatize_lot_grads,
-    _calculate_clip_coef,
     _apply_clip_coef,
+    _calculate_clip_coef,
     _clear_accumulated_grads,
+    _privatize_lot_grads,
 )
 
 
@@ -42,9 +43,9 @@ def _apply_side_infor_adam(opt):
 
 def _precondition_grads_with_side_info(opt):
     if opt.mode == "rmsprop":
-        _apply_side_infor_rmsprop()
+        _apply_side_infor_rmsprop(opt)
     elif opt.mode == "adam":
-        _apply_side_infor_adam()
+        _apply_side_infor_adam(opt)
 
 
 def attach_adadps(
@@ -61,7 +62,7 @@ def attach_adadps(
     class AdaDPSWrapper(cls):
         """Implementation of AdaDPS proposed in
         `Private Adaptive Optimization with Side information`
-        (https://arxiv.org/pdf/2202.05963.pdf")"""
+        (https://arxiv.org/pdf/2202.05963.pdf)"""
 
         def __init__(self, *args, **kwargs):
             super(AdaDPSWrapper, self).__init__(*args, **kwargs)
