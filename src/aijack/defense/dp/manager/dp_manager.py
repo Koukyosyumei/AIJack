@@ -1,8 +1,8 @@
 from torch.utils.data import DataLoader
 
+from .adadps import attach_adadps
 from .dataloader import LotDataLoader, PoissonSampler
 from .dpoptimizer import attach_dpoptimizer
-from .adadps import attach_adadps
 
 
 class DPSGDManager:
@@ -62,6 +62,7 @@ class AdaDPSManager:
         iterations,
         mode="rmsprop",
         beta=0.9,
+        eps_to_avoid_nan=1e-8,
     ):
         self.accountant = accountant
         self.optimizer_cls = optimizer_cls
@@ -72,6 +73,7 @@ class AdaDPSManager:
         self.iterations = iterations
         self.mode = mode
         self.beta = beta
+        self.eps_to_avoid_nan = eps_to_avoid_nan
 
     def privatize(self, noise_multiplier):
         dpoptimizer_class = attach_adadps(
@@ -84,6 +86,7 @@ class AdaDPSManager:
             len(self.dataset),
             self.mode,
             self.beta,
+            self.eps_to_avoid_nan,
         )
 
         def lot_loader(dp_optimizer):
