@@ -6,3 +6,4 @@ Differential Privacy
 
    aijack_moments_accountant
    aijack_miface_dpsgd
+   aijack_adadps
