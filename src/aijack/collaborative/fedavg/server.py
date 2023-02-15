@@ -11,7 +11,7 @@ class FedAVGServer(BaseServer):
     """Server of FedAVG for single process simulation
 
     Args:
-        clients ([FedAvgClient] | [int]): a list of FedAVG clients or their ids.
+        clients ([FedAvgClient]): a list of FedAVG clients.
         global_model (torch.nn.Module): global model.
         server_id (int, optional): id of this server. Defaults to 0.
         lr (float, optional): learning rate. Defaults to 0.1.
