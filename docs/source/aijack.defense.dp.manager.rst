@@ -12,6 +12,14 @@ aijack.defense.dp.manager.accountant module
    :undoc-members:
    :show-inheritance:
 
+aijack.defense.dp.manager.adadps module
+---------------------------------------
+
+.. automodule:: aijack.defense.dp.manager.adadps
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 aijack.defense.dp.manager.client module
 ---------------------------------------
 
@@ -36,10 +44,10 @@ aijack.defense.dp.manager.dp\_manager module
    :undoc-members:
    :show-inheritance:
 
-aijack.defense.dp.manager.optimizer module
-------------------------------------------
+aijack.defense.dp.manager.dpoptimizer module
+--------------------------------------------
 
-.. automodule:: aijack.defense.dp.manager.optimizer
+.. automodule:: aijack.defense.dp.manager.dpoptimizer
    :members:
    :undoc-members:
    :show-inheritance:
