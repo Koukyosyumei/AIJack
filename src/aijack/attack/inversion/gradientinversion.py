@@ -279,6 +279,7 @@ class GradientInversion_Attack(BaseAttacker):
         """
 
         def closure():
+            optimizer.zero_grad()
             if self.custom_generate_fake_grad_fn is None:
                 fake_pred, fake_gradients = _generate_fake_gradients(
                     self.target_model,
@@ -291,7 +292,6 @@ class GradientInversion_Attack(BaseAttacker):
                 fake_pred, fake_gradients = self.custom_generate_fake_grad_fn(
                     self, fake_x, fake_label
                 )
-            optimizer.zero_grad()
             distance = self.distancefunc(
                 fake_gradients, received_gradients, self.gradient_ignore_pos
             )
@@ -302,9 +302,10 @@ class GradientInversion_Attack(BaseAttacker):
                 group_fake_x,
                 received_gradients,
             )
+            distance_val = distance.item()
+            distance.backward(retain_graph=False)
 
-            distance.backward(retain_graph=True)
-            return distance
+            return distance_val
 
         return closure
 
@@ -374,12 +375,12 @@ class GradientInversion_Attack(BaseAttacker):
                 with torch.no_grad():
                     fake_x[:] = fake_x.clamp(self.clamp_range[0], self.clamp_range[1])
 
-            if torch.sum(torch.isnan(distance)).item():
-                raise OverflowError("stop because the culculated distance is Nan")
+            # if torch.sum(torch.isnan(distance)).item():
+            #    raise OverflowError("stop because the culculated distance is Nan")
 
             if best_distance > distance:
-                best_fake_x = copy.deepcopy(fake_x)
-                best_fake_label = copy.deepcopy(fake_label)
+                best_fake_x = fake_x.detach().clone()
+                best_fake_label = fake_label.detach().clone()
                 best_distance = distance
                 best_iteration = i
                 num_of_not_improve_round = 0
@@ -430,8 +431,8 @@ class GradientInversion_Attack(BaseAttacker):
             group_optimizer.append(optimizer)
 
         best_distance = [float("inf") for _ in range(self.group_num)]
-        best_fake_x = copy.deepcopy(group_fake_x)
-        best_fake_label = copy.deepcopy(group_fake_label)
+        best_fake_x = [x_.detach().clone() for x_ in group_fake_x]
+        best_fake_label = [y_.detach().clone() for y_ in group_fake_label]
         best_iteration = [0 for _ in range(self.group_num)]
 
         self.log_loss = [[] for _ in range(self.group_num)]
@@ -450,9 +451,9 @@ class GradientInversion_Attack(BaseAttacker):
                     self.log_loss[worker_id].append(distance)
 
                 if best_distance[worker_id] > distance:
-                    best_fake_x[worker_id] = copy.deepcopy(group_fake_x[worker_id])
-                    best_fake_label[worker_id] = copy.deepcopy(
-                        group_fake_label[worker_id]
+                    best_fake_x[worker_id] = group_fake_x[worker_id].detach().clone()
+                    best_fake_label[worker_id] = (
+                        group_fake_label[worker_id].detach().clone()
                     )
                     best_distance[worker_id] = distance
                     best_iteration[worker_id] = i
