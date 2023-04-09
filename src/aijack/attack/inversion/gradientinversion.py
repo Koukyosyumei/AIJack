@@ -435,8 +435,8 @@ class GradientInversion_Attack(BaseAttacker):
             group_optimizer.append(optimizer)
 
         best_distance = [float("inf") for _ in range(self.group_num)]
-        best_fake_x = group_fake_x.detach().clone()
-        best_fake_label = group_fake_label.detach().clone()
+        best_fake_x = [x_.detach().clone() for x_ in group_fake_x]
+        best_fake_label = [y_.detach().clone() for y_ in group_fake_label]
         best_iteration = [0 for _ in range(self.group_num)]
 
         self.log_loss = [[] for _ in range(self.group_num)]
