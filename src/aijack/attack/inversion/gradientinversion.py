@@ -305,10 +305,6 @@ class GradientInversion_Attack(BaseAttacker):
             distance_val = distance.item()
             distance.backward(retain_graph=False)
 
-            del fake_pred
-            del fake_gradients
-            torch.cuda.empty_cache()
-
             return distance_val
 
         return closure
