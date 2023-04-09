@@ -302,7 +302,7 @@ class GradientInversion_Attack(BaseAttacker):
                 group_fake_x,
                 received_gradients,
             )
-            distance_item = distance.item().clone()
+            distance_item = distance.item()
             distance.backward(retain_graph=False)
             return distance_item
 
@@ -374,8 +374,8 @@ class GradientInversion_Attack(BaseAttacker):
                 with torch.no_grad():
                     fake_x[:] = fake_x.clamp(self.clamp_range[0], self.clamp_range[1])
 
-            if torch.sum(torch.isnan(distance)).item():
-                raise OverflowError("stop because the culculated distance is Nan")
+            # if torch.sum(torch.isnan(distance)).item():
+            #    raise OverflowError("stop because the culculated distance is Nan")
 
             if best_distance > distance:
                 best_fake_x = copy.deepcopy(fake_x)
