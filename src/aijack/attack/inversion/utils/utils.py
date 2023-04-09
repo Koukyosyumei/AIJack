@@ -118,8 +118,7 @@ def _generate_fake_gradients(
     fake_gradients = torch.autograd.grad(
         loss,
         target_model.parameters(),
-        create_graph=False,
+        create_graph=True,
         allow_unused=True,
     )
-    fake_gradients = [g.requires_grad_(True) for g in fake_gradients]
     return fake_pred, fake_gradients
