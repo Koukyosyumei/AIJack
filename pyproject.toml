@@ -25,6 +25,7 @@ dependencies = [
     'scikit-learn',
     'torch >= 1.11.0',
     'torchvision',
+    'opencv-python',
     'pybind11',
     'pybind11[global]',
     'matplotlib',
