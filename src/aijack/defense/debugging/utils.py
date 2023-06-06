@@ -57,12 +57,12 @@ class Hungarian:
 
     # step4
     def _step4(self, mat, line):
-        output_mat = np.zeros_like(mat)
+        # output_mat = np.zeros_like(mat)
         line_r = []
         line_c = []
-        for l in line:
-            rc = l.split("_")[0]
-            num = int(l.split("_")[1])
+        for el in line:
+            rc = el.split("_")[0]
+            num = int(el.split("_")[1])
             if rc == "r":
                 line_r.append(num)
             else:

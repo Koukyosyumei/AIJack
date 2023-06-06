@@ -18,9 +18,10 @@ def nearly_contains(box_1, box_2, eps):
 
 
 def assert_multibox(boxes, counter_threshold=2, eps=0):
-    counter = [0 for i in range(len(boxes))]
-    for i in range(len(boxes)):
-        for j in range(len(boxes)):
+    len_boxes = len(boxes)
+    counter = [0 for i in range(len_boxes)]
+    for i in range(len_boxes):
+        for j in range(len_boxes):
             if i == j:
                 continue
             if nearly_contains(boxes[i], boxes[j], eps):
