@@ -2,11 +2,29 @@ import numpy as np
 
 
 class Hungarian:
+    """
+    Hungarian algorithm implementation for solving the assignment problem.
+    """
+
     def __init__(self):
+        """
+        Initializes the Hungarian algorithm.
+        """
         self.optimal = []
 
     # step1
     def _step1(self, mat):
+        """
+        Performs step 1 of the Hungarian algorithm.
+        Subtracts the minimum value of each row from each element of the row,
+        and then subtract the minimum value of each column from each element of the column.
+
+        Args:
+            mat (numpy.ndarray): The input matrix.
+
+        Returns:
+            numpy.ndarray: The output matrix after step 1.
+        """
         output_mat = np.zeros_like(mat)
         for i, row in enumerate(mat):
             output_mat[i] = row - np.min(row)
@@ -14,6 +32,19 @@ class Hungarian:
 
     # step2
     def _step2(self, mat):
+        """
+        Performs step 2 of the Hungarian algorithm.
+        Determines whether it is possible to select one zero from each row and column.
+        If it is possible, the coordinates of the selected zeros are returned as assignment candidates.
+        If it is not possible, proceed to step 3.
+
+        Args:
+            mat (numpy.ndarray): The input matrix.
+
+        Returns:
+            tuple: A tuple containing a boolean flag indicating whether step 2 is completed,
+                and a list of zero coordinates.
+        """
         zero_coordinate = []
         for i, row in enumerate(mat):
             zero_coordinate.extend([(i, j) for j, v in enumerate(row) if v == 0])
@@ -29,6 +60,17 @@ class Hungarian:
 
     # step3
     def _step3(self, mat, zero_coordinate):
+        """
+        Performs step 3 of the Hungarian algorithm.
+        Covers all zeros with the minimum number of horizontal or vertical lines.
+
+        Args:
+            mat (numpy.ndarray): The input matrix.
+            zero_coordinate (list): A list of zero coordinates.
+
+        Returns:
+            list: A list of lines.
+        """
         zero_list = zero_coordinate
         zero_count = {}
         line = []
@@ -57,6 +99,19 @@ class Hungarian:
 
     # step4
     def _step4(self, mat, line):
+        """
+        Performs step 4 of the Hungarian algorithm.
+        Subtracts the minimum value from the elements not covered by the lines,
+        and add the value to the elements where the lines intersect.
+        Then, go back to step 2.
+
+        Args:
+            mat (numpy.ndarray): The input matrix.
+            line (list): A list of lines.
+
+        Returns:
+            numpy.ndarray: The updated matrix after step 4.
+        """
         # output_mat = np.zeros_like(mat)
         line_r = []
         line_c = []
@@ -84,6 +139,15 @@ class Hungarian:
         return mat
 
     def compute(self, mat):
+        """
+        Computes the optimal assignment using the Hungarian algorithm.
+
+        Args:
+            mat (numpy.ndarray): The input matrix.
+
+        Returns:
+            list: The list of optimal assignments.
+        """
         mat = self._step1(mat)
         mat = self._step1(mat.T).T
         while True:
