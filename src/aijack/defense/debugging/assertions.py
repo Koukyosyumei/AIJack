@@ -12,7 +12,9 @@ class MultiBoxAssertionError(AssertionError):
 
 
 def nearly_contains(box_1, box_2, eps):
-    return box_1[0] + eps < box_2[2] and box_2[2] + eps < box_1[0]
+    return (box_1[0] + eps < box_2[2] or box_2[2] + eps < box_1[0]) and (
+        box_1[1] + eps < box_2[3] or box_2[3] + eps < box_1[1]
+    )
 
 
 def assert_multibox(boxes, counter_threshold=2, eps=0):
