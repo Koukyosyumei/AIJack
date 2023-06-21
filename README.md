@@ -145,3 +145,15 @@ You can also find more examples in our tutorials and documentation.
 # Contact
 
 welcome2aijack[@]gmail.com
+
+# Citation
+
+```
+@software{Hideaki_AIJack_2023,
+author = {Hideaki, Takahashi},
+month = jun,
+title = {{AIJack}},
+url = {https://github.com/Koukyosyumei/AIJack},
+year = {2023}
+}
+```
