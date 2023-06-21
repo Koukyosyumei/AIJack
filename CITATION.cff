@@ -5,7 +5,5 @@ authors:
   given-names: Takahashi
   orcid: "https://orcid.org/0000-0002-2959-6114"
 title: "AIJack"
-version: 1.0.0
-doi: 10.5281/zenodo.1234
 date-released: 2023-06-20
 url: "https://github.com/Koukyosyumei/AIJack"
