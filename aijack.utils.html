@@ -1,699 +1,741 @@
 
+
 <!DOCTYPE html>
 
-<html>
+
+<html >
+
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
     <title>4. aijack.utils package &#8212; AIJack  documentation</title>
-    
-  <link href="_static/css/theme.css" rel="stylesheet">
-  <link href="_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
 
-    
-  <link rel="stylesheet"
-    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+  
+  <link href="_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
 
-    
-      
-
-    
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" />
-    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
-    <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
-    <link rel="stylesheet" type="text/css" href="_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" />
+    <link rel="stylesheet" href="_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="_static/style.css" />
+    <link rel="stylesheet" type="text/css" href="_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css" />
     <link rel="stylesheet" href="_static/style.css" type="text/css" />
-    
-  <link rel="preload" as="script" href="_static/js/index.be7d3bbb2ef33a8344ce.js">
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
 
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
     <script src="_static/doctools.js"></script>
-    <script>let toggleHintShow = 'Click to show';</script>
-    <script>let toggleHintHide = 'Click to hide';</script>
-    <script>let toggleOpenOnPrint = 'true';</script>
-    <script src="_static/togglebutton.js"></script>
-    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
     <script src="_static/design-tabs.js"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script src="_static/sphinx-book-theme.d59cb220de22ca1c485ebbdc042f0030.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'aijack.utils';</script>
     <link rel="shortcut icon" href="_static/logo_square.png"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="1. Contribution Guide" href="contribution.html" />
     <link rel="prev" title="3.1.10. aijack.collaborative.tree package" href="aijack.collaborative.tree.html" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="docsearch:language" content="None">
-    
-
-    <!-- Google Analytics -->
-    
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="None"/>
   </head>
-  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
-    
-    <div class="container-fluid" id="banner"></div>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
 
-    
-
-    <div class="container-xl">
-      <div class="row">
-          
-<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
-    
-        <div class="navbar-brand-box">
-    <a class="navbar-brand text-wrap" href="index.html">
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
       
-        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+      <div class="bd-sidebar-primary bd-sidebar">
         
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+    
+    
       
-      
-      <img src="_static/logo_wide_simple_white.png" class="logo" alt="logo">
-      
-      
-    </a>
-</div><form class="bd-search d-flex align-items-center" action="search.html" method="get">
-  <i class="icon fas fa-search"></i>
-  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
-</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
-    <div class="bd-toc-item active">
-        <p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  Tutorial
- </span>
-</p>
+    
+    
+    <img src="_static/logo_wide_simple_white.png" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="_static/logo_wide_simple_white.png" class="logo__image only-dark" alt="Logo image"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Tutorial</span></p>
 <ul class="nav bd-sidenav">
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="notebooks/federated_learning.html">
-   1. Federated Learning
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
-  <label for="toctree-checkbox-1">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="notebooks/aijack_fedavg.html">
-     1.1. FedAVG
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="notebooks/aijack_fedavg_paillier.html">
-     1.2. FedAVG with Paillier Encryption
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="notebooks/aijack_fedavg_sparsegradient.html">
-     1.3. FedAVG with Sparse Gradient
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="notebooks/aijack_fedmd.html">
-     1.4. FedMD: Federated Learning with Model Distillation
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="notebooks/aijack_secureboost.html">
-     1.5. SecureBoost: Vertically Federated XGBoost with Paillier Encryption
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="notebooks/modelinversion.html">
-   2. Model Inversion
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
-  <label for="toctree-checkbox-2">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="notebooks/aijack_miface.html">
-     2.1. MI-FACE
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="notebooks/aijack_gradient_inversion_attack.html">
-     2.2. Gradient-based Model Inversion Attack against Federated Learning
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="notebooks/aijack_ganattack.html">
-     2.3. GAN Attack
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="notebooks/aijack_soteria.html">
-     2.4. Soteria: : Provable Defense against Privacy Leakage in Federated Learning g from Representation Perspective
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="notebooks/aijack_mid.html">
-     2.5. Mutual Information-based Defense
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="notebooks/labelleakage.html">
-   3. Label Leakage
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
-  <label for="toctree-checkbox-3">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="notebooks/aijack_split_learning.html">
-     3.1. Split Learning and Label Leakage
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="notebooks/membershipinference.html">
-   4. Membership Inference
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
-  <label for="toctree-checkbox-4">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="notebooks/aijack_membership_inference.html">
-     4.1. Memership Inference
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="notebooks/poisoning.html">
-   5. Poisoning Attack
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/>
-  <label for="toctree-checkbox-5">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="notebooks/aijack_poisoning_federated_learning.html">
-     5.1. Poisoning Attack against Federated Learning
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="notebooks/aijack_poisoning_attack_svm.html">
-     5.2. Poisoning Attack against SVM
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="notebooks/evasion.html">
-   6. Evasion Attack
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/>
-  <label for="toctree-checkbox-6">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="notebooks/aijack_evasion_attack.html">
-     6.1. Evasion Attack against SVM
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="notebooks/diferentialprivacy.html">
-   7. Differential Privacy
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/>
-  <label for="toctree-checkbox-7">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="notebooks/aijack_moments_accountant.html">
-     7.1. Differential Privacy and Moment Accountant
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="notebooks/aijack_miface_dpsgd.html">
-     7.2. MI-FACE vs DPSGD
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="notebooks/aijack_adadps.html">
-     7.3. AdaDPS
-    </a>
-   </li>
-  </ul>
- </li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="notebooks/federated_learning.html">1. Federated Learning</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/aijack_fedavg.html">1.1. FedAVG</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/aijack_fedavg_paillier.html">1.2. FedAVG with Paillier Encryption</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/aijack_fedavg_sparsegradient.html">1.3. FedAVG with Sparse Gradient</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/aijack_fedmd.html">1.4. FedMD: Federated Learning with Model Distillation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/aijack_secureboost.html">1.5. SecureBoost: Vertically Federated XGBoost with Paillier Encryption</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  API Docs
- </span>
-</p>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="notebooks/modelinversion.html">2. Model Inversion</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/aijack_miface.html">2.1. MI-FACE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/aijack_gradient_inversion_attack.html">2.2. Gradient-based Model Inversion Attack against Federated Learning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/aijack_ganattack.html">2.3. GAN Attack</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/aijack_soteria.html">2.4. Soteria: : Provable Defense against Privacy Leakage in Federated Learning g from Representation Perspective</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/aijack_mid.html">2.5. Mutual Information-based Defense</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="notebooks/labelleakage.html">3. Label Leakage</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/aijack_split_learning.html">3.1. Split Learning and Label Leakage</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="notebooks/membershipinference.html">4. Membership Inference</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/aijack_membership_inference.html">4.1. Memership Inference</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="notebooks/poisoning.html">5. Poisoning Attack</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-5"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/aijack_poisoning_federated_learning.html">5.1. Poisoning Attack against Federated Learning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/aijack_poisoning_attack_svm.html">5.2. Poisoning Attack against SVM</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="notebooks/evasion.html">6. Evasion Attack</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-6"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/aijack_evasion_attack.html">6.1. Evasion Attack against SVM</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="notebooks/diferentialprivacy.html">7. Differential Privacy</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/aijack_moments_accountant.html">7.1. Differential Privacy and Moment Accountant</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/aijack_miface_dpsgd.html">7.2. MI-FACE vs DPSGD</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/aijack_adadps.html">7.3. AdaDPS</a></li>
+</ul>
+</li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">API Docs</span></p>
 <ul class="current nav bd-sidenav">
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="aijack.attack.html">
-   1. aijack.attack package
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/>
-  <label for="toctree-checkbox-8">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="aijack.attack.backdoor.html">
-     1.1.1. aijack.attack.backdoor package
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="aijack.attack.evasion.html">
-     1.1.2. aijack.attack.evasion package
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="aijack.attack.freerider.html">
-     1.1.3. aijack.attack.freerider package
-    </a>
-   </li>
-   <li class="toctree-l2 has-children">
-    <a class="reference internal" href="aijack.attack.inversion.html">
-     1.1.4. aijack.attack.inversion package
-    </a>
-    <input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/>
-    <label for="toctree-checkbox-9">
-     <i class="fas fa-chevron-down">
-     </i>
-    </label>
-    <ul>
-     <li class="toctree-l3">
-      <a class="reference internal" href="aijack.attack.inversion.utils.html">
-       1.1.4.1.1. aijack.attack.inversion.utils package
-      </a>
-     </li>
-    </ul>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="aijack.attack.labelleakage.html">
-     1.1.5. aijack.attack.labelleakage package
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="aijack.attack.membership.html">
-     1.1.6. aijack.attack.membership package
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="aijack.attack.poison.html">
-     1.1.7. aijack.attack.poison package
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="aijack.defense.html">
-   2. aijack.defense package
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/>
-  <label for="toctree-checkbox-10">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="aijack.defense.debugging.html">
-     2.1.1. aijack.defense.debugging package
-    </a>
-   </li>
-   <li class="toctree-l2 has-children">
-    <a class="reference internal" href="aijack.defense.dp.html">
-     2.1.2. aijack.defense.dp package
-    </a>
-    <input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" type="checkbox"/>
-    <label for="toctree-checkbox-11">
-     <i class="fas fa-chevron-down">
-     </i>
-    </label>
-    <ul>
-     <li class="toctree-l3">
-      <a class="reference internal" href="aijack.defense.dp.manager.html">
-       2.1.2.1.1. aijack.defense.dp.manager package
-      </a>
-     </li>
-    </ul>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="aijack.defense.foolsgold.html">
-     2.1.3. aijack.defense.foolsgold package
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="aijack.defense.kanonymity.html">
-     2.1.4. aijack.defense.kanonymity package
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="aijack.defense.mid.html">
-     2.1.5. aijack.defense.mid package
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="aijack.defense.paillier.html">
-     2.1.6. aijack.defense.paillier package
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="aijack.defense.soteria.html">
-     2.1.7. aijack.defense.soteria package
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="aijack.defense.sparse.html">
-     2.1.8. aijack.defense.sparse package
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="aijack.collaborative.html">
-   3. aijack.collaborative package
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" type="checkbox"/>
-  <label for="toctree-checkbox-12">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="aijack.collaborative.core.html">
-     3.1.1. aijack.collaborative.core package
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="aijack.collaborative.dsfl.html">
-     3.1.2. aijack.collaborative.dsfl package
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="aijack.collaborative.fedavg.html">
-     3.1.3. aijack.collaborative.fedavg package
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="aijack.collaborative.fedgems.html">
-     3.1.4. aijack.collaborative.fedgems package
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="aijack.collaborative.fedkd.html">
-     3.1.5. aijack.collaborative.fedkd package
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="aijack.collaborative.fedmd.html">
-     3.1.6. aijack.collaborative.fedmd package
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="aijack.collaborative.fedprox.html">
-     3.1.7. aijack.collaborative.fedprox package
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="aijack.collaborative.optimizer.html">
-     3.1.8. aijack.collaborative.optimizer package
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="aijack.collaborative.splitnn.html">
-     3.1.9. aijack.collaborative.splitnn package
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="aijack.collaborative.tree.html">
-     3.1.10. aijack.collaborative.tree package
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toctree-l1 current active">
-  <a class="current reference internal" href="#">
-   4. aijack.utils package
-  </a>
- </li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="aijack.attack.html">1. aijack.attack package</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-8"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="aijack.attack.backdoor.html">1.1.1. aijack.attack.backdoor package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="aijack.attack.evasion.html">1.1.2. aijack.attack.evasion package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="aijack.attack.freerider.html">1.1.3. aijack.attack.freerider package</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="aijack.attack.inversion.html">1.1.4. aijack.attack.inversion package</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-9"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="aijack.attack.inversion.utils.html">1.1.4.1.1. aijack.attack.inversion.utils package</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  Developer Docs
- </span>
-</p>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="aijack.attack.labelleakage.html">1.1.5. aijack.attack.labelleakage package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="aijack.attack.membership.html">1.1.6. aijack.attack.membership package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="aijack.attack.poison.html">1.1.7. aijack.attack.poison package</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="aijack.defense.html">2. aijack.defense package</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-10"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="aijack.defense.debugging.html">2.1.1. aijack.defense.debugging package</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="aijack.defense.dp.html">2.1.2. aijack.defense.dp package</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-11"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="aijack.defense.dp.manager.html">2.1.2.1.1. aijack.defense.dp.manager package</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="aijack.defense.foolsgold.html">2.1.3. aijack.defense.foolsgold package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="aijack.defense.kanonymity.html">2.1.4. aijack.defense.kanonymity package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="aijack.defense.mid.html">2.1.5. aijack.defense.mid package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="aijack.defense.paillier.html">2.1.6. aijack.defense.paillier package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="aijack.defense.soteria.html">2.1.7. aijack.defense.soteria package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="aijack.defense.sparse.html">2.1.8. aijack.defense.sparse package</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="aijack.collaborative.html">3. aijack.collaborative package</a><input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-12"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="aijack.collaborative.core.html">3.1.1. aijack.collaborative.core package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="aijack.collaborative.dsfl.html">3.1.2. aijack.collaborative.dsfl package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="aijack.collaborative.fedavg.html">3.1.3. aijack.collaborative.fedavg package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="aijack.collaborative.fedgems.html">3.1.4. aijack.collaborative.fedgems package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="aijack.collaborative.fedkd.html">3.1.5. aijack.collaborative.fedkd package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="aijack.collaborative.fedmd.html">3.1.6. aijack.collaborative.fedmd package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="aijack.collaborative.fedprox.html">3.1.7. aijack.collaborative.fedprox package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="aijack.collaborative.optimizer.html">3.1.8. aijack.collaborative.optimizer package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="aijack.collaborative.splitnn.html">3.1.9. aijack.collaborative.splitnn package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="aijack.collaborative.tree.html">3.1.10. aijack.collaborative.tree package</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">4. aijack.utils package</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Developer Docs</span></p>
 <ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="contribution.html">
-   1. Contribution Guide
-  </a>
- </li>
+<li class="toctree-l1"><a class="reference internal" href="contribution.html">1. Contribution Guide</a></li>
 </ul>
 
     </div>
-</nav> <!-- To handle the deprecated key -->
-
-<div class="navbar_extra_footer">
-  Theme by the <a href="https://ebp.jupyterbook.org">Executable Book Project</a>
-</div>
-
-</div>
-
-
-          
-
-
-          
-<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
-    
-    <div class="topbar container-xl fixed-top">
-    <div class="topbar-contents row">
-        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
-        <div class="col pl-md-4 topbar-main">
-            
-            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
-                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
-                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
-                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
-                <i class="fas fa-bars"></i>
-                <i class="fas fa-arrow-left"></i>
-                <i class="fas fa-arrow-up"></i>
-            </button>
-            
-            
-<div class="dropdown-buttons-trigger">
-    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
-            class="fas fa-download"></i></button>
-
-    <div class="dropdown-buttons">
-        <!-- ipynb file if we had a myst markdown file -->
-        
-        <!-- Download raw file -->
-        <a class="dropdown-buttons" href="_sources/aijack.utils.rst.txt"><button type="button"
-                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
-                data-placement="left">.rst</button></a>
-        <!-- Download PDF via print -->
-        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
-                onclick="printPdf(this)" data-toggle="tooltip" data-placement="left">.pdf</button>
+</nav></div>
     </div>
-</div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
 
-            <!-- Source interaction buttons -->
 
-<div class="dropdown-buttons-trigger">
-    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
-        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
-    <div class="dropdown-buttons sourcebuttons">
-        <a class="repository-button"
-            href="https://github.com/Koukyosyumei/AIJack"><button type="button" class="btn btn-secondary topbarbtn"
-                data-toggle="tooltip" data-placement="left" title="Source repository"><i
-                    class="fab fa-github"></i>repository</button></a>
+      </div>
+      
+      <main id="main-content" class="bd-main">
         
         
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
     </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+<a href="https://github.com/Koukyosyumei/AIJack" target="_blank"
+   class="btn btn-sm btn-source-repository-button"
+   title="Source repository"
+   data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+
+</a>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/aijack.utils.rst" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.rst</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
 </div>
 
-            <!-- Full screen (wrap in <a> to have style consistency -->
 
-<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
-        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
-        title="Fullscreen mode"><i
-            class="fas fa-expand"></i></button></a>
 
-            <!-- Launch buttons -->
 
-        </div>
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
 
-        <!-- Table of contents -->
-        <div class="d-none d-md-block col-md-2 bd-toc show noprint">
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script>
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>aijack.utils package</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
             
-            <div class="tocsection onthispage pt-5 pb-3">
-                <i class="fas fa-list"></i> Contents
+            <div>
+                <h2> Contents </h2>
             </div>
-            <nav id="bd-toc-nav" aria-label="Page">
+            <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#submodules">
-   4.1. Submodules
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#aijack-utils-dataloader-module">
-   4.2. aijack.utils.dataloader module
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#aijack-utils-metrics-module">
-   4.3. aijack.utils.metrics module
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#aijack-utils-utils-module">
-   4.4. aijack.utils.utils module
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#module-contents">
-   4.5. Module contents
-  </a>
- </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#submodules">4.1. Submodules</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aijack.utils.dataloader">4.2. aijack.utils.dataloader module</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aijack.utils.metrics">4.3. aijack.utils.metrics module</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aijack.utils.utils">4.4. aijack.utils.utils module</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aijack.utils">4.5. Module contents</a></li>
 </ul>
-
             </nav>
         </div>
     </div>
 </div>
-    <div id="main-content" class="row">
-        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
-            <!-- Table of contents that is only displayed when printing the page -->
-            <div id="jb-print-docs-body" class="onlyprint">
-                <h1>aijack.utils package</h1>
-                <!-- Table of contents -->
-                <div id="print-main-content">
-                    <div id="jb-print-toc">
-                        
-                        <div>
-                            <h2> Contents </h2>
-                        </div>
-                        <nav aria-label="Page">
-                            <ul class="visible nav section-nav flex-column">
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#submodules">
-   4.1. Submodules
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#aijack-utils-dataloader-module">
-   4.2. aijack.utils.dataloader module
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#aijack-utils-metrics-module">
-   4.3. aijack.utils.metrics module
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#aijack-utils-utils-module">
-   4.4. aijack.utils.utils module
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#module-contents">
-   4.5. Module contents
-  </a>
- </li>
-</ul>
 
-                        </nav>
-                    </div>
-                </div>
-            </div>
-            
-              <div>
-                
-  <section id="aijack-utils-package">
-<h1><span class="section-number">4. </span>aijack.utils package<a class="headerlink" href="#aijack-utils-package" title="Permalink to this headline">¶</a></h1>
-<section id="submodules">
-<h2><span class="section-number">4.1. </span>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
-</section>
-<section id="aijack-utils-dataloader-module">
-<h2><span class="section-number">4.2. </span>aijack.utils.dataloader module<a class="headerlink" href="#aijack-utils-dataloader-module" title="Permalink to this headline">¶</a></h2>
-</section>
-<section id="aijack-utils-metrics-module">
-<h2><span class="section-number">4.3. </span>aijack.utils.metrics module<a class="headerlink" href="#aijack-utils-metrics-module" title="Permalink to this headline">¶</a></h2>
-</section>
-<section id="aijack-utils-utils-module">
-<h2><span class="section-number">4.4. </span>aijack.utils.utils module<a class="headerlink" href="#aijack-utils-utils-module" title="Permalink to this headline">¶</a></h2>
-</section>
-<section id="module-contents">
-<h2><span class="section-number">4.5. </span>Module contents<a class="headerlink" href="#module-contents" title="Permalink to this headline">¶</a></h2>
-</section>
-</section>
-
-
-              </div>
               
-            
-                <!-- Previous / next buttons -->
-<div class='prev-next-area'> 
-    <a class='left-prev' id="prev-link" href="aijack.collaborative.tree.html" title="previous page">
-        <i class="fas fa-angle-left"></i>
-        <div class="prev-next-info">
-            <p class="prev-next-subtitle">previous</p>
-            <p class="prev-next-title"><span class="section-number">3.1.10. </span>aijack.collaborative.tree package</p>
-        </div>
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="aijack-utils-package">
+<h1><span class="section-number">4. </span>aijack.utils package<a class="headerlink" href="#aijack-utils-package" title="Permalink to this headline">#</a></h1>
+<section id="submodules">
+<h2><span class="section-number">4.1. </span>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">#</a></h2>
+</section>
+<section id="module-aijack.utils.dataloader">
+<span id="aijack-utils-dataloader-module"></span><h2><span class="section-number">4.2. </span>aijack.utils.dataloader module<a class="headerlink" href="#module-aijack.utils.dataloader" title="Permalink to this headline">#</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="aijack.utils.dataloader.prepareFederatedMNISTDataloaders">
+<span class="sig-prename descclassname"><span class="pre">aijack.utils.dataloader.</span></span><span class="sig-name descname"><span class="pre">prepareFederatedMNISTDataloaders</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client_num=2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">local_label_num=2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">local_data_num=20</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size=1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test_batch_size=16</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path='MNIST/.'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">download=True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transform=Compose(</span>&#160;&#160;&#160;&#160; <span class="pre">ToTensor()</span>&#160;&#160;&#160;&#160; <span class="pre">Normalize(mean=(0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">std=(0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">))</span> <span class="pre">)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed=0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_idx=False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/utils/dataloader.html#prepareFederatedMNISTDataloaders"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.utils.dataloader.prepareFederatedMNISTDataloaders" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-aijack.utils.metrics">
+<span id="aijack-utils-metrics-module"></span><h2><span class="section-number">4.3. </span>aijack.utils.metrics module<a class="headerlink" href="#module-aijack.utils.metrics" title="Permalink to this headline">#</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="aijack.utils.metrics.accuracy_torch_dataloader">
+<span class="sig-prename descclassname"><span class="pre">aijack.utils.metrics.</span></span><span class="sig-name descname"><span class="pre">accuracy_torch_dataloader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataloader</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'cpu'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xpos</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ypos</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/utils/metrics.html#accuracy_torch_dataloader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.utils.metrics.accuracy_torch_dataloader" title="Permalink to this definition">#</a></dt>
+<dd><p>Calculates the accuracy of the model on the given dataloader</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>model</strong> (<em>torch.nn.Module</em>) – model to be evaluated</p></li>
+<li><p><strong>dataloader</strong> (<em>torch.DataLoader</em>) – dataloader to be evaluated</p></li>
+<li><p><strong>device</strong> (<em>str</em><em>, </em><em>optional</em>) – device type. Defaults to “cpu”.</p></li>
+<li><p><strong>xpos</strong> (<em>int</em><em>, </em><em>optional</em>) – the positional index of the input in data. Defaults to 1.</p></li>
+<li><p><strong>ypos</strong> (<em>int</em><em>, </em><em>optional</em>) – the positional index of the label in data. Defaults to 2.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>accuracy</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="aijack.utils.metrics.crossentropyloss_between_logits">
+<span class="sig-prename descclassname"><span class="pre">aijack.utils.metrics.</span></span><span class="sig-name descname"><span class="pre">crossentropyloss_between_logits</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_pred_logit</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_true_labels</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reduction</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'mean'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/utils/metrics.html#crossentropyloss_between_logits"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.utils.metrics.crossentropyloss_between_logits" title="Permalink to this definition">#</a></dt>
+<dd><p>Cross entropy loss for soft labels
+Based on <a class="reference external" href="https://discuss.pytorch.org/t/soft-cross-entropy-loss-tf-has-it-does-pytorch-have-it/69501/2">https://discuss.pytorch.org/t/soft-cross-entropy-loss-tf-has-it-does-pytorch-have-it/69501/2</a>
+:param y_pred_logit: predicted logits
+:type y_pred_logit: torch.Tensor
+:param y_true_labels: ground-truth soft labels
+:type y_true_labels: torch.Tensor</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>average cross entropy between y_pred_logit and y_true_labels2</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>torch.Tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="aijack.utils.metrics.total_variance">
+<span class="sig-prename descclassname"><span class="pre">aijack.utils.metrics.</span></span><span class="sig-name descname"><span class="pre">total_variance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/utils/metrics.html#total_variance"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.utils.metrics.total_variance" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns the total variance of the given data</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>x</strong> (<em>torch.Tensor</em>) – input data</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>total variance of the given data</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-aijack.utils.utils">
+<span id="aijack-utils-utils-module"></span><h2><span class="section-number">4.4. </span>aijack.utils.utils module<a class="headerlink" href="#module-aijack.utils.utils" title="Permalink to this headline">#</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="aijack.utils.utils.NumpyDataset">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">aijack.utils.utils.</span></span><span class="sig-name descname"><span class="pre">NumpyDataset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transform</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_idx</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/utils/utils.html#NumpyDataset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.utils.utils.NumpyDataset" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">torch.utils.data.dataset.Dataset</span></code></p>
+<p>This class allows you to convert numpy.array to torch.Dataset</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<em>np.array</em>) – </p></li>
+<li><p><strong>y</strong> (<em>np.array</em>) – </p></li>
+<li><p><strong>transform</strong> (<em>torch.transform</em>) – </p></li>
+</ul>
+</dd>
+</dl>
+<dl class="simple">
+<dt>Attriutes</dt><dd><p>x (np.array):
+y (np.array):
+transform (torch.transform):</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="aijack.utils.utils.RoundDecimal">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">aijack.utils.utils.</span></span><span class="sig-name descname"><span class="pre">RoundDecimal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/utils/utils.html#RoundDecimal"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.utils.utils.RoundDecimal" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">torch.autograd.function.Function</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="aijack.utils.utils.RoundDecimal.backward">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">backward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ctx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grad_output</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/utils/utils.html#RoundDecimal.backward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.utils.utils.RoundDecimal.backward" title="Permalink to this definition">#</a></dt>
+<dd><p>Defines a formula for differentiating the operation with backward mode
+automatic differentiation (alias to the vjp function).</p>
+<p>This function is to be overridden by all subclasses.</p>
+<p>It must accept a context <code class="xref py py-attr docutils literal notranslate"><span class="pre">ctx</span></code> as the first argument, followed by
+as many outputs as the <a class="reference internal" href="#aijack.utils.utils.RoundDecimal.forward" title="aijack.utils.utils.RoundDecimal.forward"><code class="xref py py-func docutils literal notranslate"><span class="pre">forward()</span></code></a> returned (None will be passed in
+for non tensor outputs of the forward function),
+and it should return as many tensors, as there were inputs to
+<a class="reference internal" href="#aijack.utils.utils.RoundDecimal.forward" title="aijack.utils.utils.RoundDecimal.forward"><code class="xref py py-func docutils literal notranslate"><span class="pre">forward()</span></code></a>. Each argument is the gradient w.r.t the given output,
+and each returned value should be the gradient w.r.t. the
+corresponding input. If an input is not a Tensor or is a Tensor not
+requiring grads, you can just pass None as a gradient for that input.</p>
+<p>The context can be used to retrieve tensors saved during the forward
+pass. It also has an attribute <code class="xref py py-attr docutils literal notranslate"><span class="pre">ctx.needs_input_grad</span></code> as a tuple
+of booleans representing whether each input needs gradient. E.g.,
+<a class="reference internal" href="#aijack.utils.utils.RoundDecimal.backward" title="aijack.utils.utils.RoundDecimal.backward"><code class="xref py py-func docutils literal notranslate"><span class="pre">backward()</span></code></a> will have <code class="docutils literal notranslate"><span class="pre">ctx.needs_input_grad[0]</span> <span class="pre">=</span> <span class="pre">True</span></code> if the
+first input to <a class="reference internal" href="#aijack.utils.utils.RoundDecimal.forward" title="aijack.utils.utils.RoundDecimal.forward"><code class="xref py py-func docutils literal notranslate"><span class="pre">forward()</span></code></a> needs gradient computated w.r.t. the
+output.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="aijack.utils.utils.RoundDecimal.forward">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ctx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_digits</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/utils/utils.html#RoundDecimal.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.utils.utils.RoundDecimal.forward" title="Permalink to this definition">#</a></dt>
+<dd><p>Performs the operation.</p>
+<p>This function is to be overridden by all subclasses.</p>
+<p>It must accept a context ctx as the first argument, followed by any
+number of arguments (tensors or other types).</p>
+<p>The context can be used to store arbitrary data that can be then
+retrieved during the backward pass. Tensors should not be stored
+directly on <cite>ctx</cite> (though this is not currently enforced for
+backward compatibility). Instead, tensors should be saved either with
+<code class="xref py py-func docutils literal notranslate"><span class="pre">ctx.save_for_backward()</span></code> if they are intended to be used in
+<code class="docutils literal notranslate"><span class="pre">backward</span></code> (equivalently, <code class="docutils literal notranslate"><span class="pre">vjp</span></code>) or <code class="xref py py-func docutils literal notranslate"><span class="pre">ctx.save_for_forward()</span></code>
+if they are intended to be used for in <code class="docutils literal notranslate"><span class="pre">jvp</span></code>.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="aijack.utils.utils.TorchClassifier">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">aijack.utils.utils.</span></span><span class="sig-name descname"><span class="pre">TorchClassifier</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">criterion</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">optimizer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epoch</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'cpu'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shuffle</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_workers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/utils/utils.html#TorchClassifier"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.utils.utils.TorchClassifier" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">sklearn.base.BaseEstimator</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">sklearn.base.ClassifierMixin</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="aijack.utils.utils.TorchClassifier.fit">
+<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/utils/utils.html#TorchClassifier.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.utils.utils.TorchClassifier.fit" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="aijack.utils.utils.TorchClassifier.predict">
+<span class="sig-name descname"><span class="pre">predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/utils/utils.html#TorchClassifier.predict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.utils.utils.TorchClassifier.predict" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="aijack.utils.utils.TorchClassifier.predict_proba">
+<span class="sig-name descname"><span class="pre">predict_proba</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/utils/utils.html#TorchClassifier.predict_proba"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.utils.utils.TorchClassifier.predict_proba" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="aijack.utils.utils.TorchClassifier.score">
+<span class="sig-name descname"><span class="pre">score</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/utils/utils.html#TorchClassifier.score"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.utils.utils.TorchClassifier.score" title="Permalink to this definition">#</a></dt>
+<dd><p>Return the mean accuracy on the given test data and labels.</p>
+<p>In multi-label classification, this is the subset accuracy
+which is a harsh metric since you require for each sample that
+each label set be correctly predicted.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>X</strong> (<em>array-like of shape</em><em> (</em><em>n_samples</em><em>, </em><em>n_features</em><em>)</em>) – Test samples.</p></li>
+<li><p><strong>y</strong> (<em>array-like of shape</em><em> (</em><em>n_samples</em><em>,</em><em>) or </em><em>(</em><em>n_samples</em><em>, </em><em>n_outputs</em><em>)</em>) – True labels for <cite>X</cite>.</p></li>
+<li><p><strong>sample_weight</strong> (<em>array-like of shape</em><em> (</em><em>n_samples</em><em>,</em><em>)</em><em>, </em><em>default=None</em>) – Sample weights.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>score</strong> – Mean accuracy of <code class="docutils literal notranslate"><span class="pre">self.predict(X)</span></code> w.r.t. <cite>y</cite>.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="aijack.utils.utils.default_local_train_for_client">
+<span class="sig-prename descclassname"><span class="pre">aijack.utils.utils.</span></span><span class="sig-name descname"><span class="pre">default_local_train_for_client</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">local_epoch</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">criterion</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trainloader</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">optimizer</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/utils/utils.html#default_local_train_for_client"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.utils.utils.default_local_train_for_client" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="aijack.utils.utils.torch_round_x_decimal">
+<span class="sig-prename descclassname"><span class="pre">aijack.utils.utils.</span></span><span class="sig-name descname"><span class="pre">torch_round_x_decimal</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#aijack.utils.utils.torch_round_x_decimal" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="aijack.utils.utils.try_gpu">
+<span class="sig-prename descclassname"><span class="pre">aijack.utils.utils.</span></span><span class="sig-name descname"><span class="pre">try_gpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">e</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/utils/utils.html#try_gpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.utils.utils.try_gpu" title="Permalink to this definition">#</a></dt>
+<dd><p>Send given tensor to gpu if it is available</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>e</strong> – (torch.Tensor)</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>(torch.Tensor)</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>e</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="aijack.utils.utils.worker_init_fn">
+<span class="sig-prename descclassname"><span class="pre">aijack.utils.utils.</span></span><span class="sig-name descname"><span class="pre">worker_init_fn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">worker_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/utils/utils.html#worker_init_fn"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.utils.utils.worker_init_fn" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-aijack.utils">
+<span id="module-contents"></span><h2><span class="section-number">4.5. </span>Module contents<a class="headerlink" href="#module-aijack.utils" title="Permalink to this headline">#</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="aijack.utils.torch_round_x_decimal">
+<span class="sig-prename descclassname"><span class="pre">aijack.utils.</span></span><span class="sig-name descname"><span class="pre">torch_round_x_decimal</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#aijack.utils.torch_round_x_decimal" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="aijack.collaborative.tree.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><span class="section-number">3.1.10. </span>aijack.collaborative.tree package</p>
+      </div>
     </a>
-    <a class='right-next' id="next-link" href="contribution.html" title="next page">
-    <div class="prev-next-info">
+    <a class="right-next"
+       href="contribution.html"
+       title="next page">
+      <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
         <p class="prev-next-title"><span class="section-number">1. </span>Contribution Guide</p>
-    </div>
-    <i class="fas fa-angle-right"></i>
-    </a>
-</div>
-            
-        </div>
-    </div>
-    <footer class="footer">
-  <p>
-    
-      By Hideaki Takahashi<br/>
-    
-        &copy; Copyright 2023, Hideaki Takahashi.<br/>
-  </p>
-</footer>
-</main>
-
-
       </div>
-    </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div></div>
   
-  <script src="_static/js/index.be7d3bbb2ef33a8344ce.js"></script>
+</div>
 
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#submodules">4.1. Submodules</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aijack.utils.dataloader">4.2. aijack.utils.dataloader module</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aijack.utils.metrics">4.3. aijack.utils.metrics module</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aijack.utils.utils">4.4. aijack.utils.utils module</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aijack.utils">4.5. Module contents</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Hideaki Takahashi
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  <p class="copyright">
+    
+      © Copyright 2023, Hideaki Takahashi.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+  </footer>
   </body>
 </html>

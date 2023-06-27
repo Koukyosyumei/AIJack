@@ -1,673 +1,552 @@
 
+
 <!DOCTYPE html>
 
-<html>
+
+<html >
+
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
     <title>1.1.5. aijack.attack.labelleakage package &#8212; AIJack  documentation</title>
-    
-  <link href="_static/css/theme.css" rel="stylesheet">
-  <link href="_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
 
-    
-  <link rel="stylesheet"
-    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+  
+  <link href="_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
 
-    
-      
-
-    
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" />
-    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
-    <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
-    <link rel="stylesheet" type="text/css" href="_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" />
+    <link rel="stylesheet" href="_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="_static/style.css" />
+    <link rel="stylesheet" type="text/css" href="_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css" />
     <link rel="stylesheet" href="_static/style.css" type="text/css" />
-    
-  <link rel="preload" as="script" href="_static/js/index.be7d3bbb2ef33a8344ce.js">
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
 
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
     <script src="_static/doctools.js"></script>
-    <script>let toggleHintShow = 'Click to show';</script>
-    <script>let toggleHintHide = 'Click to hide';</script>
-    <script>let toggleOpenOnPrint = 'true';</script>
-    <script src="_static/togglebutton.js"></script>
-    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
     <script src="_static/design-tabs.js"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script src="_static/sphinx-book-theme.d59cb220de22ca1c485ebbdc042f0030.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'aijack.attack.labelleakage';</script>
     <link rel="shortcut icon" href="_static/logo_square.png"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="1.1.6. aijack.attack.membership package" href="aijack.attack.membership.html" />
     <link rel="prev" title="1.1.4.1.1. aijack.attack.inversion.utils package" href="aijack.attack.inversion.utils.html" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="docsearch:language" content="None">
-    
-
-    <!-- Google Analytics -->
-    
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="None"/>
   </head>
-  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
-    
-    <div class="container-fluid" id="banner"></div>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
 
-    
-
-    <div class="container-xl">
-      <div class="row">
-          
-<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
-    
-        <div class="navbar-brand-box">
-    <a class="navbar-brand text-wrap" href="index.html">
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
       
-        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+      <div class="bd-sidebar-primary bd-sidebar">
         
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+    
+    
       
-      
-      <img src="_static/logo_wide_simple_white.png" class="logo" alt="logo">
-      
-      
-    </a>
-</div><form class="bd-search d-flex align-items-center" action="search.html" method="get">
-  <i class="icon fas fa-search"></i>
-  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
-</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
-    <div class="bd-toc-item active">
-        <p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  Tutorial
- </span>
-</p>
+    
+    
+    <img src="_static/logo_wide_simple_white.png" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="_static/logo_wide_simple_white.png" class="logo__image only-dark" alt="Logo image"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Tutorial</span></p>
 <ul class="nav bd-sidenav">
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="notebooks/federated_learning.html">
-   1. Federated Learning
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
-  <label for="toctree-checkbox-1">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="notebooks/aijack_fedavg.html">
-     1.1. FedAVG
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="notebooks/aijack_fedavg_paillier.html">
-     1.2. FedAVG with Paillier Encryption
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="notebooks/aijack_fedavg_sparsegradient.html">
-     1.3. FedAVG with Sparse Gradient
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="notebooks/aijack_fedmd.html">
-     1.4. FedMD: Federated Learning with Model Distillation
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="notebooks/aijack_secureboost.html">
-     1.5. SecureBoost: Vertically Federated XGBoost with Paillier Encryption
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="notebooks/modelinversion.html">
-   2. Model Inversion
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
-  <label for="toctree-checkbox-2">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="notebooks/aijack_miface.html">
-     2.1. MI-FACE
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="notebooks/aijack_gradient_inversion_attack.html">
-     2.2. Gradient-based Model Inversion Attack against Federated Learning
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="notebooks/aijack_ganattack.html">
-     2.3. GAN Attack
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="notebooks/aijack_soteria.html">
-     2.4. Soteria: : Provable Defense against Privacy Leakage in Federated Learning g from Representation Perspective
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="notebooks/aijack_mid.html">
-     2.5. Mutual Information-based Defense
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="notebooks/labelleakage.html">
-   3. Label Leakage
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
-  <label for="toctree-checkbox-3">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="notebooks/aijack_split_learning.html">
-     3.1. Split Learning and Label Leakage
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="notebooks/membershipinference.html">
-   4. Membership Inference
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
-  <label for="toctree-checkbox-4">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="notebooks/aijack_membership_inference.html">
-     4.1. Memership Inference
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="notebooks/poisoning.html">
-   5. Poisoning Attack
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/>
-  <label for="toctree-checkbox-5">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="notebooks/aijack_poisoning_federated_learning.html">
-     5.1. Poisoning Attack against Federated Learning
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="notebooks/aijack_poisoning_attack_svm.html">
-     5.2. Poisoning Attack against SVM
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="notebooks/evasion.html">
-   6. Evasion Attack
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/>
-  <label for="toctree-checkbox-6">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="notebooks/aijack_evasion_attack.html">
-     6.1. Evasion Attack against SVM
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="notebooks/diferentialprivacy.html">
-   7. Differential Privacy
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/>
-  <label for="toctree-checkbox-7">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="notebooks/aijack_moments_accountant.html">
-     7.1. Differential Privacy and Moment Accountant
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="notebooks/aijack_miface_dpsgd.html">
-     7.2. MI-FACE vs DPSGD
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="notebooks/aijack_adadps.html">
-     7.3. AdaDPS
-    </a>
-   </li>
-  </ul>
- </li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="notebooks/federated_learning.html">1. Federated Learning</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/aijack_fedavg.html">1.1. FedAVG</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/aijack_fedavg_paillier.html">1.2. FedAVG with Paillier Encryption</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/aijack_fedavg_sparsegradient.html">1.3. FedAVG with Sparse Gradient</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/aijack_fedmd.html">1.4. FedMD: Federated Learning with Model Distillation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/aijack_secureboost.html">1.5. SecureBoost: Vertically Federated XGBoost with Paillier Encryption</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  API Docs
- </span>
-</p>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="notebooks/modelinversion.html">2. Model Inversion</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/aijack_miface.html">2.1. MI-FACE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/aijack_gradient_inversion_attack.html">2.2. Gradient-based Model Inversion Attack against Federated Learning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/aijack_ganattack.html">2.3. GAN Attack</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/aijack_soteria.html">2.4. Soteria: : Provable Defense against Privacy Leakage in Federated Learning g from Representation Perspective</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/aijack_mid.html">2.5. Mutual Information-based Defense</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="notebooks/labelleakage.html">3. Label Leakage</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/aijack_split_learning.html">3.1. Split Learning and Label Leakage</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="notebooks/membershipinference.html">4. Membership Inference</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/aijack_membership_inference.html">4.1. Memership Inference</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="notebooks/poisoning.html">5. Poisoning Attack</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-5"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/aijack_poisoning_federated_learning.html">5.1. Poisoning Attack against Federated Learning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/aijack_poisoning_attack_svm.html">5.2. Poisoning Attack against SVM</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="notebooks/evasion.html">6. Evasion Attack</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-6"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/aijack_evasion_attack.html">6.1. Evasion Attack against SVM</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="notebooks/diferentialprivacy.html">7. Differential Privacy</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/aijack_moments_accountant.html">7.1. Differential Privacy and Moment Accountant</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/aijack_miface_dpsgd.html">7.2. MI-FACE vs DPSGD</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/aijack_adadps.html">7.3. AdaDPS</a></li>
+</ul>
+</li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">API Docs</span></p>
 <ul class="current nav bd-sidenav">
- <li class="toctree-l1 current active has-children">
-  <a class="reference internal" href="aijack.attack.html">
-   1. aijack.attack package
-  </a>
-  <input checked="" class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/>
-  <label for="toctree-checkbox-8">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul class="current">
-   <li class="toctree-l2">
-    <a class="reference internal" href="aijack.attack.backdoor.html">
-     1.1.1. aijack.attack.backdoor package
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="aijack.attack.evasion.html">
-     1.1.2. aijack.attack.evasion package
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="aijack.attack.freerider.html">
-     1.1.3. aijack.attack.freerider package
-    </a>
-   </li>
-   <li class="toctree-l2 has-children">
-    <a class="reference internal" href="aijack.attack.inversion.html">
-     1.1.4. aijack.attack.inversion package
-    </a>
-    <input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/>
-    <label for="toctree-checkbox-9">
-     <i class="fas fa-chevron-down">
-     </i>
-    </label>
-    <ul>
-     <li class="toctree-l3">
-      <a class="reference internal" href="aijack.attack.inversion.utils.html">
-       1.1.4.1.1. aijack.attack.inversion.utils package
-      </a>
-     </li>
-    </ul>
-   </li>
-   <li class="toctree-l2 current active">
-    <a class="current reference internal" href="#">
-     1.1.5. aijack.attack.labelleakage package
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="aijack.attack.membership.html">
-     1.1.6. aijack.attack.membership package
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="aijack.attack.poison.html">
-     1.1.7. aijack.attack.poison package
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="aijack.defense.html">
-   2. aijack.defense package
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/>
-  <label for="toctree-checkbox-10">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="aijack.defense.debugging.html">
-     2.1.1. aijack.defense.debugging package
-    </a>
-   </li>
-   <li class="toctree-l2 has-children">
-    <a class="reference internal" href="aijack.defense.dp.html">
-     2.1.2. aijack.defense.dp package
-    </a>
-    <input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" type="checkbox"/>
-    <label for="toctree-checkbox-11">
-     <i class="fas fa-chevron-down">
-     </i>
-    </label>
-    <ul>
-     <li class="toctree-l3">
-      <a class="reference internal" href="aijack.defense.dp.manager.html">
-       2.1.2.1.1. aijack.defense.dp.manager package
-      </a>
-     </li>
-    </ul>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="aijack.defense.foolsgold.html">
-     2.1.3. aijack.defense.foolsgold package
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="aijack.defense.kanonymity.html">
-     2.1.4. aijack.defense.kanonymity package
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="aijack.defense.mid.html">
-     2.1.5. aijack.defense.mid package
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="aijack.defense.paillier.html">
-     2.1.6. aijack.defense.paillier package
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="aijack.defense.soteria.html">
-     2.1.7. aijack.defense.soteria package
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="aijack.defense.sparse.html">
-     2.1.8. aijack.defense.sparse package
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="aijack.collaborative.html">
-   3. aijack.collaborative package
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" type="checkbox"/>
-  <label for="toctree-checkbox-12">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="aijack.collaborative.core.html">
-     3.1.1. aijack.collaborative.core package
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="aijack.collaborative.dsfl.html">
-     3.1.2. aijack.collaborative.dsfl package
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="aijack.collaborative.fedavg.html">
-     3.1.3. aijack.collaborative.fedavg package
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="aijack.collaborative.fedgems.html">
-     3.1.4. aijack.collaborative.fedgems package
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="aijack.collaborative.fedkd.html">
-     3.1.5. aijack.collaborative.fedkd package
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="aijack.collaborative.fedmd.html">
-     3.1.6. aijack.collaborative.fedmd package
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="aijack.collaborative.fedprox.html">
-     3.1.7. aijack.collaborative.fedprox package
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="aijack.collaborative.optimizer.html">
-     3.1.8. aijack.collaborative.optimizer package
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="aijack.collaborative.splitnn.html">
-     3.1.9. aijack.collaborative.splitnn package
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="aijack.collaborative.tree.html">
-     3.1.10. aijack.collaborative.tree package
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="aijack.utils.html">
-   4. aijack.utils package
-  </a>
- </li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="aijack.attack.html">1. aijack.attack package</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-8"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="aijack.attack.backdoor.html">1.1.1. aijack.attack.backdoor package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="aijack.attack.evasion.html">1.1.2. aijack.attack.evasion package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="aijack.attack.freerider.html">1.1.3. aijack.attack.freerider package</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="aijack.attack.inversion.html">1.1.4. aijack.attack.inversion package</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-9"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="aijack.attack.inversion.utils.html">1.1.4.1.1. aijack.attack.inversion.utils package</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  Developer Docs
- </span>
-</p>
+</li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">1.1.5. aijack.attack.labelleakage package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="aijack.attack.membership.html">1.1.6. aijack.attack.membership package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="aijack.attack.poison.html">1.1.7. aijack.attack.poison package</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="aijack.defense.html">2. aijack.defense package</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-10"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="aijack.defense.debugging.html">2.1.1. aijack.defense.debugging package</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="aijack.defense.dp.html">2.1.2. aijack.defense.dp package</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-11"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="aijack.defense.dp.manager.html">2.1.2.1.1. aijack.defense.dp.manager package</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="aijack.defense.foolsgold.html">2.1.3. aijack.defense.foolsgold package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="aijack.defense.kanonymity.html">2.1.4. aijack.defense.kanonymity package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="aijack.defense.mid.html">2.1.5. aijack.defense.mid package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="aijack.defense.paillier.html">2.1.6. aijack.defense.paillier package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="aijack.defense.soteria.html">2.1.7. aijack.defense.soteria package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="aijack.defense.sparse.html">2.1.8. aijack.defense.sparse package</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="aijack.collaborative.html">3. aijack.collaborative package</a><input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-12"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="aijack.collaborative.core.html">3.1.1. aijack.collaborative.core package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="aijack.collaborative.dsfl.html">3.1.2. aijack.collaborative.dsfl package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="aijack.collaborative.fedavg.html">3.1.3. aijack.collaborative.fedavg package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="aijack.collaborative.fedgems.html">3.1.4. aijack.collaborative.fedgems package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="aijack.collaborative.fedkd.html">3.1.5. aijack.collaborative.fedkd package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="aijack.collaborative.fedmd.html">3.1.6. aijack.collaborative.fedmd package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="aijack.collaborative.fedprox.html">3.1.7. aijack.collaborative.fedprox package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="aijack.collaborative.optimizer.html">3.1.8. aijack.collaborative.optimizer package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="aijack.collaborative.splitnn.html">3.1.9. aijack.collaborative.splitnn package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="aijack.collaborative.tree.html">3.1.10. aijack.collaborative.tree package</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="aijack.utils.html">4. aijack.utils package</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Developer Docs</span></p>
 <ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="contribution.html">
-   1. Contribution Guide
-  </a>
- </li>
+<li class="toctree-l1"><a class="reference internal" href="contribution.html">1. Contribution Guide</a></li>
 </ul>
 
     </div>
-</nav> <!-- To handle the deprecated key -->
-
-<div class="navbar_extra_footer">
-  Theme by the <a href="https://ebp.jupyterbook.org">Executable Book Project</a>
-</div>
-
-</div>
-
-
-          
-
-
-          
-<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
-    
-    <div class="topbar container-xl fixed-top">
-    <div class="topbar-contents row">
-        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
-        <div class="col pl-md-4 topbar-main">
-            
-            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
-                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
-                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
-                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
-                <i class="fas fa-bars"></i>
-                <i class="fas fa-arrow-left"></i>
-                <i class="fas fa-arrow-up"></i>
-            </button>
-            
-            
-<div class="dropdown-buttons-trigger">
-    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
-            class="fas fa-download"></i></button>
-
-    <div class="dropdown-buttons">
-        <!-- ipynb file if we had a myst markdown file -->
-        
-        <!-- Download raw file -->
-        <a class="dropdown-buttons" href="_sources/aijack.attack.labelleakage.rst.txt"><button type="button"
-                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
-                data-placement="left">.rst</button></a>
-        <!-- Download PDF via print -->
-        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
-                onclick="printPdf(this)" data-toggle="tooltip" data-placement="left">.pdf</button>
+</nav></div>
     </div>
-</div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
 
-            <!-- Source interaction buttons -->
 
-<div class="dropdown-buttons-trigger">
-    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
-        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
-    <div class="dropdown-buttons sourcebuttons">
-        <a class="repository-button"
-            href="https://github.com/Koukyosyumei/AIJack"><button type="button" class="btn btn-secondary topbarbtn"
-                data-toggle="tooltip" data-placement="left" title="Source repository"><i
-                    class="fab fa-github"></i>repository</button></a>
+      </div>
+      
+      <main id="main-content" class="bd-main">
         
         
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
     </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+<a href="https://github.com/Koukyosyumei/AIJack" target="_blank"
+   class="btn btn-sm btn-source-repository-button"
+   title="Source repository"
+   data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+
+</a>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/aijack.attack.labelleakage.rst" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.rst</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
 </div>
 
-            <!-- Full screen (wrap in <a> to have style consistency -->
 
-<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
-        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
-        title="Fullscreen mode"><i
-            class="fas fa-expand"></i></button></a>
 
-            <!-- Launch buttons -->
 
-        </div>
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
 
-        <!-- Table of contents -->
-        <div class="d-none d-md-block col-md-2 bd-toc show noprint">
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script>
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>aijack.attack.labelleakage package</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
             
-            <div class="tocsection onthispage pt-5 pb-3">
-                <i class="fas fa-list"></i> Contents
+            <div>
+                <h2> Contents </h2>
             </div>
-            <nav id="bd-toc-nav" aria-label="Page">
+            <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#submodules">
-   1.1.5.1. Submodules
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#aijack-attack-labelleakage-normattack-module">
-   1.1.5.2. aijack.attack.labelleakage.normattack module
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#module-contents">
-   1.1.5.3. Module contents
-  </a>
- </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#submodules">1.1.5.1. Submodules</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aijack.attack.labelleakage.normattack">1.1.5.2. aijack.attack.labelleakage.normattack module</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aijack.attack.labelleakage">1.1.5.3. Module contents</a></li>
 </ul>
-
             </nav>
         </div>
     </div>
 </div>
-    <div id="main-content" class="row">
-        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
-            <!-- Table of contents that is only displayed when printing the page -->
-            <div id="jb-print-docs-body" class="onlyprint">
-                <h1>aijack.attack.labelleakage package</h1>
-                <!-- Table of contents -->
-                <div id="print-main-content">
-                    <div id="jb-print-toc">
-                        
-                        <div>
-                            <h2> Contents </h2>
-                        </div>
-                        <nav aria-label="Page">
-                            <ul class="visible nav section-nav flex-column">
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#submodules">
-   1.1.5.1. Submodules
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#aijack-attack-labelleakage-normattack-module">
-   1.1.5.2. aijack.attack.labelleakage.normattack module
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#module-contents">
-   1.1.5.3. Module contents
-  </a>
- </li>
-</ul>
 
-                        </nav>
-                    </div>
-                </div>
-            </div>
-            
-              <div>
-                
-  <section id="aijack-attack-labelleakage-package">
-<h1><span class="section-number">1.1.5. </span>aijack.attack.labelleakage package<a class="headerlink" href="#aijack-attack-labelleakage-package" title="Permalink to this headline">¶</a></h1>
-<section id="submodules">
-<h2><span class="section-number">1.1.5.1. </span>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
-</section>
-<section id="aijack-attack-labelleakage-normattack-module">
-<h2><span class="section-number">1.1.5.2. </span>aijack.attack.labelleakage.normattack module<a class="headerlink" href="#aijack-attack-labelleakage-normattack-module" title="Permalink to this headline">¶</a></h2>
-</section>
-<section id="module-contents">
-<h2><span class="section-number">1.1.5.3. </span>Module contents<a class="headerlink" href="#module-contents" title="Permalink to this headline">¶</a></h2>
-</section>
-</section>
-
-
-              </div>
               
-            
-                <!-- Previous / next buttons -->
-<div class='prev-next-area'> 
-    <a class='left-prev' id="prev-link" href="aijack.attack.inversion.utils.html" title="previous page">
-        <i class="fas fa-angle-left"></i>
-        <div class="prev-next-info">
-            <p class="prev-next-subtitle">previous</p>
-            <p class="prev-next-title"><span class="section-number">1.1.4.1.1. </span>aijack.attack.inversion.utils package</p>
-        </div>
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="aijack-attack-labelleakage-package">
+<h1><span class="section-number">1.1.5. </span>aijack.attack.labelleakage package<a class="headerlink" href="#aijack-attack-labelleakage-package" title="Permalink to this headline">#</a></h1>
+<section id="submodules">
+<h2><span class="section-number">1.1.5.1. </span>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">#</a></h2>
+</section>
+<section id="module-aijack.attack.labelleakage.normattack">
+<span id="aijack-attack-labelleakage-normattack-module"></span><h2><span class="section-number">1.1.5.2. </span>aijack.attack.labelleakage.normattack module<a class="headerlink" href="#module-aijack.attack.labelleakage.normattack" title="Permalink to this headline">#</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="aijack.attack.labelleakage.normattack.NormAttackSplitNNManager">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">aijack.attack.labelleakage.normattack.</span></span><span class="sig-name descname"><span class="pre">NormAttackSplitNNManager</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/attack/labelleakage/normattack.html#NormAttackSplitNNManager"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.attack.labelleakage.normattack.NormAttackSplitNNManager" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="aijack.manager.html#aijack.manager.base.BaseManager" title="aijack.manager.base.BaseManager"><code class="xref py py-class docutils literal notranslate"><span class="pre">aijack.manager.base.BaseManager</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="aijack.attack.labelleakage.normattack.NormAttackSplitNNManager.attach">
+<span class="sig-name descname"><span class="pre">attach</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cls</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/attack/labelleakage/normattack.html#NormAttackSplitNNManager.attach"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.attack.labelleakage.normattack.NormAttackSplitNNManager.attach" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="aijack.attack.labelleakage.normattack.attach_normattack_to_splitnn">
+<span class="sig-prename descclassname"><span class="pre">aijack.attack.labelleakage.normattack.</span></span><span class="sig-name descname"><span class="pre">attach_normattack_to_splitnn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cls</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attack_criterion</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_client_index</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'cpu'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/attack/labelleakage/normattack.html#attach_normattack_to_splitnn"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.attack.labelleakage.normattack.attach_normattack_to_splitnn" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-aijack.attack.labelleakage">
+<span id="module-contents"></span><h2><span class="section-number">1.1.5.3. </span>Module contents<a class="headerlink" href="#module-aijack.attack.labelleakage" title="Permalink to this headline">#</a></h2>
+<p>Subpackage for label leakage attack, which infere the private label information of the training dataset.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="aijack.attack.labelleakage.NormAttackSplitNNManager">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">aijack.attack.labelleakage.</span></span><span class="sig-name descname"><span class="pre">NormAttackSplitNNManager</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/attack/labelleakage/normattack.html#NormAttackSplitNNManager"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.attack.labelleakage.NormAttackSplitNNManager" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="aijack.manager.html#aijack.manager.base.BaseManager" title="aijack.manager.base.BaseManager"><code class="xref py py-class docutils literal notranslate"><span class="pre">aijack.manager.base.BaseManager</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="aijack.attack.labelleakage.NormAttackSplitNNManager.attach">
+<span class="sig-name descname"><span class="pre">attach</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cls</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/attack/labelleakage/normattack.html#NormAttackSplitNNManager.attach"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.attack.labelleakage.NormAttackSplitNNManager.attach" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="aijack.attack.labelleakage.attach_normattack_to_splitnn">
+<span class="sig-prename descclassname"><span class="pre">aijack.attack.labelleakage.</span></span><span class="sig-name descname"><span class="pre">attach_normattack_to_splitnn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cls</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attack_criterion</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_client_index</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'cpu'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/attack/labelleakage/normattack.html#attach_normattack_to_splitnn"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.attack.labelleakage.attach_normattack_to_splitnn" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="aijack.attack.inversion.utils.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><span class="section-number">1.1.4.1.1. </span>aijack.attack.inversion.utils package</p>
+      </div>
     </a>
-    <a class='right-next' id="next-link" href="aijack.attack.membership.html" title="next page">
-    <div class="prev-next-info">
+    <a class="right-next"
+       href="aijack.attack.membership.html"
+       title="next page">
+      <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
         <p class="prev-next-title"><span class="section-number">1.1.6. </span>aijack.attack.membership package</p>
-    </div>
-    <i class="fas fa-angle-right"></i>
-    </a>
-</div>
-            
-        </div>
-    </div>
-    <footer class="footer">
-  <p>
-    
-      By Hideaki Takahashi<br/>
-    
-        &copy; Copyright 2023, Hideaki Takahashi.<br/>
-  </p>
-</footer>
-</main>
-
-
       </div>
-    </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div></div>
   
-  <script src="_static/js/index.be7d3bbb2ef33a8344ce.js"></script>
+</div>
 
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#submodules">1.1.5.1. Submodules</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aijack.attack.labelleakage.normattack">1.1.5.2. aijack.attack.labelleakage.normattack module</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aijack.attack.labelleakage">1.1.5.3. Module contents</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Hideaki Takahashi
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  <p class="copyright">
+    
+      © Copyright 2023, Hideaki Takahashi.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+  </footer>
   </body>
 </html>
