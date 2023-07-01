@@ -1,0 +1,126 @@
+#pragma once
+#include "../meta/btree.h"
+#include "../meta/lru.h"
+#include "../meta/meta.h"
+#include "page.h"
+#include <cstdint>
+#include <cstring>
+#include <iostream>
+#include <map>
+#include <openssl/md5.h>
+#include <vector>
+
+struct BufferTag {
+  std::string tableName;
+  uint64_t pgid;
+
+  BufferTag(const std::string &tableName, uint64_t pgid)
+      : tableName(tableName), pgid(pgid) {}
+
+  uint64_t hash() {
+    std::string data = tableName + std::to_string(pgid);
+    std::array<unsigned char, MD5_DIGEST_LENGTH> hash;
+    MD5(reinterpret_cast<const unsigned char *>(data.c_str()), data.size(),
+        hash.data());
+    uint64_t result = (uint64_t)hash.data();
+    return result;
+  }
+};
+
+struct PageDescriptor {
+  std::string tableName;
+  uint64_t pgid;
+  bool dirty;
+  uint64_t ref;
+  Page *page;
+
+  PageDescriptor(const std::string &tableName, uint64_t pgid, Page *page)
+      : tableName(tableName), pgid(pgid), dirty(false), ref(0), page(page) {}
+};
+
+class BufferPool {
+public:
+  BufferPool() { lru = new Lru<uint64_t, PageDescriptor *>(1000); }
+
+  ~BufferPool() {
+    delete lru;
+    for (const auto &entry : btree) {
+      delete entry.second;
+    }
+  }
+
+  uint64_t toPgid(uint64_t tid) { return tid / TupleNumber; }
+
+  void pinPage(PageDescriptor *pg) { pg->ref++; }
+
+  void unpinPage(PageDescriptor *pg) { pg->ref--; }
+
+  Page *readPage(const std::string &tableName, uint64_t tid) {
+    uint64_t pgid = toPgid(tid);
+    BufferTag bt(tableName, pgid);
+    uint64_t hash = bt.hash();
+    void *p = lru->Get(hash);
+
+    if (p == nullptr) {
+      return nullptr;
+    }
+
+    PageDescriptor *pd = static_cast<PageDescriptor *>(p);
+    return pd->page;
+  }
+
+  bool appendTuple(const std::string &tableName, storage::Tuple *t) {
+    // TODO: Implement appendTuple logic
+    // uint64_t latestTid = 0;
+    // uint64_t pgid = toPgid(latestTid);
+
+    BufferTag bt(tableName, NewPgid(tableName));
+    uint64_t hash = bt.hash();
+    PageDescriptor *p = lru->Get(hash);
+
+    if (p == nullptr) {
+      return false;
+    }
+
+    PageDescriptor *pd = static_cast<PageDescriptor *>(p);
+    pd->dirty = true;
+
+    for (int i = 0; i < TupleNumber; i++) {
+      if (TupleIsUnused(&pd->page->Tuples[i])) {
+        pd->page->Tuples[i] = *t;
+        break;
+      }
+    }
+
+    return true;
+  }
+
+  std::pair<bool, Page *> putPage(const std::string &tableName, uint64_t pgid,
+                                  Page *p) {
+    BufferTag bt(tableName, pgid);
+    uint64_t hash = bt.hash();
+    PageDescriptor *pd = new PageDescriptor(tableName, pgid, p);
+
+    void *victimPage = lru->Insert(hash, pd);
+
+    if (victimPage == nullptr) {
+      return std::make_pair(false, nullptr);
+    }
+
+    PageDescriptor *victim = static_cast<PageDescriptor *>(victimPage);
+    return std::make_pair(victim->dirty, victim->page);
+  }
+
+  std::pair<bool, BTree *> readIndex(const std::string &indexName) {
+    auto it = btree.find(indexName);
+
+    if (it != btree.end()) {
+      return std::make_pair(true, it->second);
+    }
+
+    return std::make_pair(false, nullptr);
+  }
+
+  Lru<uint64_t, PageDescriptor *> *lru;
+  std::map<std::string, BTree *> btree;
+};
