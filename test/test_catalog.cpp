@@ -21,10 +21,9 @@ TEST(CatalogTest, LoadCatalog) {
   ctg.Add(new Scheme{
       .TblName = "users", .ColNames = {"id"}, .ColTypes = {ColType::Int}});
 
-  SaveCatalog("testdata", &ctg);
+  SaveCatalog(".", &ctg);
 
-  Catalog *out = LoadCatalog("testdata");
-  std::cout << out->Schemes.size() << std::endl;
+  Catalog *out = LoadCatalog(".");
   ASSERT_EQ("users", out->Schemes[0]->TblName);
 }
 
