@@ -11,7 +11,7 @@ set(TEST_DIR  "test")
 
 include(GNUInstallDirs)
 
-include_directories("${PROJECT_SOURCE_DIR}/src")
+include_directories("${PROJECT_SOURCE_DIR}/")
 
 add_subdirectory(${SOURCE_DIR})
 add_subdirectory(${SCRIPT_DIR})
