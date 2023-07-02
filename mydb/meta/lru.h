@@ -7,25 +7,20 @@
 
 template <typename K, typename V> class Lru {
 public:
-  Lru(int cap) : cap(cap) {}
+  Lru(int cap, V nan_value = V()) : cap(cap), nan_value(nan_value) {}
 
   V Insert(const K &key, const V &value) {
     std::lock_guard<std::mutex> lock(mutex);
 
     V victim;
-    auto it = items.find(key);
-    if (it != items.end()) {
-      evictList.erase(it->second);
-    }
+    evictList.push_front({key, value});
+    items[key] = evictList.begin();
 
     if (needEvict()) {
       victim = evictList.back().second;
       items.erase(evictList.back().first);
       evictList.pop_back();
     }
-
-    evictList.push_front({key, value});
-    items[key] = evictList.begin();
 
     return victim;
   }
@@ -39,7 +34,7 @@ public:
       return it->second->second;
     }
 
-    return V();
+    return nan_value;
   }
 
   int Len() {
@@ -63,6 +58,7 @@ private:
   bool needEvict() { return evictList.size() > cap; }
 
   int cap;
+  V nan_value;
   std::list<std::pair<K, V>> evictList;
   std::unordered_map<K, typename std::list<std::pair<K, V>>::iterator> items;
   std::mutex mutex;
