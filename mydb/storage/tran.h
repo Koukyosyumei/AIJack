@@ -33,10 +33,12 @@ public:
 
   void Abort(Transaction *tran) { tran->state = TransactionState::Abort; }
 
+  uint64_t GetCurrentTxID() { return currentTxid; }
+
+  uint64_t newTxid() { return ++currentTxid; }
+
 private:
   std::map<uint64_t, Transaction *> clogs;
   std::atomic<uint64_t> currentTxid;
   std::mutex clogsMutex;
-
-  uint64_t newTxid() { return ++currentTxid; }
 };
