@@ -1,0 +1,256 @@
+#pragma once
+#include "../meta/meta.h"
+#include "../storage/catalog.h"
+#include "../storage/storage.h"
+#include "ast.h"
+#include <stdexcept>
+#include <string>
+#include <vector>
+
+using namespace std;
+
+class Analyzer {
+  Catalog *catalog;
+
+public:
+  Analyzer(Catalog *catalog) : catalog(catalog) {}
+
+  class Query {
+  public:
+    virtual void evalQuery() = 0;
+  };
+
+  class SelectQuery : public Query {
+  public:
+    vector<Column *> Cols;
+    vector<Table *> From;
+    vector<Expr *> Where;
+
+    void evalQuery() override {}
+  };
+
+  class CreateTableQuery : public Query {
+  public:
+    Scheme *Scheme;
+
+    void evalQuery() override {}
+  };
+
+  class UpdateQuery : public Query {
+  public:
+    Table *Table;
+    vector<Column *> Cols;
+    vector<void *> Set;
+    vector<Expr *> Where;
+
+    void evalQuery() override {}
+  };
+
+  class InsertQuery : public Query {
+  public:
+    Table *Table;
+    vector<void *> Values;
+    string Index;
+
+    void evalQuery() override {}
+  };
+
+  class BeginQuery : public Query {
+  public:
+    void evalQuery() override {}
+  };
+
+  class CommitQuery : public Query {
+  public:
+    void evalQuery() override {}
+  };
+
+  class AbortQuery : public Query {
+  public:
+    void evalQuery() override {}
+  };
+
+  Query *analyzeInsert(InsertStmt *n) {
+    InsertQuery *q = new InsertQuery();
+
+    if (!catalog->HasScheme(n->TableName)) {
+      throw runtime_error("insert failed: '" + n->TableName +
+                          "' doesn't exist");
+    }
+    Scheme *scheme = catalog->FetchScheme(n->TableName);
+
+    Table *t = new Table();
+    t->Name = n->TableName;
+
+    if (n->Values.size() != scheme->ColNames.size()) {
+      throw runtime_error("insert failed: 'values' should be the same length");
+    }
+
+    vector<string> lits;
+    for (auto l : n->Values) {
+      Lit *num = new Lit(); // Attention!! Desired: Lit(l)
+      lits.push_back(num->v);
+    }
+
+    for (int i = 0; i < lits.size(); i++) {
+      if (scheme->ColTypes[i] == ColType::Int) {
+        int value = stoi(lits[i]);
+        q->Values.push_back(new int(value));
+      } else if (scheme->ColTypes[i] == ColType::Varchar) {
+        q->Values.push_back(new string(lits[i]));
+      } else {
+        throw runtime_error("insert failed: unexpected types parsed");
+      }
+    }
+
+    for (auto c : scheme->ColNames) {
+      if (scheme->PrimaryKey == c) {
+        q->Index = t->Name + "_" + c;
+      }
+    }
+
+    q->Table = t;
+    return q;
+  }
+
+  Query *analyzeSelect(SelectStmt *n) {
+    SelectQuery *q = new SelectQuery();
+
+    vector<Scheme *> schemes;
+    for (auto name : n->From) {
+      Scheme *scheme = catalog->FetchScheme(name);
+      if (!scheme) {
+        throw runtime_error("select failed: table '" + name +
+                            "' doesn't exist");
+      }
+      schemes.push_back(scheme);
+    }
+
+    vector<Column *> cols;
+    for (auto colName : n->ColNames) {
+      bool found = false;
+      for (auto scheme : schemes) {
+        for (auto col : scheme->ColNames) {
+          if (col == colName) {
+            found = true;
+            cols.push_back(new Column(colName));
+          }
+        }
+      }
+
+      if (!found) {
+        throw runtime_error("select failed: column '" + colName +
+                            "' doesn't exist");
+      }
+    }
+
+    for (auto c : cols) {
+      if (c->Name == schemes[0]->PrimaryKey) {
+        c->Primary = true;
+      }
+    }
+
+    vector<Table *> tables;
+    for (const Scheme *s : schemes) {
+      Table *table = new Table;
+      SchemeConverter sc(*s);
+      *table = sc.ConvertTable();
+      tables.push_back(table);
+    }
+
+    q->From = tables;
+    q->Cols = cols;
+    q->Where = n->Wheres;
+
+    return q;
+  }
+
+  Query *analyzeUpdate(UpdateStmt *n) {
+    UpdateQuery *q = new UpdateQuery();
+
+    if (!catalog->HasScheme(n->TableName)) {
+      throw runtime_error("update failed: '" + n->TableName +
+                          "' doesn't exist");
+    }
+    Scheme *scheme = catalog->FetchScheme(n->TableName);
+
+    Table *t = new Table();
+    t->Name = n->TableName;
+
+    vector<string> lits;
+    for (auto l : n->Set) {
+      Lit *num = new Lit(*l);
+      lits.push_back(num->v);
+    }
+
+    for (int i = 0; i < lits.size(); i++) {
+      if (scheme->ColTypes[i] == ColType::Int) {
+        int value = stoi(lits[i]);
+        q->Set.push_back(new int(value));
+      } else if (scheme->ColTypes[i] == ColType::Varchar) {
+        q->Set.push_back(new string(lits[i]));
+      } else {
+        throw runtime_error("update failed: unexpected types parsed");
+      }
+    }
+
+    q->Table = t;
+    q->Where = n->Where;
+
+    return q;
+  }
+
+  Query *analyzeCreateTable(CreateTableStmt *n) {
+    CreateTableQuery *q = new CreateTableQuery();
+
+    if (n->PrimaryKey.empty()) {
+      throw runtime_error("create table failed: primary key is needed");
+    }
+
+    if (catalog->HasScheme(n->TableName)) {
+      throw runtime_error("create table failed: table name '" + n->TableName +
+                          "' already exists");
+    }
+
+    vector<ColType> types;
+    for (auto typ : n->ColTypes) {
+      if (typ == "int") {
+        types.push_back(ColType::Int);
+      } else if (typ == "varchar") {
+        types.push_back(ColType::Varchar);
+      }
+    }
+
+    q->Scheme = new Scheme(n->TableName, n->ColNames, types, n->PrimaryKey);
+
+    return q;
+  }
+
+  Query *AnalyzeMain(Stmt *stmt) {
+    if (auto concrete = dynamic_cast<SelectStmt *>(stmt)) {
+      return analyzeSelect(concrete);
+    }
+    if (auto concrete = dynamic_cast<CreateTableStmt *>(stmt)) {
+      return analyzeCreateTable(concrete);
+    }
+    if (auto concrete = dynamic_cast<InsertStmt *>(stmt)) {
+      return analyzeInsert(concrete);
+    }
+    if (auto concrete = dynamic_cast<UpdateStmt *>(stmt)) {
+      return analyzeUpdate(concrete);
+    }
+    if (dynamic_cast<BeginStmt *>(stmt)) {
+      return new BeginQuery();
+    }
+    if (dynamic_cast<CommitStmt *>(stmt)) {
+      return new CommitQuery();
+    }
+    if (dynamic_cast<AbortStmt *>(stmt)) {
+      return new AbortQuery();
+    }
+
+    throw runtime_error("failed to analyze query");
+  }
+};
+
+Analyzer *NewAnalyzer(Catalog *catalog) { return new Analyzer(catalog); }

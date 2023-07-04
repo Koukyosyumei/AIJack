@@ -9,6 +9,9 @@ struct Column {
   std::string Name;
   std::string Type;
   bool Primary;
+
+  Column() {}
+  Column(std::string name) : Name(name) {}
 };
 
 struct Scheme {
@@ -16,6 +19,11 @@ struct Scheme {
   std::vector<std::string> ColNames;
   std::vector<ColType> ColTypes;
   std::string PrimaryKey;
+
+  Scheme(std::string tblname, std::vector<std::string> &colnames,
+         std::vector<ColType> &coltypes, std::string primarykey)
+      : TblName(tblname), ColNames(colnames), ColTypes(coltypes),
+        PrimaryKey(primarykey) {}
 };
 
 class Table {
