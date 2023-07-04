@@ -20,10 +20,11 @@ struct Scheme {
   std::vector<ColType> ColTypes;
   std::string PrimaryKey;
 
-  Scheme(std::string tblname, std::vector<std::string> &colnames,
-         std::vector<ColType> &coltypes, std::string primarykey)
-      : TblName(tblname), ColNames(colnames), ColTypes(coltypes),
-        PrimaryKey(primarykey) {}
+  // Scheme() {}
+  // Scheme(std::string tblname, std::vector<std::string> &colnames,
+  //       std::vector<ColType> &coltypes, std::string primarykey)
+  //    : TblName(tblname), ColNames(colnames), ColTypes(coltypes),
+  //      PrimaryKey(primarykey) {}
 };
 
 class Table {

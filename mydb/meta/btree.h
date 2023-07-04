@@ -1,6 +1,7 @@
 #pragma once
 #include "../json/json.hpp"
 #include <iostream>
+#include <stdexcept>
 #include <utility>
 #include <vector>
 
@@ -8,46 +9,59 @@ const int maxDegree = 3;
 
 using json = nlohmann::json;
 
-class IntItem {
+template <typename V> class ItemType {
 public:
-  IntItem(int32_t value) : value(value) {}
+  ItemType() {}
+  ItemType(V value) : value(value) {}
 
-  bool operator==(const IntItem &other) const { return value == other.value; }
-  bool Less(const IntItem &other) const { return value < other.value; }
+  bool operator==(const ItemType<V> &other) const {
+    return value == other.value;
+  }
+  bool operator<(const ItemType<V> &other) const { return value < other.value; }
 
-  int32_t value;
+  V value;
 };
 
 template <typename V>
-std::pair<bool, int> FindAtItems(const std::vector<V> &Items, const V &item) {
+std::pair<bool, int> FindAtItems(const std::vector<ItemType<V>> &Items,
+                                 const ItemType<V> &item) {
   for (size_t index = 0; index < Items.size(); ++index) {
-    if (!Items[index].Less(item)) {
-      if (!item.Less(Items[index])) {
+    if (!(Items[index] < item)) {
+      if (!(item < Items[index])) {
+        // the item already exists
         return std::make_pair(true, index);
       }
       return std::make_pair(false, index);
     }
   }
+  // item is smaller than any element of items
   return std::make_pair(false, (int)Items.size());
 }
 
 template <typename V>
-void insertAt(std::vector<V> &items, int index, const V &item) {
+void insertAt(std::vector<ItemType<V>> &items, int index,
+              const ItemType<V> &item) {
   if (index == -1) {
-    // items.insert(items.begin(), item);
-    index = items.size();
-  }
-  items.push_back(V(-99)); // Append a nil item
+    items.push_back(item);
+  } else {
+    items.resize(items.size() + 1);
 
-  if (index < items.size() - 1) {
-    std::copy_backward(items.begin() + index, items.end() - 1, items.end());
+    if (index < items.size() - 1) {
+      std::copy_backward(items.begin() + index, items.end() - 1, items.end());
+    }
+    items[index] = item;
   }
-  items[index] = item;
+}
+
+template <typename V>
+void insertAt(std::vector<ItemType<V>> &items, int index, V val) {
+  ItemType<V> item(val);
+  insertAt(items, index, item);
 }
 
 template <typename V> class Node {
 public:
-  std::vector<V> Items;
+  std::vector<ItemType<V>> Items;
   std::vector<Node<V> *> Children;
 
   Node() = default;
@@ -57,18 +71,17 @@ public:
     }
   }
 
-  void Insert(const V &item) {
+  void Insert(const ItemType<V> &item) {
     bool found;
     int index;
     std::tie(found, index) = Find(item);
     if (found) {
+      // item is already within the node
       return;
     }
 
     if (Children.size() == 0) {
       insertAt<V>(Items, index, item);
-      // Items.push_back(item);
-      // Items.insert(Items.begin() + index, item);
 
       if (Items.size() == maxDegree) {
         SplitMe();
@@ -78,10 +91,11 @@ public:
     }
 
     if (index == -1) {
-      index = Children.size() - 1;
+      throw std::runtime_error("Something wrong happened within Node.Insert.");
     }
+
     if (Children[index]->Items.size() == maxDegree - 1) {
-      SplitChild(index, item);
+      SplitChild(index, item.value);
 
       if (Items.size() == maxDegree) {
         SplitMe();
@@ -93,18 +107,26 @@ public:
     Children[index]->Insert(item);
   }
 
-  std::pair<bool, int> Find(const V &item) const {
+  std::pair<bool, int> Find(const V val) const {
+    ItemType<V> item = ItemType<V>(val);
+    return Find(item);
+  }
+
+  std::pair<bool, int> Find(const ItemType<V> &item) const {
     bool found;
     int index;
-    std::pair<bool, int> result = FindAtItems<V>(Items, item);
-    found = result.first;
-    index = result.second;
+    std::tie(found, index) = FindAtItems<V>(Items, item);
     if (found) {
       return std::make_pair(found, index);
     }
 
+    // item is not found in the subtree
     if (Children.size() == 0) {
       return std::make_pair(false, -1);
+    }
+
+    if (index == -1) {
+      throw std::runtime_error("something wrong happened within Node.Find");
     }
 
     return Children[index]->Find(item);
@@ -113,30 +135,23 @@ public:
   void SplitMe() {
     Node<V> *left = new Node<V>();
     insertAt<V>(left->Items, 0, Items[maxDegree / 2 - 1]);
-    // left->Items.insert(left->Items.begin(), Items[maxDegree / 2 - 1]);
 
     Node<V> *right = new Node<V>();
     insertAt<V>(right->Items, 0, Items[maxDegree / 2 + 1]);
-    // right->Items.insert(right->Items.begin(), Items[maxDegree / 2 + 1]);
 
-    V mid = Items[maxDegree / 2];
-    Items.assign(1, mid);
+    ItemType<V> mid = Items[maxDegree / 2];
+    Items.push_back(mid);
 
-    if (!Children.empty()) {
-      if (Children.size() == maxDegree + 1) {
-        left->Children.push_back(Children[0]);
-        left->Children.push_back(Children[1]);
+    if (Children.size() == maxDegree + 1) {
+      left->Children.push_back(Children[0]);
+      left->Children.push_back(Children[1]);
 
-        right->Children.push_back(Children[2]);
-        right->Children.push_back(Children[3]);
+      right->Children.push_back(Children[2]);
+      right->Children.push_back(Children[3]);
 
-        Children.clear();
-        Children.push_back(left);
-        Children.push_back(right);
-      } else {
-        Children.push_back(left);
-        Children.push_back(right);
-      }
+      Children.clear();
+      Children.push_back(left);
+      Children.push_back(right);
     } else {
       Children.push_back(left);
       Children.push_back(right);
@@ -148,22 +163,16 @@ public:
     int innerIndex;
     std::tie(found, innerIndex) = Children[index]->Find(item);
     insertAt(Children[index]->Items, innerIndex, item);
-    // Children[index]->Items.insert(Children[index]->Items.begin() +
-    // innerIndex,
-    //                               item);
 
-    V leftItem = Children[index]->Items[maxDegree / 2 - 1];
-    V midItem = Children[index]->Items[maxDegree / 2];
-    V rightItem = Children[index]->Items[maxDegree / 2 + 1];
+    ItemType<V> leftItem = Children[index]->Items[maxDegree / 2 - 1];
+    ItemType<V> midItem = Children[index]->Items[maxDegree / 2];
+    ItemType<V> rightItem = Children[index]->Items[maxDegree / 2 + 1];
 
-    Children[index]->Items.erase(
-        Children[index]->Items.begin() + maxDegree / 2 - 1,
-        Children[index]->Items.begin() + maxDegree / 2 + 1);
+    Children.erase(Children.begin() + index);
 
     int midIndex;
     std::tie(found, midIndex) = FindAtItems<V>(Items, midItem);
     insertAt(Items, midIndex, midItem);
-    // Items.insert(Items.begin() + index, midItem);
 
     Node<V> *left = new Node<V>();
     left->Items.push_back(leftItem);
@@ -171,16 +180,16 @@ public:
     Node<V> *right = new Node<V>();
     right->Items.push_back(rightItem);
 
-    Children.insert(Children.begin() + index, left);
-    Children.insert(Children.begin() + index + 1, right);
+    Children.push_back(left);
+    Children.push_back(right);
 
     std::sort(Children.begin(), Children.end(),
               [](const Node<V> *a, const Node<V> *b) {
-                return a->Items[0].Less(b->Items[0]);
+                return a->Items[0] < (b->Items[0]);
               });
   }
 
-  V *Get(const V &key) {
+  ItemType<V> *Get(const V &key) {
     bool found;
     int index;
     std::tie(found, index) = Find(key);
@@ -197,15 +206,22 @@ template <typename V> class BTree {
 public:
   BTree() : top(nullptr), length(0) {}
 
-  void Insert(const V &item) {
+  void Insert(ItemType<V> item) {
     length++;
     if (top == nullptr) {
       top = new Node<V>();
-      top->Items.insert(top->Items.begin(), item);
+      insertAt(top->Items, 0, item);
       return;
     }
-
     top->Insert(item);
+  }
+
+  std::pair<bool, int> Find(ItemType<V> item) const {
+    if (top == nullptr) {
+      return std::make_pair(false, -1);
+    }
+
+    return top->Find(item);
   }
 
   std::pair<bool, int> Find(const V &item) const {
@@ -216,7 +232,7 @@ public:
     return top->Find(item);
   }
 
-  V *Get(const V &key) const {
+  ItemType<V> *Get(const V &key) const {
     if (top == nullptr) {
       return nullptr;
     }
