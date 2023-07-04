@@ -1,6 +1,8 @@
+#pragma once
 #include "../storage/storage.h"
 #include "../storage/tuple.h"
 #include "analyze.h"
+#include "ast.h"
 #include <memory>
 #include <string>
 #include <vector>
@@ -68,38 +70,22 @@ struct IndexScan : public Scanner {
   }
 };
 
-// Query interface
-struct Query {
-  virtual ~Query() {}
-};
-
-// SelectQuery
-struct SelectQuery : public Query {
-  // Add fields and logic specific to SelectQuery
-};
-
-// UpdateQuery
-struct UpdateQuery : public Query {
-  // Add fields and logic specific to UpdateQuery
-};
-
 Plan *Planner::planSelect(SelectQuery *q) {
   // if where contains a primary key, use index scan.
-  for (auto &w : q->Where) {
-    Eq *eq = dynamic_cast<Eq *>(w);
+  for (Expr *eq : q->Where) {
     if (!eq)
       continue;
 
-    Lit *col = dynamic_cast<Lit *>(eq->left);
+    Expr *col = eq->left;
     if (!col)
       continue;
 
     for (auto &c : q->Cols) {
-      if (col->v == c.Name && c.Primary) {
+      if (col->v == c->Name && c->Primary) {
         return new Plan{
             .scanners =
-                new IndexScan(q->From[0].Name, q->From[0].Name + "_" + col->v,
-                              dynamic_cast<Lit *>(eq->right)->v),
+                new IndexScan(q->From[0]->Name, q->From[0]->Name + "_" + col->v,
+                              eq->right->v),
         };
       }
     }
@@ -107,23 +93,22 @@ Plan *Planner::planSelect(SelectQuery *q) {
 
   // use seqscan
   return new Plan{
-      .scanners = new SeqScan(q->From[0].Name),
+      .scanners = new SeqScan(q->From[0]->Name),
   };
 }
 
 Plan *Planner::planUpdate(UpdateQuery *q) {
   // if where contains a primary key, use index scan.
-  for (auto &w : q->Where) {
-    Eq *eq = dynamic_cast<Eq *>(w);
+  for (Expr *eq : q->Where) {
     if (!eq)
       continue;
-    Lit *col = dynamic_cast<Lit *>(eq->left);
+    Expr *col = eq->left;
     if (!col)
       continue;
     for (auto &c : q->Cols) {
-      if (col->v == c.Name && c.Primary) {
+      if (col->v == c->Name && c->Primary) {
         return new Plan{
-            .scanners = new IndexScan(q->Table.Name, col->v, ""),
+            .scanners = new IndexScan(q->Table->Name, col->v, ""),
         };
       }
     }
@@ -131,7 +116,7 @@ Plan *Planner::planUpdate(UpdateQuery *q) {
 
   // use seqscan
   return new Plan{
-      .scanners = new SeqScan(q->Table.Name),
+      .scanners = new SeqScan(q->Table->Name),
   };
 }
 

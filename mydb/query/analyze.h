@@ -9,66 +9,66 @@
 
 using namespace std;
 
+class Query {
+public:
+  virtual void evalQuery() = 0;
+};
+
+class SelectQuery : public Query {
+public:
+  vector<Column *> Cols;
+  vector<Table *> From;
+  vector<Expr *> Where;
+
+  void evalQuery() override {}
+};
+
+class CreateTableQuery : public Query {
+public:
+  Scheme *Scheme;
+
+  void evalQuery() override {}
+};
+
+class UpdateQuery : public Query {
+public:
+  Table *Table;
+  vector<Column *> Cols;
+  vector<void *> Set;
+  vector<Expr *> Where;
+
+  void evalQuery() override {}
+};
+
+class InsertQuery : public Query {
+public:
+  Table *Table;
+  vector<void *> Values;
+  string Index;
+
+  void evalQuery() override {}
+};
+
+class BeginQuery : public Query {
+public:
+  void evalQuery() override {}
+};
+
+class CommitQuery : public Query {
+public:
+  void evalQuery() override {}
+};
+
+class AbortQuery : public Query {
+public:
+  void evalQuery() override {}
+};
+
 class Analyzer {
   Catalog *catalog;
 
 public:
   Analyzer(Catalog *catalog) : catalog(catalog) {}
-
-  class Query {
-  public:
-    virtual void evalQuery() = 0;
-  };
-
-  class SelectQuery : public Query {
-  public:
-    vector<Column *> Cols;
-    vector<Table *> From;
-    vector<Expr *> Where;
-
-    void evalQuery() override {}
-  };
-
-  class CreateTableQuery : public Query {
-  public:
-    Scheme *Scheme;
-
-    void evalQuery() override {}
-  };
-
-  class UpdateQuery : public Query {
-  public:
-    Table *Table;
-    vector<Column *> Cols;
-    vector<void *> Set;
-    vector<Expr *> Where;
-
-    void evalQuery() override {}
-  };
-
-  class InsertQuery : public Query {
-  public:
-    Table *Table;
-    vector<void *> Values;
-    string Index;
-
-    void evalQuery() override {}
-  };
-
-  class BeginQuery : public Query {
-  public:
-    void evalQuery() override {}
-  };
-
-  class CommitQuery : public Query {
-  public:
-    void evalQuery() override {}
-  };
-
-  class AbortQuery : public Query {
-  public:
-    void evalQuery() override {}
-  };
 
   Query *analyzeInsert(InsertStmt *n) {
     InsertQuery *q = new InsertQuery();
@@ -88,8 +88,7 @@ public:
 
     vector<string> lits;
     for (auto l : n->Values) {
-      Lit *num = new Lit(); // Attention!! Desired: Lit(l)
-      lits.push_back(num->v);
+      lits.push_back(l->v);
     }
 
     for (int i = 0; i < lits.size(); i++) {
@@ -177,10 +176,9 @@ public:
     Table *t = new Table();
     t->Name = n->TableName;
 
-    vector<string> lits;
+    vector<std::string> lits;
     for (auto l : n->Set) {
-      Lit *num = new Lit(*l);
-      lits.push_back(num->v);
+      lits.push_back(std::string(static_cast<char *>(l)));
     }
 
     for (int i = 0; i < lits.size(); i++) {

@@ -60,9 +60,15 @@ struct AbortStmt : public Stmt {
 
 // Expr interface
 struct Expr {
-  virtual void exprNode() = 0;
+  Expr *left;
+  Expr *right;
+  std::string v;
+
+  bool IsLit() { return (left == nullptr) && (right == nullptr); }
+  // virtual void exprNode() = 0;
 };
 
+/*
 // Expressions
 struct Eq : public Expr {
   Expr *left;
@@ -78,3 +84,4 @@ struct Lit : public Expr {
   Lit(std::string v) : v(v) {}
   void exprNode() override {}
 };
+*/

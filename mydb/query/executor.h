@@ -91,8 +91,8 @@ Executor::where(std::vector<storage::Tuple *> &tuples,
   std::vector<storage::Tuple *> filtered;
 
   for (auto &w : where) {
-    auto left = static_cast<Eq *>(w)->left->v;
-    auto right = static_cast<Eq *>(w)->right->v;
+    std::string left = w->left->v;
+    std::string right = w->right->v;
     for (auto &t : tuples) {
       auto s = catalog->FetchScheme(tableName);
       int order = 0;
@@ -103,7 +103,7 @@ Executor::where(std::vector<storage::Tuple *> &tuples,
       }
 
       int n = std::stoi(right);
-      if (t->Equal(order, right, n)) {
+      if (TupleEqual(t, order, right, n)) {
         filtered.push_back(t);
       }
     }
