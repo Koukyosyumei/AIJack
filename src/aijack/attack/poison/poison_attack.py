@@ -2,7 +2,6 @@ import copy
 
 import numpy as np
 import sklearn
-from tqdm import tqdm
 
 from ..base_attack import BaseAttacker
 
@@ -108,7 +107,7 @@ class Poison_attack_sklearn(BaseAttacker):
         # best_xc = None
         # best_itr = None
 
-        for i in tqdm(range(num_iterations)):
+        for _ in range(num_iterations):
             target_model_ = copy.copy(self.target_model)
             target_model_.__init__()
             target_model_.set_params(**self.target_model.get_params())
