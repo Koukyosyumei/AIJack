@@ -39,7 +39,7 @@ struct SelectStmt : public Stmt {
 struct UpdateStmt : public Stmt {
   std::string TableName;
   std::vector<std::string> ColNames;
-  std::vector<void *>
+  std::vector<std::string *>
       Set; // Assuming a placeholder for the actual type of set values
   std::vector<Expr *> Where;
 
@@ -64,6 +64,9 @@ struct Expr {
   Expr *right;
   std::string v;
 
+  Expr(){};
+  Expr(std::string v) : v(v) {}
+  Expr(Expr *left, Expr *right) : left(left), right(right) {}
   bool IsLit() { return (left == nullptr) && (right == nullptr); }
   // virtual void exprNode() = 0;
 };

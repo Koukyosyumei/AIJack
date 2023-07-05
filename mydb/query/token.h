@@ -2,6 +2,7 @@
 #include <algorithm>
 #include <iostream>
 #include <string>
+#include <unordered_map>
 #include <vector>
 
 enum TokenKind {
@@ -46,22 +47,34 @@ enum TokenKind {
   keyword_end
 };
 
+const std::unordered_map<int, std::string> tokenmap = {
+    {ILLEGAL, "Illegal"}, {EOF, "Eor"},       {STRING, "String"},
+    {NUMBER, "Number"},   {INT, "Int"},       {LBRACE, "{"},
+    {RBRACE, "}"},        {LPAREN, "("},      {RPAREN, ")"},
+    {COMMA, ","},         {STAR, "*"},        {SELECT, "Select"},
+    {FROM, "From"},       {WHERE, "Where"},   {CREATE, "Create"},
+    {TABLE, "Table"},     {INSERT, "Insert"}, {INTO, "Into"},
+    {VALUES, "Values"},   {UPDATE, "Update"}, {SET, "Set"},
+    {BEGIN, "Begin"},     {COMMIT, "Commit"}, {ROLLBACK, "Abort"},
+    {PRIMARY, "Primary"}, {KEY, "Key"}};
+
 struct Token {
   TokenKind kind;
   std::string str;
 };
 
-inline Token *NewToken(TokenKind kind, const std::string &str) {
+inline Token *NewToken(TokenKind kind, std::string str = "") {
   return new Token{kind, str};
 }
 
-const std::vector<std::string> tokens = {
-    "Illegal", "Eof",    "String",   "Number",  "Int",    "{",      "}",
-    "(",       ")",      ",",        "*",       "Select", "From",   "Where",
-    "Create",  "Table",  "Insert",   "Into",    "Values", "Update", "Set",
-    "Begin",   "Commit", "Rollback", "Primary", "Key"};
+inline std::string TokenKindToString(TokenKind kind) {
+  auto it = tokenmap.find(static_cast<int>(kind));
+  if (it != tokenmap.end()) {
+    return it->second;
+  }
 
-inline std::string TokenKindToString(TokenKind kind) { return tokens[kind]; }
+  return "Unknown";
+}
 
 class Tokenizer {
 private:

@@ -2,6 +2,7 @@
 #include "../json/json.hpp"
 #include <exception>
 #include <iostream>
+#include <stdexcept>
 #include <type_traits>
 #include <utility>
 #include <vector>
@@ -15,8 +16,8 @@ template <typename K, typename V> struct BPlusTreeMap {
   BPlusTreeMap() {}
 
   struct BPlusNode {
-    bool is_active;
-    bool is_bottom;
+    bool is_active = false;
+    bool is_bottom = false;
     std::vector<K> ks;
     std::vector<V> vs;
     std::vector<BPlusNode *> children;
@@ -38,6 +39,9 @@ template <typename K, typename V> struct BPlusTreeMap {
     }
 
     json tojson() {
+      if ((!is_bottom) && nullptr != next) {
+        throw std::runtime_error("next should be null");
+      }
       json node;
       if (is_bottom) {
         node["vs"] = vs;
@@ -94,8 +98,10 @@ template <typename K, typename V> struct BPlusTreeMap {
       for (i = 0; i < ks.size(); i++) {
         if (key < ks[i]) {
           children[i] = children[i]->insert(key, val);
+          return balance(i);
         } else if (key == ks[i]) {
           children[i + 1] = children[i + 1]->insert(key, val);
+          return balance(i + 1);
         }
       }
       children[i] = children[i]->insert(key, val);
@@ -172,7 +178,9 @@ template <typename K, typename V> struct BPlusTreeMap {
       left->vs.erase(left->vs.begin() + j, left->vs.end());
       right->next = left->next;
       left->next = right;
-      return new BPlusNode(right->ks[0], left, right, true, false);
+      BPlusNode *new_node =
+          new BPlusNode(right->ks[0], left, right, true, false);
+      return new_node;
     }
 
     void del_inner(K key) {
@@ -399,6 +407,24 @@ template <typename K, typename V> struct BPlusTreeMap {
     return res;
   }
 
+  std::vector<K> GetKeys() {
+    if (root == nullptr) {
+      return {};
+    }
+    BPlusNode *t = root;
+    while (!t->is_bottom) {
+      t = t->children[0];
+    }
+    std::vector<K> keys;
+    BPlusNode *u = t;
+    while (u != nullptr) {
+      keys.insert(keys.end(), u->ks.begin(), u->ks.end());
+      u = u->next;
+    }
+
+    return keys;
+  }
+
   BPlusNode *fromjson(json &j) {
     BPlusNode *node = new BPlusNode();
     node->is_bottom = j["is_bottom"];
@@ -418,4 +444,13 @@ template <typename K, typename V> struct BPlusTreeMap {
   void Deserialize(json &j) { root = fromjson(j); }
 
   BPlusNode *root = nullptr;
+};
+
+template <typename V> struct BTree {
+  BPlusTreeMap<V, V> bpmap;
+  BTree() {}
+  void Insert(V val) { bpmap.Insert(val, val); }
+  std::pair<bool, V> Find(V key) { return bpmap.Find(key); }
+  int Len() { return bpmap.GetKeys().size(); }
+  // BPlusNode *GetTop() { return bpmap.root; }
 };

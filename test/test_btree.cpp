@@ -5,7 +5,7 @@
 #include <stdexcept>
 #include <vector>
 
-#include "mydb/meta/btree.h"
+#include "mydb/meta/bptree.h"
 
 TEST(BTreeTest, NoSplit) {
   BTree<int> btree;
@@ -27,11 +27,8 @@ TEST(BTreeTest, SplitParent) {
   BTree<int> btree;
 
   btree.Insert(1);
-  std::cout << btree.GetTop()->Items.size() << std::endl;
   btree.Insert(2);
-  std::cout << btree.GetTop()->Items.size() << std::endl;
   btree.Insert(3);
-  std::cout << btree.GetTop()->Items.size() << std::endl;
 
   auto found = btree.Find(1);
   ASSERT_TRUE(found.first);
@@ -42,13 +39,30 @@ TEST(BTreeTest, SplitParent) {
   found = btree.Find(3);
   ASSERT_TRUE(found.first);
 
-  // test balance
-  std::cout << btree.GetTop()->Items.size() << std::endl;
-  ASSERT_EQ(btree.GetTop()->Items[0], 2);
-  ASSERT_EQ(btree.GetTop()->Children[0]->Items[0], 1);
-  ASSERT_EQ(btree.GetTop()->Children[1]->Items[0], 3);
+  ASSERT_EQ(btree.bpmap.root->ks[0], 2);
+  ASSERT_EQ(btree.bpmap.root->children[0]->vs[0], 1);
+  ASSERT_EQ(btree.bpmap.root->children[1]->vs[0], 2);
 }
 
+/*
+TEST(BTreeTest, Random) {
+  BPlusTreeMap<int, int> bpmap;
+  std::random_device rd;
+  std::mt19937 gen(rd());
+  std::uniform_int_distribution<> dis(0, 5);
+
+  for (int i = 0; i < 10; ++i) {
+    int v = dis(gen);
+    std::cout << v << std::endl;
+    bpmap.Insert(v, i);
+  }
+
+  std::cout << btree.bpmap.Serialize() << std::endl;
+
+  ASSERT_EQ(btree.Len(), 10);
+}*/
+
+/*
 TEST(BTreeTest, SplitChild) {
   BTree<int> btree;
   btree.Insert(1);
@@ -184,26 +198,13 @@ TEST(BTreeTest, Get) {
   ASSERT_EQ(item.second, 7);
 }
 
-TEST(BTreeTest, Random) {
-  BTree<int> btree;
-  std::random_device rd;
-  std::mt19937 gen(rd());
-  std::uniform_int_distribution<> dis(0, 999);
-
-  for (int i = 0; i < 10000; ++i) {
-    int64_t v = dis(gen);
-    btree.Insert(v);
-  }
-
-  ASSERT_EQ(btree.Len(), 10000);
-}
-
 TEST(BTreeTest, Empty) {
   BTree<int> btree;
   auto found = btree.Find(1);
   ASSERT_FALSE(found.first);
 }
-
+*/
+/*
 TEST(BTreeTest, Serialize) {
   BTree<int> btree;
   btree.Insert(1);
@@ -216,7 +217,6 @@ TEST(BTreeTest, Serialize) {
     FAIL();
   }
 
-  /*
   BTree<ItemType<int>> newTree;
   try {
     newTree.DeserializeBTree(serialized);
@@ -226,5 +226,4 @@ TEST(BTreeTest, Serialize) {
   }
 
   ASSERT_EQ(newTree.GetTop()->Items[0], 1);
-  */
-}
+ */

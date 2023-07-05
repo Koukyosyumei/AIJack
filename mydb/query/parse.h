@@ -4,11 +4,12 @@
 #include <string>
 #include <vector>
 
-class Parser {
-private:
+struct Parser {
   std::vector<Token *> tokens;
   int pos;
   std::vector<std::string> errors;
+
+  Parser(std::vector<Token *> &tokens) : tokens(tokens), pos(0) {}
 
   Token *expect(TokenKind kind) {
     Token *token = tokens[pos];
@@ -19,6 +20,7 @@ private:
 
     errors.push_back("Expected " + TokenKindToString(kind) + ", but found " +
                      TokenKindToString(token->kind));
+    std::cout << errors[errors.size() - 1] << std::endl;
     return nullptr;
   }
 
@@ -55,7 +57,7 @@ private:
 
     if (consume(EQ)) {
       Expr *right = expr();
-      // TODO: Construct and return the Eq expression
+      return new Expr(left, right);
     }
     return left;
   }
@@ -64,7 +66,7 @@ private:
     Token *token = tokens[pos];
 
     if (consume(NUMBER) || consume(STRING)) {
-      // TODO: Construct and return the Lit expression
+      return new Expr(token->str);
     }
 
     errors.push_back("Expression failed");
@@ -82,7 +84,7 @@ private:
     return exprs;
   }
 
-  Stmt *selectStmt() {
+  SelectStmt *selectStmt() {
     Token *tkn = expectOr({STAR, STRING});
 
     SelectStmt *selectNode = new SelectStmt();
@@ -100,12 +102,12 @@ private:
     return selectNode;
   }
 
-  Stmt *updateTableStmt() {
+  UpdateStmt *updateTableStmt() {
     Token *tblName = expect(STRING);
     expect(SET);
 
     std::vector<std::string> cols;
-    std::vector<void *> sets;
+    std::vector<std::string *> sets;
 
     while (true) {
       Token *col = expect(STRING);
@@ -135,7 +137,7 @@ private:
     return updateNode;
   }
 
-  Stmt *insertTableStmt() {
+  InsertStmt *insertTableStmt() {
     expect(INTO);
     Token *tblName = expect(STRING);
     expect(VALUES);
@@ -157,103 +159,54 @@ private:
     return insertNode;
   }
 
-  Stmt *createTableStmt() {
+  CreateTableStmt *createTableStmt() {
     expect(TABLE);
+    std::cout << 1 << std::endl;
     Token *tblName = expect(STRING);
+    std::cout << 2 << std::endl;
     expect(LBRACE);
+    std::cout << 3 << std::endl;
 
     std::vector<std::string> colNames;
     std::vector<std::string> colTypes;
     std::string pk;
 
     while (true) {
+      std::cout << 4 << std::endl;
       Token *colName = expect(STRING);
       expect(INT);
+      std::cout << 5 << std::endl;
       colNames.push_back(colName->str);
       colTypes.push_back("int");
 
+      std::cout << 6 << std::endl;
       if (consume(PRIMARY)) {
         expect(KEY);
+        std::cout << 7 << std::endl;
         pk = colName->str;
+        std::cout << 8 << std::endl;
       }
 
+      std::cout << 9 << std::endl;
       if (!consume(COMMA)) {
         break;
       }
+      std::cout << 10 << std::endl;
     }
 
+    std::cout << 11 << std::endl;
     expect(RBRACE);
 
+    std::cout << 12 << std::endl;
     CreateTableStmt *createNode = new CreateTableStmt();
     createNode->TableName = tblName->str;
     createNode->ColNames = colNames;
     createNode->ColTypes = colTypes;
     createNode->PrimaryKey = pk;
 
+    std::cout << 13 << std::endl;
     return createNode;
   }
-
-  std::string TokenKindToString(TokenKind kind) {
-    switch (kind) {
-    case NUMBER:
-      return "NUMBER";
-    case STRING:
-      return "STRING";
-    case INT:
-      return "INT";
-    case EQ:
-      return "EQ";
-    case STAR:
-      return "STAR";
-    case SELECT:
-      return "SELECT";
-    case FROM:
-      return "FROM";
-    case WHERE:
-      return "WHERE";
-    case CREATE:
-      return "CREATE";
-    case TABLE:
-      return "TABLE";
-    case INSERT:
-      return "INSERT";
-    case INTO:
-      return "INTO";
-    case VALUES:
-      return "VALUES";
-    case UPDATE:
-      return "UPDATE";
-    case SET:
-      return "SET";
-    case BEGIN:
-      return "BEGIN";
-    case COMMIT:
-      return "COMMIT";
-    case ROLLBACK:
-      return "ROLLBACK";
-    case PRIMARY:
-      return "PRIMARY";
-    case KEY:
-      return "KEY";
-    case LBRACE:
-      return "LBRACE";
-    case RBRACE:
-      return "RBRACE";
-    case LPAREN:
-      return "LPAREN";
-    case RPAREN:
-      return "RPAREN";
-    case COMMA:
-      return "COMMA";
-    case EOF_TOKEN:
-      return "EOF";
-    default:
-      return "UNKNOWN";
-    }
-  }
-
-public:
-  Parser(std::vector<Token *> &tokens) : tokens(tokens), pos(0) {}
 
   Stmt *Parse(std::vector<std::string> &parseErrors) {
     if (consume(CREATE)) {
