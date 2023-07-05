@@ -15,5 +15,10 @@ int main() {
   std::cout << bp.Find(5).second << std::endl;
   bp.Insert(6, 66);
   std::cout << bp.Find(6).second << std::endl;
-  bp.root->print();
+  json j = bp.Serialize();
+  std::cout << j << std::endl;
+
+  BPlusTreeMap<int, int> bp_d;
+  bp_d.Deserialize(j);
+  std::cout << bp_d.Serialize() << std::endl;
 }
