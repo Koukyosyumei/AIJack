@@ -1,5 +1,5 @@
 # clean up
-# rm -rf build/*
+rm -rf build/*
 
 # build
 ./script/build.sh

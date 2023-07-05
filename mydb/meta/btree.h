@@ -9,22 +9,8 @@ const int maxDegree = 3;
 
 using json = nlohmann::json;
 
-template <typename V> class ItemType {
-public:
-  ItemType() {}
-  ItemType(V value) : value(value) {}
-
-  bool operator==(const ItemType<V> &other) const {
-    return value == other.value;
-  }
-  bool operator<(const ItemType<V> &other) const { return value < other.value; }
-
-  V value;
-};
-
 template <typename V>
-std::pair<bool, int> FindAtItems(const std::vector<ItemType<V>> &Items,
-                                 const ItemType<V> &item) {
+std::pair<bool, int> FindAtItems(const std::vector<V> &Items, V item) {
   for (size_t index = 0; index < Items.size(); ++index) {
     if (!(Items[index] < item)) {
       if (!(item < Items[index])) {
@@ -38,9 +24,7 @@ std::pair<bool, int> FindAtItems(const std::vector<ItemType<V>> &Items,
   return std::make_pair(false, (int)Items.size());
 }
 
-template <typename V>
-void insertAt(std::vector<ItemType<V>> &items, int index,
-              const ItemType<V> &item) {
+template <typename V> void insertAt(std::vector<V> &items, int index, V item) {
   if (index == -1) {
     items.push_back(item);
   } else {
@@ -53,15 +37,9 @@ void insertAt(std::vector<ItemType<V>> &items, int index,
   }
 }
 
-template <typename V>
-void insertAt(std::vector<ItemType<V>> &items, int index, V val) {
-  ItemType<V> item(val);
-  insertAt(items, index, item);
-}
-
 template <typename V> class Node {
 public:
-  std::vector<ItemType<V>> Items;
+  std::vector<V> Items;
   std::vector<Node<V> *> Children;
 
   Node() = default;
@@ -71,10 +49,13 @@ public:
     }
   }
 
-  void Insert(const ItemType<V> &item) {
+  void Insert(V item) {
     bool found;
     int index;
+    std::cout << "fffiii" << std::endl;
+    std::cout << &item << std::endl;
     std::tie(found, index) = Find(item);
+    std::cout << "res " << found << " " << index << std::endl;
     if (found) {
       // item is already within the node
       return;
@@ -91,11 +72,13 @@ public:
     }
 
     if (index == -1) {
-      throw std::runtime_error("Something wrong happened within Node.Insert.");
+      // std::cout << "  --- " << item.value << "\n";
+      // throw std::runtime_error("Something wrong happened within
+      // Node.Insert.");
     }
 
     if (Children[index]->Items.size() == maxDegree - 1) {
-      SplitChild(index, item.value);
+      SplitChild(index, item);
 
       if (Items.size() == maxDegree) {
         SplitMe();
@@ -107,15 +90,13 @@ public:
     Children[index]->Insert(item);
   }
 
-  std::pair<bool, int> Find(const V val) const {
-    ItemType<V> item = ItemType<V>(val);
-    return Find(item);
-  }
-
-  std::pair<bool, int> Find(const ItemType<V> &item) const {
+  std::pair<bool, int> Find(V item) const {
     bool found;
     int index;
+    std::cout << "finditemat " << item << std::endl;
     std::tie(found, index) = FindAtItems<V>(Items, item);
+    std::cout << 100 << " " << found << " " << index << " " << Children.size()
+              << std::endl;
     if (found) {
       return std::make_pair(found, index);
     }
@@ -139,8 +120,8 @@ public:
     Node<V> *right = new Node<V>();
     insertAt<V>(right->Items, 0, Items[maxDegree / 2 + 1]);
 
-    ItemType<V> mid = Items[maxDegree / 2];
-    Items.push_back(mid);
+    V mid = Items[maxDegree / 2];
+    Items = {mid};
 
     if (Children.size() == maxDegree + 1) {
       left->Children.push_back(Children[0]);
@@ -153,20 +134,21 @@ public:
       Children.push_back(left);
       Children.push_back(right);
     } else {
+      std::cout << "pusu!\n";
       Children.push_back(left);
       Children.push_back(right);
     }
   }
 
-  void SplitChild(int index, const V &item) {
+  void SplitChild(int index, V item) {
     bool found;
     int innerIndex;
     std::tie(found, innerIndex) = Children[index]->Find(item);
     insertAt(Children[index]->Items, innerIndex, item);
 
-    ItemType<V> leftItem = Children[index]->Items[maxDegree / 2 - 1];
-    ItemType<V> midItem = Children[index]->Items[maxDegree / 2];
-    ItemType<V> rightItem = Children[index]->Items[maxDegree / 2 + 1];
+    V leftItem = Children[index]->Items[maxDegree / 2 - 1];
+    V midItem = Children[index]->Items[maxDegree / 2];
+    V rightItem = Children[index]->Items[maxDegree / 2 + 1];
 
     Children.erase(Children.begin() + index);
 
@@ -189,16 +171,18 @@ public:
               });
   }
 
-  ItemType<V> *Get(const V &key) {
+  std::pair<bool, V> Get(V key) {
     bool found;
     int index;
     std::tie(found, index) = Find(key);
     if (found) {
-      return &Items[index];
+      return std::make_pair(true, Items[index]);
     } else if (!Children.empty()) {
       return Children[index]->Get(key);
     }
-    return nullptr;
+    std::pair<bool, V> res;
+    res.first = false;
+    return res;
   }
 };
 
@@ -206,17 +190,23 @@ template <typename V> class BTree {
 public:
   BTree() : top(nullptr), length(0) {}
 
-  void Insert(ItemType<V> item) {
+  void Insert(V item) {
     length++;
+    std::cout << "a " << std::endl;
+    std::cout << (top == nullptr) << std::endl;
+    std::cout << "33 " << std::endl;
     if (top == nullptr) {
       top = new Node<V>();
       insertAt(top->Items, 0, item);
+      std::cout << "n " << (top == nullptr) << std::endl;
       return;
     }
+    std::cout << "44" << std::endl;
     top->Insert(item);
+    std::cout << "-n " << (top == nullptr) << std::endl;
   }
 
-  std::pair<bool, int> Find(ItemType<V> item) const {
+  std::pair<bool, int> Find(V item) const {
     if (top == nullptr) {
       return std::make_pair(false, -1);
     }
@@ -224,17 +214,11 @@ public:
     return top->Find(item);
   }
 
-  std::pair<bool, int> Find(const V &item) const {
+  std::pair<bool, V> Get(V key) const {
     if (top == nullptr) {
-      return std::make_pair(false, -1);
-    }
-
-    return top->Find(item);
-  }
-
-  ItemType<V> *Get(const V &key) const {
-    if (top == nullptr) {
-      return nullptr;
+      std::pair<bool, V> res;
+      res.first = false;
+      return res;
     }
 
     return top->Get(key);
@@ -255,7 +239,6 @@ public:
     return bTree;
   }
 
-private:
   Node<V> *top;
   int length;
 
