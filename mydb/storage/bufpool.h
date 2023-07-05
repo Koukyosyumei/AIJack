@@ -1,5 +1,5 @@
 #pragma once
-#include "../meta/btree.h"
+#include "../meta/bptree.h"
 #include "../meta/lru.h"
 #include "../meta/meta.h"
 #include "page.h"
@@ -111,7 +111,7 @@ public:
     return std::make_pair(victim->dirty, victim->page);
   }
 
-  std::pair<bool, BTree *> readIndex(const std::string &indexName) {
+  std::pair<bool, BTree<int> *> readIndex(const std::string &indexName) {
     auto it = btree.find(indexName);
 
     if (it != btree.end()) {
@@ -122,5 +122,5 @@ public:
   }
 
   Lru<uint64_t, PageDescriptor *> *lru;
-  std::map<std::string, BTree *> btree;
+  std::map<std::string, BTree<int> *> btree;
 };

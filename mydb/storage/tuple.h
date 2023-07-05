@@ -7,7 +7,7 @@
 #include <variant>
 #include <vector>
 
-#include "../meta/btree.h"
+#include "../meta/bptree.h"
 #include "../meta/meta.h"
 #include "data.pb.h"
 #include "tran.h"
@@ -43,14 +43,14 @@ inline storage::Tuple *NewTuple(uint64_t minTxId,
   return t;
 }
 
-inline bool TupleLess(const storage::Tuple *t1, const IntItem *item2) {
-  if (t1 == nullptr || item2 == nullptr) {
+inline bool TupleLess(const storage::Tuple *t1, int item) {
+  if (t1 == nullptr) {
     return false;
   }
 
   int32_t left = t1->data()[0].number();
 
-  return left < item2->value;
+  return left < item;
 }
 
 inline std::array<uint8_t, 128> SerializeTuple(const storage::Tuple *t) {

@@ -6,7 +6,7 @@
 #include <sys/stat.h>
 #include <vector>
 
-#include "../meta/btree.h"
+#include "../meta/bptree.h"
 #include "data.pb.h"
 #include "page.h"
 
@@ -62,7 +62,7 @@ public:
     }
   }
 
-  BTree *readIndex(const std::string &indexName) {
+  BTree<int> *readIndex(const std::string &indexName) {
     std::ifstream file(indexName, std::ios::binary);
     if (!file) {
       throw std::runtime_error("Failed to read index file: " + indexName);
@@ -72,7 +72,7 @@ public:
     buffer << file.rdbuf();
     std::string data = buffer.str();
 
-    BTree *btree = new BTree;
+    BTree<int> *btree = new BTree<int>;
     if (!btree->ParseFromString(data)) {
       delete btree;
       throw std::runtime_error("Failed to parse index file: " + indexName);
@@ -82,7 +82,7 @@ public:
   }
 
   void writeIndex(const std::string &dirPath, const std::string &indexName,
-                  const BTree *tree) {
+                  const BTree<int> *tree) {
     std::string savePath = dirPath + "/" + indexName;
 
     std::ofstream file(savePath, std::ios::binary);

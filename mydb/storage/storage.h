@@ -40,7 +40,7 @@ public:
     }
   }
 
-  BTree *CreateIndex(const std::string &indexName) {
+  BTree<int> *CreateIndex(const std::string &indexName) {
     BTree *btree = new BTree();
     buffer->btree[indexName] = btree;
     return btree;
