@@ -74,7 +74,6 @@ public:
     PageDescriptor *pd = lru->Get(hash);
 
     if (pd == nullptr) {
-      std::cout << "pd is null" << std::endl;
       return false;
     }
 
@@ -82,7 +81,6 @@ public:
 
     for (int i = 0; i < TupleNumber; i++) {
       if (TupleIsUnused(&pd->page->Tuples[i])) {
-        std::cout << "insert append!!" << std::endl;
         pd->page->Tuples[i] = *t;
         break;
       }

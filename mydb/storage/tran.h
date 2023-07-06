@@ -35,7 +35,10 @@ public:
 
   uint64_t GetCurrentTxID() { return currentTxid; }
 
-  uint64_t newTxid() { return std::atomic_fetch_add(&currentTxid, 1); }
+  uint64_t newTxid() {
+    std::atomic_fetch_add(&currentTxid, 1);
+    return currentTxid;
+  }
 
 private:
   std::unordered_map<uint64_t, Transaction *> clogs;

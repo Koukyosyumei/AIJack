@@ -38,7 +38,6 @@ public:
     while (!buffer->appendTuple(tablename, t)) {
       // if not exist in buffer, put a page to lru-cache
       insertPage(tablename);
-      buffer->appendTuple(tablename, t);
     }
   }
 
