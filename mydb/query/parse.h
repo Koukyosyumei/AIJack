@@ -20,7 +20,7 @@ struct Parser {
 
     errors.push_back("Expected " + TokenKindToString(kind) + ", but found " +
                      TokenKindToString(token->kind));
-    std::cout << errors[errors.size() - 1] << std::endl;
+    std::cerr << errors[errors.size() - 1] << std::endl;
     return nullptr;
   }
 
@@ -41,6 +41,7 @@ struct Parser {
 
     errors.push_back("Expected " + expectedKinds + ", but found " +
                      TokenKindToString(token->kind));
+    std::cerr << errors[errors.size() - 1] << std::endl;
     return nullptr;
   }
 
@@ -161,50 +162,37 @@ struct Parser {
 
   CreateTableStmt *createTableStmt() {
     expect(TABLE);
-    std::cout << 1 << std::endl;
     Token *tblName = expect(STRING);
-    std::cout << 2 << std::endl;
     expect(LBRACE);
-    std::cout << 3 << std::endl;
 
     std::vector<std::string> colNames;
     std::vector<std::string> colTypes;
     std::string pk;
 
     while (true) {
-      std::cout << 4 << std::endl;
       Token *colName = expect(STRING);
       expect(INT);
-      std::cout << 5 << std::endl;
       colNames.push_back(colName->str);
       colTypes.push_back("int");
 
-      std::cout << 6 << std::endl;
       if (consume(PRIMARY)) {
         expect(KEY);
-        std::cout << 7 << std::endl;
         pk = colName->str;
-        std::cout << 8 << std::endl;
       }
 
-      std::cout << 9 << std::endl;
       if (!consume(COMMA)) {
         break;
       }
-      std::cout << 10 << std::endl;
     }
 
-    std::cout << 11 << std::endl;
     expect(RBRACE);
 
-    std::cout << 12 << std::endl;
     CreateTableStmt *createNode = new CreateTableStmt();
     createNode->TableName = tblName->str;
     createNode->ColNames = colNames;
     createNode->ColTypes = colTypes;
     createNode->PrimaryKey = pk;
 
-    std::cout << 13 << std::endl;
     return createNode;
   }
 

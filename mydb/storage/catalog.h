@@ -27,6 +27,7 @@ public:
   }
 
   Scheme *FetchScheme(const std::string &tblName) {
+    std::cout << "fe" << std::endl;
     std::lock_guard<std::mutex> lock(mutex);
     for (auto scheme : Schemes) {
       if (scheme->TblName == tblName) {

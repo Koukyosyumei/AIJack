@@ -16,7 +16,7 @@ public:
   ApiServer(MyDb *db) : db(db) {}
 
   void executeHandler(const httplib::Request &req, httplib::Response &res) {
-    // logger->info("/execute requested");
+    std::cout << "/execute requested" << std::endl;
     // logger->info(req.path);
     // logger->info(req.body);
 
@@ -36,7 +36,7 @@ public:
     if (!error.empty()) {
       res.status = 400;
       res.set_content(error, "text/plain");
-      // logger->error(error);
+      std::cerr << error << std::endl;
       return;
     }
 
@@ -44,7 +44,7 @@ public:
   }
 
   void exitHandler(const httplib::Request &req, httplib::Response &res) {
-    // logger->info("/exit requested");
+    std::cout << "/exit requested" << std::endl;
     db->Terminate();
   }
 
@@ -58,7 +58,7 @@ public:
     server.Get("/exit", [&](const httplib::Request &req,
                             httplib::Response &res) { exitHandler(req, res); });
 
-    // log::info("Starting API server on port 32198...");
+    std::cout << "Starting API server on port 32198..." << std::endl;
     server.listen("0.0.0.0", 32198);
   }
 };

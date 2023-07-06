@@ -123,6 +123,8 @@ inline ResultSet *Executor::selectTable(SelectQuery *q, Plan *p,
     tuples = where(tuples, q->From[0]->Name, q->Where);
   }
 
+  std::cout << 111 << std::endl;
+
   std::vector<std::string> values;
   for (auto &t : tuples) {
     if (!tran || TupleCanSee(t, tran)) {
@@ -135,10 +137,13 @@ inline ResultSet *Executor::selectTable(SelectQuery *q, Plan *p,
     }
   }
 
+  std::cout << 222 << std::endl;
   std::vector<std::string> colNames;
   for (auto &c : q->Cols) {
     colNames.push_back(c->Name);
   }
+
+  std::cout << 333 << std::endl;
 
   ResultSet *resultset = new ResultSet();
   resultset->Message = "";
@@ -153,10 +158,13 @@ inline ResultSet *Executor::insertTable(InsertQuery *q, Transaction *tran) {
   if (!inTransaction) {
     tran = beginTransaction();
   }
-
+  std::cout << 11 << std::endl;
   storage::Tuple *t = NewTuple(tran->Txid(), q->Values);
+  std::cout << 22 << std::endl;
   storage->InsertTuple(q->table->Name, t);
+  std::cout << 33 << std::endl;
   storage->InsertIndex(q->Index, t->data(0).number());
+  std::cout << 44 << std::endl;
 
   if (!inTransaction) {
     commitTransaction(tran);
@@ -218,6 +226,7 @@ inline ResultSet *Executor::executeMain(Query *q, Plan *p, Transaction *tran) {
     return createTable(createTableQuery);
   }
   if (auto insertQuery = dynamic_cast<InsertQuery *>(q)) {
+    std::cout << "insertTable starts" << std::endl;
     return insertTable(insertQuery, tran);
   }
   if (auto selectQuery = dynamic_cast<SelectQuery *>(q)) {

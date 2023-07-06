@@ -40,6 +40,8 @@ void client() {
       auto res = client.Get(query.c_str());
       if (!res || res->status != 200) {
         err = "Error executing query";
+      } else {
+        std::cout << res->body;
       }
     }
 

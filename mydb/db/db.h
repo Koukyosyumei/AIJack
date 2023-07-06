@@ -1,5 +1,6 @@
 #pragma once
 #include <csignal>
+#include <cstdlib>
 #include <iostream>
 #include <map>
 #include <sstream>
@@ -70,6 +71,7 @@ public:
     std::vector<std::string> errs;
     Stmt *node = parser.Parse(errs);
     if (!errs.empty()) {
+      std::cerr << errs[0] << std::endl;
       error = errs[0];
       return;
     }
@@ -115,7 +117,7 @@ public:
     storage->Terminate();
     std::cout << "data files have completely saved in " << home << std::endl;
 
-    exit = 0;
+    std::exit(0);
   }
 };
 

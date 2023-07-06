@@ -13,9 +13,6 @@ struct Plan;
 struct Scanner;
 struct SeqScan;
 struct IndexScan;
-struct Query;
-struct SelectQuery;
-struct UpdateQuery;
 
 // Planner
 struct Planner {
