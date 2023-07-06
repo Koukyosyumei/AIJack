@@ -121,18 +121,23 @@ inline ResultSet *Executor::selectTable(SelectQuery *q, Plan *p,
 inline ResultSet *Executor::insertTable(InsertQuery *q, Transaction *tran) {
   bool inTransaction = tran != nullptr;
 
+  std::cout << 11 << std::endl;
   if (!inTransaction) {
     tran = beginTransaction();
   }
+  std::cout << 11 << std::endl;
   storage::Tuple *t = NewTuple(tran->Txid(), q->Values);
+  std::cout << 11 << std::endl;
   storage->InsertTuple(q->table->Name, t);
-  std::cout << t->data().size() << std::endl;
+  std::cout << 11 << std::endl;
   storage->InsertIndex(q->Index, t->data(0).number());
 
+  std::cout << 11 << std::endl;
   if (!inTransaction) {
     commitTransaction(tran);
   }
 
+  std::cout << 11 << std::endl;
   ResultSet *resultset = new ResultSet();
   resultset->Message = "A row was inserted";
   return resultset;
@@ -189,6 +194,7 @@ inline ResultSet *Executor::executeMain(Query *q, Plan *p, Transaction *tran) {
     return createTable(createTableQuery);
   }
   if (auto insertQuery = dynamic_cast<InsertQuery *>(q)) {
+    std::cout << "insert!!" << std::endl;
     return insertTable(insertQuery, tran);
   }
   if (auto selectQuery = dynamic_cast<SelectQuery *>(q)) {

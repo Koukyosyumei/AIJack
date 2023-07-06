@@ -79,11 +79,14 @@ public:
     Analyzer analyzer(catalog);
     Query *analyzedQuery = analyzer.AnalyzeMain(node);
 
+    std::cout << 1 << std::endl;
     Planner planner(analyzedQuery);
     Plan *plan = planner.planMain();
+    std::cout << 2 << std::endl;
 
     Executor executor(storage, catalog, tranManager);
     ResultSet *resultSet = executor.executeMain(analyzedQuery, plan, trn);
+    std::cout << 3 << std::endl;
 
     result = StringifyResultSet(resultSet);
   }

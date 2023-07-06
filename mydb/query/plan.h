@@ -36,7 +36,7 @@ struct Plan {
 
 // Scanner interface
 struct Scanner {
-  virtual std::vector<storage::Tuple *> Scan(Storage *storage) = 0;
+  virtual std::vector<storage::Tuple *> Scan(Storage *store) = 0;
 };
 
 // SeqScan
