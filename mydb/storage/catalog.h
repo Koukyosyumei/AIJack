@@ -53,7 +53,9 @@ inline Catalog *LoadCatalog(const std::string &catalogPath) {
   for (const auto &schemeJson : root["Schemes"]) {
     Scheme *scheme = new Scheme();
     scheme->TblName = schemeJson["TblName"];
-    // Add other scheme properties as needed
+    scheme->ColNames = schemeJson["ColNames"].get<std::vector<std::string>>();
+    scheme->ColTypes = schemeJson["ColTypes"].get<std::vector<ColType>>();
+    scheme->PrimaryKey = schemeJson["PrimaryKey"];
     catalog->Schemes.push_back(scheme);
   }
 
@@ -65,7 +67,9 @@ inline void SaveCatalog(const std::string &dirPath, Catalog *c) {
   for (const auto &scheme : c->Schemes) {
     json schemeJson;
     schemeJson["TblName"] = scheme->TblName;
-    // Add other scheme properties as needed
+    schemeJson["ColNames"] = scheme->ColNames;
+    schemeJson["ColTypes"] = scheme->ColTypes;
+    schemeJson["PrimaryKey"] = scheme->PrimaryKey;
     root["Schemes"].emplace_back(schemeJson);
   }
 
