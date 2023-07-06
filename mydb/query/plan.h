@@ -45,9 +45,20 @@ struct SeqScan : public Scanner {
 
   SeqScan(const std::string &tableName) : tblName(tableName) {}
 
-  std::vector<storage::Tuple *> Scan(Storage *storage) override {
-    // Perform sequential scan logic
-    return {}; // Return scanned tuples
+  std::vector<storage::Tuple *> Scan(Storage *store) override {
+    std::vector<storage::Tuple *> result;
+
+    for (uint64_t i = 0;; i++) {
+      storage::Tuple *t = store->ReadTuple(tblName, i);
+      if (!t)
+        break;
+
+      if (TupleIsUnused(t))
+        break;
+
+      result.push_back(t);
+    }
+    return result;
   }
 };
 
@@ -61,9 +72,19 @@ struct IndexScan : public Scanner {
             const std::string &val)
       : tblName(tableName), index(idx), value(val) {}
 
-  std::vector<storage::Tuple *> Scan(Storage *storage) override {
-    // Perform index scan logic
-    return {}; // Return scanned tuples
+  std::vector<storage::Tuple *> Scan(Storage *store) override {
+    std::vector<storage::Tuple *> result;
+    BTree<int> *btree = store->ReadIndex(index);
+
+    int i = std::stoi(value);
+    storage::Tuple *item = new storage::Tuple();
+    storage::TupleData *td = item->add_data();
+    td->set_type(storage::TupleData_Type_INT);
+    td->set_number(btree->Find(i).second);
+
+    if (item)
+      result.push_back(item);
+    return result;
   }
 };
 
