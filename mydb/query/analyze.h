@@ -75,25 +75,20 @@ public:
     InsertQuery *q = new InsertQuery();
 
     if (!catalog->HasScheme(n->TableName)) {
-      std::cout << 1 << std::endl;
       throw runtime_error("insert failed: '" + n->TableName +
                           "' doesn't exist");
     }
-    std::cout << 2 << std::endl;
     Scheme *scheme = catalog->FetchScheme(n->TableName);
-    std::cout << 2.5 << std::endl;
 
     Table *t = new Table();
     t->Name = n->TableName;
 
     if (n->Values.size() != scheme->ColNames.size()) {
-      std::cout << scheme->ColNames.size() << " " << 3 << std::endl;
       throw runtime_error("insert failed: 'values' should be the same length");
     }
 
     vector<string> lits;
     for (auto l : n->Values) {
-      std::cout << 4 << std::endl;
       lits.push_back(l->v);
     }
 
@@ -108,15 +103,11 @@ public:
       }
     }
 
-    std::cout << 5 << std::endl;
-
     for (auto c : scheme->ColNames) {
       if (scheme->PrimaryKey == c) {
         q->Index = t->Name + "_" + c;
       }
     }
-
-    std::cout << 6 << std::endl;
 
     q->table = t;
     return q;
@@ -124,12 +115,10 @@ public:
 
   Query *analyzeSelect(SelectStmt *n) {
     SelectQuery *q = new SelectQuery();
-    std::cout << 11111 << std::endl;
     vector<Scheme *> schemes;
     for (auto name : n->From) {
       Scheme *scheme = catalog->FetchScheme(name);
       if (!scheme) {
-        std::cout << 22222 << std::endl;
         throw runtime_error("select failed: table '" + name +
                             "' doesn't exist");
       }
@@ -139,11 +128,8 @@ public:
     vector<Column *> cols;
     for (auto colName : n->ColNames) {
       bool found = false;
-      std::cout << "col " << colName << std::endl;
-      std::cout << schemes.size() << std::endl;
       for (auto scheme : schemes) {
         for (auto col : scheme->ColNames) {
-          std::cout << "xol " << col << std::endl;
           if (col == colName) {
             found = true;
             cols.push_back(new Column(colName));
@@ -152,7 +138,6 @@ public:
       }
 
       if (!found) {
-        std::cout << 33333 << std::endl;
         throw runtime_error("select failed: column '" + colName +
                             "' doesn't exist");
       }
@@ -214,22 +199,15 @@ public:
   }
 
   Query *analyzeCreateTable(CreateTableStmt *n) {
-    std::cout << 1 << std::endl;
     CreateTableQuery *q = new CreateTableQuery();
-    std::cout << 2 << std::endl;
-    std::cout << (n == nullptr) << std::endl;
     if (n->PrimaryKey.empty()) {
-      std::cout << 2.5 << std::endl;
       throw runtime_error("create table failed: primary key is needed");
     }
-    std::cout << 3 << std::endl;
 
     if (catalog->HasScheme(n->TableName)) {
       throw runtime_error("create table failed: table name '" + n->TableName +
                           "' already exists");
     }
-
-    std::cout << "assing types" << std::endl;
 
     vector<ColType> types;
     for (auto typ : n->ColTypes) {
@@ -254,7 +232,6 @@ public:
       return analyzeSelect(concrete);
     }
     if (auto concrete = dynamic_cast<CreateTableStmt *>(stmt)) {
-      std::cout << "analyze createtable starts\n";
       return analyzeCreateTable(concrete);
     }
     if (auto concrete = dynamic_cast<InsertStmt *>(stmt)) {

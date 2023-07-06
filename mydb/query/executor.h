@@ -53,39 +53,6 @@ struct Executor {
   void commitTransaction(Transaction *tran);
   void abortTransaction(Transaction *tran);
   ResultSet *executeMain(Query *q, Plan *p, Transaction *tran);
-
-  // SeqScan
-  std::vector<storage::Tuple *> scan(SeqScan *s, Storage *store) {
-    std::vector<storage::Tuple *> result;
-
-    for (uint64_t i = 0;; i++) {
-      storage::Tuple *t = store->ReadTuple(s->tblName, i);
-      if (!t)
-        break;
-
-      if (TupleIsUnused(t))
-        break;
-
-      result.push_back(t);
-    }
-    return result;
-  }
-
-  // IndexScan
-  std::vector<storage::Tuple *> scan(IndexScan *s, Storage *store) {
-    std::vector<storage::Tuple *> result;
-    BTree<int> *btree = store->ReadIndex(s->index);
-
-    int i = std::stoi(s->value);
-    storage::Tuple *item = new storage::Tuple();
-    storage::TupleData *td = item->add_data();
-    td->set_type(storage::TupleData_Type_INT);
-    td->set_number(btree->Find(i).second);
-
-    if (item)
-      result.push_back(item);
-    return result;
-  }
 };
 
 inline std::vector<storage::Tuple *>
@@ -159,6 +126,7 @@ inline ResultSet *Executor::insertTable(InsertQuery *q, Transaction *tran) {
   }
   storage::Tuple *t = NewTuple(tran->Txid(), q->Values);
   storage->InsertTuple(q->table->Name, t);
+  std::cout << t->data().size() << std::endl;
   storage->InsertIndex(q->Index, t->data(0).number());
 
   if (!inTransaction) {
