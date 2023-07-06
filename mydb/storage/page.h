@@ -28,7 +28,6 @@ inline std::array<char, PageSize> SerializePage(const Page *p) {
 
   for (int i = 0; i < TupleNumber; i++) {
     std::array<uint8_t, TupleSize> tupleBytes = SerializeTuple(&p->Tuples[i]);
-
     std::memcpy(buffer.data() + i * TupleSize, tupleBytes.data(), TupleSize);
   }
 

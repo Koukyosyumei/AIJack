@@ -25,7 +25,6 @@ public:
   Transaction *BeginTransaction() {
     uint64_t txid = newTxid();
     Transaction *tx = new Transaction(txid, TransactionState::InProgress);
-    std::lock_guard<std::mutex> lock(clogsMutex);
     clogs[txid] = tx;
     return tx;
   }
@@ -36,10 +35,9 @@ public:
 
   uint64_t GetCurrentTxID() { return currentTxid; }
 
-  uint64_t newTxid() { return ++currentTxid; }
+  uint64_t newTxid() { return std::atomic_fetch_add(&currentTxid, 1); }
 
 private:
   std::unordered_map<uint64_t, Transaction *> clogs;
   std::atomic<uint64_t> currentTxid;
-  std::mutex clogsMutex;
 };

@@ -62,6 +62,7 @@ inline bool TupleLess(const storage::Tuple *t1, int item) {
 inline std::array<uint8_t, 128> SerializeTuple(const storage::Tuple *t) {
   std::array<uint8_t, 128> buffer;
 
+  /*
   storage::Tuple tuple;
   tuple.set_mintxid(t->mintxid());
   tuple.set_maxtxid(t->maxtxid());
@@ -78,11 +79,18 @@ inline std::array<uint8_t, 128> SerializeTuple(const storage::Tuple *t) {
     } else {
       throw std::runtime_error("Invalid storage::TupleData type");
     }
-  }
+  }*/
 
-  std::string serializedData = tuple.SerializeAsString();
+  if (t != nullptr) {
+    /*
+  std::cout << 99 << std::endl;
+  std::cout << t->mintxid() << std::endl;
+  std::string serializedData;
+  t->SerializeToString(&serializedData);
+  std::cout << 77 << std::endl;
   std::memcpy(buffer.data(), serializedData.c_str(), serializedData.size());
-
+  */
+  }
   return buffer;
 }
 

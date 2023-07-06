@@ -71,18 +71,20 @@ public:
 
     BufferTag bt(tableName, NewPgid(tableName));
     uint64_t hash = bt.hash();
-    PageDescriptor *p = lru->Get(hash);
+    PageDescriptor *pd = lru->Get(hash);
 
-    if (p == nullptr) {
+    if (pd == nullptr) {
       return false;
     }
 
-    PageDescriptor *pd = static_cast<PageDescriptor *>(p);
     pd->dirty = true;
 
     for (int i = 0; i < TupleNumber; i++) {
       if (TupleIsUnused(&pd->page->Tuples[i])) {
+        // std::cout << "-- " << (t != nullptr) << std::endl;
+        // std::cout << t->mintxid() << std::endl;
         pd->page->Tuples[i] = *t;
+        // std::cout << "~~ " << pd->page->Tuples[i].mintxid() << std::endl;
         break;
       }
     }
