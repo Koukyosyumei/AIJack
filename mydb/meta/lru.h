@@ -3,26 +3,29 @@
 #include <list>
 #include <mutex>
 #include <unordered_map>
+#include <utility>
 #include <vector>
 
 template <typename K, typename V> class Lru {
 public:
   Lru(int cap, V nan_value = V()) : cap(cap), nan_value(nan_value) {}
 
-  V Insert(const K &key, const V &value) {
+  std::pair<bool, V> Insert(const K &key, const V &value) {
     std::lock_guard<std::mutex> lock(mutex);
 
     V victim;
+    bool is_evict = false;
     evictList.push_front({key, value});
     items[key] = evictList.begin();
 
     if (needEvict()) {
+      is_evict = true;
       victim = evictList.back().second;
       items.erase(evictList.back().first);
       evictList.pop_back();
     }
 
-    return victim;
+    return std::make_pair(is_evict, victim);
   }
 
   V Get(const K &key) {

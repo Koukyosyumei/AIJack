@@ -82,14 +82,9 @@ inline std::array<uint8_t, 128> SerializeTuple(const storage::Tuple *t) {
   }*/
 
   if (t != nullptr) {
-    /*
-  std::cout << 99 << std::endl;
-  std::cout << t->mintxid() << std::endl;
-  std::string serializedData;
-  t->SerializeToString(&serializedData);
-  std::cout << 77 << std::endl;
-  std::memcpy(buffer.data(), serializedData.c_str(), serializedData.size());
-  */
+    std::string serializedData;
+    t->SerializeToString(&serializedData);
+    std::memcpy(buffer.data(), serializedData.c_str(), serializedData.size());
   }
   return buffer;
 }

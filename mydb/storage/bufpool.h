@@ -74,6 +74,7 @@ public:
     PageDescriptor *pd = lru->Get(hash);
 
     if (pd == nullptr) {
+      std::cout << "pd is null" << std::endl;
       return false;
     }
 
@@ -81,10 +82,8 @@ public:
 
     for (int i = 0; i < TupleNumber; i++) {
       if (TupleIsUnused(&pd->page->Tuples[i])) {
-        // std::cout << "-- " << (t != nullptr) << std::endl;
-        // std::cout << t->mintxid() << std::endl;
+        std::cout << "insert append!!" << std::endl;
         pd->page->Tuples[i] = *t;
-        // std::cout << "~~ " << pd->page->Tuples[i].mintxid() << std::endl;
         break;
       }
     }
@@ -98,14 +97,15 @@ public:
     uint64_t hash = bt.hash();
     PageDescriptor *pd = new PageDescriptor(tableName, pgid, p);
 
-    void *victimPage = lru->Insert(hash, pd);
+    std::pair<bool, PageDescriptor *> res = lru->Insert(hash, pd);
+    bool is_evicted = res.first;
+    PageDescriptor *victimPage = res.second;
 
-    if (victimPage == nullptr) {
+    if (!is_evicted) {
       return std::make_pair(false, nullptr);
     }
 
-    PageDescriptor *victim = static_cast<PageDescriptor *>(victimPage);
-    return std::make_pair(victim->dirty, victim->page);
+    return std::make_pair(victimPage->dirty, victimPage->page);
   }
 
   std::pair<bool, BTree<int> *> readIndex(const std::string &indexName) {
