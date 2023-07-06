@@ -5,6 +5,7 @@
 #include "db.h"
 #include "httplib.h"
 #include <string>
+#include <unistd.h>
 #include <unordered_map>
 #include <vector>
 
@@ -17,8 +18,8 @@ public:
 
   void executeHandler(const httplib::Request &req, httplib::Response &res) {
     std::cout << "/execute requested" << std::endl;
-    // logger->info(req.path);
-    // logger->info(req.body);
+    std::cout << req.path << std::endl;
+    std::cout << req.body << std::endl;
 
     std::string query = req.get_param_value("query");
     if (query.empty()) {

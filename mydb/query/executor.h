@@ -19,14 +19,6 @@ struct Executor;
 struct SeqScan;
 struct IndexScan;
 struct Plan;
-struct Query;
-struct SelectQuery;
-struct UpdateQuery;
-struct CreateTableQuery;
-struct InsertQuery;
-struct BeginQuery;
-struct CommitQuery;
-struct AbortQuery;
 
 // Executor
 struct Executor {
@@ -90,11 +82,14 @@ inline ResultSet *Executor::selectTable(SelectQuery *q, Plan *p,
     tuples = where(tuples, q->From[0]->Name, q->Where);
   }
 
+  Scheme *scheme = catalog->FetchScheme(q->From[0]->Name);
+
   std::vector<std::string> values;
   for (auto &t : tuples) {
     if (!tran || TupleCanSee(t, tran)) {
       for (int i = 0; i < q->Cols.size(); ++i) {
-        const storage::TupleData td = t->data(i);
+        const storage::TupleData td =
+            t->data(scheme->get_ColID(q->Cols[i]->Name));
         std::string s;
         if (td.type() == storage::TupleData_Type_INT) {
           s = std::to_string(td.number());

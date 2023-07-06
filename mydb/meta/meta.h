@@ -1,6 +1,7 @@
 #pragma once
 #include <iostream>
 #include <string>
+#include <unordered_map>
 #include <vector>
 
 enum class ColType : uint8_t { Int, Varchar };
@@ -19,12 +20,18 @@ struct Scheme {
   std::vector<std::string> ColNames;
   std::vector<ColType> ColTypes;
   std::string PrimaryKey;
+  std::unordered_map<std::string, int> ColNamesMap;
+  bool ColNamesMap_not_initialized = false;
 
-  // Scheme() {}
-  // Scheme(std::string tblname, std::vector<std::string> &colnames,
-  //       std::vector<ColType> &coltypes, std::string primarykey)
-  //    : TblName(tblname), ColNames(colnames), ColTypes(coltypes),
-  //      PrimaryKey(primarykey) {}
+  int get_ColID(std::string colname) {
+    if (!ColNamesMap_not_initialized) {
+      for (int i = 0; i < ColNames.size(); i++) {
+        ColNamesMap.insert({ColNames[i], i});
+      }
+      ColNamesMap_not_initialized = true;
+    }
+    return ColNamesMap[colname];
+  }
 };
 
 class Table {

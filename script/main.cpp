@@ -31,6 +31,7 @@ void client() {
       if (res && res->status == 200) {
         // Request succeeded
         std::cout << "Server exit requested" << std::endl;
+        break;
       } else {
         err = "Error requesting server exit";
       }

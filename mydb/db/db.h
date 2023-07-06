@@ -48,6 +48,7 @@ public:
   static void SignalHandler(int signal) {
     std::cout << "ctrl+c detected, shutdown soon...." << std::endl;
     dbinstance->Terminate();
+    std::exit(0);
   }
 
   void Init() {
@@ -79,14 +80,11 @@ public:
     Analyzer analyzer(catalog);
     Query *analyzedQuery = analyzer.AnalyzeMain(node);
 
-    std::cout << 1 << std::endl;
     Planner planner(analyzedQuery);
     Plan *plan = planner.planMain();
-    std::cout << 2 << std::endl;
 
     Executor executor(storage, catalog, tranManager);
     ResultSet *resultSet = executor.executeMain(analyzedQuery, plan, trn);
-    std::cout << 3 << std::endl;
 
     result = StringifyResultSet(resultSet);
   }
@@ -119,8 +117,6 @@ public:
 
     storage->Terminate();
     std::cout << "data files have completely saved in " << home << std::endl;
-
-    std::exit(0);
   }
 };
 

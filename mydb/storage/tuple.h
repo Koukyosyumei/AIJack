@@ -22,13 +22,6 @@ struct Item {
       : str_value(str_value), coltype(ColType::Varchar) {}
 };
 
-/*
-namespace storage {
-
-inline Tuple::~Tuple() { data_.Clear(); }
-} // namespace storage
-*/
-
 inline storage::Tuple *NewTuple(uint64_t minTxId,
                                 const std::vector<Item> &values) {
   storage::Tuple *t = new storage::Tuple();
@@ -62,28 +55,11 @@ inline bool TupleLess(const storage::Tuple *t1, int item) {
 inline std::array<uint8_t, 128> SerializeTuple(const storage::Tuple *t) {
   std::array<uint8_t, 128> buffer;
 
-  /*
-  storage::Tuple tuple;
-  tuple.set_mintxid(t->mintxid());
-  tuple.set_maxtxid(t->maxtxid());
-
-  for (const auto &td : t->data()) {
-    storage::TupleData *tupleData = tuple.add_data();
-
-    if (td.type() == storage::TupleData_Type_INT) {
-      tupleData->set_type(storage::TupleData_Type_INT);
-      tupleData->set_number(td.number());
-    } else if (td.type() == storage::TupleData_Type_STRING) {
-      tupleData->set_type(storage::TupleData_Type_STRING);
-      tupleData->set_string(td.string());
-    } else {
-      throw std::runtime_error("Invalid storage::TupleData type");
-    }
-  }*/
-
   if (t != nullptr) {
     std::string serializedData;
-    t->SerializeToString(&serializedData);
+    if (!t->SerializeToString(&serializedData)) {
+      throw std::runtime_error("Failed to serialize storage::Tuple");
+    }
     std::memcpy(buffer.data(), serializedData.c_str(), serializedData.size());
   }
   return buffer;
@@ -91,33 +67,13 @@ inline std::array<uint8_t, 128> SerializeTuple(const storage::Tuple *t) {
 
 inline storage::Tuple *
 DeserializeTuple(const std::array<uint8_t, 128> &buffer) {
-  storage::Tuple tuple;
+  storage::Tuple *t = new storage::Tuple();
 
   std::string serializedData(reinterpret_cast<const char *>(buffer.data()),
                              buffer.size());
-  if (!tuple.ParseFromString(serializedData)) {
+  if (!t->ParseFromString(serializedData)) {
     throw std::runtime_error("Failed to deserialize storage::Tuple");
   }
-
-  storage::Tuple *t = new storage::Tuple();
-  t->set_mintxid(tuple.mintxid());
-  t->set_maxtxid(tuple.maxtxid());
-
-  for (int i = 0; i < tuple.data_size(); i++) {
-    const storage::TupleData &tupleData = tuple.data(i);
-    storage::TupleData *td = t->add_data();
-
-    if (tupleData.type() == storage::TupleData_Type_INT) {
-      td->set_type(storage::TupleData_Type_INT);
-      td->set_number(tupleData.number());
-    } else if (tupleData.type() == storage::TupleData_Type_STRING) {
-      td->set_type(storage::TupleData_Type_STRING);
-      td->set_string(tupleData.string());
-    } else {
-      throw std::runtime_error("Invalid storage::TupleData type");
-    }
-  }
-
   return t;
 }
 
