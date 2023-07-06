@@ -75,8 +75,13 @@ public:
     InsertQuery *q = new InsertQuery();
 
     if (!catalog->HasScheme(n->TableName)) {
-      throw runtime_error("insert failed: '" + n->TableName +
-                          "' doesn't exist");
+      try {
+        throw runtime_error("insert failed: '" + n->TableName +
+                            "' doesn't exist");
+      } catch (runtime_error e) {
+        std::cerr << "runtime_error: " << e.what() << std::endl;
+        return nullptr;
+      }
     }
     Scheme *scheme = catalog->FetchScheme(n->TableName);
 
@@ -84,7 +89,13 @@ public:
     t->Name = n->TableName;
 
     if (n->Values.size() != scheme->ColNames.size()) {
-      throw runtime_error("insert failed: 'values' should be the same length");
+      try {
+        throw runtime_error(
+            "insert failed: 'values' should be the same length");
+      } catch (runtime_error e) {
+        std::cerr << "runtime_error: " << e.what() << std::endl;
+        return nullptr;
+      }
     }
 
     vector<string> lits;
@@ -99,7 +110,12 @@ public:
       } else if (scheme->ColTypes[i] == ColType::Varchar) {
         q->Values.emplace_back(Item(lits[i]));
       } else {
-        throw runtime_error("insert failed: unexpected types parsed");
+        try {
+          throw runtime_error("insert failed: unexpected types parsed");
+        } catch (runtime_error e) {
+          std::cerr << "runtime_error: " << e.what() << std::endl;
+          return nullptr;
+        }
       }
     }
 
@@ -119,8 +135,13 @@ public:
     for (auto name : n->From) {
       Scheme *scheme = catalog->FetchScheme(name);
       if (!scheme) {
-        throw runtime_error("select failed: table '" + name +
-                            "' doesn't exist");
+        try {
+          throw runtime_error("select failed: table '" + name +
+                              "' doesn't exist");
+        } catch (runtime_error e) {
+          std::cerr << "runtime_error: " << e.what() << std::endl;
+          return nullptr;
+        }
       }
       schemes.push_back(scheme);
     }
@@ -129,6 +150,7 @@ public:
     for (auto colName : n->ColNames) {
       bool found = false;
       for (auto scheme : schemes) {
+        std::cout << "-- " << scheme->ColNames.size() << std::endl;
         for (auto col : scheme->ColNames) {
           if (col == colName) {
             found = true;
@@ -138,8 +160,13 @@ public:
       }
 
       if (!found) {
-        throw runtime_error("select failed: column '" + colName +
-                            "' doesn't exist");
+        try {
+          throw runtime_error("select failed: column '" + colName +
+                              "' doesn't exist");
+        } catch (runtime_error e) {
+          std::cerr << "runtime_error: " << e.what() << std::endl;
+          return nullptr;
+        }
       }
     }
 
@@ -168,8 +195,13 @@ public:
     UpdateQuery *q = new UpdateQuery();
 
     if (!catalog->HasScheme(n->TableName)) {
-      throw runtime_error("update failed: '" + n->TableName +
-                          "' doesn't exist");
+      try {
+        throw runtime_error("update failed: '" + n->TableName +
+                            "' doesn't exist");
+      } catch (runtime_error e) {
+        std::cerr << "runtime_error: " << e.what() << std::endl;
+        return nullptr;
+      }
     }
     Scheme *scheme = catalog->FetchScheme(n->TableName);
 
@@ -188,7 +220,12 @@ public:
       } else if (scheme->ColTypes[i] == ColType::Varchar) {
         q->Set.emplace_back(Item(lits[i]));
       } else {
-        throw runtime_error("update failed: unexpected types parsed");
+        try {
+          throw runtime_error("update failed: unexpected types parsed");
+        } catch (runtime_error e) {
+          std::cerr << "runtime_error: " << e.what() << std::endl;
+          return nullptr;
+        }
       }
     }
 
@@ -201,12 +238,22 @@ public:
   Query *analyzeCreateTable(CreateTableStmt *n) {
     CreateTableQuery *q = new CreateTableQuery();
     if (n->PrimaryKey.empty()) {
-      throw runtime_error("create table failed: primary key is needed");
+      try {
+        throw runtime_error("create table failed: primary key is needed");
+      } catch (runtime_error e) {
+        std::cerr << "runtime_error: " << e.what() << std::endl;
+        return nullptr;
+      }
     }
 
     if (catalog->HasScheme(n->TableName)) {
-      throw runtime_error("create table failed: table name '" + n->TableName +
-                          "' already exists");
+      try {
+        throw runtime_error("create table failed: table name '" + n->TableName +
+                            "' already exists");
+      } catch (runtime_error e) {
+        std::cerr << "runtime_error: " << e.what() << std::endl;
+        return nullptr;
+      }
     }
 
     vector<ColType> types;
@@ -229,6 +276,7 @@ public:
 
   Query *AnalyzeMain(Stmt *stmt) {
     if (auto concrete = dynamic_cast<SelectStmt *>(stmt)) {
+      std::cout << 888 << std::endl;
       return analyzeSelect(concrete);
     }
     if (auto concrete = dynamic_cast<CreateTableStmt *>(stmt)) {
@@ -250,7 +298,12 @@ public:
       return new AbortQuery();
     }
 
-    throw runtime_error("failed to analyze query");
+    try {
+      throw runtime_error("failed to analyze query");
+    } catch (runtime_error e) {
+      std::cerr << "runtime_error: " << e.what() << std::endl;
+      return nullptr;
+    }
   }
 };
 

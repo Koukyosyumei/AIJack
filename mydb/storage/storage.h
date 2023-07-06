@@ -109,7 +109,6 @@ private:
     if (pg != nullptr) {
       return pg;
     }
-
     pg = disk->fetchPage(prefix, tableName, pgid);
 
     if (pg != nullptr) {
