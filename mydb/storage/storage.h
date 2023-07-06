@@ -1,3 +1,4 @@
+#pragma once
 #include "../meta/meta.h"
 #include "bufpool.h"
 #include "disk.h"
@@ -41,26 +42,26 @@ public:
   }
 
   BTree<int> *CreateIndex(const std::string &indexName) {
-    BTree *btree = new BTree();
+    BTree<int> *btree = new BTree<int>();
     buffer->btree[indexName] = btree;
     return btree;
   }
 
-  void InsertIndex(const std::string &indexName, const IntItem *item) {
-    BTree *btree = ReadIndex(indexName);
+  void InsertIndex(const std::string &indexName, int item) {
+    BTree<int> *btree = ReadIndex(indexName);
 
     if (btree != nullptr) {
-      btree->Insert(*item);
+      btree->Insert(item);
     }
   }
 
-  BTree *ReadIndex(const std::string &indexName) {
+  BTree<int> *ReadIndex(const std::string &indexName) {
     auto it = buffer->btree.find(indexName);
     if (it != buffer->btree.end()) {
       return it->second;
     }
 
-    BTree *btree = disk->readIndex(indexName);
+    BTree<int> *btree = disk->readIndex(indexName);
 
     if (btree == nullptr) {
       btree = CreateIndex(indexName);
@@ -92,7 +93,7 @@ public:
 
     for (const auto &entry : buffer->btree) {
       const std::string &key = entry.first;
-      BTree *val = entry.second;
+      BTree<int> *val = entry.second;
       disk->writeIndex(prefix, key, val);
     }
   }

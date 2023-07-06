@@ -70,7 +70,7 @@ struct IndexScan : public Scanner {
   }
 };
 
-Plan *Planner::planSelect(SelectQuery *q) {
+inline Plan *Planner::planSelect(SelectQuery *q) {
   // if where contains a primary key, use index scan.
   for (Expr *eq : q->Where) {
     if (!eq)
@@ -97,7 +97,7 @@ Plan *Planner::planSelect(SelectQuery *q) {
   };
 }
 
-Plan *Planner::planUpdate(UpdateQuery *q) {
+inline Plan *Planner::planUpdate(UpdateQuery *q) {
   // if where contains a primary key, use index scan.
   for (Expr *eq : q->Where) {
     if (!eq)
@@ -108,7 +108,7 @@ Plan *Planner::planUpdate(UpdateQuery *q) {
     for (auto &c : q->Cols) {
       if (col->v == c->Name && c->Primary) {
         return new Plan{
-            .scanners = new IndexScan(q->Table->Name, col->v, ""),
+            .scanners = new IndexScan(q->table->Name, col->v, ""),
         };
       }
     }
@@ -116,11 +116,11 @@ Plan *Planner::planUpdate(UpdateQuery *q) {
 
   // use seqscan
   return new Plan{
-      .scanners = new SeqScan(q->Table->Name),
+      .scanners = new SeqScan(q->table->Name),
   };
 }
 
-Plan *Planner::planMain() {
+inline Plan *Planner::planMain() {
   if (auto selectQuery = dynamic_cast<SelectQuery *>(q))
     return planSelect(selectQuery);
   if (auto updateQuery = dynamic_cast<UpdateQuery *>(q))

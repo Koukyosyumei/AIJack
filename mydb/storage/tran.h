@@ -1,6 +1,7 @@
+#pragma once
 #include <atomic>
-#include <map>
 #include <mutex>
+#include <unordered_map>
 
 enum class TransactionState { Commited = 1, InProgress, Abort };
 
@@ -38,7 +39,7 @@ public:
   uint64_t newTxid() { return ++currentTxid; }
 
 private:
-  std::map<uint64_t, Transaction *> clogs;
+  std::unordered_map<uint64_t, Transaction *> clogs;
   std::atomic<uint64_t> currentTxid;
   std::mutex clogsMutex;
 };

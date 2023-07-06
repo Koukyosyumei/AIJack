@@ -452,5 +452,13 @@ template <typename V> struct BTree {
   void Insert(V val) { bpmap.Insert(val, val); }
   std::pair<bool, V> Find(V key) { return bpmap.Find(key); }
   int Len() { return bpmap.GetKeys().size(); }
+
+  void SerializeToString(std::string &buffer) {
+    buffer = nlohmann::to_string(bpmap.Serialize());
+  }
+  void ParseFromString(std::string buffer) {
+    json j = json::parse(buffer);
+    bpmap.Deserialize(j);
+  }
   // BPlusNode *GetTop() { return bpmap.root; }
 };

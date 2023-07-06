@@ -73,16 +73,13 @@ public:
     std::string data = buffer.str();
 
     BTree<int> *btree = new BTree<int>;
-    if (!btree->ParseFromString(data)) {
-      delete btree;
-      throw std::runtime_error("Failed to parse index file: " + indexName);
-    }
+    btree->ParseFromString(data);
 
     return btree;
   }
 
   void writeIndex(const std::string &dirPath, const std::string &indexName,
-                  const BTree<int> *tree) {
+                  BTree<int> *tree) {
     std::string savePath = dirPath + "/" + indexName;
 
     std::ofstream file(savePath, std::ios::binary);
@@ -91,10 +88,7 @@ public:
     }
 
     std::string serializedTree;
-    if (!tree->SerializeToString(&serializedTree)) {
-      throw std::runtime_error("Failed to serialize BTree: " + savePath);
-    }
-
+    tree->SerializeToString(serializedTree);
     file.write(serializedTree.c_str(), serializedTree.size());
     if (!file) {
       throw std::runtime_error("Failed to write index file: " + savePath);

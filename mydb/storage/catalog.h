@@ -1,3 +1,4 @@
+#pragma once
 #include "../json/json.hpp"
 #include "../meta/meta.h"
 #include <fstream>

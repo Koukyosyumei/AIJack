@@ -1,4 +1,5 @@
-#include "../meta/btree.h"
+#pragma once
+#include "../meta/bptree.h"
 #include "../meta/meta.h" // Assuming meta.h contains the declaration of the meta classes
 #include "../storage/catalog.h" //
 #include "../storage/storage.h" // Assuming storage.h contains the declaration of the storage classes
@@ -73,10 +74,13 @@ struct Executor {
   // IndexScan
   std::vector<storage::Tuple *> scan(IndexScan *s, Storage *store) {
     std::vector<storage::Tuple *> result;
-    BTree *btree = store->ReadIndex(s->index);
+    BTree<int> *btree = store->ReadIndex(s->index);
 
     int i = std::stoi(s->value);
-    storage::Tuple *item = btree->Get(new IntItem(i));
+    storage::Tuple *item = new storage::Tuple();
+    storage::TupleData *td = item->add_data();
+    td->set_type(storage::TupleData_Type_INT);
+    td->set_number(btree->Find(i).second);
 
     if (item)
       result.push_back(item);
@@ -84,7 +88,7 @@ struct Executor {
   }
 };
 
-std::vector<storage::Tuple *>
+inline std::vector<storage::Tuple *>
 Executor::where(std::vector<storage::Tuple *> &tuples,
                 const std::string &tableName,
                 const std::vector<Expr *> &where) {
@@ -112,17 +116,20 @@ Executor::where(std::vector<storage::Tuple *> &tuples,
   return filtered;
 }
 
-ResultSet *Executor::selectTable(SelectQuery *q, Plan *p, Transaction *tran) {
+inline ResultSet *Executor::selectTable(SelectQuery *q, Plan *p,
+                                        Transaction *tran) {
   std::vector<storage::Tuple *> tuples = p->scanners->Scan(storage);
   if (!q->Where.empty()) {
-    tuples = where(tuples, q->From[0].Name, q->Where);
+    tuples = where(tuples, q->From[0]->Name, q->Where);
   }
 
   std::vector<std::string> values;
   for (auto &t : tuples) {
-    if (!tran || t->CanSee(tran)) {
+    if (!tran || TupleCanSee(t, tran)) {
       for (int i = 0; i < q->Cols.size(); ++i) {
-        std::string s = fmt::sprintf(q->Cols[i].Name, t->Data[i].String());
+        std::stringstream ss;
+        ss << q->Cols[i]->Name << t->data()[i].string();
+        std::string s = ss.str();
         values.push_back(s);
       }
     }
@@ -130,72 +137,82 @@ ResultSet *Executor::selectTable(SelectQuery *q, Plan *p, Transaction *tran) {
 
   std::vector<std::string> colNames;
   for (auto &c : q->Cols) {
-    colNames.push_back(c.Name);
+    colNames.push_back(c->Name);
   }
 
-  return new ResultSet("", colNames, values);
+  ResultSet *resultset = new ResultSet();
+  resultset->Message = "";
+  resultset->ColNames = colNames;
+  resultset->Values = values;
+  return resultset;
 }
 
-ResultSet *Executor::insertTable(InsertQuery *q, Transaction *tran) {
+inline ResultSet *Executor::insertTable(InsertQuery *q, Transaction *tran) {
   bool inTransaction = tran != nullptr;
 
   if (!inTransaction) {
     tran = beginTransaction();
   }
 
-  storage::Tuple *t = new storage::Tuple(tran->Txid(), q->Values);
-  storage->InsertTuple(q->Table.Name, t);
-  storage->InsertIndex(q->Index, t);
+  storage::Tuple *t = NewTuple(tran->Txid(), q->Values);
+  storage->InsertTuple(q->table->Name, t);
+  storage->InsertIndex(q->Index, t->data(0).number());
 
   if (!inTransaction) {
     commitTransaction(tran);
   }
 
-  return new ResultSet("A row was inserted");
+  ResultSet *resultset = new ResultSet();
+  resultset->Message = "A row was inserted";
+  return resultset;
 }
 
-void Executor::updateTable(UpdateQuery *q, Plan *p, Transaction *tran) {
+inline void Executor::updateTable(UpdateQuery *q, Plan *p, Transaction *tran) {
   // Implementation for updating the table goes here
   // Not implemented in this conversion
 }
 
-ResultSet *Executor::createTable(CreateTableQuery *q) {
-  bool added = catalog->Add(q->Scheme);
-  if (!added) {
-    return nullptr;
-  }
+inline ResultSet *Executor::createTable(CreateTableQuery *q) {
+  catalog->Add(q->scheme);
 
   bool created =
-      storage->CreateIndex(q->Scheme.TblName + "_" + q->Scheme.PrimaryKey);
+      storage->CreateIndex(q->scheme->TblName + "_" + q->scheme->PrimaryKey);
   if (!created) {
     return nullptr;
   }
 
-  return new ResultSet(q->Scheme.TblName + " was created as Table");
+  ResultSet *resultset = new ResultSet();
+  resultset->Message = q->scheme->TblName + " was created as Table";
+  return resultset;
 }
 
-Transaction *Executor::beginTransaction() {
+inline Transaction *Executor::beginTransaction() {
   return tranManager->BeginTransaction();
 }
 
-void Executor::commitTransaction(Transaction *tran) {
+inline void Executor::commitTransaction(Transaction *tran) {
   tranManager->Commit(tran);
 }
 
-void Executor::abortTransaction(Transaction *tran) { tranManager->Abort(tran); }
+inline void Executor::abortTransaction(Transaction *tran) {
+  tranManager->Abort(tran);
+}
 
-ResultSet *Executor::executeMain(Query *q, Plan *p, Transaction *tran) {
+inline ResultSet *Executor::executeMain(Query *q, Plan *p, Transaction *tran) {
   if (auto beginQuery = dynamic_cast<BeginQuery *>(q)) {
     beginTransaction();
-    return new ResultSet("Transaction begins.");
+    ResultSet *resultset = new ResultSet();
+    resultset->Message = "Transaction begins.";
   }
   if (auto commitQuery = dynamic_cast<CommitQuery *>(q)) {
     commitTransaction(tran);
-    return new ResultSet("Transaction was committed.");
+    ResultSet *resultset = new ResultSet();
+    resultset->Message = "Transaction was committed.";
   }
   if (auto abortQuery = dynamic_cast<AbortQuery *>(q)) {
     abortTransaction(tran);
-    return new ResultSet("Transaction was aborted.");
+    ResultSet *resultset = new ResultSet();
+    resultset->Message = "Transaction was aborted.";
   }
   if (auto createTableQuery = dynamic_cast<CreateTableQuery *>(q)) {
     return createTable(createTableQuery);

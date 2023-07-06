@@ -7,7 +7,6 @@
 #include <cstring>
 #include <iostream>
 #include <map>
-#include <openssl/md5.h>
 #include <vector>
 
 struct BufferTag {
@@ -19,11 +18,7 @@ struct BufferTag {
 
   uint64_t hash() {
     std::string data = tableName + std::to_string(pgid);
-    std::array<unsigned char, MD5_DIGEST_LENGTH> hash;
-    MD5(reinterpret_cast<const unsigned char *>(data.c_str()), data.size(),
-        hash.data());
-    uint64_t result = (uint64_t)hash.data();
-    return result;
+    return std::hash<std::string>{}(data);
   }
 };
 

@@ -2,6 +2,7 @@
 #include "../meta/meta.h"
 #include "../storage/catalog.h"
 #include "../storage/storage.h"
+#include "../storage/tuple.h"
 #include "ast.h"
 #include <stdexcept>
 #include <string>
@@ -25,16 +26,16 @@ public:
 
 class CreateTableQuery : public Query {
 public:
-  Scheme *Scheme;
+  Scheme *scheme;
 
   void evalQuery() override {}
 };
 
 class UpdateQuery : public Query {
 public:
-  Table *Table;
+  Table *table;
   vector<Column *> Cols;
-  vector<void *> Set;
+  vector<Item> Set;
   vector<Expr *> Where;
 
   void evalQuery() override {}
@@ -42,8 +43,8 @@ public:
 
 class InsertQuery : public Query {
 public:
-  Table *Table;
-  vector<void *> Values;
+  Table *table;
+  vector<Item> Values;
   string Index;
 
   void evalQuery() override {}
@@ -94,9 +95,9 @@ public:
     for (int i = 0; i < lits.size(); i++) {
       if (scheme->ColTypes[i] == ColType::Int) {
         int value = stoi(lits[i]);
-        q->Values.push_back(new int(value));
+        q->Values.emplace_back(Item(value));
       } else if (scheme->ColTypes[i] == ColType::Varchar) {
-        q->Values.push_back(new string(lits[i]));
+        q->Values.emplace_back(Item(lits[i]));
       } else {
         throw runtime_error("insert failed: unexpected types parsed");
       }
@@ -108,7 +109,7 @@ public:
       }
     }
 
-    q->Table = t;
+    q->table = t;
     return q;
   }
 
@@ -178,21 +179,21 @@ public:
 
     vector<std::string> lits;
     for (auto l : n->Set) {
-      lits.push_back(std::string(static_cast<char *>(l)));
+      lits.push_back(*l);
     }
 
     for (int i = 0; i < lits.size(); i++) {
       if (scheme->ColTypes[i] == ColType::Int) {
         int value = stoi(lits[i]);
-        q->Set.push_back(new int(value));
+        q->Set.emplace_back(Item(value));
       } else if (scheme->ColTypes[i] == ColType::Varchar) {
-        q->Set.push_back(new string(lits[i]));
+        q->Set.emplace_back(Item(lits[i]));
       } else {
         throw runtime_error("update failed: unexpected types parsed");
       }
     }
 
-    q->Table = t;
+    q->table = t;
     q->Where = n->Where;
 
     return q;
@@ -219,7 +220,11 @@ public:
       }
     }
 
-    q->Scheme = new Scheme(n->TableName, n->ColNames, types, n->PrimaryKey);
+    q->scheme = new Scheme();
+    q->scheme->TblName = n->TableName;
+    q->scheme->ColNames = n->ColNames;
+    q->scheme->ColTypes = types;
+    q->scheme->PrimaryKey = n->PrimaryKey;
 
     return q;
   }
@@ -251,4 +256,4 @@ public:
   }
 };
 
-Analyzer *NewAnalyzer(Catalog *catalog) { return new Analyzer(catalog); }
+inline Analyzer *NewAnalyzer(Catalog *catalog) { return new Analyzer(catalog); }

@@ -12,32 +12,38 @@
 #include "data.pb.h"
 #include "tran.h"
 
+struct Item {
+  ColType coltype;
+  int num_value;
+  std::string str_value;
+
+  Item(int num_value) : num_value(num_value), coltype(ColType::Int) {}
+  Item(std::string str_value)
+      : str_value(str_value), coltype(ColType::Varchar) {}
+};
+
+/*
+namespace storage {
+
+inline Tuple::~Tuple() { data_.Clear(); }
+} // namespace storage
+*/
+
 inline storage::Tuple *NewTuple(uint64_t minTxId,
-                                const std::vector<int> &values) {
+                                const std::vector<Item> &values) {
   storage::Tuple *t = new storage::Tuple();
   t->set_mintxid(minTxId);
   t->set_maxtxid(minTxId);
 
   for (const auto &v : values) {
     storage::TupleData *td = t->add_data();
-    td->set_type(storage::TupleData_Type_INT);
-    td->set_number(v);
-  }
-
-  return t;
-}
-
-inline storage::Tuple *NewTuple(uint64_t minTxId,
-                                const std::vector<std::string> &values) {
-  storage::Tuple *t = new storage::Tuple();
-  t->set_mintxid(minTxId);
-  t->set_maxtxid(minTxId);
-
-  for (const auto &v : values) {
-    storage::TupleData *td = t->add_data();
-
-    td->set_type(storage::TupleData_Type_STRING);
-    td->set_string(v);
+    if (v.coltype == ColType::Int) {
+      td->set_type(storage::TupleData_Type_INT);
+      td->set_number(v.num_value);
+    } else if (v.coltype == ColType::Varchar) {
+      td->set_type(storage::TupleData_Type_STRING);
+      td->set_string(v.str_value);
+    }
   }
 
   return t;
@@ -70,7 +76,7 @@ inline std::array<uint8_t, 128> SerializeTuple(const storage::Tuple *t) {
       tupleData->set_type(storage::TupleData_Type_STRING);
       tupleData->set_string(td.string());
     } else {
-      throw std::runtime_error("Invalid TupleData type");
+      throw std::runtime_error("Invalid storage::TupleData type");
     }
   }
 
@@ -87,7 +93,7 @@ DeserializeTuple(const std::array<uint8_t, 128> &buffer) {
   std::string serializedData(reinterpret_cast<const char *>(buffer.data()),
                              buffer.size());
   if (!tuple.ParseFromString(serializedData)) {
-    throw std::runtime_error("Failed to deserialize Tuple");
+    throw std::runtime_error("Failed to deserialize storage::Tuple");
   }
 
   storage::Tuple *t = new storage::Tuple();
@@ -105,7 +111,7 @@ DeserializeTuple(const std::array<uint8_t, 128> &buffer) {
       td->set_type(storage::TupleData_Type_STRING);
       td->set_string(tupleData.string());
     } else {
-      throw std::runtime_error("Invalid TupleData type");
+      throw std::runtime_error("Invalid storage::TupleData type");
     }
   }
 
