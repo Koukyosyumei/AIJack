@@ -56,12 +56,13 @@ public:
   }
 
   BTree<int> *ReadIndex(const std::string &indexName) {
-    auto it = buffer->btree.find(indexName);
-    if (it != buffer->btree.end()) {
-      return it->second;
+    std::pair<bool, BTree<int> *> res = buffer->readIndex(indexName);
+    if (res.first) {
+      return res.second;
     }
 
-    BTree<int> *btree = disk->readIndex(indexName);
+    std::cout << "readindex from disk\n";
+    BTree<int> *btree = disk->readIndex(prefix + "/" + indexName);
 
     if (btree == nullptr) {
       btree = CreateIndex(indexName);

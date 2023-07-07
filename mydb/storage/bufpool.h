@@ -6,7 +6,7 @@
 #include <cstdint>
 #include <cstring>
 #include <iostream>
-#include <map>
+#include <unordered_map>
 #include <vector>
 
 struct BufferTag {
@@ -113,9 +113,10 @@ public:
       return std::make_pair(true, it->second);
     }
 
+    std::cout << "cannot find index in buffer\n";
     return std::make_pair(false, nullptr);
   }
 
   Lru<uint64_t, PageDescriptor *> *lru;
-  std::map<std::string, BTree<int> *> btree;
+  std::unordered_map<std::string, BTree<int> *> btree;
 };

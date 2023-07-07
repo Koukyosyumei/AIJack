@@ -11,6 +11,7 @@
 #include <cstdio>
 #include <iostream>
 #include <sstream>
+#include <stdexcept>
 #include <string>
 #include <unordered_map>
 #include <vector>
@@ -197,5 +198,11 @@ inline ResultSet *Executor::executeMain(Query *q, Plan *p, Transaction *tran) {
     return nullptr; // Update query doesn't return a result set
   }
 
-  throw std::runtime_error("Failed to execute query");
+  try {
+    throw std::runtime_error("Failed to execute query");
+  } catch (std::runtime_error e) {
+    std::cerr << "runtime_error: " << e.what() << std::endl;
+  }
+
+  return nullptr;
 }

@@ -90,15 +90,21 @@ public:
   BTree<int> *readIndex(const std::string &indexName) {
     std::ifstream file(indexName, std::ios::binary);
     if (!file) {
-      throw std::runtime_error("Failed to read index file: " + indexName);
+      try {
+        throw std::runtime_error("Failed to read index file: " + indexName);
+      } catch (std::runtime_error e) {
+        std::cerr << "runtime_error: " << e.what() << std::endl;
+      }
     }
 
     std::stringstream buffer;
     buffer << file.rdbuf();
     std::string data = buffer.str();
 
+    std::cout << 222 << std::endl;
     BTree<int> *btree = new BTree<int>;
     btree->ParseFromString(data);
+    std::cout << 211 << std::endl;
 
     return btree;
   }

@@ -76,10 +76,12 @@ struct IndexScan : public Scanner {
 
   std::vector<storage::Tuple *> Scan(Storage *store) override {
     std::vector<storage::Tuple *> result;
+    std::cout << 555 << std::endl;
     BTree<int> *btree = store->ReadIndex(index);
-
     int i = std::stoi(value);
+    std::cout << 222 << std::endl;
     if (op == EQ) {
+      std::cout << 333 << std::endl;
       storage::Tuple *item = new storage::Tuple();
       storage::TupleData *td = item->add_data();
       td->set_type(storage::TupleData_Type_INT);
@@ -97,7 +99,7 @@ struct IndexScan : public Scanner {
           result.push_back(item);
       }
     }
-
+    std::cout << "- " << result.size() << std::endl;
     return result;
   }
 };
@@ -113,7 +115,10 @@ inline Plan *Planner::planSelect(SelectQuery *q) {
       continue;
 
     for (auto &c : q->Cols) {
-      if (col->v == c->Name && c->Primary) {
+      if ((col->v == c->Name) && c->Primary) {
+        std::cout << "pepare indexscanner\n";
+        std::cout << eq->op << std::endl;
+        std::cout << 111 << std::endl;
         return new Plan{
             .scanners =
                 new IndexScan(q->From[0]->Name, q->From[0]->Name + "_" + col->v,
@@ -122,7 +127,7 @@ inline Plan *Planner::planSelect(SelectQuery *q) {
       }
     }
   }
-
+  std::cout << "prepare seqscan\n";
   // use seqscan
   return new Plan{
       .scanners = new SeqScan(q->From[0]->Name),
@@ -138,7 +143,7 @@ inline Plan *Planner::planUpdate(UpdateQuery *q) {
     if (!col)
       continue;
     for (auto &c : q->Cols) {
-      if (col->v == c->Name && c->Primary) {
+      if ((col->v == c->Name) && c->Primary) {
         return new Plan{
             .scanners = new IndexScan(q->table->Name, col->v, "", eq->op),
         };
