@@ -135,11 +135,9 @@ public:
   Tokenizer(const std::string &input) : input(input), pos(0) {}
 
   std::vector<Token *> Tokenize() {
-    std::cout << input << std::endl;
     std::vector<Token *> tokens;
     for (pos = 0; pos < input.length();) {
       skipSpace();
-      std::cout << input[pos] << " ";
 
       if (matchKeyword("create")) {
         tokens.push_back(NewToken(CREATE, ""));
@@ -266,7 +264,6 @@ public:
 
       pos++;
     }
-    std::cout << std::endl;
     return tokens;
   }
 };
