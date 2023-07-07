@@ -8,6 +8,7 @@
 #include "analyze.h"
 #include "ast.h" // Assuming expr.h contains the declaration of the Expr, Eq, and Lit classes
 #include "plan.h"
+#include <cstdio>
 #include <iostream>
 #include <sstream>
 #include <string>
@@ -54,16 +55,23 @@ Executor::where(std::vector<storage::Tuple *> &tuples,
     std::string left = w->left->v;
     std::string right = w->right->v;
     for (auto &t : tuples) {
-      auto s = catalog->FetchScheme(tableName);
-      int order = 0;
-      for (auto &c : s->ColNames) {
-        if (c == left)
-          break;
-        order++;
+      Scheme *s = catalog->FetchScheme(tableName);
+      int colid = s->get_ColID(left);
+      bool flag = false;
+      if (w->op == EQ) {
+        if (s->ColTypes[colid] == ColType::Int) {
+          flag = TupleEqual(t, colid, std::stoi(right));
+        } else if (s->ColTypes[colid] == ColType::Varchar) {
+          flag = TupleEqual(t, colid, right);
+        }
+      } else if (w->op == GEQ) {
+        if (s->ColTypes[colid] == ColType::Int) {
+          flag = TupleGreaterEq(t, colid, std::stoi(right));
+        } else if (s->ColTypes[colid] == ColType::Varchar) {
+          flag = TupleGreaterEq(t, colid, right);
+        }
       }
-
-      int n = std::stoi(right);
-      if (TupleEqual(t, order, right, n)) {
+      if (flag) {
         filtered.push_back(t);
       }
     }
