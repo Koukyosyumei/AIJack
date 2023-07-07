@@ -52,7 +52,6 @@ Executor::where(std::vector<storage::Tuple *> &tuples,
                 const std::vector<Expr *> &where) {
   std::vector<storage::Tuple *> filtered;
   Scheme *s = catalog->FetchScheme(tableName);
-  std::cout << "wh " << tuples.size() << std::endl;
   for (auto &w : where) {
     std::string left = w->left->v;
     std::string right = w->right->v;
@@ -61,9 +60,7 @@ Executor::where(std::vector<storage::Tuple *> &tuples,
       bool flag = false;
       if (w->op == EQ) {
         if (s->ColTypes[colid] == ColType::Int) {
-          std::cout << colid << " " << 1 << std::endl;
           flag = TupleEqual(t, colid, std::stoi(right));
-          std::cout << 2 << std::endl;
         } else if (s->ColTypes[colid] == ColType::Varchar) {
           flag = TupleEqual(t, colid, right);
         }

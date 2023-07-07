@@ -79,15 +79,17 @@ struct IndexScan : public Scanner {
       std::pair<bool, TID> find_result = btree->Find(i);
       if (find_result.first) {
         storage::Tuple *t = store->ReadTuple(tblName, find_result.second);
-        if (t && TupleIsUnused(t))
+        if (t) {
           result.push_back(t);
+        }
       }
     } else if (op == GEQ) {
       std::vector<TID> geq_results = btree->FindGreaterEq(i);
       for (const TID &tid : geq_results) {
         storage::Tuple *t = store->ReadTuple(tblName, tid);
-        if (t && TupleIsUnused(t))
+        if (t) {
           result.push_back(t);
+        }
       }
     }
     return result;

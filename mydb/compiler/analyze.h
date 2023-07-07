@@ -170,9 +170,7 @@ public:
 
     for (Expr *e : n->Wheres) {
       if ((e != nullptr) && (e->left != nullptr)) {
-        std::cout << e->left->v << std::endl;
         if (e->left->v == schemes[0]->PrimaryKey) {
-          std::cout << "male primary\n";
           e->left->is_primary = true;
         }
       }

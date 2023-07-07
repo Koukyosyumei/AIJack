@@ -89,7 +89,6 @@ DeserializeTuple(const std::array<uint8_t, 128> &buffer) {
 }
 
 inline bool TupleEqual(const storage::Tuple *tuple, int order, int n) {
-  std::cout << "- " << tuple->data().size() << std::endl;
   const storage::TupleData &tupleData = tuple->data()[order];
   if (tupleData.type() == storage::TupleData_Type_INT) {
     return tupleData.number() == n;
