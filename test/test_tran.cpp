@@ -16,7 +16,6 @@ TEST(TransactionManagerTest, TxidAtomicity) {
   for (int i = 0; i < 10000; i++) {
     threads.emplace_back([&]() {
       uint64_t id = manager.newTxid();
-
       {
         std::lock_guard<std::mutex> lock(mtx);
         if (exists[id]) {

@@ -54,6 +54,7 @@ inline bool TupleLess(const storage::Tuple *t1, int item) {
 
 inline std::array<uint8_t, 128> SerializeTuple(const storage::Tuple *t) {
   std::array<uint8_t, 128> buffer;
+  buffer.fill(0);
 
   if (t != nullptr) {
     std::string serializedData;
@@ -64,7 +65,8 @@ inline std::array<uint8_t, 128> SerializeTuple(const storage::Tuple *t) {
         std::cerr << "runtime_error: " << e.what() << std::endl;
       }
     }
-    std::memcpy(buffer.data(), serializedData.c_str(), serializedData.size());
+    std::memcpy(buffer.data(), serializedData.c_str(),
+                strlen(serializedData.c_str()));
   }
   return buffer;
 }
@@ -75,7 +77,7 @@ DeserializeTuple(const std::array<uint8_t, 128> &buffer) {
 
   std::string serializedData(reinterpret_cast<const char *>(buffer.data()),
                              buffer.size());
-  if (!t->ParseFromString(serializedData)) {
+  if (!t->ParseFromString(serializedData.c_str())) {
     try {
       throw std::runtime_error("Failed to deserialize storage::Tuple");
     } catch (std::runtime_error e) {
