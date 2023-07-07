@@ -44,6 +44,27 @@ TEST(BTreeTest, SplitParent) {
   ASSERT_EQ(btree.bpmap.root->children[1]->vs[0], 2);
 }
 
+TEST(BTreeTest, GreaterEq) {
+  BTree<int> btree;
+
+  btree.Insert(11);
+  btree.Insert(2);
+  btree.Insert(32);
+  btree.Insert(1);
+  btree.Insert(5);
+  btree.Insert(3);
+  btree.Insert(4);
+  btree.Insert(8);
+  btree.Insert(10);
+
+  std::vector<int> gt = {5, 8, 10, 11, 32};
+  std::vector<int> result = btree.FindGreaterEq(5);
+  ASSERT_EQ(result.size(), gt.size());
+  for (int i = 0; i < gt.size(); i++) {
+    ASSERT_EQ(result[i], gt[i]);
+  }
+}
+
 /*
 TEST(BTreeTest, Random) {
   BPlusTreeMap<int, int> bpmap;

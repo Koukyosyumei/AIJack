@@ -407,6 +407,43 @@ template <typename K, typename V> struct BPlusTreeMap {
     return res;
   }
 
+  std::vector<V> FindGreaterEq(K key) {
+    if (root == nullptr) {
+      std::vector<V> res;
+      return res;
+    }
+
+    BPlusNode *t = root;
+    while (!t->is_bottom) {
+      int i;
+      for (i = 0; i < t->ks.size(); i++) {
+        if (key < t->ks[i]) {
+          break;
+        } else if (key == t->ks[i]) {
+          i++;
+          break;
+        }
+      }
+      t = t->children[i];
+    }
+    BPlusNode *u = t;
+
+    std::vector<V> result;
+    for (int i = 0; i < u->ks.size(); i++) {
+      if (key <= u->ks[i]) {
+        result.push_back(u->vs[i]);
+      }
+    }
+    u = u->next;
+    while (u != nullptr) {
+      for (V v : u->vs) {
+        result.push_back(v);
+      }
+      u = u->next;
+    }
+    return result;
+  }
+
   std::vector<K> GetKeys() {
     if (root == nullptr) {
       return {};
@@ -451,6 +488,7 @@ template <typename V> struct BTree {
   BTree() {}
   void Insert(V val) { bpmap.Insert(val, val); }
   std::pair<bool, V> Find(V key) { return bpmap.Find(key); }
+  std::vector<V> FindGreaterEq(V key) { return bpmap.FindGreaterEq(key); }
   int Len() { return bpmap.GetKeys().size(); }
 
   void SerializeToString(std::string &buffer) {
