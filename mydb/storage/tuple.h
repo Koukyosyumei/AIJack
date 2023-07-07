@@ -1,4 +1,4 @@
-#pragma once
+#pragma once : w
 #include <array>
 #include <cstring>
 #include <iostream>
@@ -11,6 +11,8 @@
 #include "../utils/bptree.h"
 #include "data.pb.h"
 #include "tran.h"
+
+const int TupleSize = 128;
 
 struct Item {
   ColType coltype;
@@ -52,8 +54,8 @@ inline bool TupleLess(const storage::Tuple *t1, int item) {
   return left < item;
 }
 
-inline std::array<uint8_t, 128> SerializeTuple(const storage::Tuple *t) {
-  std::array<uint8_t, 128> buffer;
+inline std::array<uint8_t, TupleSize> SerializeTuple(const storage::Tuple *t) {
+  std::array<uint8_t, TupleSize> buffer;
   buffer.fill(0);
 
   if (t != nullptr) {
@@ -72,7 +74,7 @@ inline std::array<uint8_t, 128> SerializeTuple(const storage::Tuple *t) {
 }
 
 inline storage::Tuple *
-DeserializeTuple(const std::array<uint8_t, 128> &buffer) {
+DeserializeTuple(const std::array<uint8_t, TupleSize> &buffer) {
   storage::Tuple *t = new storage::Tuple();
 
   std::string serializedData(reinterpret_cast<const char *>(buffer.data()),

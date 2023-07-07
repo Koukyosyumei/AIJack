@@ -6,7 +6,6 @@
 
 const int TupleNumber = 32;
 const int PageSize = 4096;
-const int TupleSize = 128;
 
 typedef std::pair<int, int> TID;
 

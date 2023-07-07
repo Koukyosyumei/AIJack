@@ -489,22 +489,3 @@ template <typename K, typename V> struct BPlusTreeMap {
 
   BPlusNode *root = nullptr;
 };
-
-/*
-template <typename V> struct BTree {
-  BPlusTreeMap<V, V> bpmap;
-  BTree() {}
-  void Insert(V val) { bpmap.Insert(val, val); }
-  std::pair<bool, V> Find(V key) { return bpmap.Find(key); }
-  std::vector<V> FindGreaterEq(V key) { return bpmap.FindGreaterEq(key); }
-  int Len() { return bpmap.GetKeys().size(); }
-
-  void SerializeToString(std::string &buffer) {
-    buffer = nlohmann::to_string(bpmap.Serialize());
-  }
-  void ParseFromString(std::string buffer) {
-    json j = json::parse(buffer);
-    bpmap.Deserialize(j);
-  }
-  // BPlusNode *GetTop() { return bpmap.root; }
-};*/
