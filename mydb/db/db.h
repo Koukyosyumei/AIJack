@@ -79,13 +79,19 @@ public:
 
     Analyzer analyzer(catalog);
     Query *analyzedQuery = analyzer.AnalyzeMain(node);
-
+    if (analyzedQuery == nullptr) {
+      std::cerr << "Failed to analyze query\n";
+      return;
+    }
     Planner planner(analyzedQuery);
     Plan *plan = planner.planMain();
+    if (plan == nullptr) {
+      std::cerr << "Failed to plan\n";
+      return;
+    }
 
     Executor executor(storage, catalog, tranManager);
     ResultSet *resultSet = executor.executeMain(analyzedQuery, plan, trn);
-
     result = StringifyResultSet(resultSet);
   }
 

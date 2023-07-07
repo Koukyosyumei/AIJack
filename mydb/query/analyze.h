@@ -150,7 +150,6 @@ public:
     for (auto colName : n->ColNames) {
       bool found = false;
       for (auto scheme : schemes) {
-        std::cout << "-- " << scheme->ColNames.size() << std::endl;
         for (auto col : scheme->ColNames) {
           if (col == colName) {
             found = true;
@@ -158,7 +157,6 @@ public:
           }
         }
       }
-
       if (!found) {
         try {
           throw runtime_error("select failed: column '" + colName +
@@ -276,7 +274,6 @@ public:
 
   Query *AnalyzeMain(Stmt *stmt) {
     if (auto concrete = dynamic_cast<SelectStmt *>(stmt)) {
-      std::cout << 888 << std::endl;
       return analyzeSelect(concrete);
     }
     if (auto concrete = dynamic_cast<CreateTableStmt *>(stmt)) {

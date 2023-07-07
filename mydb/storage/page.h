@@ -40,7 +40,6 @@ inline Page *DeserializePage(const std::array<char, PageSize> &buffer) {
   for (int i = 0; i < TupleNumber; i++) {
     std::array<uint8_t, TupleSize> tupleBytes;
     std::memcpy(tupleBytes.data(), buffer.data() + i * TupleSize, TupleSize);
-
     storage::Tuple *t = DeserializeTuple(tupleBytes);
     p->Tuples[i] = *t;
   }

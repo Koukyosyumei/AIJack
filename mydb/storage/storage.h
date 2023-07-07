@@ -76,6 +76,7 @@ public:
     Page *pg = readPage(tableName, pgid);
 
     if (pg == nullptr) {
+      std::cerr << "Failed to read page\n";
       return nullptr;
     }
 

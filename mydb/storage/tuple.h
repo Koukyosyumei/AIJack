@@ -58,7 +58,11 @@ inline std::array<uint8_t, 128> SerializeTuple(const storage::Tuple *t) {
   if (t != nullptr) {
     std::string serializedData;
     if (!t->SerializeToString(&serializedData)) {
-      throw std::runtime_error("Failed to serialize storage::Tuple");
+      try {
+        throw std::runtime_error("Failed to serialize storage::Tuple");
+      } catch (std::runtime_error e) {
+        std::cerr << "runtime_error: " << e.what() << std::endl;
+      }
     }
     std::memcpy(buffer.data(), serializedData.c_str(), serializedData.size());
   }
@@ -72,7 +76,11 @@ DeserializeTuple(const std::array<uint8_t, 128> &buffer) {
   std::string serializedData(reinterpret_cast<const char *>(buffer.data()),
                              buffer.size());
   if (!t->ParseFromString(serializedData)) {
-    throw std::runtime_error("Failed to deserialize storage::Tuple");
+    try {
+      throw std::runtime_error("Failed to deserialize storage::Tuple");
+    } catch (std::runtime_error e) {
+      std::cerr << "runtime_error: " << e.what() << std::endl;
+    }
   }
   return t;
 }
