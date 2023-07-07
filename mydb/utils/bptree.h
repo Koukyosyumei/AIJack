@@ -1,5 +1,5 @@
 #pragma once
-#include "../json/json.hpp"
+#include "../thirdparty/json.hpp"
 #include <exception>
 #include <iostream>
 #include <stdexcept>

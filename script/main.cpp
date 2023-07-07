@@ -13,7 +13,8 @@
 #include "mydb/storage/tuple.h"
 
 void showTitle() {
-  std::string title = "BogoDb : A toy database management system.";
+  std::string title =
+      "MyDB : A simple database implemented from scratch in C++.";
   std::cout << title << std::endl;
 }
 

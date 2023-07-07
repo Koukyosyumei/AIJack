@@ -1,7 +1,7 @@
 #pragma once
+#include "../storage/base.h"
 #include "../utils/bptree.h"
 #include "../utils/lru.h"
-#include "../utils/meta.h"
 #include "page.h"
 #include <cstdint>
 #include <cstring>

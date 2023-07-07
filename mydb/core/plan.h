@@ -1,9 +1,9 @@
 #pragma once
+#include "../compiler/analyze.h"
+#include "../compiler/ast.h"
+#include "../compiler/token.h"
 #include "../storage/storage.h"
 #include "../storage/tuple.h"
-#include "analyze.h"
-#include "ast.h"
-#include "token.h"
 #include <memory>
 #include <string>
 #include <vector>

@@ -1,9 +1,8 @@
 #pragma once
+#include "../thirdparty/httplib.h"
+#include "db.h"
 #include <cstring>
 #include <iostream>
-// #include <log>
-#include "db.h"
-#include "httplib.h"
 #include <string>
 #include <unistd.h>
 #include <unordered_map>

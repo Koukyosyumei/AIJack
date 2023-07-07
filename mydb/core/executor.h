@@ -1,12 +1,12 @@
 #pragma once
-#include "../storage/catalog.h" //
-#include "../storage/storage.h" // Assuming storage.h contains the declaration of the storage classes
+#include "../compiler/analyze.h"
+#include "../compiler/ast.h"
+#include "../storage/base.h"
+#include "../storage/catalog.h"
+#include "../storage/storage.h"
 #include "../storage/tran.h"
 #include "../storage/tuple.h"
 #include "../utils/bptree.h"
-#include "../utils/meta.h" // Assuming meta.h contains the declaration of the meta classes
-#include "analyze.h"
-#include "ast.h" // Assuming expr.h contains the declaration of the Expr, Eq, and Lit classes
 #include "plan.h"
 #include <cstdio>
 #include <iostream>

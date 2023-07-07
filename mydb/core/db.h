@@ -10,12 +10,12 @@
 
 #include "../compiler/analyze.h"
 #include "../compiler/ast.h"
-#include "../compiler/executor.h"
 #include "../compiler/parse.h"
-#include "../compiler/plan.h"
 #include "../compiler/token.h"
+#include "../core/executor.h"
+#include "../core/plan.h"
+#include "../storage/base.h"
 #include "../storage/storage.h"
-#include "../utils/meta.h"
 
 class dbSession {
 public:
