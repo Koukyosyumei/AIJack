@@ -56,7 +56,7 @@ const std::unordered_map<int, std::string> tokenmap = {
     {TABLE, "Table"},     {INSERT, "Insert"}, {INTO, "Into"},
     {VALUES, "Values"},   {UPDATE, "Update"}, {SET, "Set"},
     {BEGIN, "Begin"},     {COMMIT, "Commit"}, {ROLLBACK, "Abort"},
-    {PRIMARY, "Primary"}, {KEY, "Key"}};
+    {PRIMARY, "Primary"}, {KEY, "Key"},       {EQ, "Eq"}};
 
 struct Token {
   TokenKind kind;
@@ -135,10 +135,11 @@ public:
   Tokenizer(const std::string &input) : input(input), pos(0) {}
 
   std::vector<Token *> Tokenize() {
+    std::cout << input << std::endl;
     std::vector<Token *> tokens;
-
     for (pos = 0; pos < input.length();) {
       skipSpace();
+      std::cout << input[pos] << " ";
 
       if (matchKeyword("create")) {
         tokens.push_back(NewToken(CREATE, ""));
@@ -220,6 +221,11 @@ public:
         continue;
       }
 
+      if (matchKeyword("eq")) {
+        tokens.push_back(NewToken(EQ, ""));
+        continue;
+      }
+
       if (isNumber()) {
         std::string num = scanNumber();
         Token *tkn = NewToken(NUMBER, num);
@@ -253,9 +259,6 @@ public:
       case '*':
         tokens.push_back(NewToken(STAR, ""));
         break;
-      case '=':
-        tokens.push_back(NewToken(EQ, ""));
-        break;
       default:
         // error
         break;
@@ -263,7 +266,7 @@ public:
 
       pos++;
     }
-
+    std::cout << std::endl;
     return tokens;
   }
 };

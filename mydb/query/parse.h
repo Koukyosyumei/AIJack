@@ -46,6 +46,10 @@ struct Parser {
   }
 
   bool consume(TokenKind kind) {
+    if (pos < tokens.size()) {
+      std::cout << pos << " " << TokenKindToString(tokens[pos]->kind)
+                << std::endl;
+    }
     if (pos < tokens.size() && tokens[pos]->kind == kind) {
       pos++;
       return true;
@@ -69,7 +73,7 @@ struct Parser {
     if (consume(NUMBER) || consume(STRING)) {
       return new Expr(token->str);
     }
-
+    std::cerr << "Expression Failed" << std::endl;
     errors.push_back("Expression failed");
     return nullptr;
   }
@@ -87,7 +91,6 @@ struct Parser {
 
   SelectStmt *selectStmt() {
     Token *tkn = expectOr({STAR, STRING});
-
     SelectStmt *selectNode = new SelectStmt();
     selectNode->ColNames.push_back(tkn->str);
 

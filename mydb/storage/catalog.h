@@ -48,7 +48,6 @@ inline Catalog *LoadCatalog(const std::string &catalogPath) {
   json root;
   file >> root;
   file.close();
-  std::cout << root << std::endl;
   Catalog *catalog = new Catalog();
   for (const auto &schemeJson : root["Schemes"]) {
     Scheme *scheme = new Scheme();
