@@ -8,13 +8,17 @@ const int TupleNumber = 32;
 const int PageSize = 4096;
 const int TupleSize = 128;
 
+typedef std::pair<int, int> TID;
+
 class Page {
 public:
   std::array<storage::Tuple, TupleNumber> Tuples;
+  int front;
 };
 
 inline Page *NewPage() {
   Page *page = new Page();
+  page->front = 0;
   return page;
 }
 
@@ -36,7 +40,7 @@ inline std::array<char, PageSize> SerializePage(const Page *p) {
 
 inline Page *DeserializePage(const std::array<char, PageSize> &buffer) {
   Page *p = new Page();
-
+  bool front_set = false;
   for (int i = 0; i < TupleNumber; i++) {
     std::array<uint8_t, TupleSize> tupleBytes;
     std::memcpy(tupleBytes.data(), buffer.data() + i * TupleSize, TupleSize);
@@ -45,6 +49,10 @@ inline Page *DeserializePage(const std::array<char, PageSize> &buffer) {
       std::cerr << "Failed to deserialize tuple (offset=" << i << ")\n";
     } else {
       p->Tuples[i] = *t;
+    }
+    if (!front_set && TupleIsUnused(t)) {
+      p->front = i;
+      front_set = true;
     }
   }
 

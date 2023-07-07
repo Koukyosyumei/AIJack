@@ -34,45 +34,51 @@ public:
     }
   }
 
-  void InsertTuple(const std::string &tablename, storage::Tuple *t) {
-    while (!buffer->appendTuple(tablename, t)) {
+  TID InsertTuple(const std::string &tablename, storage::Tuple *t) {
+    while (true) {
       // if not exist in buffer, put a page to lru-cache
+      std::pair<bool, TID> append_result = buffer->appendTuple(tablename, t);
+      if (append_result.first) {
+        return append_result.second;
+      }
       insertPage(tablename);
     }
   }
 
-  BTree<int> *CreateIndex(const std::string &indexName) {
-    BTree<int> *btree = new BTree<int>();
-    buffer->btree[indexName] = btree;
+  BPlusTreeMap<int, TID> *CreateIndex(const std::string &indexName) {
+    BPlusTreeMap<int, TID> *btree = new BPlusTreeMap<int, TID>();
+    buffer->btree_map.insert({indexName, btree});
     return btree;
   }
 
-  void InsertIndex(const std::string &indexName, int item) {
-    BTree<int> *btree = ReadIndex(indexName);
+  void InsertIndex(const std::string &indexName, int item, TID &tid) {
+    BPlusTreeMap<int, TID> *btree = ReadIndex(indexName);
 
     if (btree != nullptr) {
-      btree->Insert(item);
+      btree->Insert(item, tid);
     }
   }
 
-  BTree<int> *ReadIndex(const std::string &indexName) {
-    std::pair<bool, BTree<int> *> res = buffer->readIndex(indexName);
+  BPlusTreeMap<int, TID> *ReadIndex(const std::string &indexName) {
+    std::pair<bool, BPlusTreeMap<int, TID> *> res =
+        buffer->readIndex(indexName);
     if (res.first) {
       return res.second;
     }
 
-    std::cout << "readindex from disk\n";
-    BTree<int> *btree = disk->readIndex(prefix + "/" + indexName);
+    BPlusTreeMap<int, TID> *btree = disk->readIndex(prefix + "/" + indexName);
 
     if (btree == nullptr) {
       btree = CreateIndex(indexName);
+    } else {
+      buffer->btree_map.insert({indexName, btree});
     }
 
     return btree;
   }
 
-  storage::Tuple *ReadTuple(const std::string &tableName, uint64_t tid) {
-    uint64_t pgid = buffer->toPgid(tid);
+  storage::Tuple *ReadTuple(const std::string &tableName, uint64_t seqtid) {
+    uint64_t pgid = buffer->toPgid(seqtid);
 
     Page *pg = readPage(tableName, pgid);
 
@@ -81,7 +87,20 @@ public:
       return nullptr;
     }
 
-    return &pg->Tuples[tid % TupleNumber];
+    return &pg->Tuples[seqtid % TupleNumber];
+  }
+
+  storage::Tuple *ReadTuple(const std::string &tableName, TID tid) {
+    uint64_t pgid = tid.first;
+
+    Page *pg = readPage(tableName, pgid);
+
+    if (pg == nullptr) {
+      std::cerr << "Failed to read page (id=" << pgid << ")\n";
+      return nullptr;
+    }
+
+    return &pg->Tuples[tid.second];
   }
 
   void Terminate() {
@@ -93,9 +112,9 @@ public:
       }
     }
 
-    for (const auto &entry : buffer->btree) {
+    for (const auto &entry : buffer->btree_map) {
       const std::string &key = entry.first;
-      BTree<int> *val = entry.second;
+      BPlusTreeMap<int, TID> *val = entry.second;
       disk->writeIndex(prefix, key, val);
     }
   }

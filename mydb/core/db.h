@@ -79,6 +79,10 @@ public:
 
     Analyzer analyzer(catalog);
     Query *analyzedQuery = analyzer.AnalyzeMain(node);
+    if (analyzedQuery == nullptr) {
+      result = "Failed to analyze the query\n";
+      return;
+    }
 
     Planner planner(analyzedQuery);
     Plan *plan = planner.planMain();

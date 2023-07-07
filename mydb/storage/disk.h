@@ -87,7 +87,7 @@ public:
     }
   }
 
-  BTree<int> *readIndex(const std::string &indexName) {
+  BPlusTreeMap<int, TID> *readIndex(const std::string &indexName) {
     std::ifstream file(indexName, std::ios::binary);
     if (!file) {
       try {
@@ -101,16 +101,14 @@ public:
     buffer << file.rdbuf();
     std::string data = buffer.str();
 
-    std::cout << 222 << std::endl;
-    BTree<int> *btree = new BTree<int>;
+    BPlusTreeMap<int, TID> *btree = new BPlusTreeMap<int, TID>;
     btree->ParseFromString(data);
-    std::cout << 211 << std::endl;
 
     return btree;
   }
 
   void writeIndex(const std::string &dirPath, const std::string &indexName,
-                  BTree<int> *tree) {
+                  BPlusTreeMap<int, TID> *tree) {
     std::string savePath = dirPath + "/" + indexName;
 
     std::ofstream file(savePath, std::ios::binary);

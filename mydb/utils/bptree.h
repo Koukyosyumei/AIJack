@@ -477,12 +477,20 @@ template <typename K, typename V> struct BPlusTreeMap {
     return node;
   }
 
-  json Serialize() { return root->tojson(); }
-  void Deserialize(json &j) { root = fromjson(j); }
+  int Len() { return GetKeys().size(); }
+
+  void SerializeToString(std::string &buffer) {
+    buffer = nlohmann::to_string(root->tojson());
+  }
+  void ParseFromString(std::string &buffer) {
+    json j = json::parse(buffer);
+    root = fromjson(j);
+  }
 
   BPlusNode *root = nullptr;
 };
 
+/*
 template <typename V> struct BTree {
   BPlusTreeMap<V, V> bpmap;
   BTree() {}
@@ -499,4 +507,4 @@ template <typename V> struct BTree {
     bpmap.Deserialize(j);
   }
   // BPlusNode *GetTop() { return bpmap.root; }
-};
+};*/

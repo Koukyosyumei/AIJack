@@ -39,7 +39,7 @@ public:
 
   ~BufferPool() {
     delete lru;
-    for (const auto &entry : btree) {
+    for (const auto &entry : btree_map) {
       delete entry.second;
     }
   }
@@ -64,29 +64,28 @@ public:
     return pd->page;
   }
 
-  bool appendTuple(const std::string &tableName, storage::Tuple *t) {
+  std::pair<bool, std::pair<int, int>> appendTuple(const std::string &tableName,
+                                                   storage::Tuple *t) {
     // TODO: Implement appendTuple logic
     // uint64_t latestTid = 0;
     // uint64_t pgid = toPgid(latestTid);
-
-    BufferTag bt(tableName, NewPgid(tableName));
+    int pgid = NewPgid(tableName);
+    BufferTag bt(tableName, pgid);
     uint64_t hash = bt.hash();
     PageDescriptor *pd = lru->Get(hash);
 
     if (pd == nullptr) {
-      return false;
+      return {false, {-1, -1}};
+    }
+
+    if (pd->page->front >= TupleNumber) {
+      return {false, {-1, -1}};
     }
 
     pd->dirty = true;
-
-    for (int i = 0; i < TupleNumber; i++) {
-      if (TupleIsUnused(&pd->page->Tuples[i])) {
-        pd->page->Tuples[i] = *t;
-        break;
-      }
-    }
-
-    return true;
+    pd->page->Tuples[pd->page->front] = *t;
+    pd->page->front++;
+    return {true, {pgid, pd->page->front - 1}};
   }
 
   std::pair<bool, Page *> putPage(const std::string &tableName, uint64_t pgid,
@@ -106,17 +105,17 @@ public:
     return std::make_pair(victimPage->dirty, victimPage->page);
   }
 
-  std::pair<bool, BTree<int> *> readIndex(const std::string &indexName) {
-    auto it = btree.find(indexName);
+  std::pair<bool, BPlusTreeMap<int, TID> *>
+  readIndex(const std::string &indexName) {
+    auto it = btree_map.find(indexName);
 
-    if (it != btree.end()) {
+    if (it != btree_map.end()) {
       return std::make_pair(true, it->second);
     }
 
-    std::cout << "cannot find index in buffer\n";
     return std::make_pair(false, nullptr);
   }
 
   Lru<uint64_t, PageDescriptor *> *lru;
-  std::unordered_map<std::string, BTree<int> *> btree;
+  std::unordered_map<std::string, BPlusTreeMap<int, TID> *> btree_map;
 };

@@ -24,10 +24,6 @@ struct Planner {
   Plan *planSelect(SelectQuery *q);
   Plan *planUpdate(UpdateQuery *q);
   Plan *planMain();
-
-  static std::unique_ptr<Planner> NewPlanner(Query *query) {
-    return std::make_unique<Planner>(query);
-  }
 };
 
 // Plan
@@ -50,6 +46,7 @@ struct SeqScan : public Scanner {
     std::vector<storage::Tuple *> result;
 
     for (uint64_t i = 0;; i++) {
+      std::cout << "s " << i << std::endl;
       storage::Tuple *t = store->ReadTuple(tblName, i);
       if (!t)
         break;
@@ -76,30 +73,23 @@ struct IndexScan : public Scanner {
 
   std::vector<storage::Tuple *> Scan(Storage *store) override {
     std::vector<storage::Tuple *> result;
-    std::cout << 555 << std::endl;
-    BTree<int> *btree = store->ReadIndex(index);
+    BPlusTreeMap<int, TID> *btree = store->ReadIndex(index);
     int i = std::stoi(value);
-    std::cout << 222 << std::endl;
     if (op == EQ) {
-      std::cout << 333 << std::endl;
-      storage::Tuple *item = new storage::Tuple();
-      storage::TupleData *td = item->add_data();
-      td->set_type(storage::TupleData_Type_INT);
-      td->set_number(btree->Find(i).second);
-      if (item)
-        result.push_back(item);
+      std::pair<bool, TID> find_result = btree->Find(i);
+      if (find_result.first) {
+        storage::Tuple *t = store->ReadTuple(tblName, find_result.second);
+        if (t && TupleIsUnused(t))
+          result.push_back(t);
+      }
     } else if (op == GEQ) {
-      std::vector<int> idxs = btree->FindGreaterEq(i);
-      for (int j : idxs) {
-        storage::Tuple *item = new storage::Tuple();
-        storage::TupleData *td = item->add_data();
-        td->set_type(storage::TupleData_Type_INT);
-        td->set_number(j);
-        if (item)
-          result.push_back(item);
+      std::vector<TID> geq_results = btree->FindGreaterEq(i);
+      for (const TID &tid : geq_results) {
+        storage::Tuple *t = store->ReadTuple(tblName, tid);
+        if (t && TupleIsUnused(t))
+          result.push_back(t);
       }
     }
-    std::cout << "- " << result.size() << std::endl;
     return result;
   }
 };
@@ -114,21 +104,17 @@ inline Plan *Planner::planSelect(SelectQuery *q) {
     if (!col)
       continue;
 
-    for (auto &c : q->Cols) {
-      if ((col->v == c->Name) && c->Primary) {
-        std::cout << "pepare indexscanner\n";
-        std::cout << eq->op << std::endl;
-        std::cout << 111 << std::endl;
-        return new Plan{
-            .scanners =
-                new IndexScan(q->From[0]->Name, q->From[0]->Name + "_" + col->v,
-                              eq->right->v, eq->op),
-        };
-      }
+    if (col->is_primary) {
+      std::cout << "/prepare IndexScan\n";
+      return new Plan{
+          .scanners =
+              new IndexScan(q->From[0]->Name, q->From[0]->Name + "_" + col->v,
+                            eq->right->v, eq->op),
+      };
     }
   }
-  std::cout << "prepare seqscan\n";
   // use seqscan
+  std::cout << "/prepare SeqScan\n";
   return new Plan{
       .scanners = new SeqScan(q->From[0]->Name),
   };
@@ -142,12 +128,10 @@ inline Plan *Planner::planUpdate(UpdateQuery *q) {
     Expr *col = eq->left;
     if (!col)
       continue;
-    for (auto &c : q->Cols) {
-      if ((col->v == c->Name) && c->Primary) {
-        return new Plan{
-            .scanners = new IndexScan(q->table->Name, col->v, "", eq->op),
-        };
-      }
+    if (col->is_primary) {
+      return new Plan{
+          .scanners = new IndexScan(q->table->Name, col->v, "", eq->op),
+      };
     }
   }
 
