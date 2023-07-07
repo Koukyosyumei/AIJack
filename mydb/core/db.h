@@ -8,14 +8,14 @@
 #include <unordered_map>
 #include <vector>
 
-#include "../meta/meta.h"
-#include "../query/analyze.h"
-#include "../query/ast.h"
-#include "../query/executor.h"
-#include "../query/parse.h"
-#include "../query/plan.h"
-#include "../query/token.h"
+#include "../compiler/analyze.h"
+#include "../compiler/ast.h"
+#include "../compiler/executor.h"
+#include "../compiler/parse.h"
+#include "../compiler/plan.h"
+#include "../compiler/token.h"
 #include "../storage/storage.h"
+#include "../utils/meta.h"
 
 class dbSession {
 public:

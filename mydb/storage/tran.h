@@ -1,6 +1,5 @@
 #pragma once
 #include <atomic>
-#include <mutex>
 #include <unordered_map>
 
 enum class TransactionState { Commited = 1, InProgress, Abort };

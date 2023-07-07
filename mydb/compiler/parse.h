@@ -46,10 +46,6 @@ struct Parser {
   }
 
   bool consume(TokenKind kind) {
-    if (pos < tokens.size()) {
-      std::cout << pos << " " << TokenKindToString(tokens[pos]->kind)
-                << std::endl;
-    }
     if (pos < tokens.size() && tokens[pos]->kind == kind) {
       pos++;
       return true;
@@ -62,7 +58,11 @@ struct Parser {
 
     if (consume(EQ)) {
       Expr *right = expr();
-      return new Expr(left, right);
+      return new Expr(EQ, left, right);
+    }
+    if (consume(GEQ)) {
+      Expr *right = expr();
+      return new Expr(GEQ, left, right);
     }
     return left;
   }

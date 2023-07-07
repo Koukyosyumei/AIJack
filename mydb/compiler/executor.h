@@ -1,10 +1,10 @@
 #pragma once
-#include "../meta/bptree.h"
-#include "../meta/meta.h" // Assuming meta.h contains the declaration of the meta classes
 #include "../storage/catalog.h" //
 #include "../storage/storage.h" // Assuming storage.h contains the declaration of the storage classes
 #include "../storage/tran.h"
 #include "../storage/tuple.h"
+#include "../utils/bptree.h"
+#include "../utils/meta.h" // Assuming meta.h contains the declaration of the meta classes
 #include "analyze.h"
 #include "ast.h" // Assuming expr.h contains the declaration of the Expr, Eq, and Lit classes
 #include "plan.h"
@@ -16,9 +16,6 @@
 
 // Forward declarations
 struct Executor;
-struct SeqScan;
-struct IndexScan;
-struct Plan;
 
 // Executor
 struct Executor {

@@ -8,8 +8,8 @@
 #include <unordered_map>
 #include <vector>
 
-#include "mydb/db/db.h"
-#include "mydb/db/http.h"
+#include "mydb/core/db.h"
+#include "mydb/core/http.h"
 #include "mydb/storage/tuple.h"
 
 void showTitle() {

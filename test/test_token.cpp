@@ -1,4 +1,4 @@
-#include "mydb/query/token.h"
+#include "mydb/compiler/token.h"
 #include <gtest/gtest.h>
 
 TEST(TokenizeTest, CreateTableTokenize) {

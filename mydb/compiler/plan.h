@@ -3,6 +3,7 @@
 #include "../storage/tuple.h"
 #include "analyze.h"
 #include "ast.h"
+#include "token.h"
 #include <memory>
 #include <string>
 #include <vector>
@@ -67,23 +68,36 @@ struct IndexScan : public Scanner {
   std::string tblName;
   std::string index;
   std::string value;
+  TokenKind op;
 
   IndexScan(const std::string &tableName, const std::string &idx,
-            const std::string &val)
-      : tblName(tableName), index(idx), value(val) {}
+            const std::string &val, TokenKind op)
+      : tblName(tableName), index(idx), value(val), op(op) {}
 
   std::vector<storage::Tuple *> Scan(Storage *store) override {
     std::vector<storage::Tuple *> result;
     BTree<int> *btree = store->ReadIndex(index);
 
     int i = std::stoi(value);
-    storage::Tuple *item = new storage::Tuple();
-    storage::TupleData *td = item->add_data();
-    td->set_type(storage::TupleData_Type_INT);
-    td->set_number(btree->Find(i).second);
+    if (op == EQ) {
+      storage::Tuple *item = new storage::Tuple();
+      storage::TupleData *td = item->add_data();
+      td->set_type(storage::TupleData_Type_INT);
+      td->set_number(btree->Find(i).second);
+      if (item)
+        result.push_back(item);
+    } else if (op == GEQ) {
+      std::vector<int> idxs = btree->FindGreaterEq(i);
+      for (int j : idxs) {
+        storage::Tuple *item = new storage::Tuple();
+        storage::TupleData *td = item->add_data();
+        td->set_type(storage::TupleData_Type_INT);
+        td->set_number(j);
+        if (item)
+          result.push_back(item);
+      }
+    }
 
-    if (item)
-      result.push_back(item);
     return result;
   }
 };
@@ -103,7 +117,7 @@ inline Plan *Planner::planSelect(SelectQuery *q) {
         return new Plan{
             .scanners =
                 new IndexScan(q->From[0]->Name, q->From[0]->Name + "_" + col->v,
-                              eq->right->v),
+                              eq->right->v, eq->op),
         };
       }
     }
@@ -126,7 +140,7 @@ inline Plan *Planner::planUpdate(UpdateQuery *q) {
     for (auto &c : q->Cols) {
       if (col->v == c->Name && c->Primary) {
         return new Plan{
-            .scanners = new IndexScan(q->table->Name, col->v, ""),
+            .scanners = new IndexScan(q->table->Name, col->v, "", eq->op),
         };
       }
     }

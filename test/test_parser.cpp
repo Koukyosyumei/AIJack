@@ -1,4 +1,4 @@
-#include "mydb/query/parse.h"
+#include "mydb/compiler/parse.h"
 #include <gtest/gtest.h>
 #include <vector>
 

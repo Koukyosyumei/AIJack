@@ -5,7 +5,7 @@
 #include <stdexcept>
 #include <vector>
 
-#include "mydb/meta/bptree.h"
+#include "mydb/utils/bptree.h"
 
 TEST(BTreeTest, NoSplit) {
   BTree<int> btree;

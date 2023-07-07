@@ -1,4 +1,5 @@
 #pragma once
+#include "token.h"
 #include <string>
 #include <vector>
 
@@ -63,10 +64,13 @@ struct Expr {
   Expr *left;
   Expr *right;
   std::string v;
+  TokenKind op;
 
   Expr(){};
   Expr(std::string v) : v(v) {}
   Expr(Expr *left, Expr *right) : left(left), right(right) {}
+  Expr(TokenKind op, Expr *left, Expr *right)
+      : op(op), left(left), right(right) {}
   bool IsLit() { return (left == nullptr) && (right == nullptr); }
   // virtual void exprNode() = 0;
 };

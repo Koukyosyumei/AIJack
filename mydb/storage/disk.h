@@ -6,7 +6,7 @@
 #include <sys/stat.h>
 #include <vector>
 
-#include "../meta/bptree.h"
+#include "../utils/bptree.h"
 #include "data.pb.h"
 #include "page.h"
 
