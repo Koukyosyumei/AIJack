@@ -80,6 +80,7 @@ DeserializeTuple(const std::array<uint8_t, 128> &buffer) {
       throw std::runtime_error("Failed to deserialize storage::Tuple");
     } catch (std::runtime_error e) {
       std::cerr << "runtime_error: " << e.what() << std::endl;
+      return nullptr;
     }
   }
   return t;
