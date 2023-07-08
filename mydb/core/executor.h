@@ -39,7 +39,7 @@ struct Executor {
   std::vector<std::pair<storage::Tuple *, storage::Tuple *>>
   join(std::vector<storage::Tuple *> &left_tuples,
        const std::string &left_table_name, const std::string &rigt_table_name,
-       const std::vector<std::pair<std::string, std::string>> joinkeys);
+       const std::pair<std::string, std::string> joinkeys);
   ResultSet *selectTable(SelectQuery *q, Plan *p, Transaction *tran);
   ResultSet *insertTable(InsertQuery *q, Transaction *tran);
   void updateTable(UpdateQuery *q, Plan *p, Transaction *tran);
@@ -51,28 +51,27 @@ struct Executor {
 };
 
 inline std::vector<std::pair<storage::Tuple *, storage::Tuple *>>
-Executor::join(
-    std::vector<storage::Tuple *> &left_tuples,
-    const std::string &left_table_name, const std::string &right_table_name,
-    const std::vector<std::pair<std::string, std::string>> joinkeys) {
+Executor::join(std::vector<storage::Tuple *> &left_tuples,
+               const std::string &left_table_name,
+               const std::string &right_table_name,
+               const std::pair<std::string, std::string> joinkey) {
   std::vector<std::pair<storage::Tuple *, storage::Tuple *>> joined;
   Scheme *s_left = catalog->FetchScheme(left_table_name);
   Scheme *s_right = catalog->FetchScheme(right_table_name);
 
-  for (const std::pair<std::string, std::string> &ks : joinkeys) {
-    std::string left_index = ks.first;
-    std::string right_index = ks.second;
-    int left_colid = s_left->get_ColID(left_index);
-    BPlusTreeMap<int, TID> *right_btree = storage->ReadIndex(right_index);
-    for (auto &lt : left_tuples) {
-      std::pair<bool, TID> find_result =
-          right_btree->Find(lt->data(left_colid).number());
-      if (find_result.first) {
-        storage::Tuple *rt =
-            storage->ReadTuple(right_table_name, find_result.second);
-        if (rt) {
-          joined.emplace_back(std::make_pair(lt, rt));
-        }
+  std::string left_index = joinkey.first;
+  std::string right_index = joinkey.second;
+  int left_colid = s_left->get_ColID(left_index);
+  BPlusTreeMap<int, TID> *right_btree =
+      storage->ReadIndex(right_table_name + "_" + right_index);
+  for (auto &lt : left_tuples) {
+    std::pair<bool, TID> find_result =
+        right_btree->Find(lt->data(left_colid).number());
+    if (find_result.first) {
+      storage::Tuple *rt =
+          storage->ReadTuple(right_table_name, find_result.second);
+      if (rt) {
+        joined.emplace_back(std::make_pair(lt, rt));
       }
     }
   }
@@ -135,6 +134,40 @@ extract_values(std::vector<storage::Tuple *> &tuples, Transaction *tran,
   return values;
 }
 
+inline std::vector<std::string> extract_values(
+    std::vector<std::pair<storage::Tuple *, storage::Tuple *>> &tuples,
+    Transaction *tran, Scheme *scheme_left, Scheme *scheme_right,
+    std::vector<std::string> &colNames) {
+  std::vector<std::string> values;
+  int num_tuples = tuples.size();
+
+  for (int i = 0; i < num_tuples; i++) {
+    storage::Tuple *t_left = tuples[i].first;
+    storage::Tuple *t_right = tuples[i].second;
+    if (!tran || (TupleCanSee(t_left, tran) && TupleCanSee(t_right, tran))) {
+      for (std::string &cname : colNames) {
+        std::string s;
+        storage::TupleData td;
+        if (scheme_left->has_ColID(cname)) {
+          td = t_left->data(scheme_left->get_ColID(cname));
+        } else if (scheme_right->has_ColID(cname)) {
+          td = t_right->data(scheme_right->get_ColID(cname));
+        } else {
+          continue;
+        }
+
+        if (td.type() == storage::TupleData_Type_INT) {
+          s = std::to_string(td.number());
+        } else if (td.type() == storage::TupleData_Type_STRING) {
+          s = td.string();
+        }
+        values.emplace_back(s);
+      }
+    }
+  }
+  return values;
+}
+
 inline ResultSet *Executor::selectTable(SelectQuery *q, Plan *p,
                                         Transaction *tran) {
 
@@ -153,15 +186,11 @@ inline ResultSet *Executor::selectTable(SelectQuery *q, Plan *p,
 
   std::vector<std::string> values;
   if (!q->Join.empty()) {
-    if (q->From.size() < 2) {
-      try {
-        throw std::runtime_error("Join requires two tables");
-      } catch (std::runtime_error e) {
-        std::cerr << "runtime_error: " << e.what() << std::endl;
-      }
-    }
     std::vector<std::pair<storage::Tuple *, storage::Tuple *>> joined_tuples =
-        join(tuples, q->From[0]->Name, q->From[1]->Name, q->Join);
+        join(tuples, q->From[0]->Name, q->Join[0].first, q->Join[0].second);
+    Scheme *scheme_right = catalog->FetchScheme(q->Join[0].first);
+    values =
+        extract_values(joined_tuples, tran, scheme, scheme_right, colNames);
   } else {
     values = extract_values(tuples, tran, scheme, colNames);
   }

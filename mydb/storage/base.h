@@ -23,7 +23,17 @@ struct Scheme {
   std::unordered_map<std::string, int> ColNamesMap;
   bool ColNamesMap_not_initialized = false;
 
-  int get_ColID(std::string colname) {
+  bool has_ColID(std::string &colname) {
+    if (!ColNamesMap_not_initialized) {
+      for (int i = 0; i < ColNames.size(); i++) {
+        ColNamesMap.insert({ColNames[i], i});
+      }
+      ColNamesMap_not_initialized = true;
+    }
+    return ColNamesMap.find(colname) != ColNamesMap.end();
+  }
+
+  int get_ColID(std::string &colname) {
     if (!ColNamesMap_not_initialized) {
       for (int i = 0; i < ColNames.size(); i++) {
         ColNamesMap.insert({ColNames[i], i});

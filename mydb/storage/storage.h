@@ -4,6 +4,7 @@
 #include "disk.h"
 #include "page.h"
 #include <iostream>
+#include <stdexcept>
 #include <unordered_map>
 
 class Storage {
@@ -107,6 +108,14 @@ public:
     std::vector<PageDescriptor *> lru = buffer->lru->GetAll();
 
     for (const PageDescriptor *pd : lru) {
+      if (pd == nullptr) {
+        try {
+          throw std::runtime_error("null page descriptor found");
+        } catch (std::runtime_error &e) {
+          std::cerr << "runtime_error: " << e.what() << std::endl;
+          continue;
+        }
+      }
       if (pd->dirty) {
         disk->persist(prefix, pd->tableName, pd->pgid, pd->page);
       }
@@ -115,6 +124,14 @@ public:
     for (const auto &entry : buffer->btree_map) {
       const std::string &key = entry.first;
       BPlusTreeMap<int, TID> *val = entry.second;
+      if (val == nullptr) {
+        try {
+          throw std::runtime_error("null index found in buffer");
+        } catch (std::runtime_error &e) {
+          std::cerr << "runtime_error: " << e.what() << std::endl;
+          continue;
+        }
+      }
       disk->writeIndex(prefix, key, val);
     }
   }

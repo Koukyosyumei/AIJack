@@ -21,7 +21,7 @@ public:
   vector<Column *> Cols;
   vector<Table *> From;
   vector<Expr *> Where;
-  vector<std::pair<std::string, std::string>> Join;
+  std::vector<std::pair<std::string, std::pair<std::string, std::string>>> Join;
 
   void evalQuery() override {}
 };
@@ -146,6 +146,23 @@ public:
         }
       }
       schemes.push_back(scheme);
+    }
+
+    if (!n->Joins.empty()) {
+      for (const std::pair<std::string, std::pair<std::string, std::string>>
+               &j : n->Joins) {
+        Scheme *scheme = catalog->FetchScheme(j.first);
+        if (!scheme) {
+          try {
+            throw runtime_error("select failed: table '" + j.first +
+                                "' doesn't exist");
+          } catch (runtime_error e) {
+            std::cerr << "runtime_error: " << e.what() << std::endl;
+            return nullptr;
+          }
+        }
+        schemes.push_back(scheme);
+      }
     }
 
     vector<Column *> cols;

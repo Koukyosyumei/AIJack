@@ -33,7 +33,8 @@ struct SelectStmt : public Stmt {
   std::vector<std::string> ColNames;
   std::vector<std::string> From;
   std::vector<Expr *> Wheres;
-  std::vector<std::pair<std::string, std::string>> Joins;
+  std::vector<std::pair<std::string, std::pair<std::string, std::string>>>
+      Joins;
 
   void stmtNode() override {}
 };

@@ -1,6 +1,7 @@
 #include "ast.h"
 #include "token.h"
 #include <iostream>
+#include <stdexcept>
 #include <string>
 #include <vector>
 
@@ -91,11 +92,23 @@ struct Parser {
     return tablenames;
   }
 
-  std::vector<std::pair<std::string, std::string>> joinClause() {
-    Token *left = expect(STRING);
+  std::vector<std::pair<std::string, std::pair<std::string, std::string>>>
+  joinClause() {
     Token *right = expect(STRING);
-    return std::vector<std::pair<std::string, std::string>>{
-        std::make_pair(left->str, right->str)};
+    consume(ON);
+    Token *left_idx = expect(STRING);
+    consume(EQ);
+    Token *right_idx = expect(STRING);
+    if (left_idx == nullptr || right_idx == nullptr) {
+      try {
+        throw std::runtime_error("Join key is not found");
+      } catch (std::runtime_error e) {
+        std::cerr << "runtime_error: " << e.what() << std::endl;
+        return {};
+      }
+    }
+    return {std::make_pair(right->str,
+                           std::make_pair(left_idx->str, right_idx->str))};
   }
 
   std::vector<Expr *> whereClause() {
@@ -121,12 +134,12 @@ struct Parser {
       selectNode->From = from;
     }
 
-    if (consume(WHERE)) {
-      selectNode->Wheres = whereClause();
-    }
-
     if (consume(JOIN)) {
       selectNode->Joins = joinClause();
+    }
+
+    if (consume(WHERE)) {
+      selectNode->Wheres = whereClause();
     }
 
     return selectNode;

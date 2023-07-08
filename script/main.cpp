@@ -28,8 +28,7 @@ std::vector<std::string> readFileLines(const std::string &filename) {
 }
 
 void showTitle() {
-  std::string title =
-      "MyDB : A simple database implemented from scratch in C++.";
+  std::string title = "AIValut : A simple database for debugging ML.";
   std::cout << title << std::endl;
 }
 
