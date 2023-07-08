@@ -111,6 +111,9 @@ public:
         q->Values.emplace_back(Item(value));
       } else if (scheme->ColTypes[i] == ColType::Varchar) {
         q->Values.emplace_back(Item(lits[i]));
+      } else if (scheme->ColTypes[i] == ColType::Float) {
+        float value = stof(lits[i]);
+        q->Values.emplace_back(value);
       } else {
         try {
           throw runtime_error("insert failed: unexpected types parsed");
@@ -249,6 +252,9 @@ public:
         q->Set.emplace_back(Item(value));
       } else if (scheme->ColTypes[i] == ColType::Varchar) {
         q->Set.emplace_back(Item(lits[i]));
+      } else if (scheme->ColTypes[i] == ColType::Float) {
+        float value = stof(lits[i]);
+        q->Set.emplace_back(Item(value));
       } else {
         try {
           throw runtime_error("update failed: unexpected types parsed");
@@ -289,9 +295,11 @@ public:
     vector<ColType> types;
     for (auto typ : n->ColTypes) {
       if (typ == "int") {
-        types.push_back(ColType::Int);
+        types.emplace_back(ColType::Int);
+      } else if (typ == "float") {
+        types.emplace_back(ColType::Float);
       } else if (typ == "varchar") {
-        types.push_back(ColType::Varchar);
+        types.emplace_back(ColType::Varchar);
       }
     }
 

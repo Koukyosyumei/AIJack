@@ -4,3 +4,4 @@ Insert Into a Values (2, 10)
 Create Table b {bid Int Primary Key, bscore Int}
 Insert Into b Values (2, 31)
 Insert Into b Values (3, 12)
+Select * From a Join b On wid Eq bid Where wscore Geq 1

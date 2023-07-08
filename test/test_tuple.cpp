@@ -16,5 +16,5 @@ TEST(TupleTest, Serialize) {
   std::array<uint8_t, 128> buf = SerializeTuple(t1);
   storage::Tuple *t2 = DeserializeTuple(buf);
   ASSERT_EQ(t2->mintxid(), 1);
-  ASSERT_EQ(t2->data(0).number(), val);
+  ASSERT_EQ(t2->data(0).toi(), val);
 }

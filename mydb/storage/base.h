@@ -4,7 +4,7 @@
 #include <unordered_map>
 #include <vector>
 
-enum class ColType : uint8_t { Int, Varchar };
+enum class ColType : uint8_t { Int, Varchar, Float };
 
 struct Column {
   std::string Name;
@@ -63,6 +63,9 @@ inline std::string colTypeToString(ColType c) {
   }
   if (c == ColType::Varchar) {
     return "varchar";
+  }
+  if (c == ColType::Float) {
+    return "float";
   }
   return "undefined";
 }

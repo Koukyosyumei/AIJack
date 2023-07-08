@@ -21,9 +21,8 @@ TEST(ParserTest, ParseCreateTable) {
       NewToken(TokenKind::RBRACE)};
 
   Parser parser(tokens);
-  std::vector<std::string> errors;
-  CreateTableStmt *node = dynamic_cast<CreateTableStmt *>(parser.Parse(errors));
-  ASSERT_EQ(errors.size(), 0);
+  CreateTableStmt *node = dynamic_cast<CreateTableStmt *>(parser.Parse());
+  ASSERT_EQ(parser.errors.size(), 0);
   ASSERT_EQ(node->TableName, "users");
   ASSERT_EQ(node->ColNames[0], "id");
   ASSERT_EQ(node->ColTypes[0], "int");
@@ -40,9 +39,8 @@ TEST(ParserTest, ParseSelect) {
                                  NewToken(TokenKind::STRING, "2")};
 
   Parser parser(tokens);
-  std::vector<std::string> errors;
-  SelectStmt *node = dynamic_cast<SelectStmt *>(parser.Parse(errors));
-  ASSERT_EQ(errors.size(), 0);
+  SelectStmt *node = dynamic_cast<SelectStmt *>(parser.Parse());
+  ASSERT_EQ(parser.errors.size(), 0);
   ASSERT_EQ(node->From[0], "users");
   ASSERT_EQ(node->ColNames[0], "id");
 }
@@ -55,6 +53,5 @@ TEST(ParserTest, ParseInsert) {
       NewToken(TokenKind::RPAREN)};
 
   Parser parser(tokens);
-  std::vector<std::string> errors;
-  ASSERT_NO_THROW(parser.Parse(errors));
+  ASSERT_NO_THROW(parser.Parse());
 }

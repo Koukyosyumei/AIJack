@@ -5,11 +5,13 @@ message TupleData{
     enum Type {
         INT = 0;
         STRING = 1;
+        FLOAT = 2;
     }
 
     Type type = 3;
-    int32 number = 4;
-    string string = 5;
+    int32 toi = 4;
+    string tos = 5;
+    float tof = 6;
 }
 
 message Tuple {

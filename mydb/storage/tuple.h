@@ -17,11 +17,13 @@ const int TupleSize = 128;
 struct Item {
   ColType coltype;
   int num_value;
+  float float_value;
   std::string str_value;
 
   Item(int num_value) : num_value(num_value), coltype(ColType::Int) {}
   Item(std::string str_value)
       : str_value(str_value), coltype(ColType::Varchar) {}
+  Item(float float_value) : float_value(float_value), coltype(ColType::Float) {}
 };
 
 inline storage::Tuple *NewTuple(uint64_t minTxId,
@@ -34,24 +36,17 @@ inline storage::Tuple *NewTuple(uint64_t minTxId,
     storage::TupleData *td = t->add_data();
     if (v.coltype == ColType::Int) {
       td->set_type(storage::TupleData_Type_INT);
-      td->set_number(v.num_value);
+      td->set_toi(v.num_value);
     } else if (v.coltype == ColType::Varchar) {
       td->set_type(storage::TupleData_Type_STRING);
-      td->set_string(v.str_value);
+      td->set_tos(v.str_value);
+    } else if (v.coltype == ColType::Float) {
+      td->set_type(storage::TupleData_Type_FLOAT);
+      td->set_tof(v.float_value);
     }
   }
 
   return t;
-}
-
-inline bool TupleLess(const storage::Tuple *t1, int item) {
-  if (t1 == nullptr) {
-    return false;
-  }
-
-  int32_t left = t1->data()[0].number();
-
-  return left < item;
 }
 
 inline std::array<uint8_t, TupleSize> SerializeTuple(const storage::Tuple *t) {
@@ -93,7 +88,15 @@ DeserializeTuple(const std::array<uint8_t, TupleSize> &buffer) {
 inline bool TupleEqual(const storage::Tuple *tuple, int order, int n) {
   const storage::TupleData &tupleData = tuple->data()[order];
   if (tupleData.type() == storage::TupleData_Type_INT) {
-    return tupleData.number() == n;
+    return tupleData.toi() == n;
+  }
+  return false;
+}
+
+inline bool TupleEqual(const storage::Tuple *tuple, int order, float v) {
+  const storage::TupleData &tupleData = tuple->data()[order];
+  if (tupleData.type() == storage::TupleData_Type_FLOAT) {
+    return tupleData.tof() == v;
   }
   return false;
 }
@@ -102,7 +105,7 @@ inline bool TupleEqual(const storage::Tuple *tuple, int order,
                        const std::string &s) {
   const storage::TupleData &tupleData = tuple->data()[order];
   if (tupleData.type() == storage::TupleData_Type_STRING) {
-    return tupleData.string() == s;
+    return tupleData.tos() == s;
   }
   return false;
 }
@@ -110,7 +113,15 @@ inline bool TupleEqual(const storage::Tuple *tuple, int order,
 inline bool TupleGreaterEq(const storage::Tuple *tuple, int order, int n) {
   const storage::TupleData &tupleData = tuple->data()[order];
   if (tupleData.type() == storage::TupleData_Type_INT) {
-    return tupleData.number() >= n;
+    return tupleData.toi() >= n;
+  }
+  return false;
+}
+
+inline bool TupleGreaterEq(const storage::Tuple *tuple, int order, float v) {
+  const storage::TupleData &tupleData = tuple->data()[order];
+  if (tupleData.type() == storage::TupleData_Type_FLOAT) {
+    return tupleData.tof() >= v;
   }
   return false;
 }
@@ -119,7 +130,7 @@ inline bool TupleGreaterEq(const storage::Tuple *tuple, int order,
                            const std::string &s) {
   const storage::TupleData &tupleData = tuple->data()[order];
   if (tupleData.type() == storage::TupleData_Type_STRING) {
-    return tupleData.string() >= s;
+    return tupleData.tos() >= s;
   }
   return false;
 }

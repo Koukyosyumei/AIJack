@@ -72,12 +72,13 @@ namespace storage {
 enum TupleData_Type : int {
   TupleData_Type_INT = 0,
   TupleData_Type_STRING = 1,
+  TupleData_Type_FLOAT = 2,
   TupleData_Type_TupleData_Type_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::min(),
   TupleData_Type_TupleData_Type_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::max()
 };
 bool TupleData_Type_IsValid(int value);
 constexpr TupleData_Type TupleData_Type_Type_MIN = TupleData_Type_INT;
-constexpr TupleData_Type TupleData_Type_Type_MAX = TupleData_Type_STRING;
+constexpr TupleData_Type TupleData_Type_Type_MAX = TupleData_Type_FLOAT;
 constexpr int TupleData_Type_Type_ARRAYSIZE = TupleData_Type_Type_MAX + 1;
 
 const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* TupleData_Type_descriptor();
@@ -211,6 +212,8 @@ class TupleData PROTOBUF_FINAL :
     TupleData_Type_INT;
   static constexpr Type STRING =
     TupleData_Type_STRING;
+  static constexpr Type FLOAT =
+    TupleData_Type_FLOAT;
   static inline bool Type_IsValid(int value) {
     return TupleData_Type_IsValid(value);
   }
@@ -239,33 +242,34 @@ class TupleData PROTOBUF_FINAL :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kStringFieldNumber = 5,
+    kTosFieldNumber = 5,
     kTypeFieldNumber = 3,
-    kNumberFieldNumber = 4,
+    kToiFieldNumber = 4,
+    kTofFieldNumber = 6,
   };
-  // string string = 5;
-  void clear_string();
-  const std::string& string() const;
-  void set_string(const std::string& value);
-  void set_string(std::string&& value);
-  void set_string(const char* value);
-  void set_string(const char* value, size_t size);
-  std::string* mutable_string();
-  std::string* release_string();
-  void set_allocated_string(std::string* string);
+  // string tos = 5;
+  void clear_tos();
+  const std::string& tos() const;
+  void set_tos(const std::string& value);
+  void set_tos(std::string&& value);
+  void set_tos(const char* value);
+  void set_tos(const char* value, size_t size);
+  std::string* mutable_tos();
+  std::string* release_tos();
+  void set_allocated_tos(std::string* tos);
   GOOGLE_PROTOBUF_RUNTIME_DEPRECATED("The unsafe_arena_ accessors for"
   "    string fields are deprecated and will be removed in a"
   "    future release.")
-  std::string* unsafe_arena_release_string();
+  std::string* unsafe_arena_release_tos();
   GOOGLE_PROTOBUF_RUNTIME_DEPRECATED("The unsafe_arena_ accessors for"
   "    string fields are deprecated and will be removed in a"
   "    future release.")
-  void unsafe_arena_set_allocated_string(
-      std::string* string);
+  void unsafe_arena_set_allocated_tos(
+      std::string* tos);
   private:
-  const std::string& _internal_string() const;
-  void _internal_set_string(const std::string& value);
-  std::string* _internal_mutable_string();
+  const std::string& _internal_tos() const;
+  void _internal_set_tos(const std::string& value);
+  std::string* _internal_mutable_tos();
   public:
 
   // .storage.TupleData.Type type = 3;
@@ -277,13 +281,22 @@ class TupleData PROTOBUF_FINAL :
   void _internal_set_type(::storage::TupleData_Type value);
   public:
 
-  // int32 number = 4;
-  void clear_number();
-  ::PROTOBUF_NAMESPACE_ID::int32 number() const;
-  void set_number(::PROTOBUF_NAMESPACE_ID::int32 value);
+  // int32 toi = 4;
+  void clear_toi();
+  ::PROTOBUF_NAMESPACE_ID::int32 toi() const;
+  void set_toi(::PROTOBUF_NAMESPACE_ID::int32 value);
   private:
-  ::PROTOBUF_NAMESPACE_ID::int32 _internal_number() const;
-  void _internal_set_number(::PROTOBUF_NAMESPACE_ID::int32 value);
+  ::PROTOBUF_NAMESPACE_ID::int32 _internal_toi() const;
+  void _internal_set_toi(::PROTOBUF_NAMESPACE_ID::int32 value);
+  public:
+
+  // float tof = 6;
+  void clear_tof();
+  float tof() const;
+  void set_tof(float value);
+  private:
+  float _internal_tof() const;
+  void _internal_set_tof(float value);
   public:
 
   // @@protoc_insertion_point(class_scope:storage.TupleData)
@@ -293,9 +306,10 @@ class TupleData PROTOBUF_FINAL :
   template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
-  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr string_;
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr tos_;
   int type_;
-  ::PROTOBUF_NAMESPACE_ID::int32 number_;
+  ::PROTOBUF_NAMESPACE_ID::int32 toi_;
+  float tof_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_data_2eproto;
 };
@@ -498,105 +512,125 @@ inline void TupleData::set_type(::storage::TupleData_Type value) {
   // @@protoc_insertion_point(field_set:storage.TupleData.type)
 }
 
-// int32 number = 4;
-inline void TupleData::clear_number() {
-  number_ = 0;
+// int32 toi = 4;
+inline void TupleData::clear_toi() {
+  toi_ = 0;
 }
-inline ::PROTOBUF_NAMESPACE_ID::int32 TupleData::_internal_number() const {
-  return number_;
+inline ::PROTOBUF_NAMESPACE_ID::int32 TupleData::_internal_toi() const {
+  return toi_;
 }
-inline ::PROTOBUF_NAMESPACE_ID::int32 TupleData::number() const {
-  // @@protoc_insertion_point(field_get:storage.TupleData.number)
-  return _internal_number();
+inline ::PROTOBUF_NAMESPACE_ID::int32 TupleData::toi() const {
+  // @@protoc_insertion_point(field_get:storage.TupleData.toi)
+  return _internal_toi();
 }
-inline void TupleData::_internal_set_number(::PROTOBUF_NAMESPACE_ID::int32 value) {
+inline void TupleData::_internal_set_toi(::PROTOBUF_NAMESPACE_ID::int32 value) {
   
-  number_ = value;
+  toi_ = value;
 }
-inline void TupleData::set_number(::PROTOBUF_NAMESPACE_ID::int32 value) {
-  _internal_set_number(value);
-  // @@protoc_insertion_point(field_set:storage.TupleData.number)
+inline void TupleData::set_toi(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  _internal_set_toi(value);
+  // @@protoc_insertion_point(field_set:storage.TupleData.toi)
 }
 
-// string string = 5;
-inline void TupleData::clear_string() {
-  string_.ClearToEmpty(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+// string tos = 5;
+inline void TupleData::clear_tos() {
+  tos_.ClearToEmpty(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
 }
-inline const std::string& TupleData::string() const {
-  // @@protoc_insertion_point(field_get:storage.TupleData.string)
-  return _internal_string();
+inline const std::string& TupleData::tos() const {
+  // @@protoc_insertion_point(field_get:storage.TupleData.tos)
+  return _internal_tos();
 }
-inline void TupleData::set_string(const std::string& value) {
-  _internal_set_string(value);
-  // @@protoc_insertion_point(field_set:storage.TupleData.string)
+inline void TupleData::set_tos(const std::string& value) {
+  _internal_set_tos(value);
+  // @@protoc_insertion_point(field_set:storage.TupleData.tos)
 }
-inline std::string* TupleData::mutable_string() {
-  // @@protoc_insertion_point(field_mutable:storage.TupleData.string)
-  return _internal_mutable_string();
+inline std::string* TupleData::mutable_tos() {
+  // @@protoc_insertion_point(field_mutable:storage.TupleData.tos)
+  return _internal_mutable_tos();
 }
-inline const std::string& TupleData::_internal_string() const {
-  return string_.Get();
+inline const std::string& TupleData::_internal_tos() const {
+  return tos_.Get();
 }
-inline void TupleData::_internal_set_string(const std::string& value) {
+inline void TupleData::_internal_set_tos(const std::string& value) {
   
-  string_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), value, GetArena());
+  tos_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), value, GetArena());
 }
-inline void TupleData::set_string(std::string&& value) {
+inline void TupleData::set_tos(std::string&& value) {
   
-  string_.Set(
+  tos_.Set(
     &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::move(value), GetArena());
-  // @@protoc_insertion_point(field_set_rvalue:storage.TupleData.string)
+  // @@protoc_insertion_point(field_set_rvalue:storage.TupleData.tos)
 }
-inline void TupleData::set_string(const char* value) {
+inline void TupleData::set_tos(const char* value) {
   GOOGLE_DCHECK(value != nullptr);
   
-  string_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(value),
+  tos_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(value),
               GetArena());
-  // @@protoc_insertion_point(field_set_char:storage.TupleData.string)
+  // @@protoc_insertion_point(field_set_char:storage.TupleData.tos)
 }
-inline void TupleData::set_string(const char* value,
+inline void TupleData::set_tos(const char* value,
     size_t size) {
   
-  string_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(
+  tos_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(
       reinterpret_cast<const char*>(value), size), GetArena());
-  // @@protoc_insertion_point(field_set_pointer:storage.TupleData.string)
+  // @@protoc_insertion_point(field_set_pointer:storage.TupleData.tos)
 }
-inline std::string* TupleData::_internal_mutable_string() {
+inline std::string* TupleData::_internal_mutable_tos() {
   
-  return string_.Mutable(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+  return tos_.Mutable(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
 }
-inline std::string* TupleData::release_string() {
-  // @@protoc_insertion_point(field_release:storage.TupleData.string)
-  return string_.Release(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+inline std::string* TupleData::release_tos() {
+  // @@protoc_insertion_point(field_release:storage.TupleData.tos)
+  return tos_.Release(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
 }
-inline void TupleData::set_allocated_string(std::string* string) {
-  if (string != nullptr) {
+inline void TupleData::set_allocated_tos(std::string* tos) {
+  if (tos != nullptr) {
     
   } else {
     
   }
-  string_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), string,
+  tos_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), tos,
       GetArena());
-  // @@protoc_insertion_point(field_set_allocated:storage.TupleData.string)
+  // @@protoc_insertion_point(field_set_allocated:storage.TupleData.tos)
 }
-inline std::string* TupleData::unsafe_arena_release_string() {
-  // @@protoc_insertion_point(field_unsafe_arena_release:storage.TupleData.string)
+inline std::string* TupleData::unsafe_arena_release_tos() {
+  // @@protoc_insertion_point(field_unsafe_arena_release:storage.TupleData.tos)
   GOOGLE_DCHECK(GetArena() != nullptr);
   
-  return string_.UnsafeArenaRelease(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
+  return tos_.UnsafeArenaRelease(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
       GetArena());
 }
-inline void TupleData::unsafe_arena_set_allocated_string(
-    std::string* string) {
+inline void TupleData::unsafe_arena_set_allocated_tos(
+    std::string* tos) {
   GOOGLE_DCHECK(GetArena() != nullptr);
-  if (string != nullptr) {
+  if (tos != nullptr) {
     
   } else {
     
   }
-  string_.UnsafeArenaSetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
-      string, GetArena());
-  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:storage.TupleData.string)
+  tos_.UnsafeArenaSetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
+      tos, GetArena());
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:storage.TupleData.tos)
+}
+
+// float tof = 6;
+inline void TupleData::clear_tof() {
+  tof_ = 0;
+}
+inline float TupleData::_internal_tof() const {
+  return tof_;
+}
+inline float TupleData::tof() const {
+  // @@protoc_insertion_point(field_get:storage.TupleData.tof)
+  return _internal_tof();
+}
+inline void TupleData::_internal_set_tof(float value) {
+  
+  tof_ = value;
+}
+inline void TupleData::set_tof(float value) {
+  _internal_set_tof(value);
+  // @@protoc_insertion_point(field_set:storage.TupleData.tof)
 }
 
 // -------------------------------------------------------------------

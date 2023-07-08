@@ -12,20 +12,51 @@ struct Parser {
 
   Parser(std::vector<Token *> &tokens) : tokens(tokens), pos(0) {}
 
+  bool isPosValid(TokenKind kind) {
+    if (tokens.size() <= pos) {
+      errors.emplace_back("Expected " + TokenKindToString(kind) +
+                          ", but the query is broken");
+      return false;
+    }
+    return true;
+  }
+
+  bool isPosValid(std::vector<TokenKind> kinds) {
+    std::string expectedKinds;
+    for (int i = 0; i < kinds.size() - 1; i++) {
+      expectedKinds += TokenKindToString(kinds[i]) + " or ";
+    }
+    expectedKinds += TokenKindToString(kinds[kinds.size() - 1]);
+    if (tokens.size() <= pos) {
+      errors.emplace_back("Expected " + expectedKinds +
+                          ", but the query is broken");
+      return false;
+    }
+    return true;
+  }
+
   Token *expect(TokenKind kind) {
+    if (!isPosValid(kind)) {
+      return nullptr;
+    }
+
     Token *token = tokens[pos];
     if (token->kind == kind) {
       pos++;
       return token;
     }
 
-    errors.push_back("Expected " + TokenKindToString(kind) + ", but found " +
-                     TokenKindToString(token->kind));
-    std::cerr << errors[errors.size() - 1] << std::endl;
+    errors.emplace_back("Expected " + TokenKindToString(kind) + ", but found " +
+                        TokenKindToString(token->kind) +
+                        " at position=" + std::to_string(pos));
     return nullptr;
   }
 
   Token *expectOr(const std::vector<TokenKind> &kinds) {
+    if (!isPosValid(kinds)) {
+      return nullptr;
+    }
+
     Token *token = tokens[pos];
     for (TokenKind kind : kinds) {
       if (token->kind == kind) {
@@ -40,9 +71,9 @@ struct Parser {
     }
     expectedKinds += TokenKindToString(kinds[kinds.size() - 1]);
 
-    errors.push_back("Expected " + expectedKinds + ", but found " +
-                     TokenKindToString(token->kind));
-    std::cerr << errors[errors.size() - 1] << std::endl;
+    errors.emplace_back("Expected " + expectedKinds + ", but found " +
+                        TokenKindToString(token->kind) +
+                        " at position=" + std::to_string(pos));
     return nullptr;
   }
 
@@ -69,13 +100,17 @@ struct Parser {
   }
 
   Expr *expr() {
+    if (!isPosValid({EQ, GEQ})) {
+      return nullptr;
+    }
+
     Token *token = tokens[pos];
 
     if (consume(NUMBER) || consume(STRING)) {
       return new Expr(token->str);
     }
-    std::cerr << "Expression Failed" << std::endl;
-    errors.push_back("Expression failed");
+    errors.emplace_back("Broken Expression at posittion=" +
+                        std::to_string(pos));
     return nullptr;
   }
 
@@ -100,12 +135,8 @@ struct Parser {
     consume(EQ);
     Token *right_idx = expect(STRING);
     if (left_idx == nullptr || right_idx == nullptr) {
-      try {
-        throw std::runtime_error("Join key is not found");
-      } catch (std::runtime_error e) {
-        std::cerr << "runtime_error: " << e.what() << std::endl;
-        return {};
-      }
+      errors.emplace_back("Join key is not found");
+      return {};
     }
     return {std::make_pair(right->str,
                            std::make_pair(left_idx->str, right_idx->str))};
@@ -147,6 +178,9 @@ struct Parser {
 
   UpdateStmt *updateTableStmt() {
     Token *tblName = expect(STRING);
+    if (!tblName) {
+      return nullptr;
+    }
     expect(SET);
 
     std::vector<std::string> cols;
@@ -154,11 +188,17 @@ struct Parser {
 
     while (true) {
       Token *col = expect(STRING);
+      if (!col) {
+        return nullptr;
+      }
       cols.push_back(col->str);
 
       expect(EQ);
 
       Token *set = expectOr({STRING, NUMBER});
+      if (!set) {
+        return nullptr;
+      }
       sets.push_back(&set->str);
 
       if (!consume(COMMA)) {
@@ -183,6 +223,9 @@ struct Parser {
   InsertStmt *insertTableStmt() {
     expect(INTO);
     Token *tblName = expect(STRING);
+    if (!tblName) {
+      return nullptr;
+    }
     expect(VALUES);
     expect(LPAREN);
 
@@ -213,9 +256,18 @@ struct Parser {
 
     while (true) {
       Token *colName = expect(STRING);
-      expect(INT);
       colNames.push_back(colName->str);
-      colTypes.push_back("int");
+      if (consume(INT)) {
+        colTypes.push_back("int");
+      } else if (consume(FLOAT)) {
+        colTypes.push_back("float");
+      } else if (consume(VARCHAR)) {
+        colTypes.push_back("varchar");
+      } else {
+        errors.push_back("supported data type is not specified at position=" +
+                         std::to_string(pos));
+        return nullptr;
+      }
 
       if (consume(PRIMARY)) {
         expect(KEY);
@@ -238,7 +290,7 @@ struct Parser {
     return createNode;
   }
 
-  Stmt *Parse(std::vector<std::string> &parseErrors) {
+  Stmt *Parse() {
     if (consume(CREATE)) {
       return createTableStmt();
     }
@@ -267,7 +319,7 @@ struct Parser {
       return new AbortStmt();
     }
 
-    parseErrors.push_back("Unexpected query");
+    errors.push_back("Unexpected query");
     return nullptr;
   }
 };

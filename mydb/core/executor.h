@@ -66,7 +66,7 @@ Executor::join(std::vector<storage::Tuple *> &left_tuples,
       storage->ReadIndex(right_table_name + "_" + right_index);
   for (auto &lt : left_tuples) {
     std::pair<bool, TID> find_result =
-        right_btree->Find(lt->data(left_colid).number());
+        right_btree->Find(lt->data(left_colid).toi());
     if (find_result.first) {
       storage::Tuple *rt =
           storage->ReadTuple(right_table_name, find_result.second);
@@ -94,12 +94,16 @@ Executor::where(std::vector<storage::Tuple *> &tuples,
       if (w->op == EQ) {
         if (s->ColTypes[colid] == ColType::Int) {
           flag = TupleEqual(t, colid, std::stoi(right));
+        } else if (s->ColTypes[colid] == ColType::Float) {
+          flag = TupleEqual(t, colid, std::stof(right));
         } else if (s->ColTypes[colid] == ColType::Varchar) {
           flag = TupleEqual(t, colid, right);
         }
       } else if (w->op == GEQ) {
         if (s->ColTypes[colid] == ColType::Int) {
           flag = TupleGreaterEq(t, colid, std::stoi(right));
+        } else if (s->ColTypes[colid] == ColType::Float) {
+          flag = TupleGreaterEq(t, colid, std::stof(right));
         } else if (s->ColTypes[colid] == ColType::Varchar) {
           flag = TupleGreaterEq(t, colid, right);
         }
@@ -123,9 +127,11 @@ extract_values(std::vector<storage::Tuple *> &tuples, Transaction *tran,
         const storage::TupleData td = t->data(scheme->get_ColID(cname));
         std::string s;
         if (td.type() == storage::TupleData_Type_INT) {
-          s = std::to_string(td.number());
+          s = std::to_string(td.toi());
+        } else if (td.type() == storage::TupleData_Type_FLOAT) {
+          s = std::to_string(td.tof());
         } else if (td.type() == storage::TupleData_Type_STRING) {
-          s = td.string();
+          s = td.tos();
         }
         values.emplace_back(s);
       }
@@ -157,9 +163,11 @@ inline std::vector<std::string> extract_values(
         }
 
         if (td.type() == storage::TupleData_Type_INT) {
-          s = std::to_string(td.number());
+          s = std::to_string(td.toi());
+        } else if (td.type() == storage::TupleData_Type_FLOAT) {
+          s = std::to_string(td.tof());
         } else if (td.type() == storage::TupleData_Type_STRING) {
-          s = td.string();
+          s = td.tos();
         }
         values.emplace_back(s);
       }
@@ -210,7 +218,7 @@ inline ResultSet *Executor::insertTable(InsertQuery *q, Transaction *tran) {
   }
   storage::Tuple *t = NewTuple(tran->Txid(), q->Values);
   std::pair<int, int> tid = storage->InsertTuple(q->table->Name, t);
-  storage->InsertIndex(q->Index, t->data(0).number(), tid);
+  storage->InsertIndex(q->Index, t->data(0).toi(), tid);
   if (!inTransaction) {
     commitTransaction(tran);
   }

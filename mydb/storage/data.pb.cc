@@ -65,8 +65,9 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_data_2eproto::offsets[] PROTOB
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   PROTOBUF_FIELD_OFFSET(::storage::TupleData, type_),
-  PROTOBUF_FIELD_OFFSET(::storage::TupleData, number_),
-  PROTOBUF_FIELD_OFFSET(::storage::TupleData, string_),
+  PROTOBUF_FIELD_OFFSET(::storage::TupleData, toi_),
+  PROTOBUF_FIELD_OFFSET(::storage::TupleData, tos_),
+  PROTOBUF_FIELD_OFFSET(::storage::TupleData, tof_),
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::storage::Tuple, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -78,7 +79,7 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_data_2eproto::offsets[] PROTOB
 };
 static const ::PROTOBUF_NAMESPACE_ID::internal::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
   { 0, -1, sizeof(::storage::TupleData)},
-  { 8, -1, sizeof(::storage::Tuple)},
+  { 9, -1, sizeof(::storage::Tuple)},
 };
 
 static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] = {
@@ -87,12 +88,12 @@ static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] =
 };
 
 const char descriptor_table_protodef_data_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) =
-  "\n\ndata.proto\022\007storage\"o\n\tTupleData\022%\n\004ty"
-  "pe\030\003 \001(\0162\027.storage.TupleData.Type\022\016\n\006num"
-  "ber\030\004 \001(\005\022\016\n\006string\030\005 \001(\t\"\033\n\004Type\022\007\n\003INT"
-  "\020\000\022\n\n\006STRING\020\001\"K\n\005Tuple\022\017\n\007minTxId\030\001 \001(\004"
-  "\022\017\n\007maxTxId\030\002 \001(\004\022 \n\004data\030\003 \003(\0132\022.storag"
-  "e.TupleDatab\006proto3"
+  "\n\ndata.proto\022\007storage\"\201\001\n\tTupleData\022%\n\004t"
+  "ype\030\003 \001(\0162\027.storage.TupleData.Type\022\013\n\003to"
+  "i\030\004 \001(\005\022\013\n\003tos\030\005 \001(\t\022\013\n\003tof\030\006 \001(\002\"&\n\004Typ"
+  "e\022\007\n\003INT\020\000\022\n\n\006STRING\020\001\022\t\n\005FLOAT\020\002\"K\n\005Tup"
+  "le\022\017\n\007minTxId\030\001 \001(\004\022\017\n\007maxTxId\030\002 \001(\004\022 \n\004"
+  "data\030\003 \003(\0132\022.storage.TupleDatab\006proto3"
   ;
 static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_data_2eproto_deps[1] = {
 };
@@ -102,7 +103,7 @@ static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_dat
 };
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_data_2eproto_once;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_data_2eproto = {
-  false, false, descriptor_table_protodef_data_2eproto, "data.proto", 219,
+  false, false, descriptor_table_protodef_data_2eproto, "data.proto", 238,
   &descriptor_table_data_2eproto_once, descriptor_table_data_2eproto_sccs, descriptor_table_data_2eproto_deps, 2, 0,
   schemas, file_default_instances, TableStruct_data_2eproto::offsets,
   file_level_metadata_data_2eproto, 2, file_level_enum_descriptors_data_2eproto, file_level_service_descriptors_data_2eproto,
@@ -119,6 +120,7 @@ bool TupleData_Type_IsValid(int value) {
   switch (value) {
     case 0:
     case 1:
+    case 2:
       return true;
     default:
       return false;
@@ -128,6 +130,7 @@ bool TupleData_Type_IsValid(int value) {
 #if (__cplusplus < 201703) && (!defined(_MSC_VER) || _MSC_VER >= 1900)
 constexpr TupleData_Type TupleData::INT;
 constexpr TupleData_Type TupleData::STRING;
+constexpr TupleData_Type TupleData::FLOAT;
 constexpr TupleData_Type TupleData::Type_MIN;
 constexpr TupleData_Type TupleData::Type_MAX;
 constexpr int TupleData::Type_ARRAYSIZE;
@@ -150,23 +153,23 @@ TupleData::TupleData(::PROTOBUF_NAMESPACE_ID::Arena* arena)
 TupleData::TupleData(const TupleData& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  string_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
-  if (!from._internal_string().empty()) {
-    string_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from._internal_string(),
+  tos_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  if (!from._internal_tos().empty()) {
+    tos_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from._internal_tos(),
       GetArena());
   }
   ::memcpy(&type_, &from.type_,
-    static_cast<size_t>(reinterpret_cast<char*>(&number_) -
-    reinterpret_cast<char*>(&type_)) + sizeof(number_));
+    static_cast<size_t>(reinterpret_cast<char*>(&tof_) -
+    reinterpret_cast<char*>(&type_)) + sizeof(tof_));
   // @@protoc_insertion_point(copy_constructor:storage.TupleData)
 }
 
 void TupleData::SharedCtor() {
   ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_TupleData_data_2eproto.base);
-  string_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  tos_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   ::memset(&type_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&number_) -
-      reinterpret_cast<char*>(&type_)) + sizeof(number_));
+      reinterpret_cast<char*>(&tof_) -
+      reinterpret_cast<char*>(&type_)) + sizeof(tof_));
 }
 
 TupleData::~TupleData() {
@@ -177,7 +180,7 @@ TupleData::~TupleData() {
 
 void TupleData::SharedDtor() {
   GOOGLE_DCHECK(GetArena() == nullptr);
-  string_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  tos_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 }
 
 void TupleData::ArenaDtor(void* object) {
@@ -201,10 +204,10 @@ void TupleData::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  string_.ClearToEmpty(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+  tos_.ClearToEmpty(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
   ::memset(&type_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&number_) -
-      reinterpret_cast<char*>(&type_)) + sizeof(number_));
+      reinterpret_cast<char*>(&tof_) -
+      reinterpret_cast<char*>(&type_)) + sizeof(tof_));
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
@@ -224,20 +227,27 @@ const char* TupleData::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::
           _internal_set_type(static_cast<::storage::TupleData_Type>(val));
         } else goto handle_unusual;
         continue;
-      // int32 number = 4;
+      // int32 toi = 4;
       case 4:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 32)) {
-          number_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          toi_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
-      // string string = 5;
+      // string tos = 5;
       case 5:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 42)) {
-          auto str = _internal_mutable_string();
+          auto str = _internal_mutable_tos();
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
-          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "storage.TupleData.string"));
+          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "storage.TupleData.tos"));
           CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
+      // float tof = 6;
+      case 6:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 53)) {
+          tof_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
+          ptr += sizeof(float);
         } else goto handle_unusual;
         continue;
       default: {
@@ -275,20 +285,26 @@ failure:
       3, this->_internal_type(), target);
   }
 
-  // int32 number = 4;
-  if (this->number() != 0) {
+  // int32 toi = 4;
+  if (this->toi() != 0) {
     target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt32ToArray(4, this->_internal_number(), target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt32ToArray(4, this->_internal_toi(), target);
   }
 
-  // string string = 5;
-  if (this->string().size() > 0) {
+  // string tos = 5;
+  if (this->tos().size() > 0) {
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
-      this->_internal_string().data(), static_cast<int>(this->_internal_string().length()),
+      this->_internal_tos().data(), static_cast<int>(this->_internal_tos().length()),
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "storage.TupleData.string");
+      "storage.TupleData.tos");
     target = stream->WriteStringMaybeAliased(
-        5, this->_internal_string(), target);
+        5, this->_internal_tos(), target);
+  }
+
+  // float tof = 6;
+  if (!(this->tof() <= 0 && this->tof() >= 0)) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFloatToArray(6, this->_internal_tof(), target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -307,11 +323,11 @@ size_t TupleData::ByteSizeLong() const {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  // string string = 5;
-  if (this->string().size() > 0) {
+  // string tos = 5;
+  if (this->tos().size() > 0) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
-        this->_internal_string());
+        this->_internal_tos());
   }
 
   // .storage.TupleData.Type type = 3;
@@ -320,11 +336,16 @@ size_t TupleData::ByteSizeLong() const {
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::EnumSize(this->_internal_type());
   }
 
-  // int32 number = 4;
-  if (this->number() != 0) {
+  // int32 toi = 4;
+  if (this->toi() != 0) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::Int32Size(
-        this->_internal_number());
+        this->_internal_toi());
+  }
+
+  // float tof = 6;
+  if (!(this->tof() <= 0 && this->tof() >= 0)) {
+    total_size += 1 + 4;
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -358,14 +379,17 @@ void TupleData::MergeFrom(const TupleData& from) {
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (from.string().size() > 0) {
-    _internal_set_string(from._internal_string());
+  if (from.tos().size() > 0) {
+    _internal_set_tos(from._internal_tos());
   }
   if (from.type() != 0) {
     _internal_set_type(from._internal_type());
   }
-  if (from.number() != 0) {
-    _internal_set_number(from._internal_number());
+  if (from.toi() != 0) {
+    _internal_set_toi(from._internal_toi());
+  }
+  if (!(from.tof() <= 0 && from.tof() >= 0)) {
+    _internal_set_tof(from._internal_tof());
   }
 }
 
@@ -390,10 +414,10 @@ bool TupleData::IsInitialized() const {
 void TupleData::InternalSwap(TupleData* other) {
   using std::swap;
   _internal_metadata_.Swap<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(&other->_internal_metadata_);
-  string_.Swap(&other->string_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+  tos_.Swap(&other->tos_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
   ::PROTOBUF_NAMESPACE_ID::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(TupleData, number_)
-      + sizeof(TupleData::number_)
+      PROTOBUF_FIELD_OFFSET(TupleData, tof_)
+      + sizeof(TupleData::tof_)
       - PROTOBUF_FIELD_OFFSET(TupleData, type_)>(
           reinterpret_cast<char*>(&type_),
           reinterpret_cast<char*>(&other->type_));

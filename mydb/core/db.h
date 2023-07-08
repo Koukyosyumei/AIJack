@@ -68,11 +68,11 @@ public:
     std::vector<Token *> tokens = tokenizer.Tokenize();
 
     Parser parser(tokens);
-    std::vector<std::string> errs;
-    Stmt *node = parser.Parse(errs);
-    if (!errs.empty()) {
-      std::cerr << errs[0] << std::endl;
-      error = errs[0];
+    Stmt *node = parser.Parse();
+    if (!parser.errors.empty()) {
+      for (std::string &e : parser.errors) {
+        std::cerr << e << std::endl;
+      }
       return;
     }
 
