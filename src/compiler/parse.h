@@ -119,7 +119,9 @@ struct Parser {
     std::vector<std::string> tablenames;
     while (true) {
       Token *s = expect(STRING);
-      tablenames.emplace_back(s->str);
+      if (s) {
+        tablenames.emplace_back(s->str);
+      }
 
       if (!consume(COMMA)) {
         break;
@@ -135,8 +137,8 @@ struct Parser {
     Token *left_idx = expect(STRING);
     consume(EQ);
     Token *right_idx = expect(STRING);
-    if (left_idx == nullptr || right_idx == nullptr) {
-      errors.emplace_back("Join key is not found");
+    if ((right == nullptr) || (left_idx == nullptr) || (right_idx == nullptr)) {
+      errors.emplace_back("Join clause is broken");
       return {};
     }
     return {std::make_pair(right->str,
@@ -166,6 +168,9 @@ struct Parser {
 
     if (expect(FROM)) {
       std::vector<std::string> from = fromClause();
+      if (from.size() == 0) {
+        return nullptr;
+      }
       selectNode->From = from;
     } else {
       return nullptr;
@@ -180,6 +185,25 @@ struct Parser {
     }
 
     return selectNode;
+  }
+
+  LogregStmt *logregStmt() {
+    LogregStmt *logregNode = new LogregStmt();
+    Token *modelName = expect(STRING);
+    Token *indexName = expect(STRING);
+    Token *targetName = expect(STRING);
+    if ((modelName == nullptr) || (indexName == nullptr) ||
+        (targetName = nullptr)) {
+      return nullptr;
+    }
+    logregNode->model_name = modelName->str;
+    logregNode->index_col = indexName->str;
+    logregNode->target_col = targetName->str;
+    if (!consume(SELECT)) {
+      return nullptr;
+    }
+    logregNode->selectstmt = selectStmt();
+    return logregNode;
   }
 
   UpdateStmt *updateTableStmt() {
@@ -299,6 +323,10 @@ struct Parser {
   Stmt *Parse() {
     if (consume(CREATE)) {
       return createTableStmt();
+    }
+
+    if (consume(LOGREG)) {
+      return logregStmt();
     }
 
     if (consume(SELECT)) {

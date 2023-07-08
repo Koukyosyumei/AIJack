@@ -28,6 +28,8 @@ public:
     return std::make_pair(is_evict, victim);
   }
 
+  bool Has(const K &key) { return items.find(key) != items.end(); }
+
   V Get(const K &key) {
     std::lock_guard<std::mutex> lock(mutex);
 

@@ -21,11 +21,6 @@ inline Page *NewPage() {
   return page;
 }
 
-inline uint64_t NewPgid(const std::string &tableName) {
-  // FIXME: Implement the logic to generate a new Pgid
-  return 0;
-}
-
 inline std::array<char, PageSize> SerializePage(const Page *p) {
   std::array<char, PageSize> buffer;
 

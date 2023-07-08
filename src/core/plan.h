@@ -145,6 +145,8 @@ inline Plan *Planner::planUpdate(UpdateQuery *q) {
 inline Plan *Planner::planMain() {
   if (auto selectQuery = dynamic_cast<SelectQuery *>(q))
     return planSelect(selectQuery);
+  if (auto logregQuery = dynamic_cast<LogregQuery *>(q))
+    return planSelect(logregQuery->selectQuery);
   if (auto updateQuery = dynamic_cast<UpdateQuery *>(q))
     return planUpdate(updateQuery);
 

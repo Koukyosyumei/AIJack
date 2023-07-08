@@ -26,6 +26,16 @@ public:
   void evalQuery() override {}
 };
 
+class LogregQuery : public Query {
+public:
+  std::string model_name;
+  std::string index_col;
+  std::string target_col;
+  SelectQuery *selectQuery;
+
+  void evalQuery() override {}
+};
+
 class CreateTableQuery : public Query {
 public:
   Scheme *scheme;
@@ -224,6 +234,15 @@ public:
     return q;
   }
 
+  Query *analyzeLogreg(LogregStmt *n) {
+    LogregQuery *q = new LogregQuery();
+    q->model_name = n->model_name;
+    q->index_col = n->index_col;
+    q->target_col = n->target_col;
+    q->selectQuery = dynamic_cast<SelectQuery *>(analyzeSelect(n->selectstmt));
+    return q;
+  }
+
   Query *analyzeUpdate(UpdateStmt *n) {
     UpdateQuery *q = new UpdateQuery();
 
@@ -315,6 +334,9 @@ public:
   Query *AnalyzeMain(Stmt *stmt) {
     if (auto concrete = dynamic_cast<SelectStmt *>(stmt)) {
       return analyzeSelect(concrete);
+    }
+    if (auto concrete = dynamic_cast<LogregStmt *>(stmt)) {
+      return analyzeLogreg(concrete);
     }
     if (auto concrete = dynamic_cast<CreateTableStmt *>(stmt)) {
       return analyzeCreateTable(concrete);

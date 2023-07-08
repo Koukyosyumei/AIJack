@@ -49,6 +49,7 @@ enum TokenKind {
   ROLLBACK,
   PRIMARY,
   KEY,
+  LOGREG,
   keyword_end
 };
 
@@ -63,7 +64,7 @@ const std::unordered_map<int, std::string> tokenmap = {
     {INTO, "Into"},       {VALUES, "Values"},   {UPDATE, "Update"},
     {SET, "Set"},         {BEGIN, "Begin"},     {COMMIT, "Commit"},
     {ROLLBACK, "Abort"},  {PRIMARY, "Primary"}, {KEY, "Key"},
-    {EQ, "Eq"},           {GEQ, "Geq"}};
+    {LOGREG, "LOGREG"},   {EQ, "Eq"},           {GEQ, "Geq"}};
 
 struct Token {
   TokenKind kind;
@@ -245,6 +246,11 @@ public:
 
       if (matchKeyword("key")) {
         tokens.push_back(NewToken(KEY, ""));
+        continue;
+      }
+
+      if (matchKeyword("logreg")) {
+        tokens.push_back(NewToken(LOGREG, ""));
         continue;
       }
 

@@ -9,6 +9,8 @@
 #include <unordered_map>
 #include <vector>
 
+const int page_cache_size = 1024;
+
 struct BufferTag {
   std::string tableName;
   uint64_t pgid;
@@ -35,7 +37,10 @@ struct PageDescriptor {
 
 class BufferPool {
 public:
-  BufferPool() { lru = new Lru<uint64_t, PageDescriptor *>(1000); }
+  BufferPool() {
+    lru = new Lru<uint64_t, PageDescriptor *>(page_cache_size);
+    cache_frontpage = new Lru<std::string, int>(page_cache_size, 0);
+  }
 
   ~BufferPool() {
     delete lru;
@@ -44,6 +49,16 @@ public:
     }
   }
 
+  int NewPgid(const std::string &tableName) {
+    if (cache_frontpage->Has(tableName)) {
+      int frontid = cache_frontpage->Get(tableName);
+      cache_frontpage->Insert(tableName, frontid + 1);
+      return frontid;
+    } else {
+      cache_frontpage->Insert(tableName, 0);
+      return 0;
+    }
+  }
   uint64_t toPgid(uint64_t tid) { return tid / TupleNumber; }
 
   void pinPage(PageDescriptor *pg) { pg->ref++; }
@@ -116,6 +131,7 @@ public:
     return std::make_pair(false, nullptr);
   }
 
+  Lru<std::string, int> *cache_frontpage;
   Lru<uint64_t, PageDescriptor *> *lru;
   std::unordered_map<std::string, BPlusTreeMap<int, TID> *> btree_map;
 };

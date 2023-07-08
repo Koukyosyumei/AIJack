@@ -1,5 +1,6 @@
 #pragma once
 #include "loss.h"
+#include <fstream>
 #include <vector>
 
 inline std::vector<std::vector<float>>
@@ -33,9 +34,10 @@ struct LogisticRegression {
   float lr;
   std::vector<std::vector<float>> params;
   BCELoss lossfn;
+  bool isinitialized;
 
   LogisticRegression(int epochs = 50, float lr = 0.3)
-      : epochs(epochs), lr(lr), lossfn(BCELoss()) {}
+      : epochs(epochs), lr(lr), lossfn(BCELoss()), isinitialized(false) {}
 
   std::vector<std::vector<float>>
   preprocess(const std::vector<std::vector<float>> &xs) {
@@ -48,13 +50,42 @@ struct LogisticRegression {
     return xs_processed;
   }
 
+  void save(const std::string &path) {
+    std::ofstream param_file;
+    param_file.open(path, std::ios::out);
+    param_file << params.size() << "\n";
+    for (std::vector<float> w : params) {
+      param_file << w[0] << " ";
+    }
+    param_file.close();
+  }
+
+  void load(const std::string &path) {
+    std::ifstream param_file;
+    param_file.open(path, std::ios::in);
+    int m;
+    param_file >> m;
+    params.clear();
+    for (int i = 0; i < m; i++) {
+      float w;
+      param_file >> w;
+      params.push_back({w});
+    }
+    param_file.close();
+    isinitialized = true;
+  }
+
   void fit(const std::vector<std::vector<float>> &xs,
            const std::vector<float> &ys) {
     int n = xs.size();
     std::vector<std::vector<float>> xs_normalized = preprocess(xs);
     int m = xs_normalized[0].size();
 
-    params = std::vector<std::vector<float>>(m, std::vector<float>(1, 1));
+    if (!isinitialized) {
+      params = std::vector<std::vector<float>>(m, std::vector<float>(1, 1));
+      isinitialized = true;
+    }
+
     std::vector<std::vector<float>> grads =
         std::vector<std::vector<float>>(m, std::vector<float>(1, 0));
 

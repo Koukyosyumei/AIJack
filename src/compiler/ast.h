@@ -39,6 +39,14 @@ struct SelectStmt : public Stmt {
   void stmtNode() override {}
 };
 
+struct LogregStmt : public Stmt {
+  std::string model_name;
+  std::string index_col;
+  std::string target_col;
+  SelectStmt *selectstmt;
+  void stmtNode() override {}
+};
+
 struct UpdateStmt : public Stmt {
   std::string TableName;
   std::vector<std::string> ColNames;

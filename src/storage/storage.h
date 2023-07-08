@@ -21,7 +21,7 @@ public:
 
   void insertPage(const std::string &tableName) {
     Page *pg = NewPage();
-    uint64_t pgid = NewPgid(tableName);
+    uint64_t pgid = buffer->NewPgid(tableName);
     bool isNeedPersist;
     std::pair<bool, Page *> flag_victim = buffer->putPage(tableName, pgid, pg);
     isNeedPersist = flag_victim.first;

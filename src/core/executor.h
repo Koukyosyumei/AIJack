@@ -41,6 +41,7 @@ struct Executor {
        const std::string &left_table_name, const std::string &rigt_table_name,
        const std::pair<std::string, std::string> joinkeys);
   ResultSet *selectTable(SelectQuery *q, Plan *p, Transaction *tran);
+  ResultSet *logregTable(LogregQuery *q, Plan *p, Transaction *tran);
   ResultSet *insertTable(InsertQuery *q, Transaction *tran);
   void updateTable(UpdateQuery *q, Plan *p, Transaction *tran);
   ResultSet *createTable(CreateTableQuery *q);
@@ -208,6 +209,35 @@ inline ResultSet *Executor::selectTable(SelectQuery *q, Plan *p,
   resultset->ColNames = colNames;
   resultset->Values = values;
   return resultset;
+}
+
+inline ResultSet *Executor::logregTable(LogregQuery *q, Plan *p,
+                                        Transaction *tran) {
+  Scheme *scheme = catalog->FetchScheme(q->selectQuery->From[0]->Name);
+
+  std::vector<std::string> colNames;
+  for (auto &c : q->selectQuery->Cols) {
+    colNames.emplace_back(c->Name);
+  }
+
+  std::vector<storage::Tuple *> tuples = p->scanners->Scan(storage);
+
+  if (!q->selectQuery->Where.empty()) {
+    tuples =
+        where(tuples, q->selectQuery->From[0]->Name, q->selectQuery->Where);
+  }
+
+  std::vector<std::string> values;
+  if (!q->selectQuery->Join.empty()) {
+    std::vector<std::pair<storage::Tuple *, storage::Tuple *>> joined_tuples =
+        join(tuples, q->selectQuery->From[0]->Name,
+             q->selectQuery->Join[0].first, q->selectQuery->Join[0].second);
+    Scheme *scheme_right = catalog->FetchScheme(q->selectQuery->Join[0].first);
+    values =
+        extract_values(joined_tuples, tran, scheme, scheme_right, colNames);
+  } else {
+    values = extract_values(tuples, tran, scheme, colNames);
+  }
 }
 
 inline ResultSet *Executor::insertTable(InsertQuery *q, Transaction *tran) {
