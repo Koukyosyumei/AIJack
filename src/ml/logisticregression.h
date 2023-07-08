@@ -2,7 +2,7 @@
 #include "loss.h"
 #include <vector>
 
-std::vector<std::vector<float>>
+inline std::vector<std::vector<float>>
 minMaxNormalize(const std::vector<std::vector<float>> &data) {
   // Find the minimum and maximum values in the data
   float minVal = data[0][0];
@@ -54,7 +54,7 @@ struct LogisticRegression {
     std::vector<std::vector<float>> xs_normalized = preprocess(xs);
     int m = xs_normalized[0].size();
 
-    params = std::vector<std::vector<float>>(m, std::vector<float>(1, 0));
+    params = std::vector<std::vector<float>>(m, std::vector<float>(1, 1));
     std::vector<std::vector<float>> grads =
         std::vector<std::vector<float>>(m, std::vector<float>(1, 0));
 
@@ -80,5 +80,40 @@ struct LogisticRegression {
         }
       }
     }
+  }
+
+  std::vector<std::vector<float>>
+  predict_proba(const std::vector<std::vector<float>> &xs) {
+    int n = xs.size();
+    std::vector<std::vector<float>> xs_normalized = preprocess(xs);
+    int m = xs_normalized[0].size();
+    std::vector<std::vector<float>> y_probas(n);
+    for (int i = 0; i < n; i++) {
+      float pred = 0;
+      for (int j = 0; j < m; j++) {
+        pred += xs_normalized[i][j] * params[j][0];
+      }
+      pred = sigmoid(pred);
+      y_probas[i] = {1 - pred, pred};
+    }
+    return y_probas;
+  }
+
+  std::vector<float> predict(const std::vector<std::vector<float>> &xs) {
+    std::vector<std::vector<float>> y_probas = predict_proba(xs);
+    std::vector<float> y_preds(y_probas.size());
+    for (int i = 0; i < y_probas.size(); i++) {
+      y_preds[i] = (int)(y_probas[i][0] < y_probas[i][1]);
+    }
+    return y_preds;
+  }
+
+  float score(const std::vector<float> &y, const std::vector<float> &y_pred) {
+    float acc = 0;
+    float n = y.size();
+    for (int i = 0; i < n; i++) {
+      acc += (float)(y[i] == y_pred[i]);
+    }
+    return acc / n;
   }
 };
