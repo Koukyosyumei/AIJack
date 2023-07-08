@@ -1,5 +1,5 @@
-#include "mydb/storage/base.h"
-#include "mydb/storage/catalog.h"
+#include "src/storage/base.h"
+#include "src/storage/catalog.h"
 #include <gtest/gtest.h>
 #include <iostream>
 #include <mutex>

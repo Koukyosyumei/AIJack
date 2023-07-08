@@ -6,9 +6,9 @@
 #include <unordered_map>
 #include <vector>
 
-#include "mydb/core/db.h"
-#include "mydb/core/http.h"
-#include "mydb/storage/tuple.h"
+#include "core/db.h"
+#include "core/http.h"
+#include "storage/tuple.h"
 
 std::vector<std::string> readFileLines(const std::string &filename) {
   std::vector<std::string> lines;

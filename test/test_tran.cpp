@@ -4,7 +4,7 @@
 #include <thread>
 #include <vector>
 
-#include "mydb/storage/tran.h"
+#include "src/storage/tran.h"
 
 TEST(TransactionManagerTest, TxidAtomicity) {
   std::vector<bool> exists(10001, false);

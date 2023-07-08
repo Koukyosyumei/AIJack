@@ -5,7 +5,7 @@
 #include <stdexcept>
 #include <vector>
 
-#include "mydb/storage/tuple.h"
+#include "src/storage/tuple.h"
 
 TEST(TupleTest, Serialize) {
   int val = 42;
