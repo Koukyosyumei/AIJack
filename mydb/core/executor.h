@@ -72,7 +72,7 @@ Executor::where(std::vector<storage::Tuple *> &tuples,
         }
       }
       if (flag) {
-        filtered.push_back(t);
+        filtered.emplace_back(t);
       }
     }
   }
@@ -89,26 +89,25 @@ inline ResultSet *Executor::selectTable(SelectQuery *q, Plan *p,
 
   Scheme *scheme = catalog->FetchScheme(q->From[0]->Name);
 
+  std::vector<std::string> colNames;
+  for (auto &c : q->Cols) {
+    colNames.emplace_back(c->Name);
+  }
+
   std::vector<std::string> values;
-  for (auto &t : tuples) {
+  for (storage::Tuple *t : tuples) {
     if (!tran || TupleCanSee(t, tran)) {
-      for (int i = 0; i < q->Cols.size(); ++i) {
-        const storage::TupleData td =
-            t->data(scheme->get_ColID(q->Cols[i]->Name));
+      for (std::string &cname : colNames) {
+        const storage::TupleData td = t->data(scheme->get_ColID(cname));
         std::string s;
         if (td.type() == storage::TupleData_Type_INT) {
           s = std::to_string(td.number());
         } else if (td.type() == storage::TupleData_Type_STRING) {
           s = td.string();
         }
-        values.push_back(s);
+        values.emplace_back(s);
       }
     }
-  }
-
-  std::vector<std::string> colNames;
-  for (auto &c : q->Cols) {
-    colNames.push_back(c->Name);
   }
 
   ResultSet *resultset = new ResultSet();

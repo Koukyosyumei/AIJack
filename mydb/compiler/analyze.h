@@ -4,6 +4,7 @@
 #include "../storage/storage.h"
 #include "../storage/tuple.h"
 #include "ast.h"
+#include "token.h"
 #include <stdexcept>
 #include <string>
 #include <vector>
@@ -132,7 +133,7 @@ public:
   Query *analyzeSelect(SelectStmt *n) {
     SelectQuery *q = new SelectQuery();
     vector<Scheme *> schemes;
-    for (auto name : n->From) {
+    for (const std::string &name : n->From) {
       Scheme *scheme = catalog->FetchScheme(name);
       if (!scheme) {
         try {
@@ -147,13 +148,24 @@ public:
     }
 
     vector<Column *> cols;
-    for (auto colName : n->ColNames) {
+    for (const std::string &colName : n->ColNames) {
+
+      if (colName == TokenKindToString(STAR)) {
+        cols = {};
+        for (Scheme *scheme : schemes) {
+          for (const std::string &col : scheme->ColNames) {
+            cols.emplace_back(new Column(col));
+          }
+        }
+        break;
+      }
+
       bool found = false;
-      for (auto scheme : schemes) {
-        for (auto col : scheme->ColNames) {
+      for (Scheme *scheme : schemes) {
+        for (const std::string &col : scheme->ColNames) {
           if (col == colName) {
             found = true;
-            cols.push_back(new Column(colName));
+            cols.emplace_back(new Column(colName));
           }
         }
       }

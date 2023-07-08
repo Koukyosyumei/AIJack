@@ -95,12 +95,12 @@ public:
     std::ostringstream oss;
     oss << resultSet->Message;
     for (const auto &col : resultSet->ColNames) {
-      oss << col;
+      oss << " " << col;
     }
     oss << "\n";
 
     for (size_t i = 0; i < resultSet->Values.size(); i++) {
-      oss << resultSet->Values[i];
+      oss << resultSet->Values[i] << " ";
       if ((i + 1) % resultSet->ColNames.size() == 0) {
         oss << "\n";
       }

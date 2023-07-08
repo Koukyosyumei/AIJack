@@ -46,7 +46,6 @@ struct SeqScan : public Scanner {
     std::vector<storage::Tuple *> result;
 
     for (uint64_t i = 0;; i++) {
-      std::cout << "s " << i << std::endl;
       storage::Tuple *t = store->ReadTuple(tblName, i);
       if (!t)
         break;

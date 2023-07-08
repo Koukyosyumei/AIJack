@@ -262,7 +262,7 @@ public:
         tokens.push_back(NewToken(COMMA, ""));
         break;
       case '*':
-        tokens.push_back(NewToken(STAR, ""));
+        tokens.push_back(NewToken(STAR, "*"));
         break;
       default:
         // error
