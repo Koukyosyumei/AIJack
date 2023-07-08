@@ -15,6 +15,7 @@ struct Parser {
   bool isPosValid(TokenKind kind) {
     if (tokens.size() <= pos) {
       errors.emplace_back("Expected " + TokenKindToString(kind) +
+                          " at position=" + std::to_string(pos) +
                           ", but the query is broken");
       return false;
     }
@@ -28,8 +29,8 @@ struct Parser {
     }
     expectedKinds += TokenKindToString(kinds[kinds.size() - 1]);
     if (tokens.size() <= pos) {
-      errors.emplace_back("Expected " + expectedKinds +
-                          ", but the query is broken");
+      errors.emplace_back("Expected " + expectedKinds + " at position=" +
+                          std::to_string(pos) + ", but the query is broken");
       return false;
     }
     return true;
@@ -153,6 +154,9 @@ struct Parser {
 
     while (true) {
       Token *tkn = expectOr({STAR, STRING});
+      if (!tkn) {
+        return nullptr;
+      }
       selectNode->ColNames.push_back(tkn->str);
 
       if (!consume(COMMA)) {
@@ -160,9 +164,11 @@ struct Parser {
       }
     }
 
-    if (consume(FROM)) {
+    if (expect(FROM)) {
       std::vector<std::string> from = fromClause();
       selectNode->From = from;
+    } else {
+      return nullptr;
     }
 
     if (consume(JOIN)) {

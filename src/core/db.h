@@ -71,7 +71,7 @@ public:
     Stmt *node = parser.Parse();
     if (!parser.errors.empty()) {
       for (std::string &e : parser.errors) {
-        std::cerr << e << std::endl;
+        result += (e + "\n");
       }
       return;
     }
