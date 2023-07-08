@@ -96,6 +96,8 @@ private:
 
   bool isEnd() { return pos >= input.length(); }
 
+  bool isSeq() { return input[pos] == ','; }
+
   bool matchKeyword(const std::string &keyword) {
     bool ok = pos + keyword.length() <= input.length() &&
               std::equal(keyword.begin(), keyword.end(), input.begin() + pos,
@@ -127,7 +129,7 @@ private:
 
   std::string scanString() {
     std::string out;
-    while (!isEnd() && !isSpace()) {
+    while (!isEnd() && !isSpace() && !isSeq()) {
       out.push_back(input[pos]);
       pos++;
     }
