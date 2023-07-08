@@ -33,6 +33,7 @@ struct SelectStmt : public Stmt {
   std::vector<std::string> ColNames;
   std::vector<std::string> From;
   std::vector<Expr *> Wheres;
+  std::vector<std::pair<std::string, std::string>> Joins;
 
   void stmtNode() override {}
 };
@@ -40,8 +41,7 @@ struct SelectStmt : public Stmt {
 struct UpdateStmt : public Stmt {
   std::string TableName;
   std::vector<std::string> ColNames;
-  std::vector<std::string *>
-      Set; // Assuming a placeholder for the actual type of set values
+  std::vector<std::string *> Set;
   std::vector<Expr *> Where;
 
   void stmtNode() override {}
@@ -73,23 +73,4 @@ struct Expr {
   Expr(TokenKind op, Expr *left, Expr *right)
       : op(op), left(left), right(right), is_primary(false) {}
   bool IsLit() { return (left == nullptr) && (right == nullptr); }
-  // virtual void exprNode() = 0;
 };
-
-/*
-// Expressions
-struct Eq : public Expr {
-  Expr *left;
-  Expr *right;
-
-  void exprNode() override {}
-};
-
-struct Lit : public Expr {
-  std::string v;
-
-  Lit() {}
-  Lit(std::string v) : v(v) {}
-  void exprNode() override {}
-};
-*/

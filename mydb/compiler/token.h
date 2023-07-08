@@ -33,6 +33,7 @@ enum TokenKind {
   SELECT,
   FROM,
   WHERE,
+  JOIN,
   CREATE,
   TABLE,
   INSERT,
@@ -49,16 +50,16 @@ enum TokenKind {
 };
 
 const std::unordered_map<int, std::string> tokenmap = {
-    {ILLEGAL, "Illegal"}, {EOF, "Eor"},       {STRING, "String"},
-    {NUMBER, "Number"},   {INT, "Int"},       {LBRACE, "{"},
-    {RBRACE, "}"},        {LPAREN, "("},      {RPAREN, ")"},
-    {COMMA, ","},         {STAR, "*"},        {SELECT, "Select"},
-    {FROM, "From"},       {WHERE, "Where"},   {CREATE, "Create"},
-    {TABLE, "Table"},     {INSERT, "Insert"}, {INTO, "Into"},
-    {VALUES, "Values"},   {UPDATE, "Update"}, {SET, "Set"},
-    {BEGIN, "Begin"},     {COMMIT, "Commit"}, {ROLLBACK, "Abort"},
-    {PRIMARY, "Primary"}, {KEY, "Key"},       {EQ, "Eq"},
-    {GEQ, "Geq"}};
+    {ILLEGAL, "Illegal"}, {EOF, "Eor"},         {STRING, "String"},
+    {NUMBER, "Number"},   {INT, "Int"},         {LBRACE, "{"},
+    {RBRACE, "}"},        {LPAREN, "("},        {RPAREN, ")"},
+    {COMMA, ","},         {STAR, "*"},          {SELECT, "Select"},
+    {FROM, "From"},       {WHERE, "Where"},     {JOIN, "Join"},
+    {CREATE, "Create"},   {TABLE, "Table"},     {INSERT, "Insert"},
+    {INTO, "Into"},       {VALUES, "Values"},   {UPDATE, "Update"},
+    {SET, "Set"},         {BEGIN, "Begin"},     {COMMIT, "Commit"},
+    {ROLLBACK, "Abort"},  {PRIMARY, "Primary"}, {KEY, "Key"},
+    {EQ, "Eq"},           {GEQ, "Geq"}};
 
 struct Token {
   TokenKind kind;
@@ -183,6 +184,11 @@ public:
 
       if (matchKeyword("where")) {
         tokens.push_back(NewToken(WHERE, ""));
+        continue;
+      }
+
+      if (matchKeyword("join")) {
+        tokens.push_back(NewToken(JOIN, ""));
         continue;
       }
 

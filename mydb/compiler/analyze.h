@@ -21,6 +21,7 @@ public:
   vector<Column *> Cols;
   vector<Table *> From;
   vector<Expr *> Where;
+  vector<std::pair<std::string, std::string>> Join;
 
   void evalQuery() override {}
 };
@@ -199,7 +200,7 @@ public:
     q->From = tables;
     q->Cols = cols;
     q->Where = n->Wheres;
-
+    q->Join = n->Joins;
     return q;
   }
 

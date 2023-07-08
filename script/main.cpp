@@ -10,10 +10,51 @@
 #include "mydb/core/http.h"
 #include "mydb/storage/tuple.h"
 
+std::vector<std::string> readFileLines(const std::string &filename) {
+  std::vector<std::string> lines;
+  std::ifstream file(filename);
+  if (!file.is_open()) {
+    std::cerr << "Failed to open file: " << filename << std::endl;
+    return lines;
+  }
+
+  std::string line;
+  while (std::getline(file, line)) {
+    lines.push_back(line);
+  }
+
+  file.close();
+  return lines;
+}
+
 void showTitle() {
   std::string title =
       "MyDB : A simple database implemented from scratch in C++.";
   std::cout << title << std::endl;
+}
+
+bool client_exit() {
+  httplib::Client client("localhost", 32198);
+  auto res = client.Get("/exit");
+  if (res && res->status == 200) {
+    // Request succeeded
+    std::cout << "Server exit requested\n";
+    return true;
+  } else {
+    std::cerr << "Error requesting server exit\n";
+    return false;
+  }
+}
+
+void client_query(std::string input) {
+  std::string query = "/execute?query=" + input;
+  httplib::Client client("localhost", 32198);
+  auto res = client.Get(query.c_str());
+  if (!res || res->status != 200) {
+    std::cerr << "Error executing query\n";
+  } else {
+    std::cout << res->body;
+  }
 }
 
 void client() {
@@ -23,30 +64,18 @@ void client() {
     std::cout << ">>";
     std::getline(std::cin, input);
 
-    std::string err;
     if (input.substr(0, 4) == "exit") {
-      httplib::Client client("localhost", 32198);
-      auto res = client.Get("/exit");
-      if (res && res->status == 200) {
-        // Request succeeded
-        std::cout << "Server exit requested" << std::endl;
+      if (client_exit()) {
         break;
-      } else {
-        err = "Error requesting server exit";
+      }
+    } else if (input.substr(0, 7) == "source ") {
+      std::string filename = input.substr(7);
+      std::vector<std::string> lines = readFileLines(filename);
+      for (const std::string &line : lines) {
+        client_query(line);
       }
     } else {
-      std::string query = "/execute?query=" + input;
-      httplib::Client client("localhost", 32198);
-      auto res = client.Get(query.c_str());
-      if (!res || res->status != 200) {
-        err = "Error executing query";
-      } else {
-        std::cout << res->body;
-      }
-    }
-
-    if (!err.empty()) {
-      std::cout << err << std::endl;
+      client_query(input);
     }
   }
 }

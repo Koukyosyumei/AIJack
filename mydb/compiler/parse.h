@@ -79,8 +79,23 @@ struct Parser {
   }
 
   std::vector<std::string> fromClause() {
-    Token *s = expect(STRING);
-    return std::vector<std::string>{s->str};
+    std::vector<std::string> tablenames;
+    while (true) {
+      Token *s = expect(STRING);
+      tablenames.emplace_back(s->str);
+
+      if (!consume(COMMA)) {
+        break;
+      }
+    }
+    return tablenames;
+  }
+
+  std::vector<std::pair<std::string, std::string>> joinClause() {
+    Token *left = expect(STRING);
+    Token *right = expect(STRING);
+    return std::vector<std::pair<std::string, std::string>>{
+        std::make_pair(left->str, right->str)};
   }
 
   std::vector<Expr *> whereClause() {
@@ -90,9 +105,16 @@ struct Parser {
   }
 
   SelectStmt *selectStmt() {
-    Token *tkn = expectOr({STAR, STRING});
     SelectStmt *selectNode = new SelectStmt();
-    selectNode->ColNames.push_back(tkn->str);
+
+    while (true) {
+      Token *tkn = expectOr({STAR, STRING});
+      selectNode->ColNames.push_back(tkn->str);
+
+      if (!consume(COMMA)) {
+        break;
+      }
+    }
 
     if (consume(FROM)) {
       std::vector<std::string> from = fromClause();
@@ -101,6 +123,10 @@ struct Parser {
 
     if (consume(WHERE)) {
       selectNode->Wheres = whereClause();
+    }
+
+    if (consume(JOIN)) {
+      selectNode->Joins = joinClause();
     }
 
     return selectNode;
