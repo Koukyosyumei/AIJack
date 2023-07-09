@@ -255,7 +255,6 @@ public:
   }
 
   Query *analyzeComplaint(ComplaintStmt *n) {
-    std::cout << "aaa" << std::endl;
     ComplaintQuery *q = new ComplaintQuery();
     q->complaint_name = n->complaint_name;
     q->k = n->k;
@@ -359,7 +358,6 @@ public:
       return analyzeLogreg(concrete);
     }
     if (auto concrete = dynamic_cast<ComplaintStmt *>(stmt)) {
-      std::cout << "1" << std::endl;
       return analyzeComplaint(concrete);
     }
     if (auto concrete = dynamic_cast<CreateTableStmt *>(stmt)) {

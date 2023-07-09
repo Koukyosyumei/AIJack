@@ -128,6 +128,7 @@ public:
         }
       }
       if (pd->dirty) {
+        std::cout << "persist" << std::endl;
         disk->persist(prefix, pd->tableName, pd->pgid, pd->page);
       }
     }

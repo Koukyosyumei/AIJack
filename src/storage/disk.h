@@ -38,6 +38,7 @@ public:
       }
     }
 
+    std::cout << pagePath << std::endl;
     Page *page = DeserializePage(buffer);
     if (!page) {
       delete page;
@@ -72,6 +73,7 @@ public:
                                  savePath);
       } catch (std::runtime_error e) {
         std::cerr << "runtime_error: " << e.what() << std::endl;
+        return;
       }
     }
 

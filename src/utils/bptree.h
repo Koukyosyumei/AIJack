@@ -22,6 +22,7 @@ template <typename K, typename V> struct BPlusTreeMap {
     std::vector<V> vs;
     std::vector<BPlusNode *> children;
     BPlusNode *next = nullptr;
+    BPlusNode *prev = nullptr;
 
     BPlusNode() {}
     BPlusNode(K key, BPlusNode *left, BPlusNode *right, bool is_active,
@@ -177,7 +178,13 @@ template <typename K, typename V> struct BPlusTreeMap {
       left->ks.erase(left->ks.begin() + j, left->ks.end());
       left->vs.erase(left->vs.begin() + j, left->vs.end());
       right->next = left->next;
+      if (left->next) {
+        left->next->prev = right;
+      }
       left->next = right;
+      if (right) {
+        right->prev = left;
+      }
       BPlusNode *new_node =
           new BPlusNode(right->ks[0], left, right, true, false);
       return new_node;
@@ -271,6 +278,9 @@ template <typename K, typename V> struct BPlusTreeMap {
         t->ks.erase(t->ks.begin() + i);
         t->children.erase(t->children.begin() + j);
         ni->next = nj->next;
+        if (nj->next) {
+          nj->next->prev = ni;
+        }
       } else {
         t->ks[i] = moveRL(ni, nj); // nj has enough space
       }
@@ -319,6 +329,9 @@ template <typename K, typename V> struct BPlusTreeMap {
         t->ks.erase(t->ks.begin() + i);
         t->children.erase(t->children.begin() + j);
         ni->next = nj->next;
+        if (ni->next) {
+          nj->next->prev = ni;
+        }
       } else {
         t->ks[i] = moveLR(ni, nj); // ni has enough space
       }
@@ -440,6 +453,43 @@ template <typename K, typename V> struct BPlusTreeMap {
         result.push_back(v);
       }
       u = u->next;
+    }
+    return result;
+  }
+
+  std::vector<V> FindLessEq(K key) {
+    if (root == nullptr) {
+      std::vector<V> res;
+      return res;
+    }
+
+    BPlusNode *t = root;
+    while (!t->is_bottom) {
+      int i;
+      for (i = 0; i < t->ks.size(); i++) {
+        if (key < t->ks[i]) {
+          break;
+        } else if (key == t->ks[i]) {
+          i++;
+          break;
+        }
+      }
+      t = t->children[i];
+    }
+    BPlusNode *u = t;
+
+    std::vector<V> result;
+    for (int i = 0; i < u->ks.size(); i++) {
+      if (key >= u->ks[i]) {
+        result.push_back(u->vs[i]);
+      }
+    }
+    u = u->prev;
+    while (u != nullptr) {
+      for (V v : u->vs) {
+        result.push_back(v);
+      }
+      u = u->prev;
     }
     return result;
   }

@@ -9,4 +9,3 @@ Insert Into dummy Values (7, 1, 0, 0)
 Insert Into dummy Values (8, 18, 6, 1)
 Select * From dummy
 Logreg lrmodel id y 100 1 From Select * From dummy 
-Complaint comp 1 Logreg lrmodel id y 100 1 From Select * From dummy

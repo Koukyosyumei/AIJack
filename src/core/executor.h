@@ -163,7 +163,16 @@ Executor::where(std::vector<storage::Tuple *> &tuples,
         } else if (s->ColTypes[colid] == ColType::Varchar) {
           flag = TupleGreaterEq(t, colid, right);
         }
+      } else if (w->op == LEQ) {
+        if (s->ColTypes[colid] == ColType::Int) {
+          flag = TupleLessEq(t, colid, std::stoi(right));
+        } else if (s->ColTypes[colid] == ColType::Float) {
+          flag = TupleLessEq(t, colid, std::stof(right));
+        } else if (s->ColTypes[colid] == ColType::Varchar) {
+          flag = TupleLessEq(t, colid, right);
+        }
       }
+
       if (flag) {
         filtered.emplace_back(t);
       }
@@ -210,7 +219,16 @@ Executor::whereidx(std::vector<storage::Tuple *> &tuples,
         } else if (s->ColTypes[colid] == ColType::Varchar) {
           flag = TupleGreaterEq(t, colid, right);
         }
+      } else if (w->op == LEQ) {
+        if (s->ColTypes[colid] == ColType::Int) {
+          flag = TupleLessEq(t, colid, std::stoi(right));
+        } else if (s->ColTypes[colid] == ColType::Float) {
+          flag = TupleLessEq(t, colid, std::stof(right));
+        } else if (s->ColTypes[colid] == ColType::Varchar) {
+          flag = TupleLessEq(t, colid, right);
+        }
       }
+
       if (flag) {
         filtered.emplace_back(i);
       }
@@ -571,6 +589,11 @@ inline ResultSet *Executor::complaintTable(ComplaintQuery *q, Plan *p,
       rain.getInfluence(filitered_idxs, training_dataset.second.first,
                         training_dataset.second.second, y_proba);
   std::vector<size_t> topk_influencer = kArgmax(influence, q->k);
+  // std::vector<size_t> topk_influencer;
+  // for (size_t i : topk_influencer_within) {
+  //  topk_influencer.push_back(filitered_idxs[i]);
+  //}
+
   removeIndices(training_dataset.first, topk_influencer);
   removeIndices(training_dataset.second.first, topk_influencer);
   removeIndices(training_dataset.second.second, topk_influencer);
@@ -717,15 +740,27 @@ inline ResultSet *Executor::executeMain(Query *q, Plan *p, Transaction *tran) {
     return insertTable(insertQuery, tran);
   }
   if (auto logregQuery = dynamic_cast<LogregQuery *>(q)) {
+    if (p == nullptr) {
+      return nullptr;
+    }
     return logregTable(logregQuery, p, tran);
   }
   if (auto complaintQuery = dynamic_cast<ComplaintQuery *>(q)) {
+    if (p == nullptr) {
+      return nullptr;
+    }
     return complaintTable(complaintQuery, p, tran);
   }
   if (auto selectQuery = dynamic_cast<SelectQuery *>(q)) {
+    if (p == nullptr) {
+      return nullptr;
+    }
     return selectTable(selectQuery, p, tran);
   }
   if (auto updateQuery = dynamic_cast<UpdateQuery *>(q)) {
+    if (p == nullptr) {
+      return nullptr;
+    }
     updateTable(updateQuery, p, tran);
     return nullptr; // Update query doesn't return a result set
   }

@@ -1,0 +1,1 @@
+{"Schemes":[{"ColNames":["id","fa","fb","y"],"ColTypes":[0,0,0,0],"PrimaryKey":"id","TblName":"dummy"},{"ColNames":["id_lrmodel","y_pred_lrmodel","y_pred_neg_lrmodel","y_pred_pos_lrmodel"],"ColTypes":[0,2,2,2],"PrimaryKey":"id_lrmodel","TblName":"prediction_on_training_data_lrmodel"}]}

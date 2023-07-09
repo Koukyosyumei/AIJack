@@ -29,6 +29,7 @@ enum TokenKind {
   STAR,
   EQ,
   GEQ,
+  LEQ,
   operator_end,
 
   keyword_begin,
@@ -71,7 +72,8 @@ const std::unordered_map<int, std::string> tokenmap = {
     {COMMIT, "Commit"},   {ROLLBACK, "Abort"},
     {PRIMARY, "Primary"}, {KEY, "Key"},
     {LOGREG, "Logreg"},   {COMPLAINT, "Complaint"},
-    {EQ, "Eq"},           {GEQ, "Geq"}};
+    {EQ, "Eq"},           {GEQ, "Geq"},
+    {LEQ, "Leq"}};
 
 struct Token {
   TokenKind kind;
@@ -273,6 +275,11 @@ public:
 
       if (matchKeyword("geq")) {
         tokens.push_back(NewToken(GEQ, ""));
+        continue;
+      }
+
+      if (matchKeyword("leq")) {
+        tokens.push_back(NewToken(LEQ, ""));
         continue;
       }
 

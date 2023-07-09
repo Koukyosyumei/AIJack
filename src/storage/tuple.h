@@ -64,6 +64,8 @@ inline std::array<uint8_t, TupleSize> SerializeTuple(const storage::Tuple *t) {
     }
     std::memcpy(buffer.data(), serializedData.c_str(),
                 strlen(serializedData.c_str()));
+  } else {
+    std::cerr << "Skip a null tuple when serializing a tuple\n";
   }
   return buffer;
 }
@@ -131,6 +133,31 @@ inline bool TupleGreaterEq(const storage::Tuple *tuple, int order,
   const storage::TupleData &tupleData = tuple->data()[order];
   if (tupleData.type() == storage::TupleData_Type_STRING) {
     return tupleData.tos() >= s;
+  }
+  return false;
+}
+
+inline bool TupleLessEq(const storage::Tuple *tuple, int order, int n) {
+  const storage::TupleData &tupleData = tuple->data()[order];
+  if (tupleData.type() == storage::TupleData_Type_INT) {
+    return tupleData.toi() <= n;
+  }
+  return false;
+}
+
+inline bool TupleLessEq(const storage::Tuple *tuple, int order, float v) {
+  const storage::TupleData &tupleData = tuple->data()[order];
+  if (tupleData.type() == storage::TupleData_Type_FLOAT) {
+    return tupleData.tof() <= v;
+  }
+  return false;
+}
+
+inline bool TupleLessEq(const storage::Tuple *tuple, int order,
+                        const std::string &s) {
+  const storage::TupleData &tupleData = tuple->data()[order];
+  if (tupleData.type() == storage::TupleData_Type_STRING) {
+    return tupleData.tos() <= s;
   }
   return false;
 }

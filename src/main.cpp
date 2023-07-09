@@ -32,8 +32,8 @@ void showTitle() {
   std::cout << title << std::endl;
 }
 
-bool client_exit() {
-  httplib::Client client("localhost", 32198);
+bool client_exit(std::string address = "localhost", int port = 8889) {
+  httplib::Client client(address, port);
   auto res = client.Get("/exit");
   if (res && res->status == 200) {
     // Request succeeded
@@ -45,9 +45,10 @@ bool client_exit() {
   }
 }
 
-void client_query(std::string input) {
+void client_query(std::string input, std::string address = "localhost",
+                  int port = 8889) {
   std::string query = "/execute?query=" + input;
-  httplib::Client client("localhost", 32198);
+  httplib::Client client(address, port);
   auto res = client.Get(query.c_str());
   if (!res || res->status != 200) {
     std::cerr << "Error executing query\n";
@@ -56,7 +57,7 @@ void client_query(std::string input) {
   }
 }
 
-void client() {
+void client(std::string address = "localhost", int port = 8889) {
   showTitle();
   std::string input;
   while (true) {
@@ -64,23 +65,23 @@ void client() {
     std::getline(std::cin, input);
 
     if (input.substr(0, 4) == "exit") {
-      if (client_exit()) {
+      if (client_exit(address, port)) {
         break;
       }
     } else if (input.substr(0, 7) == "source ") {
       std::string filename = input.substr(7);
       std::vector<std::string> lines = readFileLines(filename);
       for (const std::string &line : lines) {
-        client_query(line);
+        client_query(line, address, port);
       }
     } else {
-      client_query(input);
+      client_query(input, address, port);
     }
   }
 }
 
-void server() {
-  MyDb *db = NewMyDb();
+void server(std::string home = ".db/") {
+  MyDb *db = NewMyDb(home);
   db->Init();
 
   std::shared_ptr<ApiServer> apiServer = std::make_shared<ApiServer>(db);

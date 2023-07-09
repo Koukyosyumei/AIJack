@@ -128,17 +128,9 @@ public:
 
 MyDb *MyDb::dbinstance;
 
-inline MyDb *NewMyDb() {
-  std::string home;
-  char *bogoHome = getenv("MYDB_HOME");
-  if (bogoHome == nullptr) {
-    // default
-    home = ".mydb/";
-    if (access(home.c_str(), F_OK) != 0) {
-      mkdir(home.c_str(), 0777);
-    }
-  } else {
-    home = bogoHome;
+inline MyDb *NewMyDb(std::string home = ".db/") {
+  if (access(home.c_str(), F_OK) != 0) {
+    mkdir(home.c_str(), 0777);
   }
 
   Catalog *catalog = LoadCatalog(home);

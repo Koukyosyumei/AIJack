@@ -49,7 +49,7 @@ public:
     db->Terminate();
   }
 
-  void Host() {
+  void Host(std::string address = "0.0.0.0", int port = 8889) {
 
     httplib::Server server;
     server.Get("/execute",
@@ -59,8 +59,9 @@ public:
     server.Get("/exit", [&](const httplib::Request &req,
                             httplib::Response &res) { exitHandler(req, res); });
 
-    std::cout << "Starting API server on port 32198..." << std::endl;
-    server.listen("0.0.0.0", 32198);
+    std::cout << "Starting API server on port " << std::to_string(port) << "..."
+              << std::endl;
+    server.listen(address, port);
   }
 };
 

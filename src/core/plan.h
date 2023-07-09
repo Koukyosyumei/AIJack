@@ -90,6 +90,14 @@ struct IndexScan : public Scanner {
           result.push_back(t);
         }
       }
+    } else if (op == LEQ) {
+      std::vector<TID> leq_results = btree->FindLessEq(i);
+      for (const TID &tid : leq_results) {
+        storage::Tuple *t = store->ReadTuple(tblName, tid);
+        if (t) {
+          result.push_back(t);
+        }
+      }
     }
     return result;
   }

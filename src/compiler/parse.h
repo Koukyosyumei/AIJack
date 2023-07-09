@@ -97,11 +97,15 @@ struct Parser {
       Expr *right = expr();
       return new Expr(GEQ, left, right);
     }
+    if (consume(LEQ)) {
+      Expr *right = expr();
+      return new Expr(LEQ, left, right);
+    }
     return left;
   }
 
   Expr *expr() {
-    if (!isPosValid({EQ, GEQ})) {
+    if (!isPosValid({EQ, GEQ, LEQ})) {
       return nullptr;
     }
 

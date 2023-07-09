@@ -3,6 +3,7 @@
 #include <array>
 #include <cstring>
 #include <iostream>
+#include <stdexcept>
 
 const int TupleNumber = 32;
 const int PageSize = 4096;
@@ -40,7 +41,12 @@ inline Page *DeserializePage(const std::array<char, PageSize> &buffer) {
     std::memcpy(tupleBytes.data(), buffer.data() + i * TupleSize, TupleSize);
     storage::Tuple *t = DeserializeTuple(tupleBytes);
     if (t == nullptr) {
-      std::cerr << "Failed to deserialize tuple (offset=" << i << ")\n";
+      try {
+        throw std::runtime_error(
+            "Failed to deserialize tuple (offset=" + std::to_string(i) + ")");
+      } catch (std::runtime_error &e) {
+        std::cerr << "runtime_error: " << e.what() << std::endl;
+      }
     } else {
       p->Tuples[i] = *t;
     }
