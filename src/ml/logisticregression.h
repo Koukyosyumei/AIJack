@@ -39,6 +39,11 @@ struct LogisticRegression {
   LogisticRegression(int epochs = 50, float lr = 0.3)
       : epochs(epochs), lr(lr), lossfn(BCELoss()), isinitialized(false) {}
 
+  void clear() {
+    params.clear();
+    isinitialized = false;
+  }
+
   std::vector<std::vector<float>>
   preprocess(const std::vector<std::vector<float>> &xs) {
     std::vector<std::vector<float>> xs_processed(xs);

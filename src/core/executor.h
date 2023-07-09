@@ -571,16 +571,11 @@ inline ResultSet *Executor::complaintTable(ComplaintQuery *q, Plan *p,
       rain.getInfluence(filitered_idxs, training_dataset.second.first,
                         training_dataset.second.second, y_proba);
   std::vector<size_t> topk_influencer = kArgmax(influence, q->k);
-
   removeIndices(training_dataset.first, topk_influencer);
   removeIndices(training_dataset.second.first, topk_influencer);
-  removeIndices(training_dataset.second.first, topk_influencer);
+  removeIndices(training_dataset.second.second, topk_influencer);
 
-  for (auto y : training_dataset.second.second) {
-    std::cout << y << " ";
-  }
-  std::cout << std::endl;
-
+  clf.clear();
   if (!clf.fit(training_dataset.second.first, training_dataset.second.second)) {
     ResultSet *resultset = new ResultSet();
     resultset->Message =
