@@ -49,6 +49,14 @@ public:
     }
   }
 
+  int FrontPgid(const std::string &tableName) {
+    if (cache_frontpage->Has(tableName)) {
+      return cache_frontpage->Get(tableName);
+    } else {
+      return 0;
+    }
+  }
+
   int NewPgid(const std::string &tableName) {
     if (cache_frontpage->Has(tableName)) {
       int frontid = cache_frontpage->Get(tableName);
@@ -84,7 +92,7 @@ public:
     // TODO: Implement appendTuple logic
     // uint64_t latestTid = 0;
     // uint64_t pgid = toPgid(latestTid);
-    int pgid = NewPgid(tableName);
+    int pgid = FrontPgid(tableName);
     BufferTag bt(tableName, pgid);
     uint64_t hash = bt.hash();
     PageDescriptor *pd = lru->Get(hash);
