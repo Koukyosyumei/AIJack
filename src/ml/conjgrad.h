@@ -7,8 +7,9 @@ using namespace std;
 const double eps = 1e-8;
 
 // Function to calculate the dot product of two vectors
-inline double dotProduct(const vector<double> &v1, const vector<double> &v2) {
-  double result = 0.0;
+template <typename V>
+inline V dotProduct(const vector<V> &v1, const vector<V> &v2) {
+  V result = 0.0;
   for (size_t i = 0; i < v1.size(); i++) {
     result += v1[i] * v2[i];
   }
@@ -16,10 +17,11 @@ inline double dotProduct(const vector<double> &v1, const vector<double> &v2) {
 }
 
 // Function to perform matrix-vector multiplication
-inline vector<double> matrixVectorMultiply(const vector<vector<double>> &A,
-                                           const vector<double> &x) {
+template <typename V>
+inline vector<V> matrixVectorMultiply(const vector<vector<V>> &A,
+                                      const vector<V> &x) {
   size_t n = A.size();
-  vector<double> result(n, 0.0);
+  vector<V> result(n, 0.0);
   for (size_t i = 0; i < n; i++) {
     for (size_t j = 0; j < n; j++) {
       result[i] += A[i][j] * x[j];
@@ -29,13 +31,14 @@ inline vector<double> matrixVectorMultiply(const vector<vector<double>> &A,
 }
 
 // Function to perform Conjugate Gradient method
-inline vector<double> conjugateGradient(const vector<vector<double>> &A,
-                                        const vector<double> &b) {
+template <typename V>
+inline vector<V> conjugateGradient(const vector<vector<V>> &A,
+                                   const vector<V> &b) {
   size_t n = A.size();
-  vector<double> x(n, 0.0); // Initial guess for solution x
-  vector<double> r = b;     // Residual vector r
-  vector<double> p = r;     // Search direction vector p
-  double alpha, beta, residualNorm, prevResidualNorm;
+  vector<V> x(n, 0.0); // Initial guess for solution x
+  vector<V> r = b;     // Residual vector r
+  vector<V> p = r;     // Search direction vector p
+  V alpha, beta, residualNorm, prevResidualNorm;
 
   residualNorm = sqrt(dotProduct(r, r));
   prevResidualNorm = residualNorm;
@@ -44,8 +47,8 @@ inline vector<double> conjugateGradient(const vector<vector<double>> &A,
   size_t maxIterations = n;
 
   for (size_t k = 0; k < maxIterations; k++) {
-    vector<double> Ap = matrixVectorMultiply(A, p);
-    double pAp = dotProduct(p, Ap);
+    vector<V> Ap = matrixVectorMultiply<V>(A, p);
+    V pAp = dotProduct<V>(p, Ap);
 
     alpha = prevResidualNorm * prevResidualNorm / pAp;
 
@@ -55,7 +58,7 @@ inline vector<double> conjugateGradient(const vector<vector<double>> &A,
     }
 
     residualNorm = sqrt(dotProduct(r, r));
-    if (residualNorm < eps) { // Convergence condition
+    if (residualNorm < (V)eps) { // Convergence condition
       break;
     }
 

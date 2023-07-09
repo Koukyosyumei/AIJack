@@ -75,6 +75,68 @@ struct BCELoss : LossFunc {
     return loss;
   }
 
+  vector<vector<float>> get_grad_w_ewise(vector<vector<float>> &x,
+                                         vector<vector<float>> &y_pred,
+                                         vector<float> &y) {
+    int n = x.size();
+    if (n <= 0) {
+      try {
+        throw std::runtime_error("the number of rows should be positive");
+      } catch (std::runtime_error &e) {
+        std::cerr << "runtime_error: " << e.what() << std::endl;
+      }
+    }
+    int m = x[0].size();
+    if (m <= 0) {
+      try {
+        throw std::runtime_error("the number of columns should be positive");
+      } catch (std::runtime_error &e) {
+        std::cerr << "runtime_error: " << e.what() << std::endl;
+      }
+    }
+
+    std::vector<std::vector<float>> grad(n, std::vector<float>(m, 0.0));
+    for (int i = 0; i < n; i++) {
+      for (int j = 0; j < m; j++) {
+        grad[i][j] = (y_pred[i][0] - y[i]) * x[i][j];
+      }
+    }
+
+    return grad;
+  }
+
+  vector<vector<float>> get_hess_w(vector<vector<float>> &x,
+                                   vector<vector<float>> &y_pred,
+                                   vector<float> &y) {
+    int n = x.size();
+    if (n <= 0) {
+      try {
+        throw std::runtime_error("the number of rows should be positive");
+      } catch (std::runtime_error &e) {
+        std::cerr << "runtime_error: " << e.what() << std::endl;
+      }
+    }
+    int m = x[0].size();
+    if (m <= 0) {
+      try {
+        throw std::runtime_error("the number of columns should be positive");
+      } catch (std::runtime_error &e) {
+        std::cerr << "runtime_error: " << e.what() << std::endl;
+      }
+    }
+
+    std::vector<std::vector<float>> hess(m, std::vector<float>(m, 0.0));
+    for (int i = 0; i < n; i++) {
+      float tmp_sq = y_pred[i][0] * (1.0 - y_pred[i][0]);
+      for (int j = 0; j < m; j++) {
+        for (int k = 0; k < m; k++) {
+          hess[j][k] += tmp_sq * x[i][j] * x[i][k] / (float)(n);
+        }
+      }
+    }
+    return hess;
+  }
+
   vector<vector<float>> get_grad_w(vector<vector<float>> &x,
                                    vector<vector<float>> &y_pred,
                                    vector<float> &y) {
@@ -98,7 +160,7 @@ struct BCELoss : LossFunc {
     std::vector<std::vector<float>> grad(m, std::vector<float>(1, 0.0));
     for (int i = 0; i < n; i++) {
       for (int j = 0; j < m; j++) {
-        grad[j][0] += (y_pred[i][0] - y[i]) * x[i][j];
+        grad[j][0] += (y_pred[i][0] - y[i]) * x[i][j] / (float)(n);
       }
     }
 
