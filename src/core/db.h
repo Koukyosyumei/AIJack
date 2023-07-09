@@ -88,6 +88,10 @@ public:
 
     Executor executor(storage, catalog, tranManager);
     ResultSet *resultSet = executor.executeMain(analyzedQuery, plan, trn);
+    if (resultSet == nullptr) {
+      result = "Failed to execute the query\n";
+      return;
+    }
     result = StringifyResultSet(resultSet);
   }
 

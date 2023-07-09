@@ -1,0 +1,10 @@
+Create Table dummy {id Int Primary Key, fa Int, fb Int, y Int}
+Insert Into dummy Values (1, 8, 4, 1)
+Insert Into dummy Values (2, 0, 1, 0)
+Insert Into dummy Values (3, 1, 1, 0)
+Insert Into dummy Values (4, 5, 15, 1)
+Insert Into dummy Values (5, 5, 19, 1)
+Insert Into dummy Values (6, 0, 0, 0)
+Insert Into dummy Values (7, 1, 0, 9)
+Insert Into dummy Values (8, 18, 6, 1)
+Select * From dummy

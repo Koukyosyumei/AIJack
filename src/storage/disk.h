@@ -95,6 +95,7 @@ public:
       } catch (std::runtime_error e) {
         std::cerr << "runtime_error: " << e.what() << std::endl;
       }
+      return nullptr;
     }
 
     std::stringstream buffer;

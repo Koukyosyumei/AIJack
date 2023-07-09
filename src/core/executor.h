@@ -351,7 +351,7 @@ inline ResultSet *Executor::logregTable(LogregQuery *q, Plan *p,
 
   LogisticRegression clf(q->num_iterations, q->lr);
   clf.fit(training_dataset.second.first, training_dataset.second.second);
-  storage->saveMLModel(clf, q->model_name);
+  storage->saveMLModel(clf, q->model_name + ".logreg");
 
   std::vector<int> index = training_dataset.first;
   std::vector<std::vector<float>> y_proba =
@@ -367,12 +367,14 @@ inline ResultSet *Executor::logregTable(LogregQuery *q, Plan *p,
   pred_training_result->ColTypes = {ColType::Int, ColType::Float};
   pred_training_result->PrimaryKey = primary_key_id;
   catalog->Add(pred_training_result);
+  std::cout << 555 << std::endl;
 
   bool created = storage->CreateIndex(result_table_name + "_" + primary_key_id);
   if (!created) {
     return nullptr;
   }
 
+  std::cout << 212 << std::endl;
   bool inTransaction = tran != nullptr;
   if (!inTransaction) {
     tran = beginTransaction();
@@ -382,12 +384,16 @@ inline ResultSet *Executor::logregTable(LogregQuery *q, Plan *p,
     row.emplace_back(Item(index[i]));
     row.emplace_back(Item(y_pred[i]));
     storage::Tuple *t = NewTuple(tran->Txid(), row);
+    std::cout << 333 << std::endl;
     std::pair<int, int> tid = storage->InsertTuple(result_table_name, t);
-    storage->InsertIndex(primary_key_id, t->data(0).toi(), tid);
+    std::cout << 777 << std::endl;
+    storage->InsertIndex(result_table_name + "_" + primary_key_id,
+                         t->data(0).toi(), tid);
   }
   if (!inTransaction) {
     commitTransaction(tran);
   }
+  std::cout << 313 << std::endl;
 
   std::string result_summary = "";
   for (int i = 0; i < clf.params.size(); i++) {
@@ -410,6 +416,7 @@ inline ResultSet *Executor::insertTable(InsertQuery *q, Transaction *tran) {
   }
   storage::Tuple *t = NewTuple(tran->Txid(), q->Values);
   std::pair<int, int> tid = storage->InsertTuple(q->table->Name, t);
+  std::cout << "- " << q->Index << std::endl;
   storage->InsertIndex(q->Index, t->data(0).toi(), tid);
   if (!inTransaction) {
     commitTransaction(tran);
@@ -472,6 +479,9 @@ inline ResultSet *Executor::executeMain(Query *q, Plan *p, Transaction *tran) {
   }
   if (auto insertQuery = dynamic_cast<InsertQuery *>(q)) {
     return insertTable(insertQuery, tran);
+  }
+  if (auto logregQuery = dynamic_cast<LogregQuery *>(q)) {
+    return logregTable(logregQuery, p, tran);
   }
   if (auto selectQuery = dynamic_cast<SelectQuery *>(q)) {
     return selectTable(selectQuery, p, tran);

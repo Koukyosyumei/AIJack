@@ -188,25 +188,41 @@ struct Parser {
   }
 
   LogregStmt *logregStmt() {
+    std::cout << 888 << std::endl;
     LogregStmt *logregNode = new LogregStmt();
+    std::cout << 188 << std::endl;
     Token *modelName = expect(STRING);
     Token *indexName = expect(STRING);
     Token *targetName = expect(STRING);
+    std::cout << 8 << std::endl;
     Token *numitr = expect(NUMBER);
+    std::cout << 88 << std::endl;
     Token *lr = expect(NUMBER);
+    std::cout << 222 << std::endl;
     if ((modelName == nullptr) || (indexName == nullptr) ||
-        (targetName = nullptr) || (numitr == nullptr) || (lr == nullptr)) {
+        (targetName == nullptr) || (numitr == nullptr) || (lr == nullptr)) {
       return nullptr;
     }
+    std::cout << 333 << std::endl;
     logregNode->model_name = modelName->str;
+    std::cout << modelName->str << std::endl;
+    std::cout << 111 << std::endl;
     logregNode->index_col = indexName->str;
+    std::cout << indexName->str << std::endl;
+    std::cout << 22 << std::endl;
     logregNode->target_col = targetName->str;
+    std::cout << 999 << std::endl;
+    std::cout << numitr->str << std::endl;
+    std::cout << lr->str << std::endl;
     logregNode->num_iterations = std::stoi(numitr->str);
     logregNode->lr = std::stof(lr->str);
+    std::cout << 888 << std::endl;
     if (!consume(SELECT)) {
       return nullptr;
     }
+    std::cout << 111 << std::endl;
     logregNode->selectstmt = selectStmt();
+    std::cout << 222 << std::endl;
     return logregNode;
   }
 
@@ -271,6 +287,7 @@ struct Parser {
       }
       expect(COMMA);
     }
+    std::cout << "1 " << exprs.size() << std::endl;
 
     InsertStmt *insertNode = new InsertStmt();
     insertNode->TableName = tblName->str;
