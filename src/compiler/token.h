@@ -273,7 +273,6 @@ public:
 
       if (isAsciiChar()) {
         std::string ascii = scanString();
-        std::cout << ascii << std::endl;
         Token *tkn = NewToken(STRING, ascii);
         tokens.push_back(tkn);
         continue;

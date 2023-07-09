@@ -75,14 +75,18 @@ struct LogisticRegression {
     isinitialized = true;
   }
 
-  void fit(const std::vector<std::vector<float>> &xs,
+  bool fit(const std::vector<std::vector<float>> &xs,
            const std::vector<float> &ys) {
 
-    for (auto x : xs) {
-      for (auto _x : x) {
-        std::cout << _x << " ";
+    for (float y : ys) {
+      if ((y != 0) && (y != 1)) {
+        try {
+          throw std::runtime_error("Labels should be 0 or 1");
+        } catch (std::range_error &e) {
+          std::cerr << "range_error: " << e.what() << std::endl;
+          return false;
+        }
       }
-      std::cout << std::endl;
     }
 
     int n = xs.size();
@@ -119,6 +123,8 @@ struct LogisticRegression {
         }
       }
     }
+
+    return true;
   }
 
   std::vector<std::vector<float>>

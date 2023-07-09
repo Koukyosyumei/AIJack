@@ -87,6 +87,14 @@ Executor::where(std::vector<storage::Tuple *> &tuples,
                 const std::vector<Expr *> &where) {
   std::vector<storage::Tuple *> filtered;
   Scheme *s = catalog->FetchScheme(tableName);
+  if (s == nullptr) {
+    try {
+      throw std::runtime_error(
+          "Failed to fetch scheme when processing `where`");
+    } catch (std::runtime_error &e) {
+      std::cerr << "runtime_error: " << e.what() << std::endl;
+    }
+  }
   for (auto &w : where) {
     std::string left = w->left->v;
     std::string right = w->right->v;
@@ -350,7 +358,14 @@ inline ResultSet *Executor::logregTable(LogregQuery *q, Plan *p,
   }
 
   LogisticRegression clf(q->num_iterations, q->lr);
-  clf.fit(training_dataset.second.first, training_dataset.second.second);
+  if (!clf.fit(training_dataset.second.first, training_dataset.second.second)) {
+    ResultSet *resultset = new ResultSet();
+    resultset->Message =
+        "Failed to train a logistic regression model on the given dataset. "
+        "Please check the hyper-parameters and the training dataset";
+    return resultset;
+  }
+
   storage->saveMLModel(clf, q->model_name + ".logreg");
 
   std::vector<int> index = training_dataset.first;
@@ -359,22 +374,21 @@ inline ResultSet *Executor::logregTable(LogregQuery *q, Plan *p,
   std::vector<float> y_pred = clf.predict(training_dataset.second.first);
   float accuracy = clf.score(training_dataset.second.second, y_pred);
 
-  std::string result_table_name = "prediction_result_" + q->model_name;
-  std::string primary_key_id = "prtid_" + q->model_name;
+  std::string result_table_name =
+      "prediction_on_training_data_" + q->model_name;
+  std::string primary_key_id = "id_" + q->model_name;
   Scheme *pred_training_result = new Scheme();
   pred_training_result->TblName = result_table_name;
-  pred_training_result->ColNames = {primary_key_id, "y_pred"};
+  pred_training_result->ColNames = {primary_key_id, "y_pred_" + q->model_name};
   pred_training_result->ColTypes = {ColType::Int, ColType::Float};
   pred_training_result->PrimaryKey = primary_key_id;
   catalog->Add(pred_training_result);
-  std::cout << 555 << std::endl;
 
   bool created = storage->CreateIndex(result_table_name + "_" + primary_key_id);
   if (!created) {
     return nullptr;
   }
 
-  std::cout << 212 << std::endl;
   bool inTransaction = tran != nullptr;
   if (!inTransaction) {
     tran = beginTransaction();
@@ -384,24 +398,24 @@ inline ResultSet *Executor::logregTable(LogregQuery *q, Plan *p,
     row.emplace_back(Item(index[i]));
     row.emplace_back(Item(y_pred[i]));
     storage::Tuple *t = NewTuple(tran->Txid(), row);
-    std::cout << 333 << std::endl;
     std::pair<int, int> tid = storage->InsertTuple(result_table_name, t);
-    std::cout << 777 << std::endl;
     storage->InsertIndex(result_table_name + "_" + primary_key_id,
                          t->data(0).toi(), tid);
   }
   if (!inTransaction) {
     commitTransaction(tran);
   }
-  std::cout << 313 << std::endl;
 
   std::string result_summary = "";
+  result_summary += "Trained Parameters:\n";
   for (int i = 0; i < clf.params.size(); i++) {
     result_summary +=
-        ("(" + std::to_string(i) + ") : " + std::to_string(clf.params[i][0])) +
+        (" (" + std::to_string(i) + ") : " + std::to_string(clf.params[i][0])) +
         "\n";
   }
-  result_summary += "Accuracy: " + std::to_string(accuracy) + "\n";
+  result_summary += "Accuracy (%): " + std::to_string(accuracy * 100) + "\n";
+  result_summary +=
+      "Predition on the trainig data is stored at `" + result_table_name + "`";
 
   ResultSet *resultset = new ResultSet();
   resultset->Message = result_summary;
@@ -416,7 +430,6 @@ inline ResultSet *Executor::insertTable(InsertQuery *q, Transaction *tran) {
   }
   storage::Tuple *t = NewTuple(tran->Txid(), q->Values);
   std::pair<int, int> tid = storage->InsertTuple(q->table->Name, t);
-  std::cout << "- " << q->Index << std::endl;
   storage->InsertIndex(q->Index, t->data(0).toi(), tid);
   if (!inTransaction) {
     commitTransaction(tran);
