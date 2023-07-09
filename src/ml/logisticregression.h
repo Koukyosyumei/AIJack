@@ -77,6 +77,14 @@ struct LogisticRegression {
 
   void fit(const std::vector<std::vector<float>> &xs,
            const std::vector<float> &ys) {
+
+    for (auto x : xs) {
+      for (auto _x : x) {
+        std::cout << _x << " ";
+      }
+      std::cout << std::endl;
+    }
+
     int n = xs.size();
     std::vector<std::vector<float>> xs_normalized = preprocess(xs);
     int m = xs_normalized[0].size();
