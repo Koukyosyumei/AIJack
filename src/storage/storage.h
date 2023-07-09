@@ -1,4 +1,5 @@
 #pragma once
+#include "../ml/logisticregression.h"
 #include "../storage/base.h"
 #include "bufpool.h"
 #include "disk.h"
@@ -102,6 +103,11 @@ public:
     }
 
     return &pg->Tuples[tid.second];
+  }
+
+  void saveMLModel(LogisticRegression &clf, const std::string &model_name) {
+    std::string path = prefix + "/" + model_name;
+    clf.save(path);
   }
 
   void Terminate() {

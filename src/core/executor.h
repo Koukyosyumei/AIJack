@@ -1,6 +1,7 @@
 #pragma once
 #include "../compiler/analyze.h"
 #include "../compiler/ast.h"
+#include "../ml/logisticregression.h"
 #include "../storage/base.h"
 #include "../storage/catalog.h"
 #include "../storage/storage.h"
@@ -211,6 +212,111 @@ inline ResultSet *Executor::selectTable(SelectQuery *q, Plan *p,
   return resultset;
 }
 
+inline std::pair<std::vector<int>,
+                 std::pair<std::vector<std::vector<float>>, std::vector<float>>>
+extract_training_dataset(std::string index_col, std::string target_col,
+                         std::vector<storage::Tuple *> &tuples,
+                         Transaction *tran, Scheme *scheme,
+                         std::vector<std::string> &colNames) {
+  std::vector<std::string> values;
+  int num_tuples = tuples.size();
+  std::vector<std::vector<float>> X;
+  std::vector<float> y;
+  std::vector<int> index;
+  X.reserve(num_tuples);
+  y.reserve(num_tuples);
+  index.reserve(num_tuples);
+
+  for (storage::Tuple *t : tuples) {
+    int id_val;
+    float y_val;
+    std::vector<float> x_vec;
+
+    if (!tran || TupleCanSee(t, tran)) {
+      for (std::string &cname : colNames) {
+        const storage::TupleData td = t->data(scheme->get_ColID(cname));
+        if (index_col == cname) {
+          id_val = td.toi();
+        } else if (target_col == cname) {
+          if (td.type() == storage::TupleData_Type_INT) {
+            y_val = (float)td.toi();
+          } else if (td.type() == storage::TupleData_Type_FLOAT) {
+            y_val = td.tof();
+          }
+        } else {
+          if (td.type() == storage::TupleData_Type_INT) {
+            x_vec.emplace_back((float)td.toi());
+          } else if (td.type() == storage::TupleData_Type_FLOAT) {
+            x_vec.emplace_back(td.tof());
+          }
+        }
+      }
+      index.emplace_back(id_val);
+      X.emplace_back(x_vec);
+      y.emplace_back(y_val);
+    }
+  }
+  return std::make_pair(index, std::make_pair(X, y));
+}
+
+inline std::pair<std::vector<int>,
+                 std::pair<std::vector<std::vector<float>>, std::vector<float>>>
+extract_training_dataset(
+    std::string index_col, std::string target_col,
+    std::vector<std::pair<storage::Tuple *, storage::Tuple *>> &tuples,
+    Transaction *tran, Scheme *scheme_left, Scheme *scheme_right,
+    std::vector<std::string> &colNames) {
+  int num_tuples = tuples.size();
+  std::vector<std::vector<float>> X;
+  std::vector<float> y;
+  std::vector<int> index;
+  X.reserve(num_tuples);
+  y.reserve(num_tuples);
+  index.reserve(num_tuples);
+
+  for (int i = 0; i < num_tuples; i++) {
+    storage::Tuple *t_left = tuples[i].first;
+    storage::Tuple *t_right = tuples[i].second;
+    int id_val;
+    float y_val;
+    std::vector<float> x_vec;
+
+    if (!tran || (TupleCanSee(t_left, tran) && TupleCanSee(t_right, tran))) {
+      for (std::string &cname : colNames) {
+        std::string s;
+        storage::TupleData td;
+        if (scheme_left->has_ColID(cname)) {
+          td = t_left->data(scheme_left->get_ColID(cname));
+        } else if (scheme_right->has_ColID(cname)) {
+          td = t_right->data(scheme_right->get_ColID(cname));
+        } else {
+          continue;
+        }
+
+        if (index_col == cname) {
+          id_val = td.toi();
+        } else if (target_col == cname) {
+          if (td.type() == storage::TupleData_Type_INT) {
+            y_val = (float)td.toi();
+          } else if (td.type() == storage::TupleData_Type_FLOAT) {
+            y_val = td.tof();
+          }
+        } else {
+          if (td.type() == storage::TupleData_Type_INT) {
+            x_vec.emplace_back((float)td.toi());
+          } else if (td.type() == storage::TupleData_Type_FLOAT) {
+            x_vec.emplace_back(td.tof());
+          }
+        }
+      }
+      index.emplace_back(id_val);
+      X.emplace_back(x_vec);
+      y.emplace_back(y_val);
+    }
+  }
+  return std::make_pair(index, std::make_pair(X, y));
+}
+
 inline ResultSet *Executor::logregTable(LogregQuery *q, Plan *p,
                                         Transaction *tran) {
   Scheme *scheme = catalog->FetchScheme(q->selectQuery->From[0]->Name);
@@ -227,17 +333,73 @@ inline ResultSet *Executor::logregTable(LogregQuery *q, Plan *p,
         where(tuples, q->selectQuery->From[0]->Name, q->selectQuery->Where);
   }
 
-  std::vector<std::string> values;
+  std::pair<std::vector<int>,
+            std::pair<std::vector<std::vector<float>>, std::vector<float>>>
+      training_dataset;
   if (!q->selectQuery->Join.empty()) {
     std::vector<std::pair<storage::Tuple *, storage::Tuple *>> joined_tuples =
         join(tuples, q->selectQuery->From[0]->Name,
              q->selectQuery->Join[0].first, q->selectQuery->Join[0].second);
     Scheme *scheme_right = catalog->FetchScheme(q->selectQuery->Join[0].first);
-    values =
-        extract_values(joined_tuples, tran, scheme, scheme_right, colNames);
+    training_dataset =
+        extract_training_dataset(q->index_col, q->target_col, joined_tuples,
+                                 tran, scheme, scheme_right, colNames);
   } else {
-    values = extract_values(tuples, tran, scheme, colNames);
+    training_dataset = extract_training_dataset(q->index_col, q->target_col,
+                                                tuples, tran, scheme, colNames);
   }
+
+  LogisticRegression clf(q->num_iterations, q->lr);
+  clf.fit(training_dataset.second.first, training_dataset.second.second);
+  storage->saveMLModel(clf, q->model_name);
+
+  std::vector<int> index = training_dataset.first;
+  std::vector<std::vector<float>> y_proba =
+      clf.predict_proba(training_dataset.second.first);
+  std::vector<float> y_pred = clf.predict(training_dataset.second.first);
+  float accuracy = clf.score(training_dataset.second.second, y_pred);
+
+  std::string result_table_name = "prediction_result_" + q->model_name;
+  std::string primary_key_id = "prtid_" + q->model_name;
+  Scheme *pred_training_result = new Scheme();
+  pred_training_result->TblName = result_table_name;
+  pred_training_result->ColNames = {primary_key_id, "y_pred"};
+  pred_training_result->ColTypes = {ColType::Int, ColType::Float};
+  pred_training_result->PrimaryKey = primary_key_id;
+  catalog->Add(pred_training_result);
+
+  bool created = storage->CreateIndex(result_table_name + "_" + primary_key_id);
+  if (!created) {
+    return nullptr;
+  }
+
+  bool inTransaction = tran != nullptr;
+  if (!inTransaction) {
+    tran = beginTransaction();
+  }
+  for (int i = 0; i < index.size(); i++) {
+    std::vector<Item> row;
+    row.emplace_back(Item(index[i]));
+    row.emplace_back(Item(y_pred[i]));
+    storage::Tuple *t = NewTuple(tran->Txid(), row);
+    std::pair<int, int> tid = storage->InsertTuple(result_table_name, t);
+    storage->InsertIndex(primary_key_id, t->data(0).toi(), tid);
+  }
+  if (!inTransaction) {
+    commitTransaction(tran);
+  }
+
+  std::string result_summary = "";
+  for (int i = 0; i < clf.params.size(); i++) {
+    result_summary +=
+        ("(" + std::to_string(i) + ") : " + std::to_string(clf.params[i][0])) +
+        "\n";
+  }
+  result_summary += "Accuracy: " + std::to_string(accuracy) + "\n";
+
+  ResultSet *resultset = new ResultSet();
+  resultset->Message = result_summary;
+  return resultset;
 }
 
 inline ResultSet *Executor::insertTable(InsertQuery *q, Transaction *tran) {

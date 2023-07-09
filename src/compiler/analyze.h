@@ -32,7 +32,8 @@ public:
   std::string index_col;
   std::string target_col;
   SelectQuery *selectQuery;
-
+  int num_iterations;
+  float lr;
   void evalQuery() override {}
 };
 
@@ -239,6 +240,8 @@ public:
     q->model_name = n->model_name;
     q->index_col = n->index_col;
     q->target_col = n->target_col;
+    q->num_iterations = n->num_iterations;
+    q->lr = n->lr;
     q->selectQuery = dynamic_cast<SelectQuery *>(analyzeSelect(n->selectstmt));
     return q;
   }

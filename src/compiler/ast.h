@@ -43,6 +43,8 @@ struct LogregStmt : public Stmt {
   std::string model_name;
   std::string index_col;
   std::string target_col;
+  int num_iterations;
+  float lr;
   SelectStmt *selectstmt;
   void stmtNode() override {}
 };

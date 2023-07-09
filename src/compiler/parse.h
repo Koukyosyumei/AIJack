@@ -192,13 +192,17 @@ struct Parser {
     Token *modelName = expect(STRING);
     Token *indexName = expect(STRING);
     Token *targetName = expect(STRING);
+    Token *numitr = expect(NUMBER);
+    Token *lr = expect(NUMBER);
     if ((modelName == nullptr) || (indexName == nullptr) ||
-        (targetName = nullptr)) {
+        (targetName = nullptr) || (numitr == nullptr) || (lr == nullptr)) {
       return nullptr;
     }
     logregNode->model_name = modelName->str;
     logregNode->index_col = indexName->str;
     logregNode->target_col = targetName->str;
+    logregNode->num_iterations = std::stoi(numitr->str);
+    logregNode->lr = std::stof(lr->str);
     if (!consume(SELECT)) {
       return nullptr;
     }
