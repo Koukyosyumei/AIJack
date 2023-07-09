@@ -33,12 +33,12 @@ struct Rain {
   std::vector<float> getInfluence(std::vector<int> &idxs,
                                   std::vector<std::vector<float>> &x,
                                   std::vector<float> &y,
-                                  std::vector<std::vector<float>> &y_pred) {
+                                  std::vector<std::vector<float>> &y_proba) {
     std::vector<float> dQ = getdQ(idxs, x); // m
     std::vector<std::vector<float>> H =
-        loss.get_hess_w(x, y_pred, y); // m \times m
+        loss.get_hess_w(x, y_proba, y); // m \times m
     std::vector<std::vector<float>> E =
-        loss.get_grad_w_ewise(x, y_pred, y);                     // n \times m
+        loss.get_grad_w_ewise(x, y_proba, y);                    // n \times m
     std::vector<float> HinvdQ = conjugateGradient<float>(H, dQ); // m
     std::vector<float> influence = matrixVectorMultiply<float>(E, HinvdQ);
     return influence;

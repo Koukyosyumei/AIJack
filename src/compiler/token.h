@@ -50,21 +50,28 @@ enum TokenKind {
   PRIMARY,
   KEY,
   LOGREG,
+  COMPLAINT,
   keyword_end
 };
 
 const std::unordered_map<int, std::string> tokenmap = {
-    {ILLEGAL, "Illegal"}, {EOF, "Eor"},         {STRING, "String"},
-    {NUMBER, "Number"},   {INT, "Int"},         {FLOAT, "Float"},
-    {VARCHAR, "Varchar"}, {LBRACE, "{"},        {RBRACE, "}"},
-    {LPAREN, "("},        {RPAREN, ")"},        {COMMA, ","},
-    {STAR, "*"},          {SELECT, "Select"},   {FROM, "From"},
-    {WHERE, "Where"},     {JOIN, "Join"},       {ON, "On"},
-    {CREATE, "Create"},   {TABLE, "Table"},     {INSERT, "Insert"},
-    {INTO, "Into"},       {VALUES, "Values"},   {UPDATE, "Update"},
-    {SET, "Set"},         {BEGIN, "Begin"},     {COMMIT, "Commit"},
-    {ROLLBACK, "Abort"},  {PRIMARY, "Primary"}, {KEY, "Key"},
-    {LOGREG, "LOGREG"},   {EQ, "Eq"},           {GEQ, "Geq"}};
+    {ILLEGAL, "Illegal"}, {EOF, "Eor"},
+    {STRING, "String"},   {NUMBER, "Number"},
+    {INT, "Int"},         {FLOAT, "Float"},
+    {VARCHAR, "Varchar"}, {LBRACE, "{"},
+    {RBRACE, "}"},        {LPAREN, "("},
+    {RPAREN, ")"},        {COMMA, ","},
+    {STAR, "*"},          {SELECT, "Select"},
+    {FROM, "From"},       {WHERE, "Where"},
+    {JOIN, "Join"},       {ON, "On"},
+    {CREATE, "Create"},   {TABLE, "Table"},
+    {INSERT, "Insert"},   {INTO, "Into"},
+    {VALUES, "Values"},   {UPDATE, "Update"},
+    {SET, "Set"},         {BEGIN, "Begin"},
+    {COMMIT, "Commit"},   {ROLLBACK, "Abort"},
+    {PRIMARY, "Primary"}, {KEY, "Key"},
+    {LOGREG, "Logreg"},   {COMPLAINT, "Complaint"},
+    {EQ, "Eq"},           {GEQ, "Geq"}};
 
 struct Token {
   TokenKind kind;
@@ -251,6 +258,11 @@ public:
 
       if (matchKeyword("logreg")) {
         tokens.push_back(NewToken(LOGREG, ""));
+        continue;
+      }
+
+      if (matchKeyword("complaint")) {
+        tokens.push_back(NewToken(COMPLAINT, ""));
         continue;
       }
 

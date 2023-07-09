@@ -18,8 +18,7 @@ inline V dotProduct(const vector<V> &v1, const vector<V> &v2) {
 
 // Function to perform matrix-vector multiplication
 template <typename V>
-inline vector<V> matrixVectorMultiply(const vector<vector<V>> &A,
-                                      const vector<V> &x) {
+inline vector<V> matrixVectorMultiply(vector<vector<V>> &A, vector<V> &x) {
   size_t n = A.size();
   vector<V> result(n, 0.0);
   for (size_t i = 0; i < n; i++) {
@@ -32,8 +31,7 @@ inline vector<V> matrixVectorMultiply(const vector<vector<V>> &A,
 
 // Function to perform Conjugate Gradient method
 template <typename V>
-inline vector<V> conjugateGradient(const vector<vector<V>> &A,
-                                   const vector<V> &b) {
+inline vector<V> conjugateGradient(vector<vector<V>> &A, vector<V> &b) {
   size_t n = A.size();
   vector<V> x(n, 0.0); // Initial guess for solution x
   vector<V> r = b;     // Residual vector r

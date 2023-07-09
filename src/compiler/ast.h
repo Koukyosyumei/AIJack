@@ -49,6 +49,13 @@ struct LogregStmt : public Stmt {
   void stmtNode() override {}
 };
 
+struct ComplaintStmt : public Stmt {
+  std::string complaint_name;
+  int k;
+  LogregStmt *logregstmt;
+  void stmtNode() override {}
+};
+
 struct UpdateStmt : public Stmt {
   std::string TableName;
   std::vector<std::string> ColNames;

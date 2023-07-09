@@ -37,6 +37,14 @@ public:
   void evalQuery() override {}
 };
 
+class ComplaintQuery : public Query {
+public:
+  std::string complaint_name;
+  int k;
+  LogregQuery *logregQuery;
+  void evalQuery() override {}
+};
+
 class CreateTableQuery : public Query {
 public:
   Scheme *scheme;
@@ -246,6 +254,15 @@ public:
     return q;
   }
 
+  Query *analyzeComplaint(ComplaintStmt *n) {
+    std::cout << "aaa" << std::endl;
+    ComplaintQuery *q = new ComplaintQuery();
+    q->complaint_name = n->complaint_name;
+    q->k = n->k;
+    q->logregQuery = dynamic_cast<LogregQuery *>(analyzeLogreg(n->logregstmt));
+    return q;
+  }
+
   Query *analyzeUpdate(UpdateStmt *n) {
     UpdateQuery *q = new UpdateQuery();
 
@@ -340,6 +357,10 @@ public:
     }
     if (auto concrete = dynamic_cast<LogregStmt *>(stmt)) {
       return analyzeLogreg(concrete);
+    }
+    if (auto concrete = dynamic_cast<ComplaintStmt *>(stmt)) {
+      std::cout << "1" << std::endl;
+      return analyzeComplaint(concrete);
     }
     if (auto concrete = dynamic_cast<CreateTableStmt *>(stmt)) {
       return analyzeCreateTable(concrete);

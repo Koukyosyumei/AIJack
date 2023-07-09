@@ -208,7 +208,30 @@ struct Parser {
       return nullptr;
     }
     logregNode->selectstmt = selectStmt();
+    if (logregNode->selectstmt == nullptr) {
+      return nullptr;
+    }
     return logregNode;
+  }
+
+  ComplaintStmt *complaintStmt() {
+    ComplaintStmt *complaintNode = new ComplaintStmt();
+    Token *complaintName = expect(STRING);
+    Token *k = expect(NUMBER);
+    if (complaintName == nullptr || k == nullptr) {
+      return nullptr;
+    }
+    complaintNode->complaint_name = complaintName->str;
+    complaintNode->k = stoi(k->str);
+    if (!consume(LOGREG)) {
+      return nullptr;
+    }
+    complaintNode->logregstmt = logregStmt();
+    if (complaintNode->logregstmt == nullptr) {
+      return nullptr;
+    }
+    std::cout << "retue" << std::endl;
+    return complaintNode;
   }
 
   UpdateStmt *updateTableStmt() {
@@ -335,6 +358,10 @@ struct Parser {
 
     if (consume(LOGREG)) {
       return logregStmt();
+    }
+
+    if (consume(COMPLAINT)) {
+      return complaintStmt();
     }
 
     if (consume(SELECT)) {

@@ -105,6 +105,11 @@ public:
     return &pg->Tuples[tid.second];
   }
 
+  void loadMLModel(LogisticRegression &clf, const std::string &model_name) {
+    std::string path = prefix + "/" + model_name;
+    clf.load(path);
+  }
+
   void saveMLModel(LogisticRegression &clf, const std::string &model_name) {
     std::string path = prefix + "/" + model_name;
     clf.save(path);

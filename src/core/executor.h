@@ -2,6 +2,7 @@
 #include "../compiler/analyze.h"
 #include "../compiler/ast.h"
 #include "../ml/logisticregression.h"
+#include "../ml/rain.h"
 #include "../storage/base.h"
 #include "../storage/catalog.h"
 #include "../storage/storage.h"
@@ -11,11 +12,52 @@
 #include "plan.h"
 #include <cstdio>
 #include <iostream>
+#include <queue>
 #include <sstream>
 #include <stdexcept>
 #include <string>
 #include <unordered_map>
 #include <vector>
+
+template <typename T>
+std::vector<size_t> kArgmax(const std::vector<T> &vec, size_t k) {
+  std::vector<size_t> indices(vec.size());
+  std::iota(indices.begin(), indices.end(), 0);
+
+  // Create a min heap of size k+1
+  auto comp = [&](size_t i, size_t j) { return vec[i] > vec[j]; };
+  std::priority_queue<size_t, std::vector<size_t>, decltype(comp)> pq(comp);
+
+  for (size_t i = 0; i < vec.size(); ++i) {
+    pq.push(indices[i]);
+
+    if (pq.size() > k)
+      pq.pop();
+  }
+
+  std::vector<size_t> result;
+  while (!pq.empty()) {
+    result.push_back(pq.top());
+    pq.pop();
+  }
+
+  std::reverse(result.begin(), result.end());
+  return result;
+}
+
+template <typename T>
+void removeIndices(std::vector<T> &vec, const std::vector<size_t> &indices) {
+  // Sort the indices in descending order
+  std::vector<size_t> sortedIndices(indices);
+  std::sort(sortedIndices.rbegin(), sortedIndices.rend());
+
+  // Erase the elements at the specified indices
+  for (const auto &index : sortedIndices) {
+    if (index < vec.size()) {
+      vec.erase(vec.begin() + index);
+    }
+  }
+}
 
 // Forward declarations
 struct Executor;
@@ -37,6 +79,9 @@ struct Executor {
   std::vector<storage::Tuple *> where(std::vector<storage::Tuple *> &tuples,
                                       const std::string &tableName,
                                       const std::vector<Expr *> &where);
+  std::vector<int> whereidx(std::vector<storage::Tuple *> &tuples,
+                            const std::string &tableName,
+                            const std::vector<Expr *> &where);
   std::vector<std::pair<storage::Tuple *, storage::Tuple *>>
   join(std::vector<storage::Tuple *> &left_tuples,
        const std::string &left_table_name, const std::string &rigt_table_name,
@@ -44,6 +89,7 @@ struct Executor {
   ResultSet *selectTable(SelectQuery *q, Plan *p, Transaction *tran);
   ResultSet *logregTable(LogregQuery *q, Plan *p, Transaction *tran);
   ResultSet *insertTable(InsertQuery *q, Transaction *tran);
+  ResultSet *complaintTable(ComplaintQuery *q, Plan *p, Transaction *tran);
   void updateTable(UpdateQuery *q, Plan *p, Transaction *tran);
   ResultSet *createTable(CreateTableQuery *q);
   Transaction *beginTransaction();
@@ -120,6 +166,53 @@ Executor::where(std::vector<storage::Tuple *> &tuples,
       }
       if (flag) {
         filtered.emplace_back(t);
+      }
+    }
+  }
+
+  return filtered;
+}
+
+inline std::vector<int>
+Executor::whereidx(std::vector<storage::Tuple *> &tuples,
+                   const std::string &tableName,
+                   const std::vector<Expr *> &where) {
+  std::vector<int> filtered;
+  Scheme *s = catalog->FetchScheme(tableName);
+  if (s == nullptr) {
+    try {
+      throw std::runtime_error(
+          "Failed to fetch scheme when processing `where`");
+    } catch (std::runtime_error &e) {
+      std::cerr << "runtime_error: " << e.what() << std::endl;
+    }
+  }
+  for (auto &w : where) {
+    std::string left = w->left->v;
+    std::string right = w->right->v;
+    int colid = s->get_ColID(left);
+    for (int i = 0; i < tuples.size(); i++) {
+      storage::Tuple *t = tuples[i];
+      bool flag = false;
+      if (w->op == EQ) {
+        if (s->ColTypes[colid] == ColType::Int) {
+          flag = TupleEqual(t, colid, std::stoi(right));
+        } else if (s->ColTypes[colid] == ColType::Float) {
+          flag = TupleEqual(t, colid, std::stof(right));
+        } else if (s->ColTypes[colid] == ColType::Varchar) {
+          flag = TupleEqual(t, colid, right);
+        }
+      } else if (w->op == GEQ) {
+        if (s->ColTypes[colid] == ColType::Int) {
+          flag = TupleGreaterEq(t, colid, std::stoi(right));
+        } else if (s->ColTypes[colid] == ColType::Float) {
+          flag = TupleGreaterEq(t, colid, std::stof(right));
+        } else if (s->ColTypes[colid] == ColType::Varchar) {
+          flag = TupleGreaterEq(t, colid, right);
+        }
+      }
+      if (flag) {
+        filtered.emplace_back(i);
       }
     }
   }
@@ -379,7 +472,142 @@ inline ResultSet *Executor::logregTable(LogregQuery *q, Plan *p,
   std::string primary_key_id = "id_" + q->model_name;
   Scheme *pred_training_result = new Scheme();
   pred_training_result->TblName = result_table_name;
-  pred_training_result->ColNames = {primary_key_id, "y_pred_" + q->model_name};
+  pred_training_result->ColNames = {primary_key_id, "y_pred_" + q->model_name,
+                                    "y_pred_neg_" + q->model_name,
+                                    "y_pred_pos_" + q->model_name};
+  pred_training_result->ColTypes = {ColType::Int, ColType::Float,
+                                    ColType::Float, ColType::Float};
+  pred_training_result->PrimaryKey = primary_key_id;
+  catalog->Add(pred_training_result);
+
+  bool created = storage->CreateIndex(result_table_name + "_" + primary_key_id);
+  if (!created) {
+    return nullptr;
+  }
+
+  bool inTransaction = tran != nullptr;
+  if (!inTransaction) {
+    tran = beginTransaction();
+  }
+  for (int i = 0; i < index.size(); i++) {
+    std::vector<Item> row;
+    row.emplace_back(Item(index[i]));
+    row.emplace_back(Item(y_pred[i]));
+    row.emplace_back(Item(y_proba[i][0]));
+    row.emplace_back(Item(y_proba[i][1]));
+    storage::Tuple *t = NewTuple(tran->Txid(), row);
+    std::pair<int, int> tid = storage->InsertTuple(result_table_name, t);
+    storage->InsertIndex(result_table_name + "_" + primary_key_id,
+                         t->data(0).toi(), tid);
+  }
+  if (!inTransaction) {
+    commitTransaction(tran);
+  }
+
+  std::string result_summary = "";
+  result_summary += "Trained Parameters:\n";
+  for (int i = 0; i < clf.params.size(); i++) {
+    result_summary +=
+        (" (" + std::to_string(i) + ") : " + std::to_string(clf.params[i][0])) +
+        "\n";
+  }
+  result_summary += "Accuracy (%): " + std::to_string(accuracy * 100) + "\n";
+  result_summary +=
+      "Predition on the trainig data is stored at `" + result_table_name + "`";
+
+  ResultSet *resultset = new ResultSet();
+  resultset->Message = result_summary;
+  return resultset;
+}
+
+inline ResultSet *Executor::complaintTable(ComplaintQuery *q, Plan *p,
+                                           Transaction *tran) {
+  Scheme *scheme =
+      catalog->FetchScheme(q->logregQuery->selectQuery->From[0]->Name);
+  if (scheme == nullptr) {
+    return nullptr;
+  }
+
+  std::vector<std::string> colNames;
+  for (auto &c : q->logregQuery->selectQuery->Cols) {
+    colNames.emplace_back(c->Name);
+  }
+
+  std::vector<storage::Tuple *> tuples = p->scanners->Scan(storage);
+
+  std::vector<int> filitered_idxs(tuples.size());
+  std::iota(filitered_idxs.begin(), filitered_idxs.end(), 0);
+  if (!q->logregQuery->selectQuery->Where.empty()) {
+    filitered_idxs =
+        whereidx(tuples, q->logregQuery->selectQuery->From[0]->Name,
+                 q->logregQuery->selectQuery->Where);
+  }
+
+  std::pair<std::vector<int>,
+            std::pair<std::vector<std::vector<float>>, std::vector<float>>>
+      training_dataset;
+  if (!q->logregQuery->selectQuery->Join.empty()) {
+    std::vector<std::pair<storage::Tuple *, storage::Tuple *>> joined_tuples =
+        join(tuples, q->logregQuery->selectQuery->From[0]->Name,
+             q->logregQuery->selectQuery->Join[0].first,
+             q->logregQuery->selectQuery->Join[0].second);
+    Scheme *scheme_right =
+        catalog->FetchScheme(q->logregQuery->selectQuery->Join[0].first);
+    training_dataset = extract_training_dataset(
+        q->logregQuery->index_col, q->logregQuery->target_col, joined_tuples,
+        tran, scheme, scheme_right, colNames);
+  } else {
+    training_dataset = extract_training_dataset(q->logregQuery->index_col,
+                                                q->logregQuery->target_col,
+                                                tuples, tran, scheme, colNames);
+  }
+
+  LogisticRegression clf(q->logregQuery->num_iterations, q->logregQuery->lr);
+  storage->loadMLModel(clf, q->logregQuery->model_name + ".logreg");
+  std::vector<std::vector<float>> y_proba =
+      clf.predict_proba(training_dataset.second.first);
+  Rain rain(&clf);
+  std::vector<float> influence =
+      rain.getInfluence(filitered_idxs, training_dataset.second.first,
+                        training_dataset.second.second, y_proba);
+  std::vector<size_t> topk_influencer = kArgmax(influence, q->k);
+
+  removeIndices(training_dataset.first, topk_influencer);
+  removeIndices(training_dataset.second.first, topk_influencer);
+  removeIndices(training_dataset.second.first, topk_influencer);
+
+  for (auto y : training_dataset.second.second) {
+    std::cout << y << " ";
+  }
+  std::cout << std::endl;
+
+  if (!clf.fit(training_dataset.second.first, training_dataset.second.second)) {
+    ResultSet *resultset = new ResultSet();
+    resultset->Message =
+        "Failed to train a logistic regression model on the given dataset. "
+        "Please check the hyper-parameters and the training dataset";
+    return resultset;
+  }
+
+  storage->saveMLModel(clf, q->complaint_name + "_" +
+                                q->logregQuery->model_name + ".logreg");
+
+  std::vector<int> index = training_dataset.first;
+  std::vector<float> y_pred = clf.predict(training_dataset.second.first);
+  std::vector<std::vector<float>> y_proba_fixed =
+      clf.predict_proba(training_dataset.second.first);
+  float accuracy = clf.score(training_dataset.second.second, y_pred);
+
+  std::string result_table_name = "prediction_on_training_data_" +
+                                  q->complaint_name + "_" +
+                                  q->logregQuery->model_name;
+  std::string primary_key_id =
+      "id_" + q->complaint_name + "_" + q->logregQuery->model_name;
+  Scheme *pred_training_result = new Scheme();
+  pred_training_result->TblName = result_table_name;
+  pred_training_result->ColNames = {primary_key_id,
+                                    "y_pred_" + q->complaint_name + "_" +
+                                        q->logregQuery->model_name};
   pred_training_result->ColTypes = {ColType::Int, ColType::Float};
   pred_training_result->PrimaryKey = primary_key_id;
   catalog->Add(pred_training_result);
@@ -407,15 +635,15 @@ inline ResultSet *Executor::logregTable(LogregQuery *q, Plan *p,
   }
 
   std::string result_summary = "";
-  result_summary += "Trained Parameters:\n";
+  result_summary += "Fixed Parameters:\n";
   for (int i = 0; i < clf.params.size(); i++) {
     result_summary +=
         (" (" + std::to_string(i) + ") : " + std::to_string(clf.params[i][0])) +
         "\n";
   }
   result_summary += "Accuracy (%): " + std::to_string(accuracy * 100) + "\n";
-  result_summary +=
-      "Predition on the trainig data is stored at `" + result_table_name + "`";
+  result_summary += "Predition on the fixed trainig data is stored at `" +
+                    result_table_name + "`";
 
   ResultSet *resultset = new ResultSet();
   resultset->Message = result_summary;
@@ -495,6 +723,9 @@ inline ResultSet *Executor::executeMain(Query *q, Plan *p, Transaction *tran) {
   }
   if (auto logregQuery = dynamic_cast<LogregQuery *>(q)) {
     return logregTable(logregQuery, p, tran);
+  }
+  if (auto complaintQuery = dynamic_cast<ComplaintQuery *>(q)) {
+    return complaintTable(complaintQuery, p, tran);
   }
   if (auto selectQuery = dynamic_cast<SelectQuery *>(q)) {
     return selectTable(selectQuery, p, tran);
