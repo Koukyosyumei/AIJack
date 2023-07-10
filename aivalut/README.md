@@ -45,17 +45,7 @@ source query.avi
 exit
 ```
 
-The main feature of AIValut is that it can internally train and debug a ML model with SQL-like Query.
-
-```bash
-# Training Logistic Regression
-Logreg `model_name` `primary_key_name` `target_column_name` `number_of_iteration` `learning_rate` From Select `primary_key_name`, `feature_name` From `table_name`
-
-# Debuging
-Complaint `complaint_name` `target_class` `number_of_removed_records` Logreg `model_name_to_be_debugged` `primary_key_name` `target_column_name` `number_of_iteration` `learning_rate` From Select `primary_key_name`, `feature_name` From `table_name` Where `condition`
-```
-
-- Example 1
+-   Example 1
 
 ```bash
 Create Table a {aid Int Primary Key, ascore Int}
@@ -69,4 +59,26 @@ Insert Into b Values (2, 31)
 Insert Into b Values (3, 12)
 
 Select * From a Join b On aid Eq bid Where ascore Geq 1
+```
+
+The main feature of AIValut is that it can internally train and debug a ML model with SQL-like Query.
+
+```bash
+# Training Logistic Regression
+Logreg `model_name` `primary_key_name` `target_column_name` `number_of_iteration` `learning_rate` From Select `primary_key_name`, `feature_name` From `table_name`
+
+# Debugging with Rain
+# We currently support `SUM` aggregation for Logistic Regression for binary classification
+# `target_class` specifies the class for which Rain minimize the predited probabilities under the `where` constraint
+Complaint `complaint_name` `target_class` `number_of_removed_records` Logreg `model_name_to_be_debugged` `primary_key_name` `target_column_name` `number_of_iteration` `learning_rate` From Select `primary_key_name`, `feature_name` From `table_name` Where `condition`
+```
+
+-   Example 2
+
+```bash
+# Train Logistic Regression with the number of iterations of 100 and the learning rate of 1. The name of target feature is `y`, and We use all other features as traning data
+Logreg lrmodel id y 100 1 From Select * From bankrupt
+
+# Remove 2 records so taht the model will predict `negative (class 0)` for the samples with `salary` greater or equal to 1000
+Complaint comp 2 1 Logreg lrmodel id y 100 1 From Select * From bankrupt Where salary Geq 1000
 ```
