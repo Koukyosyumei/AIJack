@@ -117,7 +117,32 @@ api.run()
 
 ### AIValut: A simple DBMS for debugging ML Models
 
-We also provide a simple DBMS named `AIValut` designed specifically for SQL-based algorithms. Implemented almost entirely in C++ from scratch, AIValut eliminates the need for installing any additional dependencies. AIValut currently supports Rain, a SQL-based debugging system for ML models. In the future, we have plans to integrate additional advanced features from AIJack, including, K-Anonymity, Homomorphic Encryption, and Differential Privacy. For more detailed information and usage instructions, please refer to [aivalut/README.md](aivalut/README.md)
+We also provide a simple DBMS named `AIValut` designed specifically for SQL-based algorithms. AIValut currently supports Rain, a SQL-based debugging system for ML models. In the future, we have plans to integrate additional advanced features from AIJack, including K-Anonymity, Homomorphic Encryption, and Differential Privacy. 
+
+AIValut has its own storage engine and query parser, and you can train and debug ML models with SQL-like queries. For example, the `Complaint` query automatically removes problematic records given the specified constraint.
+
+```sql
+# Train Logistic Regression with the number of iterations of 100 and the learning rate of 1. The name of the target feature is `y`, and We use all other features as training data
+>>Logreg lrmodel id y 100 1 From Select * From bankrupt
+Trained Parameters:
+ (0) : 2.771564
+ (1) : -0.236504
+ (2) : 0.967139
+AUC: 0.520000
+Prediction on the training data is stored at `prediction_on_training_data_lrmodel`
+
+# Debugging the above model
+# Remove two records so that the model will predict `positive (class 1)` for the samples with `salary` greater or equal to 1000
+>>Complaint comp Shouldbe 1 2 Against Logreg lrmodel id y 100 1 From Select * From bankrupt Where salary Geq 1000
+Fixed Parameters:
+ (0) : -4.765492
+ (1) : 8.747224
+ (2) : 0.744146
+AUC: 1.000000
+Prediction on the fixed training data is stored at `prediction_on_training_data_comp_lrmodel`
+```
+
+For more detailed information and usage instructions, please refer to [aivalut/README.md](aivalut/README.md).
 
 > Please use AIValut only for research purpose. 
 
