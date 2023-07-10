@@ -20,9 +20,6 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Install Boost
-        run: sudo apt install -y libboost-all-dev
-
       - name: Install Protobuf
         run: sudo apt install -y protobuf-compiler
 
