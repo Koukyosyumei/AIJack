@@ -7,7 +7,7 @@ struct Rain {
   BCELoss loss;
   LogisticRegression *clf;
   Rain(LogisticRegression *clf) : clf(clf) {}
-  std::vector<float> getdQ(std::vector<int> idxs,
+  std::vector<float> getdQ(bool minpos, std::vector<int> idxs,
                            std::vector<std::vector<float>> &x) {
     if (x.size() == 0) {
       return {};
@@ -23,18 +23,24 @@ struct Rain {
         pred += clf->params[j][0] * xs_normalized[i][j];
       }
       for (int j = 0; j < m; j++) {
-        dQ[j] += xs_normalized[i][j] / (2 + std::exp(pred) + std::exp(-pred));
+        float tmp =
+            xs_normalized[i][j] / (2 + std::exp(pred) + std::exp(-pred));
+        if (minpos) {
+          dQ[j] -= tmp;
+        } else {
+          dQ[j] += tmp;
+        }
       }
     }
 
     return dQ;
   }
 
-  std::vector<float> getInfluence(std::vector<int> &idxs,
+  std::vector<float> getInfluence(bool minpos, std::vector<int> &idxs,
                                   std::vector<std::vector<float>> &x,
                                   std::vector<float> &y,
                                   std::vector<std::vector<float>> &y_proba) {
-    std::vector<float> dQ = getdQ(idxs, x); // m
+    std::vector<float> dQ = getdQ(minpos, idxs, x); // m
     std::vector<std::vector<float>> H =
         loss.get_hess_w(x, y_proba, y); // m \times m
     std::vector<std::vector<float>> E =

@@ -585,9 +585,9 @@ inline ResultSet *Executor::complaintTable(ComplaintQuery *q, Plan *p,
   std::vector<std::vector<float>> y_proba =
       clf.predict_proba(training_dataset.second.first);
   Rain rain(&clf);
-  std::vector<float> influence =
-      rain.getInfluence(filitered_idxs, training_dataset.second.first,
-                        training_dataset.second.second, y_proba);
+  std::vector<float> influence = rain.getInfluence(
+      q->minclass, filitered_idxs, training_dataset.second.first,
+      training_dataset.second.second, y_proba);
   std::vector<size_t> topk_influencer = kArgmax(influence, q->k);
   // std::vector<size_t> topk_influencer;
   // for (size_t i : topk_influencer_within) {

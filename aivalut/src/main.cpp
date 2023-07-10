@@ -10,6 +10,34 @@
 #include "core/http.h"
 #include "storage/tuple.h"
 
+bool is_server = false;
+std::string home_dir = ".db/";
+std::string address = "localhost";
+int port = 8889;
+
+void parse_args(int argc, char *argv[]) {
+  int opt;
+  while ((opt = getopt(argc, argv, "d:i:p:s")) != -1) {
+    switch (opt) {
+    case 'd':
+      home_dir = std::string(optarg);
+      break;
+    case 'i':
+      address = std::string(optarg);
+      break;
+    case 'p':
+      port = std::stoi(optarg);
+      break;
+    case 's':
+      is_server = true;
+      break;
+    default:
+      printf("unknown parameter %s is specified", optarg);
+      break;
+    }
+  }
+}
+
 std::vector<std::string> readFileLines(const std::string &filename) {
   std::vector<std::string> lines;
   std::ifstream file(filename);
@@ -80,19 +108,21 @@ void client(std::string address = "localhost", int port = 8889) {
   }
 }
 
-void server(std::string home = ".db/") {
+void server(std::string home = ".db/", std::string address = "localhost",
+            int port = 8889) {
   MyDb *db = NewMyDb(home);
   db->Init();
 
   std::shared_ptr<ApiServer> apiServer = std::make_shared<ApiServer>(db);
-  apiServer->Host();
+  apiServer->Host(address, port);
 }
 
 int main(int argc, char *argv[]) {
-  if (argc > 1 && std::string(argv[1]) == "server") {
-    server();
+  parse_args(argc, argv);
+  if (is_server) {
+    server(home_dir, address, port);
   } else {
-    client();
+    client(address, port);
   }
 
   return 0;

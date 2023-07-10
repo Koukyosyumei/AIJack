@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # clean up
 rm -rf build/*
 
