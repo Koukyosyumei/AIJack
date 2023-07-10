@@ -117,8 +117,9 @@ api.run()
 
 ### AIValut: A simple DBMS for debugging ML Models
 
-We also provide a simple DBMS named `AIValut` for SQL-based algorithms. Since this DBMS is implemeted in C++ from scratch, you do not need to install additional dependencies. Please use AIValut only for research purpose. AIValut currently supports Rain, a SQL-based debugging system for ML models. We plan to integrate other features of AIJack like K-Anonymity, Homomorpic Encryption, and Differential Privacy to AIValut in the future. More details can be found at [aivalut/README.md](aivalut/README.md)
+We also provide a simple DBMS named `AIValut` designed specifically for SQL-based algorithms. Implemented almost entirely in C++ from scratch, AIValut eliminates the need for installing any additional dependencies. AIValut currently supports Rain, a SQL-based debugging system for ML models. In the future, we have plans to integrate additional advanced features from AIJack, including, K-Anonymity, Homomorphic Encryption, and Differential Privacy. For more detailed information and usage instructions, please refer to [aivalut/README.md](aivalut/README.md)
 
+> Please use AIValut only for research purpose. 
 
 ## Resources
 
