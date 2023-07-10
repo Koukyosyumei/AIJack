@@ -85,7 +85,6 @@ public:
 
     Planner planner(analyzedQuery);
     Plan *plan = planner.planMain();
-
     Executor executor(storage, catalog, tranManager);
     ResultSet *resultSet = executor.executeMain(analyzedQuery, plan, trn);
     if (resultSet == nullptr) {

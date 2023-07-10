@@ -26,16 +26,28 @@ public:
       } catch (std::runtime_error e) {
         std::cerr << "runtime_error: " << e.what() << std::endl;
       }
+      return nullptr;
     }
 
     std::array<char, PageSize> buffer;
+    std::size_t file_size = file.tellg();
+    if (file_size > buffer.size()) {
+      try {
+        throw std::runtime_error("The page is too large: " + pagePath);
+      } catch (std::runtime_error &e) {
+        std::cerr << "runtime_error: " << e.what() << std::endl;
+      }
+      return nullptr;
+    }
     file.read(buffer.data(), buffer.size());
+
     if (!file) {
       try {
         throw std::runtime_error("Failed to read page: " + pagePath);
       } catch (std::runtime_error e) {
         std::cerr << "runtime_error: " << e.what() << std::endl;
       }
+      return nullptr;
     }
 
     Page *page = DeserializePage(buffer);
@@ -46,6 +58,7 @@ public:
       } catch (std::runtime_error e) {
         std::cerr << "runtime_error: " << e.what() << std::endl;
       }
+      return nullptr;
     }
 
     return page;

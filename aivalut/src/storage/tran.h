@@ -29,13 +29,13 @@ public:
   }
 
   void Commit(Transaction *tran) {
-    if (!tran) {
+    if (tran) {
       tran->state = TransactionState::Commited;
     }
   }
 
   void Abort(Transaction *tran) {
-    if (!tran) {
+    if (tran) {
       tran->state = TransactionState::Abort;
     }
   }
