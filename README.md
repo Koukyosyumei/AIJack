@@ -122,7 +122,24 @@ We also provide a simple DBMS named `AIValut` designed specifically for SQL-base
 AIValut has its own storage engine and query parser, and you can train and debug ML models with SQL-like queries. For example, the `Complaint` query automatically removes problematic records given the specified constraint.
 
 ```sql
-# Train Logistic Regression with the number of iterations of 100 and the learning rate of 1. The name of the target feature is `y`, and We use all other features as training data
+# We train an ML model to classify whether each customer will go bankrupt or not based on their age and debt.
+# You want the trained model to classify the customer as positive when he/she has more debt than or equal to 100.
+# The 10th record seems problematic for the above constraint.
+>>Select * From bankrupt
+id age debt y
+1 40 0 0
+2 21 10 0
+3 22 10 0
+4 32 30 0
+5 44 50 1
+6 30 100 1
+7 63 310 1
+8 53 420 1
+9 39 530 1
+10 49 1000 0
+
+# Train Logistic Regression with the number of iterations of 100 and the learning rate of 1.
+# The name of the target feature is `y`, and we use all other features as training data.
 >>Logreg lrmodel id y 100 1 From Select * From bankrupt
 Trained Parameters:
  (0) : 2.771564
@@ -131,9 +148,8 @@ Trained Parameters:
 AUC: 0.520000
 Prediction on the training data is stored at `prediction_on_training_data_lrmodel`
 
-# Debugging the above model
-# Remove two records so that the model will predict `positive (class 1)` for the samples with `salary` greater or equal to 1000
->>Complaint comp Shouldbe 1 2 Against Logreg lrmodel id y 100 1 From Select * From bankrupt Where salary Geq 1000
+# Remove one record so that the model will predict `positive (class 1)` for the samples with `debt` greater or equal to 100.
+>>Complaint comp Shouldbe 1 1 Against Logreg lrmodel id y 100 1 From Select * From bankrupt Where debt Geq 100
 Fixed Parameters:
  (0) : -4.765492
  (1) : 8.747224
