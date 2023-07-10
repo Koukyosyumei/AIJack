@@ -234,7 +234,6 @@ struct Parser {
     if (complaintNode->logregstmt == nullptr) {
       return nullptr;
     }
-    std::cout << "retue" << std::endl;
     return complaintNode;
   }
 

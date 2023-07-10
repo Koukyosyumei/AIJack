@@ -11,10 +11,6 @@ TEST(LogisticRegressionTest, Pipeline) {
   LogisticRegression clf(100, 1.0);
   clf.fit(xs, ys);
 
-  for (auto w : clf.params) {
-    std::cout << w[0] << std::endl;
-  }
-
   std::vector<float> y_preds = clf.predict(xs);
   for (int i = 0; i < y_preds.size(); i++) {
     ASSERT_EQ(ys[i], y_preds[i]);

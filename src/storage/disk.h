@@ -38,7 +38,6 @@ public:
       }
     }
 
-    std::cout << pagePath << std::endl;
     Page *page = DeserializePage(buffer);
     if (!page) {
       delete page;
