@@ -28,9 +28,17 @@ public:
     return tx;
   }
 
-  void Commit(Transaction *tran) { tran->state = TransactionState::Commited; }
+  void Commit(Transaction *tran) {
+    if (!tran) {
+      tran->state = TransactionState::Commited;
+    }
+  }
 
-  void Abort(Transaction *tran) { tran->state = TransactionState::Abort; }
+  void Abort(Transaction *tran) {
+    if (!tran) {
+      tran->state = TransactionState::Abort;
+    }
+  }
 
   uint64_t GetCurrentTxID() { return currentTxid; }
 

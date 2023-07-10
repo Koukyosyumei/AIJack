@@ -722,16 +722,19 @@ inline ResultSet *Executor::executeMain(Query *q, Plan *p, Transaction *tran) {
     beginTransaction();
     ResultSet *resultset = new ResultSet();
     resultset->Message = "Transaction begins.";
+    return resultset;
   }
   if (auto commitQuery = dynamic_cast<CommitQuery *>(q)) {
     commitTransaction(tran);
     ResultSet *resultset = new ResultSet();
     resultset->Message = "Transaction was committed.";
+    return resultset;
   }
   if (auto abortQuery = dynamic_cast<AbortQuery *>(q)) {
     abortTransaction(tran);
     ResultSet *resultset = new ResultSet();
     resultset->Message = "Transaction was aborted.";
+    return resultset;
   }
   if (auto createTableQuery = dynamic_cast<CreateTableQuery *>(q)) {
     return createTable(createTableQuery);
