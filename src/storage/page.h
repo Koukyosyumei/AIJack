@@ -23,7 +23,7 @@ inline Page *NewPage() {
 }
 
 inline std::array<char, PageSize> SerializePage(const Page *p) {
-  std::array<char, PageSize> buffer;
+  std::array<char, PageSize> buffer{};
 
   for (int i = 0; i < TupleNumber; i++) {
     std::array<uint8_t, TupleSize> tupleBytes = SerializeTuple(&p->Tuples[i]);
@@ -37,7 +37,7 @@ inline Page *DeserializePage(const std::array<char, PageSize> &buffer) {
   Page *p = new Page();
   bool front_set = false;
   for (int i = 0; i < TupleNumber; i++) {
-    std::array<uint8_t, TupleSize> tupleBytes;
+    std::array<uint8_t, TupleSize> tupleBytes{};
     std::memcpy(tupleBytes.data(), buffer.data() + i * TupleSize, TupleSize);
     storage::Tuple *t = DeserializeTuple(tupleBytes);
     if (t == nullptr) {
@@ -49,10 +49,10 @@ inline Page *DeserializePage(const std::array<char, PageSize> &buffer) {
       }
     } else {
       p->Tuples[i] = *t;
-    }
-    if (!front_set && TupleIsUnused(t)) {
-      p->front = i;
-      front_set = true;
+      if (!front_set && TupleIsUnused(t)) {
+        p->front = i;
+        front_set = true;
+      }
     }
   }
 

@@ -50,8 +50,7 @@ inline storage::Tuple *NewTuple(uint64_t minTxId,
 }
 
 inline std::array<uint8_t, TupleSize> SerializeTuple(const storage::Tuple *t) {
-  std::array<uint8_t, TupleSize> buffer;
-  buffer.fill(0);
+  std::array<uint8_t, TupleSize> buffer{};
 
   if (t != nullptr) {
     std::string serializedData;
@@ -62,8 +61,13 @@ inline std::array<uint8_t, TupleSize> SerializeTuple(const storage::Tuple *t) {
         std::cerr << "runtime_error: " << e.what() << std::endl;
       }
     }
-    std::memcpy(buffer.data(), serializedData.c_str(),
-                strlen(serializedData.c_str()));
+    const size_t dataSize =
+        std::min(serializedData.size(), TupleSize - sizeof(size_t));
+    std::memcpy(buffer.data() + sizeof(size_t), serializedData.data(),
+                dataSize);
+    *reinterpret_cast<size_t *>(buffer.data()) = dataSize;
+    // std::memcpy(buffer.data(), serializedData.c_str(),
+    // serializedData.size());
   } else {
     std::cerr << "Skip a null tuple when serializing a tuple\n";
   }
@@ -74,9 +78,12 @@ inline storage::Tuple *
 DeserializeTuple(const std::array<uint8_t, TupleSize> &buffer) {
   storage::Tuple *t = new storage::Tuple();
 
-  std::string serializedData(reinterpret_cast<const char *>(buffer.data()),
-                             buffer.size());
-  if (!t->ParseFromString(serializedData.c_str())) {
+  size_t dataSize = *reinterpret_cast<const size_t *>(buffer.data());
+  const char *serializedData =
+      reinterpret_cast<const char *>(buffer.data() + sizeof(size_t));
+  // std::string serializedData(reinterpret_cast<const char *>(buffer.data()),
+  //                           buffer.size());
+  if (!t->ParseFromArray(serializedData, dataSize)) {
     try {
       throw std::runtime_error("Failed to deserialize storage::Tuple");
     } catch (std::runtime_error e) {
