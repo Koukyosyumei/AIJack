@@ -51,7 +51,7 @@ struct LogregStmt : public Stmt {
 
 struct ComplaintStmt : public Stmt {
   std::string complaint_name;
-  int minclass;
+  int desired_class;
   int k;
   LogregStmt *logregstmt;
   void stmtNode() override {}

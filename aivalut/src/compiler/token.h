@@ -52,28 +52,48 @@ enum TokenKind {
   KEY,
   LOGREG,
   COMPLAINT,
+  SHOULDBE,
+  AGAINST,
   keyword_end
 };
 
-const std::unordered_map<int, std::string> tokenmap = {
-    {ILLEGAL, "Illegal"}, {EOF, "Eor"},
-    {STRING, "String"},   {NUMBER, "Number"},
-    {INT, "Int"},         {FLOAT, "Float"},
-    {VARCHAR, "Varchar"}, {LBRACE, "{"},
-    {RBRACE, "}"},        {LPAREN, "("},
-    {RPAREN, ")"},        {COMMA, ","},
-    {STAR, "*"},          {SELECT, "Select"},
-    {FROM, "From"},       {WHERE, "Where"},
-    {JOIN, "Join"},       {ON, "On"},
-    {CREATE, "Create"},   {TABLE, "Table"},
-    {INSERT, "Insert"},   {INTO, "Into"},
-    {VALUES, "Values"},   {UPDATE, "Update"},
-    {SET, "Set"},         {BEGIN, "Begin"},
-    {COMMIT, "Commit"},   {ROLLBACK, "Abort"},
-    {PRIMARY, "Primary"}, {KEY, "Key"},
-    {LOGREG, "Logreg"},   {COMPLAINT, "Complaint"},
-    {EQ, "Eq"},           {GEQ, "Geq"},
-    {LEQ, "Leq"}};
+const std::unordered_map<int, std::string> tokenmap = {{ILLEGAL, "Illegal"},
+                                                       {EOF, "Eor"},
+                                                       {STRING, "String"},
+                                                       {NUMBER, "Number"},
+                                                       {INT, "Int"},
+                                                       {FLOAT, "Float"},
+                                                       {VARCHAR, "Varchar"},
+                                                       {LBRACE, "{"},
+                                                       {RBRACE, "}"},
+                                                       {LPAREN, "("},
+                                                       {RPAREN, ")"},
+                                                       {COMMA, ","},
+                                                       {STAR, "*"},
+                                                       {SELECT, "Select"},
+                                                       {FROM, "From"},
+                                                       {WHERE, "Where"},
+                                                       {JOIN, "Join"},
+                                                       {ON, "On"},
+                                                       {CREATE, "Create"},
+                                                       {TABLE, "Table"},
+                                                       {INSERT, "Insert"},
+                                                       {INTO, "Into"},
+                                                       {VALUES, "Values"},
+                                                       {UPDATE, "Update"},
+                                                       {SET, "Set"},
+                                                       {BEGIN, "Begin"},
+                                                       {COMMIT, "Commit"},
+                                                       {ROLLBACK, "Abort"},
+                                                       {PRIMARY, "Primary"},
+                                                       {KEY, "Key"},
+                                                       {LOGREG, "Logreg"},
+                                                       {COMPLAINT, "Complaint"},
+                                                       {SHOULDBE, "Shouldbe"},
+                                                       {AGAINST, "Against"},
+                                                       {EQ, "Eq"},
+                                                       {GEQ, "Geq"},
+                                                       {LEQ, "Leq"}};
 
 struct Token {
   TokenKind kind;
@@ -265,6 +285,16 @@ public:
 
       if (matchKeyword("complaint")) {
         tokens.push_back(NewToken(COMPLAINT, ""));
+        continue;
+      }
+
+      if (matchKeyword("shouldbe")) {
+        tokens.push_back(NewToken(SHOULDBE, ""));
+        continue;
+      }
+
+      if (matchKeyword("against")) {
+        tokens.push_back(NewToken(AGAINST, ""));
         continue;
       }
 

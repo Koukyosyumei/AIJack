@@ -221,14 +221,16 @@ struct Parser {
   ComplaintStmt *complaintStmt() {
     ComplaintStmt *complaintNode = new ComplaintStmt();
     Token *complaintName = expect(STRING);
-    Token *minclass = expect(NUMBER);
+    consume(SHOULDBE);
+    Token *desired_class = expect(NUMBER);
     Token *k = expect(NUMBER);
     if (complaintName == nullptr || k == nullptr) {
       return nullptr;
     }
     complaintNode->complaint_name = complaintName->str;
-    complaintNode->minclass = stoi(k->str);
+    complaintNode->desired_class = stoi(desired_class->str);
     complaintNode->k = stoi(k->str);
+    consume(AGAINST);
     if (!consume(LOGREG)) {
       return nullptr;
     }

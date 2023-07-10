@@ -2,6 +2,7 @@
 #include "../compiler/analyze.h"
 #include "../compiler/ast.h"
 #include "../ml/logisticregression.h"
+#include "../ml/metrics.h"
 #include "../ml/rain.h"
 #include "../storage/base.h"
 #include "../storage/catalog.h"
@@ -483,7 +484,7 @@ inline ResultSet *Executor::logregTable(LogregQuery *q, Plan *p,
   std::vector<std::vector<float>> y_proba =
       clf.predict_proba(training_dataset.second.first);
   std::vector<float> y_pred = clf.predict(training_dataset.second.first);
-  float accuracy = clf.score(training_dataset.second.second, y_pred);
+  float auc = ovr_roc_auc_score(y_proba, training_dataset.second.second);
 
   std::string result_table_name =
       "prediction_on_training_data_" + q->model_name;
@@ -529,7 +530,7 @@ inline ResultSet *Executor::logregTable(LogregQuery *q, Plan *p,
         (" (" + std::to_string(i) + ") : " + std::to_string(clf.params[i][0])) +
         "\n";
   }
-  result_summary += "Accuracy (%): " + std::to_string(accuracy * 100) + "\n";
+  result_summary += "AUC: " + std::to_string(auc) + "\n";
   result_summary +=
       "Predition on the trainig data is stored at `" + result_table_name + "`";
 
@@ -586,13 +587,9 @@ inline ResultSet *Executor::complaintTable(ComplaintQuery *q, Plan *p,
       clf.predict_proba(training_dataset.second.first);
   Rain rain(&clf);
   std::vector<float> influence = rain.getInfluence(
-      q->minclass, filitered_idxs, training_dataset.second.first,
+      q->desired_class, filitered_idxs, training_dataset.second.first,
       training_dataset.second.second, y_proba);
   std::vector<size_t> topk_influencer = kArgmax(influence, q->k);
-  // std::vector<size_t> topk_influencer;
-  // for (size_t i : topk_influencer_within) {
-  //  topk_influencer.push_back(filitered_idxs[i]);
-  //}
 
   removeIndices(training_dataset.first, topk_influencer);
   removeIndices(training_dataset.second.first, topk_influencer);
@@ -614,7 +611,7 @@ inline ResultSet *Executor::complaintTable(ComplaintQuery *q, Plan *p,
   std::vector<float> y_pred = clf.predict(training_dataset.second.first);
   std::vector<std::vector<float>> y_proba_fixed =
       clf.predict_proba(training_dataset.second.first);
-  float accuracy = clf.score(training_dataset.second.second, y_pred);
+  float auc = ovr_roc_auc_score(y_proba_fixed, training_dataset.second.second);
 
   std::string result_table_name = "prediction_on_training_data_" +
                                   q->complaint_name + "_" +
@@ -623,9 +620,11 @@ inline ResultSet *Executor::complaintTable(ComplaintQuery *q, Plan *p,
       "id_" + q->complaint_name + "_" + q->logregQuery->model_name;
   Scheme *pred_training_result = new Scheme();
   pred_training_result->TblName = result_table_name;
-  pred_training_result->ColNames = {primary_key_id,
-                                    "y_pred_" + q->complaint_name + "_" +
-                                        q->logregQuery->model_name};
+  pred_training_result->ColNames = {
+      primary_key_id,
+      "y_pred_" + q->complaint_name + "_" + q->logregQuery->model_name,
+      "y_pred_neg_" + q->complaint_name + "_" + q->logregQuery->model_name,
+      "y_pred_pos_" + q->complaint_name + "_" + q->logregQuery->model_name};
   pred_training_result->ColTypes = {ColType::Int, ColType::Float};
   pred_training_result->PrimaryKey = primary_key_id;
   catalog->Add(pred_training_result);
@@ -643,6 +642,8 @@ inline ResultSet *Executor::complaintTable(ComplaintQuery *q, Plan *p,
     std::vector<Item> row;
     row.emplace_back(Item(index[i]));
     row.emplace_back(Item(y_pred[i]));
+    row.emplace_back(Item(y_proba_fixed[i][0]));
+    row.emplace_back(Item(y_proba_fixed[i][1]));
     storage::Tuple *t = NewTuple(tran->Txid(), row);
     std::pair<int, int> tid = storage->InsertTuple(result_table_name, t);
     storage->InsertIndex(result_table_name + "_" + primary_key_id,
@@ -659,7 +660,7 @@ inline ResultSet *Executor::complaintTable(ComplaintQuery *q, Plan *p,
         (" (" + std::to_string(i) + ") : " + std::to_string(clf.params[i][0])) +
         "\n";
   }
-  result_summary += "Accuracy (%): " + std::to_string(accuracy * 100) + "\n";
+  result_summary += "AUC: " + std::to_string(auc) + "\n";
   result_summary += "Predition on the fixed trainig data is stored at `" +
                     result_table_name + "`";
 

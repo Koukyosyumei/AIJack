@@ -48,17 +48,16 @@ exit
 -   Example 1
 
 ```bash
-Create Table a {aid Int Primary Key, ascore Int}
-Insert Into a Values (1, 1)
-Insert Into a Values (2, 10)
-Insert Into a Values (3, 10)
-greg lrmodel id y 100 1 From Select * From dummy
+>>Create Table a {aid Int Primary Key, ascore Int}
+>>Insert Into a Values (1, 1)
+>>Insert Into a Values (2, 10)
+>>Insert Into a Values (3, 10)
 
-Create Table b {bid Int Primary Key, bscore Int}
-Insert Into b Values (2, 31)
-Insert Into b Values (3, 12)
+>>Create Table b {bid Int Primary Key, bscore Int}
+>>Insert Into b Values (2, 31)
+>>Insert Into b Values (3, 12)
 
-Select * From a Join b On aid Eq bid Where ascore Geq 1
+>>Select * From a Join b On aid Eq bid Where ascore Geq 1
 ```
 
 The main feature of AIValut is that it can internally train and debug a ML model with SQL-like Query.
@@ -69,16 +68,28 @@ Logreg `model_name` `primary_key_name` `target_column_name` `number_of_iteration
 
 # Debugging with Rain
 # We currently support `SUM` aggregation for Logistic Regression for binary classification
-# `target_class` specifies the class for which Rain minimize the predited probabilities under the `where` constraint
-Complaint `complaint_name` `target_class` `number_of_removed_records` Logreg `model_name_to_be_debugged` `primary_key_name` `target_column_name` `number_of_iteration` `learning_rate` From Select `primary_key_name`, `feature_name` From `table_name` Where `condition`
+# `target_class` specifies the desired class that you want the model to predict for samples satisfying `Where` constraints 
+Complaint `complaint_name` Shouldbe `target_class` `number_of_removed_records` Against Logreg `model_name_to_be_debugged` `primary_key_name` `target_column_name` `number_of_iteration` `learning_rate` From Select `primary_key_name`, `feature_name` From `table_name` Where `condition`
 ```
 
 -   Example 2
 
 ```bash
-# Train Logistic Regression with the number of iterations of 100 and the learning rate of 1. The name of target feature is `y`, and We use all other features as traning data
-Logreg lrmodel id y 100 1 From Select * From bankrupt
+# Train Lo gistic Regression with the number of iterations of 100 and the learning rate of 1. The name of target feature is `y`, and We use all other features as traning data
+>>Logreg lrmodel id y 100 1 From Select * From bankrupt
+Trained Parameters:
+ (0) : 2.771564
+ (1) : -0.236504
+ (2) : 0.967139
+AUC: 0.520000
+Predition on the trainig data is stored at `prediction_on_training_data_lrmodel`
 
-# Remove 2 records so taht the model will predict `negative (class 0)` for the samples with `salary` greater or equal to 1000
-Complaint comp 2 1 Logreg lrmodel id y 100 1 From Select * From bankrupt Where salary Geq 1000
+#Remove 2 records so taht the model will predict `positive (class 1)` for the samples with `salary` greater or equal to 1000
+>>Complaint comp Shouldbe 1 2 Against Logreg lrmodel id y 100 1 From Select * From bankrupt Where salary Geq 1000
+Fixed Parameters:
+ (0) : -4.765492
+ (1) : 8.747224
+ (2) : 0.744146
+AUC: 1.000000
+Predition on the fixed trainig data is stored at `prediction_on_training_data_comp_lrmodel`
 ```

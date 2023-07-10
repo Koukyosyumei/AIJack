@@ -1,0 +1,14 @@
+Create Table bankrupt {id Int Primary Key, age Int, debt Int, y Int}
+Insert Into bankrupt Values (1, 40, 0, 0)
+Insert Into bankrupt Values (2, 21, 10, 0)
+Insert Into bankrupt Values (3, 22, 10, 0)
+Insert Into bankrupt Values (4, 32, 30, 0)
+Insert Into bankrupt Values (5, 44, 50, 1)
+Insert Into bankrupt Values (6, 30, 100, 1)
+Insert Into bankrupt Values (7, 63, 310, 1)
+Insert Into bankrupt Values (8, 53, 420, 1)
+Insert Into bankrupt Values (9, 39, 530, 1)
+Insert Into bankrupt Values (10, 49, 1000, 0)
+Select * From bankrupt
+Logreg lrmodel id y 100 1 From Select * From bankrupt
+Complaint comp Shouldbe 1 1 Against Logreg lrmodel id y 100 1 From Select * From bankrupt Where salary Geq 100

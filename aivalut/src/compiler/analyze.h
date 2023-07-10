@@ -40,7 +40,7 @@ public:
 class ComplaintQuery : public Query {
 public:
   std::string complaint_name;
-  int minclass;
+  int desired_class;
   int k;
   LogregQuery *logregQuery;
   void evalQuery() override {}
@@ -258,7 +258,7 @@ public:
   Query *analyzeComplaint(ComplaintStmt *n) {
     ComplaintQuery *q = new ComplaintQuery();
     q->complaint_name = n->complaint_name;
-    q->minclass = n->minclass;
+    q->desired_class = n->desired_class;
     q->k = n->k;
     q->logregQuery = dynamic_cast<LogregQuery *>(analyzeLogreg(n->logregstmt));
     return q;
