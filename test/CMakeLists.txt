@@ -14,7 +14,7 @@ find_package(Protobuf REQUIRED)
 include_directories(${PROTOBUF_INCLUDE_DIR})
 # add_library(tupledata STATIC ../mydb/storage/data.pb.cc)
 
-set(TEST_NAME mydb-test)
+set(TEST_NAME aivalut-test)
 
 file(GLOB testSRC
     "*.cpp"
@@ -22,6 +22,6 @@ file(GLOB testSRC
 set(TEST_RUNNER main.cpp ${testSRC})
 add_executable(${TEST_NAME} ${TEST_RUNNER})
 
-target_link_libraries(${TEST_NAME} gtest gtest_main pthread tupledata ${PROTOBUF_LIBRARY} libmydb)
+target_link_libraries(${TEST_NAME} gtest gtest_main pthread tupledata ${PROTOBUF_LIBRARY} libaivalut)
 
 gtest_discover_tests(${TEST_NAME})
