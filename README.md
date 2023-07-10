@@ -67,6 +67,8 @@ We briefly introduce the overview of AIJack.
 
 ## Basic Interface
 
+### Python API
+
 For standard machine learning algorithms, AIJack allows you to simulate attacks against machine learning models with `Attacker` APIs. AIJack mainly supports PyTorch or sklearn models.
 
 ```Python
@@ -113,6 +115,12 @@ api = FedAVGAPI(server, clients, criterion, optimizers, dataloaders)
 api.run()
 ```
 
+### AIValut: A simple DBMS for debugging ML Models
+
+We also provide a simple DBMS named `AIValut` designed specifically for SQL-based algorithms. Implemented almost entirely in C++ from scratch, AIValut eliminates the need for installing any additional dependencies. AIValut currently supports Rain, a SQL-based debugging system for ML models. In the future, we have plans to integrate additional advanced features from AIJack, including, K-Anonymity, Homomorphic Encryption, and Differential Privacy. For more detailed information and usage instructions, please refer to [aivalut/README.md](aivalut/README.md)
+
+> Please use AIValut only for research purpose. 
+
 ## Resources
 
 You can also find more examples in our tutorials and documentation.
@@ -137,7 +145,7 @@ You can also find more examples in our tutorials and documentation.
 | Defense       | Homomorphic Encryption | [Paiilier](https://link.springer.com/chapter/10.1007/3-540-48910-X_16)                                                                                                                                                                                                                                                                                                                                                                                                                                             |
 | Defense       | Differential Privacy   | [DPSGD](https://arxiv.org/abs/1607.00133), [AdaDPS](https://arxiv.org/pdf/2202.05963.pdf)                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
 | Defense       | Anonymization          | [Mondrian](https://ieeexplore.ieee.org/document/1617393)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
-| Defense       | Debugging              | [Model Assertions](https://cs.stanford.edu/~matei/papers/2019/debugml_model_assertions.pdf) |
+| Defense       | Debugging              | [Model Assertions](https://cs.stanford.edu/~matei/papers/2019/debugml_model_assertions.pdf), [Rain](https://arxiv.org/abs/2004.05722) |
 | Defense       | Others                 | [Soteria](https://openaccess.thecvf.com/content/CVPR2021/papers/Sun_Soteria_Provable_Defense_Against_Privacy_Leakage_in_Federated_Learning_From_CVPR_2021_paper.pdf), [FoolsGold](https://arxiv.org/abs/1808.04866), [MID](https://arxiv.org/abs/2009.05241), [Sparse Gradient](https://aclanthology.org/D17-1045/)                                                                                                                                                                                                                                              |
 
 -----------------------------------------------------------------------
