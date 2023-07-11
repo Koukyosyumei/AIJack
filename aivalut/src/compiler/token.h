@@ -154,8 +154,14 @@ private:
 
   std::string scanNumber() {
     std::string out;
-    while (!isEnd() && !isSpace() && isNumber()) {
-      out.push_back(input[pos]);
+    int dot_count = 0;
+    while (!isEnd() && !isSpace() && (isNumber() || (input[pos] == '.'))) {
+      if (input[pos] != '.' || (dot_count == 0)) {
+        out.push_back(input[pos]);
+      }
+      if (input[pos] == '.') {
+        dot_count++;
+      }
       pos++;
     }
     return out;

@@ -625,7 +625,8 @@ inline ResultSet *Executor::complaintTable(ComplaintQuery *q, Plan *p,
       "y_pred_" + q->complaint_name + "_" + q->logregQuery->model_name,
       "y_pred_neg_" + q->complaint_name + "_" + q->logregQuery->model_name,
       "y_pred_pos_" + q->complaint_name + "_" + q->logregQuery->model_name};
-  pred_training_result->ColTypes = {ColType::Int, ColType::Float};
+  pred_training_result->ColTypes = {ColType::Int, ColType::Float,
+                                    ColType::Float, ColType::Float};
   pred_training_result->PrimaryKey = primary_key_id;
   catalog->Add(pred_training_result);
 
