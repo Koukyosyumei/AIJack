@@ -531,8 +531,8 @@ inline ResultSet *Executor::logregTable(LogregQuery *q, Plan *p,
         "\n";
   }
   result_summary += "AUC: " + std::to_string(auc) + "\n";
-  result_summary +=
-      "Predition on the trainig data is stored at `" + result_table_name + "`";
+  result_summary += "Predictions on the training data are stored at `" +
+                    result_table_name + "`";
 
   ResultSet *resultset = new ResultSet();
   resultset->Message = result_summary;
@@ -661,7 +661,7 @@ inline ResultSet *Executor::complaintTable(ComplaintQuery *q, Plan *p,
         "\n";
   }
   result_summary += "AUC: " + std::to_string(auc) + "\n";
-  result_summary += "Predition on the fixed trainig data is stored at `" +
+  result_summary += "Predictions on the fixed training data are stored at `" +
                     result_table_name + "`";
 
   ResultSet *resultset = new ResultSet();

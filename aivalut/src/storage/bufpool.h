@@ -11,6 +11,8 @@
 
 const int page_cache_size = 1024;
 
+typedef enum { NotFound, Full, Success } PageStatus;
+
 struct BufferTag {
   std::string tableName;
   uint64_t pgid;
@@ -73,8 +75,8 @@ public:
 
   void unpinPage(PageDescriptor *pg) { pg->ref--; }
 
-  Page *readPage(const std::string &tableName, uint64_t tid) {
-    uint64_t pgid = toPgid(tid);
+  Page *readPage(const std::string &tableName, uint64_t pgid) {
+    // uint64_t pgid = toPgid(tid);
     BufferTag bt(tableName, pgid);
     uint64_t hash = bt.hash();
     void *p = lru->Get(hash);
@@ -87,8 +89,8 @@ public:
     return pd->page;
   }
 
-  std::pair<bool, std::pair<int, int>> appendTuple(const std::string &tableName,
-                                                   storage::Tuple *t) {
+  std::pair<PageStatus, std::pair<int, int>>
+  appendTuple(const std::string &tableName, storage::Tuple *t) {
     // TODO: Implement appendTuple logic
     // uint64_t latestTid = 0;
     // uint64_t pgid = toPgid(latestTid);
@@ -98,17 +100,17 @@ public:
     PageDescriptor *pd = lru->Get(hash);
 
     if (pd == nullptr) {
-      return {false, {-1, -1}};
+      return {NotFound, {-1, -1}};
     }
 
     if (pd->page->front >= TupleNumber) {
-      return {false, {-1, -1}};
+      return {Full, {-1, -1}};
     }
 
     pd->dirty = true;
     pd->page->Tuples[pd->page->front] = *t;
     pd->page->front++;
-    return {true, {pgid, pd->page->front - 1}};
+    return {Success, {pgid, pd->page->front - 1}};
   }
 
   std::pair<bool, Page *> putPage(const std::string &tableName, uint64_t pgid,

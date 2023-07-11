@@ -20,9 +20,12 @@ public:
     delete disk;
   }
 
-  void insertPage(const std::string &tableName) {
+  void insertPage(const std::string &tableName, PageStatus pstatus) {
     Page *pg = NewPage();
     uint64_t pgid = buffer->NewPgid(tableName);
+    if (pstatus == Full) {
+      pgid++;
+    }
     bool isNeedPersist;
     std::pair<bool, Page *> flag_victim = buffer->putPage(tableName, pgid, pg);
     isNeedPersist = flag_victim.first;
@@ -39,11 +42,12 @@ public:
   TID InsertTuple(const std::string &tablename, storage::Tuple *t) {
     while (true) {
       // if not exist in buffer, put a page to lru-cache
-      std::pair<bool, TID> append_result = buffer->appendTuple(tablename, t);
-      if (append_result.first) {
+      std::pair<PageStatus, TID> append_result =
+          buffer->appendTuple(tablename, t);
+      if (append_result.first == Success) {
         return append_result.second;
       }
-      insertPage(tablename);
+      insertPage(tablename, append_result.first);
     }
   }
 
@@ -81,7 +85,6 @@ public:
 
   storage::Tuple *ReadTuple(const std::string &tableName, uint64_t seqtid) {
     uint64_t pgid = buffer->toPgid(seqtid);
-
     Page *pg = readPage(tableName, pgid);
 
     if (pg == nullptr) {
