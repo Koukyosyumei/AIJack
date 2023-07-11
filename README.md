@@ -123,7 +123,7 @@ AIValut has its own storage engine and query parser, and you can train and debug
 
 ```sql
 # We train an ML model to classify whether each customer will go bankrupt or not based on their age and debt.
-# You want the trained model to classify the customer as positive when he/she has more debt than or equal to 100.
+# We want the trained model to classify the customer as positive when he/she has more debt than or equal to 100.
 # The 10th record seems problematic for the above constraint.
 >>Select * From bankrupt
 id age debt y
