@@ -24,8 +24,6 @@ struct Rain {
       for (int j = 0; j < m; j++) {
         double tmp =
             xs_normalized[i][j] / (2 + std::exp(pred) + std::exp(-pred));
-        std::cout << tmp << " " << xs_normalized[i][j] << " " << pred << " "
-                  << std::endl;
         if (shoudbepos) {
           dQ[j] += tmp;
         } else {
@@ -41,19 +39,13 @@ struct Rain {
                                    std::vector<std::vector<double>> &x,
                                    std::vector<double> &y,
                                    std::vector<std::vector<double>> &y_proba) {
-    std::cout << 122 << std::endl;
     std::vector<std::vector<double>> xs_normalized = clf->normalize(x);
-    std::cout << 222 << std::endl;
     std::vector<double> dQ = getdQ(shoudbepos, idxs, xs_normalized); // m
-    std::cout << 322 << std::endl;
     std::vector<std::vector<double>> H =
         loss.get_hess_w(xs_normalized, y_proba, y); // m \times m
-    std::cout << 422 << std::endl;
     std::vector<std::vector<double>> E =
-        loss.get_grad_w_ewise(xs_normalized, y_proba, y); // n \times m
-    std::cout << 522 << std::endl;
+        loss.get_grad_w_ewise(xs_normalized, y_proba, y);          // n \times m
     std::vector<double> HinvdQ = conjugateGradient<double>(H, dQ); // m
-    std::cout << 622 << std::endl;
     std::vector<double> influence = matrixVectorMultiply<double>(E, HinvdQ);
     return influence;
   }

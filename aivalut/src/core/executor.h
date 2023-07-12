@@ -11,6 +11,7 @@
 #include "../storage/tuple.h"
 #include "../utils/bptree.h"
 #include "plan.h"
+#include <cctype>
 #include <cstdio>
 #include <iostream>
 #include <queue>
@@ -599,6 +600,16 @@ inline ResultSet *Executor::complaintTable(ComplaintQuery *q, Plan *p,
       training_dataset.second.second, y_proba);
   std::vector<size_t> topk_influencer = kArgmax(influence, q->k);
 
+  double max_influence_removed;
+  double min_influence_removed;
+  if (q->k == 0) {
+    max_influence_removed = 0;
+    min_influence_removed = 0;
+  } else {
+    max_influence_removed = topk_influencer[topk_influencer[0]];
+    min_influence_removed = topk_influencer[topk_influencer[q->k - 1]];
+  }
+
   removeIndices(training_dataset.first, topk_influencer);
   removeIndices(training_dataset.second.first, topk_influencer);
   removeIndices(training_dataset.second.second, topk_influencer);
@@ -634,7 +645,7 @@ inline ResultSet *Executor::complaintTable(ComplaintQuery *q, Plan *p,
       "y_pred_" + q->complaint_name + "_" + q->logregQuery->model_name,
       "y_pred_neg_" + q->complaint_name + "_" + q->logregQuery->model_name,
       "y_pred_pos_" + q->complaint_name + "_" + q->logregQuery->model_name,
-      "influence" + q->complaint_name + "_" + q->logregQuery->model_name};
+      "influence_" + q->complaint_name + "_" + q->logregQuery->model_name};
   pred_training_result->ColTypes = {ColType::Int, ColType::Float,
                                     ColType::Float, ColType::Float,
                                     ColType::Float};
@@ -667,6 +678,10 @@ inline ResultSet *Executor::complaintTable(ComplaintQuery *q, Plan *p,
   }
 
   std::string result_summary = "";
+  result_summary += "Removed " + std::to_string(q->k) +
+                    " record(s) with influence scores of " +
+                    std::to_string(min_influence_removed) + " to " +
+                    std::to_string(max_influence_removed) + "\n";
   result_summary += "Fixed Parameters:\n";
   for (int i = 0; i < clf.params.size(); i++) {
     result_summary +=
