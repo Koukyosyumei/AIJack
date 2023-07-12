@@ -7,23 +7,22 @@ struct Rain {
   BCELoss loss;
   LogisticRegression *clf;
   Rain(LogisticRegression *clf) : clf(clf) {}
-  std::vector<float> getdQ(bool shoudbepos, std::vector<int> idxs,
-                           std::vector<std::vector<float>> &x) {
-    if (x.size() == 0) {
+  std::vector<double> getdQ(bool shoudbepos, std::vector<int> idxs,
+                            std::vector<std::vector<double>> &xs_normalized) {
+    if (xs_normalized.size() == 0) {
       return {};
     }
-    int m = x[0].size();
+    int m = xs_normalized[0].size();
 
-    std::vector<std::vector<float>> xs_normalized = clf->preprocess(x);
-    std::vector<float> dQ(m, 0);
+    std::vector<double> dQ(m, 0);
 
     for (int i : idxs) {
-      float pred = 0;
+      double pred = 0;
       for (int j = 0; j < m; j++) {
         pred += clf->params[j][0] * xs_normalized[i][j];
       }
       for (int j = 0; j < m; j++) {
-        float tmp =
+        double tmp =
             xs_normalized[i][j] / (2 + std::exp(pred) + std::exp(-pred));
         if (shoudbepos) {
           dQ[j] += tmp;
@@ -36,17 +35,18 @@ struct Rain {
     return dQ;
   }
 
-  std::vector<float> getInfluence(bool shoudbepos, std::vector<int> &idxs,
-                                  std::vector<std::vector<float>> &x,
-                                  std::vector<float> &y,
-                                  std::vector<std::vector<float>> &y_proba) {
-    std::vector<float> dQ = getdQ(shoudbepos, idxs, x); // m
-    std::vector<std::vector<float>> H =
-        loss.get_hess_w(x, y_proba, y); // m \times m
-    std::vector<std::vector<float>> E =
-        loss.get_grad_w_ewise(x, y_proba, y);                    // n \times m
-    std::vector<float> HinvdQ = conjugateGradient<float>(H, dQ); // m
-    std::vector<float> influence = matrixVectorMultiply<float>(E, HinvdQ);
+  std::vector<double> getInfluence(bool shoudbepos, std::vector<int> &idxs,
+                                   std::vector<std::vector<double>> &x,
+                                   std::vector<double> &y,
+                                   std::vector<std::vector<double>> &y_proba) {
+    std::vector<std::vector<double>> xs_normalized = clf->normalize(x);
+    std::vector<double> dQ = getdQ(shoudbepos, idxs, xs_normalized); // m
+    std::vector<std::vector<double>> H =
+        loss.get_hess_w(xs_normalized, y_proba, y); // m \times m
+    std::vector<std::vector<double>> E =
+        loss.get_grad_w_ewise(xs_normalized, y_proba, y);          // n \times m
+    std::vector<double> HinvdQ = conjugateGradient<double>(H, dQ); // m
+    std::vector<double> influence = matrixVectorMultiply<double>(E, HinvdQ);
     return influence;
   }
 };

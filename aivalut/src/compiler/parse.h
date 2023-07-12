@@ -152,7 +152,11 @@ struct Parser {
   std::vector<Expr *> whereClause() {
     std::vector<Expr *> exprs;
     exprs.push_back(eq());
-    return exprs;
+    if (exprs[0]->is_operator) {
+      return exprs;
+    } else {
+      return {};
+    }
   }
 
   SelectStmt *selectStmt() {
@@ -223,6 +227,7 @@ struct Parser {
     Token *complaintName = expect(STRING);
     consume(SHOULDBE);
     Token *desired_class = expect(NUMBER);
+    consume(REMOVE);
     Token *k = expect(NUMBER);
     if (complaintName == nullptr || k == nullptr) {
       return nullptr;

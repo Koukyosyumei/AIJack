@@ -49,7 +49,6 @@ struct SeqScan : public Scanner {
       storage::Tuple *t = store->ReadTuple(tblName, i);
       if (!t)
         break;
-
       if (TupleIsUnused(t))
         break;
 
