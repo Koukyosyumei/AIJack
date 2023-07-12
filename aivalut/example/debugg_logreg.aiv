@@ -7,8 +7,8 @@ Insert Into bankrupt Values (5, 44, 5, 1)
 Insert Into bankrupt Values (6, 30, 10, 1)
 Insert Into bankrupt Values (7, 63, 31, 1)
 Insert Into bankrupt Values (8, 53, 42, 1)
+Insert Into bankrupt Values (10, 49, 180, 0)
 Insert Into bankrupt Values (9, 39, 53, 1)
-Insert Into bankrupt Values (10, 49, 80, 0)
 Select * From bankrupt
 Logreg lrmodel id y 100 1 From Select * From bankrupt
-Complaint comp Shouldbe 1 Remove 1 Against Logreg lrmodel id y 100 1 From Select * From bankrupt Where debt Geg 100
+Complaint comp Shouldbe 1 Remove 1 Against Logreg lrmodel id y 100 1 From Select * From bankrupt Where debt Geq 30

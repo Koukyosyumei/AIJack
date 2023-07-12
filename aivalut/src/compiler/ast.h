@@ -85,11 +85,14 @@ struct Expr {
   std::string v;
   TokenKind op;
   bool is_primary;
+  bool is_operator;
 
-  Expr() : is_primary(false){};
-  Expr(std::string v) : is_primary(false), v(v) {}
-  Expr(Expr *left, Expr *right) : left(left), right(right), is_primary(false) {}
+  Expr() : is_primary(false), is_operator(false){};
+  Expr(std::string v) : is_primary(false), is_operator(false), v(v) {}
+  Expr(Expr *left, Expr *right)
+      : left(left), right(right), is_primary(false), is_operator(false) {}
   Expr(TokenKind op, Expr *left, Expr *right)
-      : op(op), left(left), right(right), is_primary(false) {}
+      : op(op), left(left), right(right), is_primary(false), is_operator(true) {
+  }
   bool IsLit() { return (left == nullptr) && (right == nullptr); }
 };

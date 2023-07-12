@@ -199,7 +199,7 @@ Executor::whereidx(std::vector<storage::Tuple *> &tuples,
   }
   for (auto &w : where) {
     if (w == nullptr) {
-      std::cout << "what?" << std::endl;
+      continue;
     }
     std::string left = w->left->v;
     std::string right = w->right->v;
@@ -549,18 +549,15 @@ inline ResultSet *Executor::complaintTable(ComplaintQuery *q, Plan *p,
   if (scheme == nullptr) {
     return nullptr;
   }
-  std::cout << 777 << std::endl;
   std::vector<std::string> colNames;
   for (auto &c : q->logregQuery->selectQuery->Cols) {
     colNames.emplace_back(c->Name);
   }
 
   std::vector<storage::Tuple *> tuples = p->scanners->Scan(storage);
-  std::cout << 888 << std::endl;
   std::vector<int> filitered_idxs; //(tuples.size());
   // std::iota(filitered_idxs.begin(), filitered_idxs.end(), 0);
   if (!q->logregQuery->selectQuery->Where.empty()) {
-    std::cout << 456123 << std::endl;
     filitered_idxs =
         whereidx(tuples, q->logregQuery->selectQuery->From[0]->Name,
                  q->logregQuery->selectQuery->Where);
@@ -575,7 +572,6 @@ inline ResultSet *Executor::complaintTable(ComplaintQuery *q, Plan *p,
   std::pair<std::vector<int>,
             std::pair<std::vector<std::vector<double>>, std::vector<double>>>
       training_dataset;
-  std::cout << 1234 << std::endl;
   if (!q->logregQuery->selectQuery->Join.empty()) {
     std::vector<std::pair<storage::Tuple *, storage::Tuple *>> joined_tuples =
         join(tuples, q->logregQuery->selectQuery->From[0]->Name,
@@ -587,22 +583,16 @@ inline ResultSet *Executor::complaintTable(ComplaintQuery *q, Plan *p,
         q->logregQuery->index_col, q->logregQuery->target_col, joined_tuples,
         tran, scheme, scheme_right, colNames);
   } else {
-    std::cout << 456 << std::endl;
     training_dataset = extract_training_dataset(q->logregQuery->index_col,
                                                 q->logregQuery->target_col,
                                                 tuples, tran, scheme, colNames);
-    std::cout << 4447 << std::endl;
   }
 
   LogisticRegression clf(q->logregQuery->num_iterations, q->logregQuery->lr);
   storage->loadMLModel(clf, q->logregQuery->model_name + ".logreg");
-  std::cout << 555 << std::endl;
   std::vector<std::vector<double>> y_proba =
       clf.predict_proba(training_dataset.second.first);
-  std::cout << 655 << std::endl;
   Rain rain(&clf);
-  std::cout << 755 << std::endl;
-  std::cout << filitered_idxs.size() << std::endl;
 
   std::vector<double> influence = rain.getInfluence(
       q->desired_class, filitered_idxs, training_dataset.second.first,
