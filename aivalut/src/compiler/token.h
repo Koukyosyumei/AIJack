@@ -53,6 +53,7 @@ enum TokenKind {
   LOGREG,
   COMPLAINT,
   SHOULDBE,
+  REMOVE,
   AGAINST,
   keyword_end
 };
@@ -90,6 +91,7 @@ const std::unordered_map<int, std::string> tokenmap = {{ILLEGAL, "Illegal"},
                                                        {LOGREG, "Logreg"},
                                                        {COMPLAINT, "Complaint"},
                                                        {SHOULDBE, "Shouldbe"},
+                                                       {REMOVE, "remove"},
                                                        {AGAINST, "Against"},
                                                        {EQ, "Eq"},
                                                        {GEQ, "Geq"},
@@ -297,6 +299,10 @@ public:
       if (matchKeyword("shouldbe")) {
         tokens.push_back(NewToken(SHOULDBE, ""));
         continue;
+      }
+
+      if (matchKeyword("remove")) {
+        tokens.push_back(NewToken(REMOVE, ""));
       }
 
       if (matchKeyword("against")) {

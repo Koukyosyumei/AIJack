@@ -8,8 +8,8 @@
 #include <vector>
 using namespace std;
 
-inline float sigmoid(float x) {
-  float sigmoid_range = 34.538776394910684;
+inline double sigmoid(double x) {
+  double sigmoid_range = 34.538776394910684;
   if (x <= -1 * sigmoid_range)
     return 1e-15;
   else if (x >= sigmoid_range)
@@ -18,10 +18,10 @@ inline float sigmoid(float x) {
     return 1.0 / (1.0 + exp(-1 * x));
 }
 
-inline std::vector<std::vector<float>>
-sigmoid(std::vector<std::vector<float>> xs) {
-  std::vector<std::vector<float>> ys(xs.size(),
-                                     std::vector<float>(xs[0].size()));
+inline std::vector<std::vector<double>>
+sigmoid(std::vector<std::vector<double>> xs) {
+  std::vector<std::vector<double>> ys(xs.size(),
+                                      std::vector<double>(xs[0].size()));
   for (int i = 0; i < xs.size(); i++) {
     for (int j = 0; j < xs[i].size(); j++) {
       ys[i][j] = sigmoid(xs[i][j]);
@@ -30,12 +30,12 @@ sigmoid(std::vector<std::vector<float>> xs) {
   return ys;
 }
 
-inline vector<float> softmax(vector<float> x) {
+inline vector<double> softmax(vector<double> x) {
   int n = x.size();
-  float max_x = *max_element(x.begin(), x.end());
-  vector<float> numerator(n, 0);
-  vector<float> output(n, 0);
-  float denominator = 0;
+  double max_x = *max_element(x.begin(), x.end());
+  vector<double> numerator(n, 0);
+  vector<double> output(n, 0);
+  double denominator = 0;
 
   for (int i = 0; i < n; i++) {
     numerator[i] = exp(x[i] - max_x);
@@ -52,19 +52,20 @@ inline vector<float> softmax(vector<float> x) {
 struct LossFunc {
   LossFunc(){};
 
-  virtual float get_loss(vector<vector<float>> &y_pred, vector<float> &y) = 0;
-  virtual vector<vector<float>> get_grad_o(vector<vector<float>> &y_pred,
-                                           vector<float> &y) = 0;
-  virtual vector<vector<float>> get_hess_o(vector<vector<float>> &y_pred,
-                                           vector<float> &y) = 0;
+  virtual double get_loss(vector<vector<double>> &y_pred,
+                          vector<double> &y) = 0;
+  virtual vector<vector<double>> get_grad_o(vector<vector<double>> &y_pred,
+                                            vector<double> &y) = 0;
+  virtual vector<vector<double>> get_hess_o(vector<vector<double>> &y_pred,
+                                            vector<double> &y) = 0;
 };
 
 struct BCELoss : LossFunc {
   BCELoss(){};
 
-  float get_loss(vector<vector<float>> &y_pred, vector<float> &y) {
-    float loss = 0;
-    float n = y_pred.size();
+  double get_loss(vector<vector<double>> &y_pred, vector<double> &y) {
+    double loss = 0;
+    double n = y_pred.size();
     for (int i = 0; i < n; i++) {
       if (y[i] == 1) {
         loss += log(1 + exp(-1 * y_pred[i][0])) / n;
@@ -75,9 +76,9 @@ struct BCELoss : LossFunc {
     return loss;
   }
 
-  vector<vector<float>> get_grad_w_ewise(vector<vector<float>> &x,
-                                         vector<vector<float>> &y_pred,
-                                         vector<float> &y) {
+  vector<vector<double>> get_grad_w_ewise(vector<vector<double>> &x,
+                                          vector<vector<double>> &y_pred,
+                                          vector<double> &y) {
     int n = x.size();
     if (n <= 0) {
       try {
@@ -95,7 +96,7 @@ struct BCELoss : LossFunc {
       }
     }
 
-    std::vector<std::vector<float>> grad(n, std::vector<float>(m, 0.0));
+    std::vector<std::vector<double>> grad(n, std::vector<double>(m, 0.0));
     for (int i = 0; i < n; i++) {
       for (int j = 0; j < m; j++) {
         grad[i][j] = (y_pred[i][0] - y[i]) * x[i][j];
@@ -105,9 +106,9 @@ struct BCELoss : LossFunc {
     return grad;
   }
 
-  vector<vector<float>> get_hess_w(vector<vector<float>> &x,
-                                   vector<vector<float>> &y_pred,
-                                   vector<float> &y) {
+  vector<vector<double>> get_hess_w(vector<vector<double>> &x,
+                                    vector<vector<double>> &y_pred,
+                                    vector<double> &y) {
     int n = x.size();
     if (n <= 0) {
       try {
@@ -125,21 +126,21 @@ struct BCELoss : LossFunc {
       }
     }
 
-    std::vector<std::vector<float>> hess(m, std::vector<float>(m, 0.0));
+    std::vector<std::vector<double>> hess(m, std::vector<double>(m, 0.0));
     for (int i = 0; i < n; i++) {
-      float tmp_sq = y_pred[i][0] * (1.0 - y_pred[i][0]);
+      double tmp_sq = y_pred[i][0] * (1.0 - y_pred[i][0]);
       for (int j = 0; j < m; j++) {
         for (int k = 0; k < m; k++) {
-          hess[j][k] += tmp_sq * x[i][j] * x[i][k] / (float)(n);
+          hess[j][k] += tmp_sq * x[i][j] * x[i][k] / (double)(n);
         }
       }
     }
     return hess;
   }
 
-  vector<vector<float>> get_grad_w(vector<vector<float>> &x,
-                                   vector<vector<float>> &y_pred,
-                                   vector<float> &y) {
+  vector<vector<double>> get_grad_w(vector<vector<double>> &x,
+                                    vector<vector<double>> &y_pred,
+                                    vector<double> &y) {
     int n = x.size();
     if (n <= 0) {
       try {
@@ -157,31 +158,31 @@ struct BCELoss : LossFunc {
       }
     }
 
-    std::vector<std::vector<float>> grad(m, std::vector<float>(1, 0.0));
+    std::vector<std::vector<double>> grad(m, std::vector<double>(1, 0.0));
     for (int i = 0; i < n; i++) {
       for (int j = 0; j < m; j++) {
-        grad[j][0] += (y_pred[i][0] - y[i]) * x[i][j] / (float)(n);
+        grad[j][0] += (y_pred[i][0] - y[i]) * x[i][j] / (double)(n);
       }
     }
 
     return grad;
   }
 
-  vector<vector<float>> get_grad_o(vector<vector<float>> &y_pred,
-                                   vector<float> &y) {
+  vector<vector<double>> get_grad_o(vector<vector<double>> &y_pred,
+                                    vector<double> &y) {
     int element_num = y_pred.size();
-    vector<vector<float>> grad(element_num);
+    vector<vector<double>> grad(element_num);
     for (int i = 0; i < element_num; i++)
       grad[i] = {y_pred[i][0] - y[i]};
     return grad;
   }
 
-  vector<vector<float>> get_hess_o(vector<vector<float>> &y_pred,
-                                   vector<float> &y) {
+  vector<vector<double>> get_hess_o(vector<vector<double>> &y_pred,
+                                    vector<double> &y) {
     int element_num = y_pred.size();
-    vector<vector<float>> hess(element_num);
+    vector<vector<double>> hess(element_num);
     for (int i = 0; i < element_num; i++) {
-      float temp_proba = y_pred[i][0];
+      double temp_proba = y_pred[i][0];
       hess[i] = {temp_proba * (1 - temp_proba)};
     }
     return hess;

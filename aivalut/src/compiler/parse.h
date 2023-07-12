@@ -219,21 +219,30 @@ struct Parser {
   }
 
   ComplaintStmt *complaintStmt() {
+    std::cout << "aa" << std::endl;
     ComplaintStmt *complaintNode = new ComplaintStmt();
     Token *complaintName = expect(STRING);
+    std::cout << "aa" << std::endl;
     consume(SHOULDBE);
+    std::cout << "aa" << std::endl;
     Token *desired_class = expect(NUMBER);
+    std::cout << "aa" << std::endl;
+    consume(REMOVE);
+    std::cout << "aa" << std::endl;
     Token *k = expect(NUMBER);
     if (complaintName == nullptr || k == nullptr) {
       return nullptr;
     }
+    std::cout << "aa" << std::endl;
     complaintNode->complaint_name = complaintName->str;
     complaintNode->desired_class = stoi(desired_class->str);
     complaintNode->k = stoi(k->str);
     consume(AGAINST);
+    std::cout << "aa" << std::endl;
     if (!consume(LOGREG)) {
       return nullptr;
     }
+    std::cout << "aa" << std::endl;
     complaintNode->logregstmt = logregStmt();
     if (complaintNode->logregstmt == nullptr) {
       return nullptr;

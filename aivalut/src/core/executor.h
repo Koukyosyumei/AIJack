@@ -198,6 +198,9 @@ Executor::whereidx(std::vector<storage::Tuple *> &tuples,
     }
   }
   for (auto &w : where) {
+    if (w == nullptr) {
+      std::cout << "what?" << std::endl;
+    }
     std::string left = w->left->v;
     std::string right = w->right->v;
     int colid = s->get_ColID(left);
@@ -332,16 +335,16 @@ inline ResultSet *Executor::selectTable(SelectQuery *q, Plan *p,
   return resultset;
 }
 
-inline std::pair<std::vector<int>,
-                 std::pair<std::vector<std::vector<float>>, std::vector<float>>>
+inline std::pair<std::vector<int>, std::pair<std::vector<std::vector<double>>,
+                                             std::vector<double>>>
 extract_training_dataset(std::string index_col, std::string target_col,
                          std::vector<storage::Tuple *> &tuples,
                          Transaction *tran, Scheme *scheme,
                          std::vector<std::string> &colNames) {
   std::vector<std::string> values;
   int num_tuples = tuples.size();
-  std::vector<std::vector<float>> X;
-  std::vector<float> y;
+  std::vector<std::vector<double>> X;
+  std::vector<double> y;
   std::vector<int> index;
   X.reserve(num_tuples);
   y.reserve(num_tuples);
@@ -350,7 +353,7 @@ extract_training_dataset(std::string index_col, std::string target_col,
   for (storage::Tuple *t : tuples) {
     int id_val;
     float y_val;
-    std::vector<float> x_vec;
+    std::vector<double> x_vec;
 
     if (!tran || TupleCanSee(t, tran)) {
       for (std::string &cname : colNames) {
@@ -359,13 +362,13 @@ extract_training_dataset(std::string index_col, std::string target_col,
           id_val = td.toi();
         } else if (target_col == cname) {
           if (td.type() == storage::TupleData_Type_INT) {
-            y_val = (float)td.toi();
+            y_val = (double)td.toi();
           } else if (td.type() == storage::TupleData_Type_FLOAT) {
             y_val = td.tof();
           }
         } else {
           if (td.type() == storage::TupleData_Type_INT) {
-            x_vec.emplace_back((float)td.toi());
+            x_vec.emplace_back((double)td.toi());
           } else if (td.type() == storage::TupleData_Type_FLOAT) {
             x_vec.emplace_back(td.tof());
           }
@@ -379,16 +382,16 @@ extract_training_dataset(std::string index_col, std::string target_col,
   return std::make_pair(index, std::make_pair(X, y));
 }
 
-inline std::pair<std::vector<int>,
-                 std::pair<std::vector<std::vector<float>>, std::vector<float>>>
+inline std::pair<std::vector<int>, std::pair<std::vector<std::vector<double>>,
+                                             std::vector<double>>>
 extract_training_dataset(
     std::string index_col, std::string target_col,
     std::vector<std::pair<storage::Tuple *, storage::Tuple *>> &tuples,
     Transaction *tran, Scheme *scheme_left, Scheme *scheme_right,
     std::vector<std::string> &colNames) {
   int num_tuples = tuples.size();
-  std::vector<std::vector<float>> X;
-  std::vector<float> y;
+  std::vector<std::vector<double>> X;
+  std::vector<double> y;
   std::vector<int> index;
   X.reserve(num_tuples);
   y.reserve(num_tuples);
@@ -398,8 +401,8 @@ extract_training_dataset(
     storage::Tuple *t_left = tuples[i].first;
     storage::Tuple *t_right = tuples[i].second;
     int id_val;
-    float y_val;
-    std::vector<float> x_vec;
+    double y_val;
+    std::vector<double> x_vec;
 
     if (!tran || (TupleCanSee(t_left, tran) && TupleCanSee(t_right, tran))) {
       for (std::string &cname : colNames) {
@@ -417,13 +420,13 @@ extract_training_dataset(
           id_val = td.toi();
         } else if (target_col == cname) {
           if (td.type() == storage::TupleData_Type_INT) {
-            y_val = (float)td.toi();
+            y_val = (double)td.toi();
           } else if (td.type() == storage::TupleData_Type_FLOAT) {
             y_val = td.tof();
           }
         } else {
           if (td.type() == storage::TupleData_Type_INT) {
-            x_vec.emplace_back((float)td.toi());
+            x_vec.emplace_back((double)td.toi());
           } else if (td.type() == storage::TupleData_Type_FLOAT) {
             x_vec.emplace_back(td.tof());
           }
@@ -454,7 +457,7 @@ inline ResultSet *Executor::logregTable(LogregQuery *q, Plan *p,
   }
 
   std::pair<std::vector<int>,
-            std::pair<std::vector<std::vector<float>>, std::vector<float>>>
+            std::pair<std::vector<std::vector<double>>, std::vector<double>>>
       training_dataset;
   if (!q->selectQuery->Join.empty()) {
     std::vector<std::pair<storage::Tuple *, storage::Tuple *>> joined_tuples =
@@ -481,10 +484,10 @@ inline ResultSet *Executor::logregTable(LogregQuery *q, Plan *p,
   storage->saveMLModel(clf, q->model_name + ".logreg");
 
   std::vector<int> index = training_dataset.first;
-  std::vector<std::vector<float>> y_proba =
+  std::vector<std::vector<double>> y_proba =
       clf.predict_proba(training_dataset.second.first);
-  std::vector<float> y_pred = clf.predict(training_dataset.second.first);
-  float auc = ovr_roc_auc_score(y_proba, training_dataset.second.second);
+  std::vector<double> y_pred = clf.predict(training_dataset.second.first);
+  double auc = ovr_roc_auc_score(y_proba, training_dataset.second.second);
 
   std::string result_table_name =
       "prediction_on_training_data_" + q->model_name;
@@ -511,9 +514,9 @@ inline ResultSet *Executor::logregTable(LogregQuery *q, Plan *p,
   for (int i = 0; i < index.size(); i++) {
     std::vector<Item> row;
     row.emplace_back(Item(index[i]));
-    row.emplace_back(Item(y_pred[i]));
-    row.emplace_back(Item(y_proba[i][0]));
-    row.emplace_back(Item(y_proba[i][1]));
+    row.emplace_back(Item((float)y_pred[i]));
+    row.emplace_back(Item((float)y_proba[i][0]));
+    row.emplace_back(Item((float)y_proba[i][1]));
     storage::Tuple *t = NewTuple(tran->Txid(), row);
     std::pair<int, int> tid = storage->InsertTuple(result_table_name, t);
     storage->InsertIndex(result_table_name + "_" + primary_key_id,
@@ -546,25 +549,33 @@ inline ResultSet *Executor::complaintTable(ComplaintQuery *q, Plan *p,
   if (scheme == nullptr) {
     return nullptr;
   }
-
+  std::cout << 777 << std::endl;
   std::vector<std::string> colNames;
   for (auto &c : q->logregQuery->selectQuery->Cols) {
     colNames.emplace_back(c->Name);
   }
 
   std::vector<storage::Tuple *> tuples = p->scanners->Scan(storage);
-
-  std::vector<int> filitered_idxs(tuples.size());
-  std::iota(filitered_idxs.begin(), filitered_idxs.end(), 0);
+  std::cout << 888 << std::endl;
+  std::vector<int> filitered_idxs; //(tuples.size());
+  // std::iota(filitered_idxs.begin(), filitered_idxs.end(), 0);
   if (!q->logregQuery->selectQuery->Where.empty()) {
+    std::cout << 456123 << std::endl;
     filitered_idxs =
         whereidx(tuples, q->logregQuery->selectQuery->From[0]->Name,
                  q->logregQuery->selectQuery->Where);
   }
 
+  if (filitered_idxs.size() == 0) {
+    ResultSet *resultset = new ResultSet();
+    resultset->Message = "The number of filtered records is 0";
+    return resultset;
+  }
+
   std::pair<std::vector<int>,
-            std::pair<std::vector<std::vector<float>>, std::vector<float>>>
+            std::pair<std::vector<std::vector<double>>, std::vector<double>>>
       training_dataset;
+  std::cout << 1234 << std::endl;
   if (!q->logregQuery->selectQuery->Join.empty()) {
     std::vector<std::pair<storage::Tuple *, storage::Tuple *>> joined_tuples =
         join(tuples, q->logregQuery->selectQuery->From[0]->Name,
@@ -576,17 +587,24 @@ inline ResultSet *Executor::complaintTable(ComplaintQuery *q, Plan *p,
         q->logregQuery->index_col, q->logregQuery->target_col, joined_tuples,
         tran, scheme, scheme_right, colNames);
   } else {
+    std::cout << 456 << std::endl;
     training_dataset = extract_training_dataset(q->logregQuery->index_col,
                                                 q->logregQuery->target_col,
                                                 tuples, tran, scheme, colNames);
+    std::cout << 4447 << std::endl;
   }
 
   LogisticRegression clf(q->logregQuery->num_iterations, q->logregQuery->lr);
   storage->loadMLModel(clf, q->logregQuery->model_name + ".logreg");
-  std::vector<std::vector<float>> y_proba =
+  std::cout << 555 << std::endl;
+  std::vector<std::vector<double>> y_proba =
       clf.predict_proba(training_dataset.second.first);
+  std::cout << 655 << std::endl;
   Rain rain(&clf);
-  std::vector<float> influence = rain.getInfluence(
+  std::cout << 755 << std::endl;
+  std::cout << filitered_idxs.size() << std::endl;
+
+  std::vector<double> influence = rain.getInfluence(
       q->desired_class, filitered_idxs, training_dataset.second.first,
       training_dataset.second.second, y_proba);
   std::vector<size_t> topk_influencer = kArgmax(influence, q->k);
@@ -594,6 +612,7 @@ inline ResultSet *Executor::complaintTable(ComplaintQuery *q, Plan *p,
   removeIndices(training_dataset.first, topk_influencer);
   removeIndices(training_dataset.second.first, topk_influencer);
   removeIndices(training_dataset.second.second, topk_influencer);
+  removeIndices(influence, topk_influencer);
 
   clf.clear();
   if (!clf.fit(training_dataset.second.first, training_dataset.second.second)) {
@@ -608,10 +627,10 @@ inline ResultSet *Executor::complaintTable(ComplaintQuery *q, Plan *p,
                                 q->logregQuery->model_name + ".logreg");
 
   std::vector<int> index = training_dataset.first;
-  std::vector<float> y_pred = clf.predict(training_dataset.second.first);
-  std::vector<std::vector<float>> y_proba_fixed =
+  std::vector<double> y_pred = clf.predict(training_dataset.second.first);
+  std::vector<std::vector<double>> y_proba_fixed =
       clf.predict_proba(training_dataset.second.first);
-  float auc = ovr_roc_auc_score(y_proba_fixed, training_dataset.second.second);
+  double auc = ovr_roc_auc_score(y_proba_fixed, training_dataset.second.second);
 
   std::string result_table_name = "prediction_on_training_data_" +
                                   q->complaint_name + "_" +
@@ -624,9 +643,11 @@ inline ResultSet *Executor::complaintTable(ComplaintQuery *q, Plan *p,
       primary_key_id,
       "y_pred_" + q->complaint_name + "_" + q->logregQuery->model_name,
       "y_pred_neg_" + q->complaint_name + "_" + q->logregQuery->model_name,
-      "y_pred_pos_" + q->complaint_name + "_" + q->logregQuery->model_name};
+      "y_pred_pos_" + q->complaint_name + "_" + q->logregQuery->model_name,
+      "influence" + q->complaint_name + "_" + q->logregQuery->model_name};
   pred_training_result->ColTypes = {ColType::Int, ColType::Float,
-                                    ColType::Float, ColType::Float};
+                                    ColType::Float, ColType::Float,
+                                    ColType::Float};
   pred_training_result->PrimaryKey = primary_key_id;
   catalog->Add(pred_training_result);
 
@@ -642,9 +663,10 @@ inline ResultSet *Executor::complaintTable(ComplaintQuery *q, Plan *p,
   for (int i = 0; i < index.size(); i++) {
     std::vector<Item> row;
     row.emplace_back(Item(index[i]));
-    row.emplace_back(Item(y_pred[i]));
-    row.emplace_back(Item(y_proba_fixed[i][0]));
-    row.emplace_back(Item(y_proba_fixed[i][1]));
+    row.emplace_back(Item((float)y_pred[i]));
+    row.emplace_back(Item((float)y_proba_fixed[i][0]));
+    row.emplace_back(Item((float)y_proba_fixed[i][1]));
+    row.emplace_back(Item((float)influence[i]));
     storage::Tuple *t = NewTuple(tran->Txid(), row);
     std::pair<int, int> tid = storage->InsertTuple(result_table_name, t);
     storage->InsertIndex(result_table_name + "_" + primary_key_id,
