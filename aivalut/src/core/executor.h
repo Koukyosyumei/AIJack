@@ -606,14 +606,14 @@ inline ResultSet *Executor::complaintTable(ComplaintQuery *q, Plan *p,
     max_influence_removed = 0;
     min_influence_removed = 0;
   } else {
-    max_influence_removed = topk_influencer[topk_influencer[0]];
-    min_influence_removed = topk_influencer[topk_influencer[q->k - 1]];
-  }
+    max_influence_removed = influence[topk_influencer[0]];
+    min_influence_removed = influence[topk_influencer[q->k - 1]];
 
-  removeIndices(training_dataset.first, topk_influencer);
-  removeIndices(training_dataset.second.first, topk_influencer);
-  removeIndices(training_dataset.second.second, topk_influencer);
-  removeIndices(influence, topk_influencer);
+    removeIndices(training_dataset.first, topk_influencer);
+    removeIndices(training_dataset.second.first, topk_influencer);
+    removeIndices(training_dataset.second.second, topk_influencer);
+    removeIndices(influence, topk_influencer);
+  }
 
   clf.clear();
   if (!clf.fit(training_dataset.second.first, training_dataset.second.second)) {
@@ -678,10 +678,12 @@ inline ResultSet *Executor::complaintTable(ComplaintQuery *q, Plan *p,
   }
 
   std::string result_summary = "";
+  /*
   result_summary += "Removed " + std::to_string(q->k) +
                     " record(s) with influence scores of " +
                     std::to_string(min_influence_removed) + " to " +
                     std::to_string(max_influence_removed) + "\n";
+                    */
   result_summary += "Fixed Parameters:\n";
   for (int i = 0; i < clf.params.size(); i++) {
     result_summary +=
