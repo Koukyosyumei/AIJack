@@ -149,7 +149,7 @@ AUC: 0.520000
 Prediction on the training data is stored at `prediction_on_training_data_lrmodel`
 
 # Remove one record so that the model will predict `positive (class 1)` for the samples with `debt` greater or equal to 100.
->>Complaint comp Shouldbe 1 1 Against Logreg lrmodel id y 100 1 From Select * From bankrupt Where debt Geq 100
+>>Complaint comp Shouldbe 1 Remove 1 Against Logreg lrmodel id y 100 1 From Select * From bankrupt Where debt Geq 100
 Fixed Parameters:
  (0) : -4.765492
  (1) : 8.747224
