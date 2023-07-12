@@ -69,7 +69,7 @@ Logreg `model_name` `primary_key_name` `target_column_name` `number_of_iteration
 # Debugging with Rain
 # We currently support `SUM` aggregation for Logistic Regression for binary classification
 # `target_class` specifies the desired class that you want the model to predict for samples satisfying `Where` constraints 
-Complaint `complaint_name` Shouldbe `target_class` `number_of_removed_records` Against Logreg `model_name_to_be_debugged` `primary_key_name` `target_column_name` `number_of_iteration` `learning_rate` From Select `primary_key_name`, `feature_name` From `table_name` Where `condition`
+Complaint `complaint_name` Shouldbe `target_class` Remove `number_of_removed_records` Against Logreg `model_name_to_be_debugged` `primary_key_name` `target_column_name` `number_of_iteration` `learning_rate` From Select `primary_key_name`, `feature_name` From `table_name` Where `condition`
 ```
 
 -   Example 2
@@ -102,7 +102,7 @@ AUC: 0.520000
 Prediction on the training data is stored at `prediction_on_training_data_lrmodel`
 
 # Remove one record so that the model will predict `positive (class 1)` for the samples with `debt` greater or equal to 100.
->>Complaint comp Shouldbe 1 1 Against Logreg lrmodel id y 100 1 From Select * From bankrupt Where debt Geq 100
+>>Complaint comp Shouldbe 1 Remove 1 Against Logreg lrmodel id y 100 1 From Select * From bankrupt Where debt Geq 100
 Fixed Parameters:
  (0) : -4.765492
  (1) : 8.747224
