@@ -10,6 +10,7 @@ struct Expr;
 // Stmt interface
 struct Stmt {
   virtual void stmtNode() = 0;
+  virtual ~Stmt() {}
 };
 
 // Statements
@@ -93,6 +94,10 @@ struct Expr {
       : left(left), right(right), is_primary(false), is_operator(false) {}
   Expr(TokenKind op, Expr *left, Expr *right)
       : op(op), left(left), right(right), is_primary(false), is_operator(true) {
+  }
+  ~Expr() {
+    delete left;
+    delete right;
   }
   bool IsLit() { return (left == nullptr) && (right == nullptr); }
 };

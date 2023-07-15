@@ -92,6 +92,14 @@ public:
       return;
     }
     result = StringifyResultSet(resultSet);
+
+    delete node;
+    delete analyzedQuery;
+    delete plan;
+    delete resultSet;
+    for (int i = 0; i < tokens.size(); i++) {
+      delete tokens[i];
+    }
   }
 
   std::string StringifyResultSet(const ResultSet *resultSet) {

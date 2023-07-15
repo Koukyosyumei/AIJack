@@ -14,6 +14,7 @@ using namespace std;
 class Query {
 public:
   virtual void evalQuery() = 0;
+  virtual ~Query() {}
 };
 
 class SelectQuery : public Query {
