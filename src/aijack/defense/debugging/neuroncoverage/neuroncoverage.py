@@ -1,3 +1,5 @@
+import copy
+
 import torch
 import torch.nn as nn
 
@@ -104,9 +106,11 @@ class NeuronCoverageTracker:
             mask_index = layer_intermediate_output_scaled > threshold
             self.cov_tracker[layer_name] = mask_index | self.cov_tracker[layer_name]
 
-    def coverage(self, dataloader, pos_of_x=0, initialize=True):
+    def coverage(self, dataloader, pos_of_x=0, initialize=True, update=True):
         if initialize:
             self._init_cov_tracker()
+        if not update:
+            cov_tracker_prev = copy.deepcopy(self.cov_tracker)
 
         for data in dataloader:
             if pos_of_x is None:
@@ -120,5 +124,8 @@ class NeuronCoverageTracker:
         for is_covered in self.cov_tracker.values():
             num_covered_neurons += is_covered.sum()
             num_total_neurons += len(is_covered)
+
+        if not update:
+            self.cov_tracker = cov_tracker_prev
 
         return (num_covered_neurons / num_total_neurons).item()
