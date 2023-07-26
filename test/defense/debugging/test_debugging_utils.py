@@ -1,7 +1,7 @@
 def test_hungarian():
     import numpy as np
 
-    from aijack.defense.debugging.utils import Hungarian
+    from aijack.defense.debugging.assertions.utils import Hungarian
 
     a = [5, 4, 7, 6]
     b = [6, 7, 3, 2]
