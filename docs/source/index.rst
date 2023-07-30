@@ -151,6 +151,9 @@ Indices
    notebooks/poisoning
    notebooks/evasion
    notebooks/diferentialprivacy
+   notebooks/kanonymity
+   notebooks/debugging
+   notebooks/he
 
 .. toctree::
    :caption: API Docs

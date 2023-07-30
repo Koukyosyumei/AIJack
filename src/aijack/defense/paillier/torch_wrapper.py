@@ -65,7 +65,11 @@ class PaillierTensor(object):
     def add(input, other):
         if type(other) in [int, float]:
             return PaillierTensor(input._paillier_np_array + other)
-        elif type(other) in [torch.Tensor, PaillierTensor]:
+        elif type(other) in [
+            torch.Tensor,
+            torch.nn.parameter.Parameter,
+            PaillierTensor,
+        ]:
             return PaillierTensor(
                 input._paillier_np_array + other.detach().cpu().numpy()
             )
@@ -93,6 +97,16 @@ class PaillierTensor(object):
             )
         else:
             raise NotImplementedError(f"{type(other)} is not supported.")
+
+    @implements(torch.matmul)
+    def matmul(x, other):
+        return PaillierTensor(
+            np.matmul(x._paillier_np_array, other.detach().cpu().numpy())
+        )
+
+    @implements(torch.nn.functional.linear)
+    def linear(x, w, bias):
+        return torch.matmul(x, w.T) + bias
 
     def __add__(self, other):
         return torch.add(self, other)
