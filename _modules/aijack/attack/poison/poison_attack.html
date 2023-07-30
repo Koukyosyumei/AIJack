@@ -190,8 +190,12 @@
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../../../aijack.defense.html">2. aijack.defense package</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-10"><i class="fa-solid fa-chevron-down"></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../../../aijack.defense.debugging.html">2.1.1. aijack.defense.debugging package</a></li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../../../../aijack.defense.dp.html">2.1.2. aijack.defense.dp package</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-11"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../../aijack.defense.debugging.html">2.1.1. aijack.defense.debugging package</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-11"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../aijack.defense.debugging.assertions.html">2.1.1.1.1. aijack.defense.debugging.assertions package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../aijack.defense.debugging.neuroncoverage.html">2.1.1.1.2. aijack.defense.debugging.neuroncoverage package</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../../aijack.defense.dp.html">2.1.2. aijack.defense.dp package</a><input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-12"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../../../aijack.defense.dp.manager.html">2.1.2.1.1. aijack.defense.dp.manager package</a></li>
 </ul>
 </li>
@@ -203,7 +207,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../../aijack.defense.sparse.html">2.1.8. aijack.defense.sparse package</a></li>
 </ul>
 </li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../../../aijack.collaborative.html">3. aijack.collaborative package</a><input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-12"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../../aijack.collaborative.html">3. aijack.collaborative package</a><input class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-13"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../../aijack.collaborative.core.html">3.1.1. aijack.collaborative.core package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../aijack.collaborative.dsfl.html">3.1.2. aijack.collaborative.dsfl package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../aijack.collaborative.fedavg.html">3.1.3. aijack.collaborative.fedavg package</a></li>
@@ -341,7 +345,6 @@ document.write(`
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">sklearn</span>
-<span class="kn">from</span> <span class="nn">tqdm</span> <span class="kn">import</span> <span class="n">tqdm</span>
 
 <span class="kn">from</span> <span class="nn">..base_attack</span> <span class="kn">import</span> <span class="n">BaseAttacker</span>
 
@@ -447,7 +450,7 @@ document.write(`
         <span class="c1"># best_xc = None</span>
         <span class="c1"># best_itr = None</span>
 
-        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">num_iterations</span><span class="p">)):</span>
+        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_iterations</span><span class="p">):</span>
             <span class="n">target_model_</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">target_model</span><span class="p">)</span>
             <span class="n">target_model_</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
             <span class="n">target_model_</span><span class="o">.</span><span class="n">set_params</span><span class="p">(</span><span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">target_model</span><span class="o">.</span><span class="n">get_params</span><span class="p">())</span>

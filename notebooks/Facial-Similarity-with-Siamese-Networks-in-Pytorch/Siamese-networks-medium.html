@@ -1,0 +1,1169 @@
+
+
+<!DOCTYPE html>
+
+
+<html >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>One Shot Learning with Siamese Networks &#8212; AIJack  documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/style.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css" />
+    <link rel="stylesheet" href="../../_static/style.css" type="text/css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script src="../../_static/design-tabs.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/Facial-Similarity-with-Siamese-Networks-in-Pytorch/Siamese-networks-medium';</script>
+    <link rel="shortcut icon" href="../../_static/logo_square.png"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="None"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/logo_wide_simple_white.png" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="../../_static/logo_wide_simple_white.png" class="logo__image only-dark" alt="Logo image"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Tutorial</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../federated_learning.html">1. Federated Learning</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../aijack_fedavg.html">1.1. FedAVG</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../aijack_fedavg_paillier.html">1.2. FedAVG with Paillier Encryption</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../aijack_fedavg_sparsegradient.html">1.3. FedAVG with Sparse Gradient</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../aijack_fedmd.html">1.4. FedMD: Federated Learning with Model Distillation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../aijack_secureboost.html">1.5. SecureBoost: Vertically Federated XGBoost with Paillier Encryption</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../modelinversion.html">2. Model Inversion</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../aijack_miface.html">2.1. MI-FACE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../aijack_gradient_inversion_attack.html">2.2. Gradient-based Model Inversion Attack against Federated Learning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../aijack_ganattack.html">2.3. GAN Attack</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../aijack_soteria.html">2.4. Soteria: : Provable Defense against Privacy Leakage in Federated Learning g from Representation Perspective</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../aijack_mid.html">2.5. Mutual Information-based Defense</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../labelleakage.html">3. Label Leakage</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../aijack_split_learning.html">3.1. Split Learning and Label Leakage</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../membershipinference.html">4. Membership Inference</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../aijack_membership_inference.html">4.1. Memership Inference</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../poisoning.html">5. Poisoning Attack</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-5"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../aijack_poisoning_federated_learning.html">5.1. Poisoning Attack against Federated Learning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../aijack_poisoning_attack_svm.html">5.2. Poisoning Attack against SVM</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../evasion.html">6. Evasion Attack</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-6"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../aijack_evasion_attack.html">6.1. Evasion Attack against SVM</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../diferentialprivacy.html">7. Differential Privacy</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../aijack_moments_accountant.html">7.1. Differential Privacy and Moment Accountant</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../aijack_miface_dpsgd.html">7.2. MI-FACE vs DPSGD</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../aijack_adadps.html">7.3. AdaDPS</a></li>
+</ul>
+</li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">API Docs</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../aijack.attack.html">1. aijack.attack package</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-8"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../aijack.attack.backdoor.html">1.1.1. aijack.attack.backdoor package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../aijack.attack.evasion.html">1.1.2. aijack.attack.evasion package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../aijack.attack.freerider.html">1.1.3. aijack.attack.freerider package</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../aijack.attack.inversion.html">1.1.4. aijack.attack.inversion package</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-9"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../aijack.attack.inversion.utils.html">1.1.4.1.1. aijack.attack.inversion.utils package</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../aijack.attack.labelleakage.html">1.1.5. aijack.attack.labelleakage package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../aijack.attack.membership.html">1.1.6. aijack.attack.membership package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../aijack.attack.poison.html">1.1.7. aijack.attack.poison package</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../aijack.defense.html">2. aijack.defense package</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-10"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../aijack.defense.debugging.html">2.1.1. aijack.defense.debugging package</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-11"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../aijack.defense.debugging.assertions.html">2.1.1.1.1. aijack.defense.debugging.assertions package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../aijack.defense.debugging.neuroncoverage.html">2.1.1.1.2. aijack.defense.debugging.neuroncoverage package</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../aijack.defense.dp.html">2.1.2. aijack.defense.dp package</a><input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-12"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../aijack.defense.dp.manager.html">2.1.2.1.1. aijack.defense.dp.manager package</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../aijack.defense.foolsgold.html">2.1.3. aijack.defense.foolsgold package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../aijack.defense.kanonymity.html">2.1.4. aijack.defense.kanonymity package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../aijack.defense.mid.html">2.1.5. aijack.defense.mid package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../aijack.defense.paillier.html">2.1.6. aijack.defense.paillier package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../aijack.defense.soteria.html">2.1.7. aijack.defense.soteria package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../aijack.defense.sparse.html">2.1.8. aijack.defense.sparse package</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../aijack.collaborative.html">3. aijack.collaborative package</a><input class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-13"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../aijack.collaborative.core.html">3.1.1. aijack.collaborative.core package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../aijack.collaborative.dsfl.html">3.1.2. aijack.collaborative.dsfl package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../aijack.collaborative.fedavg.html">3.1.3. aijack.collaborative.fedavg package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../aijack.collaborative.fedgems.html">3.1.4. aijack.collaborative.fedgems package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../aijack.collaborative.fedkd.html">3.1.5. aijack.collaborative.fedkd package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../aijack.collaborative.fedmd.html">3.1.6. aijack.collaborative.fedmd package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../aijack.collaborative.fedprox.html">3.1.7. aijack.collaborative.fedprox package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../aijack.collaborative.optimizer.html">3.1.8. aijack.collaborative.optimizer package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../aijack.collaborative.splitnn.html">3.1.9. aijack.collaborative.splitnn package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../aijack.collaborative.tree.html">3.1.10. aijack.collaborative.tree package</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../aijack.utils.html">4. aijack.utils package</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Developer Docs</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../contribution.html">1. Contribution Guide</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+<a href="https://github.com/Koukyosyumei/AIJack" target="_blank"
+   class="btn btn-sm btn-source-repository-button"
+   title="Source repository"
+   data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+
+</a>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/notebooks/Facial-Similarity-with-Siamese-Networks-in-Pytorch/Siamese-networks-medium.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script>
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>One Shot Learning with Siamese Networks</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#imports">Imports</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#helper-functions">Helper functions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#configuration-class">Configuration Class</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#custom-dataset-class">Custom Dataset Class</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#using-image-folder-dataset">Using Image Folder Dataset</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#visualising-some-of-the-data">Visualising some of the data</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#neural-net-definition">Neural Net Definition</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#contrastive-loss">Contrastive Loss</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#training-time">Training Time!</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#some-simple-testing">Some simple testing</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="one-shot-learning-with-siamese-networks">
+<h1>One Shot Learning with Siamese Networks<a class="headerlink" href="#one-shot-learning-with-siamese-networks" title="Permalink to this headline">#</a></h1>
+<p>This is the jupyter notebook that accompanies</p>
+<section id="imports">
+<h2>Imports<a class="headerlink" href="#imports" title="Permalink to this headline">#</a></h2>
+<p>All the imports are defined here</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
+<span class="kn">import</span> <span class="nn">torchvision</span>
+<span class="kn">import</span> <span class="nn">torchvision.datasets</span> <span class="k">as</span> <span class="nn">dset</span>
+<span class="kn">import</span> <span class="nn">torchvision.transforms</span> <span class="k">as</span> <span class="nn">transforms</span>
+<span class="kn">from</span> <span class="nn">torch.utils.data</span> <span class="kn">import</span> <span class="n">DataLoader</span><span class="p">,</span> <span class="n">Dataset</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">torchvision.utils</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">random</span>
+<span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
+<span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">from</span> <span class="nn">torch.autograd</span> <span class="kn">import</span> <span class="n">Variable</span>
+<span class="kn">import</span> <span class="nn">PIL.ImageOps</span>
+<span class="kn">import</span> <span class="nn">torch.nn</span> <span class="k">as</span> <span class="nn">nn</span>
+<span class="kn">from</span> <span class="nn">torch</span> <span class="kn">import</span> <span class="n">optim</span>
+<span class="kn">import</span> <span class="nn">torch.nn.functional</span> <span class="k">as</span> <span class="nn">F</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="helper-functions">
+<h2>Helper functions<a class="headerlink" href="#helper-functions" title="Permalink to this headline">#</a></h2>
+<p>Set of helper functions</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">imshow</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">should_save</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="n">npimg</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">&quot;off&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">text</span><span class="p">:</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span>
+            <span class="mi">75</span><span class="p">,</span>
+            <span class="mi">8</span><span class="p">,</span>
+            <span class="n">text</span><span class="p">,</span>
+            <span class="n">style</span><span class="o">=</span><span class="s2">&quot;italic&quot;</span><span class="p">,</span>
+            <span class="n">fontweight</span><span class="o">=</span><span class="s2">&quot;bold&quot;</span><span class="p">,</span>
+            <span class="n">bbox</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;facecolor&quot;</span><span class="p">:</span> <span class="s2">&quot;white&quot;</span><span class="p">,</span> <span class="s2">&quot;alpha&quot;</span><span class="p">:</span> <span class="mf">0.8</span><span class="p">,</span> <span class="s2">&quot;pad&quot;</span><span class="p">:</span> <span class="mi">10</span><span class="p">},</span>
+        <span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">npimg</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">)))</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+
+<span class="k">def</span> <span class="nf">show_plot</span><span class="p">(</span><span class="n">iteration</span><span class="p">,</span> <span class="n">loss</span><span class="p">):</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">iteration</span><span class="p">,</span> <span class="n">loss</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="configuration-class">
+<h2>Configuration Class<a class="headerlink" href="#configuration-class" title="Permalink to this headline">#</a></h2>
+<p>A simple class to manage configuration</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Config</span><span class="p">:</span>
+    <span class="n">training_dir</span> <span class="o">=</span> <span class="s2">&quot;./data/faces/training/&quot;</span>
+    <span class="n">testing_dir</span> <span class="o">=</span> <span class="s2">&quot;./data/faces/testing/&quot;</span>
+    <span class="n">train_batch_size</span> <span class="o">=</span> <span class="mi">64</span>
+    <span class="n">train_number_epochs</span> <span class="o">=</span> <span class="mi">100</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="custom-dataset-class">
+<h2>Custom Dataset Class<a class="headerlink" href="#custom-dataset-class" title="Permalink to this headline">#</a></h2>
+<p>This dataset generates a pair of images. 0 for geniune pair and 1 for imposter pair</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">SiameseNetworkDataset</span><span class="p">(</span><span class="n">Dataset</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">imageFolderDataset</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">should_invert</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">imageFolderDataset</span> <span class="o">=</span> <span class="n">imageFolderDataset</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">transform</span> <span class="o">=</span> <span class="n">transform</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">should_invert</span> <span class="o">=</span> <span class="n">should_invert</span>
+
+    <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
+        <span class="n">img0_tuple</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">imageFolderDataset</span><span class="o">.</span><span class="n">imgs</span><span class="p">)</span>
+        <span class="c1"># we need to make sure approx 50% of images are in the same class</span>
+        <span class="n">should_get_same_class</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">should_get_same_class</span><span class="p">:</span>
+            <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+                <span class="c1"># keep looping till the same class image is found</span>
+                <span class="n">img1_tuple</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">imageFolderDataset</span><span class="o">.</span><span class="n">imgs</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">img0_tuple</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">img1_tuple</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
+                    <span class="k">break</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+                <span class="c1"># keep looping till a different class image is found</span>
+
+                <span class="n">img1_tuple</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">imageFolderDataset</span><span class="o">.</span><span class="n">imgs</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">img0_tuple</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="n">img1_tuple</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
+                    <span class="k">break</span>
+
+        <span class="n">img0</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">img0_tuple</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">img1</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">img1_tuple</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">img0</span> <span class="o">=</span> <span class="n">img0</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="s2">&quot;L&quot;</span><span class="p">)</span>
+        <span class="n">img1</span> <span class="o">=</span> <span class="n">img1</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="s2">&quot;L&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">should_invert</span><span class="p">:</span>
+            <span class="n">img0</span> <span class="o">=</span> <span class="n">PIL</span><span class="o">.</span><span class="n">ImageOps</span><span class="o">.</span><span class="n">invert</span><span class="p">(</span><span class="n">img0</span><span class="p">)</span>
+            <span class="n">img1</span> <span class="o">=</span> <span class="n">PIL</span><span class="o">.</span><span class="n">ImageOps</span><span class="o">.</span><span class="n">invert</span><span class="p">(</span><span class="n">img1</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">transform</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">img0</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">img0</span><span class="p">)</span>
+            <span class="n">img1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">img1</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="n">img0</span><span class="p">,</span>
+            <span class="n">img1</span><span class="p">,</span>
+            <span class="n">torch</span><span class="o">.</span><span class="n">from_numpy</span><span class="p">(</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="nb">int</span><span class="p">(</span><span class="n">img1_tuple</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="n">img0_tuple</span><span class="p">[</span><span class="mi">1</span><span class="p">])],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+            <span class="p">),</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">imageFolderDataset</span><span class="o">.</span><span class="n">imgs</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="using-image-folder-dataset">
+<h2>Using Image Folder Dataset<a class="headerlink" href="#using-image-folder-dataset" title="Permalink to this headline">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">folder_dataset</span> <span class="o">=</span> <span class="n">dset</span><span class="o">.</span><span class="n">ImageFolder</span><span class="p">(</span><span class="n">root</span><span class="o">=</span><span class="n">Config</span><span class="o">.</span><span class="n">training_dir</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">siamese_dataset</span> <span class="o">=</span> <span class="n">SiameseNetworkDataset</span><span class="p">(</span>
+    <span class="n">imageFolderDataset</span><span class="o">=</span><span class="n">folder_dataset</span><span class="p">,</span>
+    <span class="n">transform</span><span class="o">=</span><span class="n">transforms</span><span class="o">.</span><span class="n">Compose</span><span class="p">(</span>
+        <span class="p">[</span><span class="n">transforms</span><span class="o">.</span><span class="n">Resize</span><span class="p">((</span><span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">)),</span> <span class="n">transforms</span><span class="o">.</span><span class="n">ToTensor</span><span class="p">()]</span>
+    <span class="p">),</span>
+    <span class="n">should_invert</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="visualising-some-of-the-data">
+<h2>Visualising some of the data<a class="headerlink" href="#visualising-some-of-the-data" title="Permalink to this headline">#</a></h2>
+<p>The top row and the bottom row of any column is one pair. The 0s and 1s correspond to the column of the image.
+1 indiciates dissimilar, and 0 indicates similar.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">vis_dataloader</span> <span class="o">=</span> <span class="n">DataLoader</span><span class="p">(</span><span class="n">siamese_dataset</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">num_workers</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
+<span class="n">dataiter</span> <span class="o">=</span> <span class="nb">iter</span><span class="p">(</span><span class="n">vis_dataloader</span><span class="p">)</span>
+
+
+<span class="n">example_batch</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">dataiter</span><span class="p">)</span>
+<span class="n">concatenated</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">((</span><span class="n">example_batch</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">example_batch</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">imshow</span><span class="p">(</span><span class="n">torchvision</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">make_grid</span><span class="p">(</span><span class="n">concatenated</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">example_batch</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">numpy</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/9d511544f1e7a2540faf015afa767434150f5ed4531670547228260dc960e8c0.png" src="../../_images/9d511544f1e7a2540faf015afa767434150f5ed4531670547228260dc960e8c0.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[1.]
+ [1.]
+ [0.]
+ [0.]
+ [1.]
+ [1.]
+ [1.]
+ [1.]]
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="neural-net-definition">
+<h2>Neural Net Definition<a class="headerlink" href="#neural-net-definition" title="Permalink to this headline">#</a></h2>
+<p>We will use a standard convolutional neural network</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">SiameseNetwork</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">SiameseNetwork</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cnn1</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">ReflectionPad2d</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">Conv2d</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="mi">3</span><span class="p">),</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">ReLU</span><span class="p">(</span><span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">BatchNorm2d</span><span class="p">(</span><span class="mi">4</span><span class="p">),</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">ReflectionPad2d</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">Conv2d</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="mi">3</span><span class="p">),</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">ReLU</span><span class="p">(</span><span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">BatchNorm2d</span><span class="p">(</span><span class="mi">8</span><span class="p">),</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">ReflectionPad2d</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">Conv2d</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="mi">3</span><span class="p">),</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">ReLU</span><span class="p">(</span><span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">BatchNorm2d</span><span class="p">(</span><span class="mi">8</span><span class="p">),</span>
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">fc1</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">8</span> <span class="o">*</span> <span class="mi">100</span> <span class="o">*</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">500</span><span class="p">),</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">ReLU</span><span class="p">(</span><span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">500</span><span class="p">,</span> <span class="mi">500</span><span class="p">),</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">ReLU</span><span class="p">(</span><span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">500</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">forward_once</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="n">output</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cnn1</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">output</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">output</span><span class="o">.</span><span class="n">size</span><span class="p">()[</span><span class="mi">0</span><span class="p">],</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">output</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fc1</span><span class="p">(</span><span class="n">output</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">output</span>
+
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input1</span><span class="p">,</span> <span class="n">input2</span><span class="p">):</span>
+        <span class="n">output1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">forward_once</span><span class="p">(</span><span class="n">input1</span><span class="p">)</span>
+        <span class="n">output2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">forward_once</span><span class="p">(</span><span class="n">input2</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">output1</span><span class="p">,</span> <span class="n">output2</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="contrastive-loss">
+<h2>Contrastive Loss<a class="headerlink" href="#contrastive-loss" title="Permalink to this headline">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">ContrastiveLoss</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Contrastive loss function.</span>
+<span class="sd">    Based on: http://yann.lecun.com/exdb/publis/pdf/hadsell-chopra-lecun-06.pdf</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">margin</span><span class="o">=</span><span class="mf">2.0</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">ContrastiveLoss</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">margin</span> <span class="o">=</span> <span class="n">margin</span>
+
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output1</span><span class="p">,</span> <span class="n">output2</span><span class="p">,</span> <span class="n">label</span><span class="p">):</span>
+        <span class="n">euclidean_distance</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">pairwise_distance</span><span class="p">(</span><span class="n">output1</span><span class="p">,</span> <span class="n">output2</span><span class="p">,</span> <span class="n">keepdim</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">loss_contrastive</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span>
+            <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">label</span><span class="p">)</span> <span class="o">*</span> <span class="n">torch</span><span class="o">.</span><span class="n">pow</span><span class="p">(</span><span class="n">euclidean_distance</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+            <span class="o">+</span> <span class="p">(</span><span class="n">label</span><span class="p">)</span>
+            <span class="o">*</span> <span class="n">torch</span><span class="o">.</span><span class="n">pow</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">clamp</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">margin</span> <span class="o">-</span> <span class="n">euclidean_distance</span><span class="p">,</span> <span class="nb">min</span><span class="o">=</span><span class="mf">0.0</span><span class="p">),</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">loss_contrastive</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="training-time">
+<h2>Training Time!<a class="headerlink" href="#training-time" title="Permalink to this headline">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">train_dataloader</span> <span class="o">=</span> <span class="n">DataLoader</span><span class="p">(</span>
+    <span class="n">siamese_dataset</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">num_workers</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="n">Config</span><span class="o">.</span><span class="n">train_batch_size</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">net</span> <span class="o">=</span> <span class="n">SiameseNetwork</span><span class="p">()</span><span class="o">.</span><span class="n">cuda</span><span class="p">()</span>
+<span class="n">criterion</span> <span class="o">=</span> <span class="n">ContrastiveLoss</span><span class="p">()</span>
+<span class="n">optimizer</span> <span class="o">=</span> <span class="n">optim</span><span class="o">.</span><span class="n">Adam</span><span class="p">(</span><span class="n">net</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="mf">0.0005</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">counter</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">loss_history</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">iteration_number</span> <span class="o">=</span> <span class="mi">0</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">Config</span><span class="o">.</span><span class="n">train_number_epochs</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">data</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">train_dataloader</span><span class="p">,</span> <span class="mi">0</span><span class="p">):</span>
+        <span class="n">img0</span><span class="p">,</span> <span class="n">img1</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="n">data</span>
+        <span class="n">img0</span><span class="p">,</span> <span class="n">img1</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="n">img0</span><span class="o">.</span><span class="n">cuda</span><span class="p">(),</span> <span class="n">img1</span><span class="o">.</span><span class="n">cuda</span><span class="p">(),</span> <span class="n">label</span><span class="o">.</span><span class="n">cuda</span><span class="p">()</span>
+        <span class="n">optimizer</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
+        <span class="n">output1</span><span class="p">,</span> <span class="n">output2</span> <span class="o">=</span> <span class="n">net</span><span class="p">(</span><span class="n">img0</span><span class="p">,</span> <span class="n">img1</span><span class="p">)</span>
+        <span class="n">loss_contrastive</span> <span class="o">=</span> <span class="n">criterion</span><span class="p">(</span><span class="n">output1</span><span class="p">,</span> <span class="n">output2</span><span class="p">,</span> <span class="n">label</span><span class="p">)</span>
+        <span class="n">loss_contrastive</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+        <span class="n">optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">i</span> <span class="o">%</span> <span class="mi">10</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span>
+                <span class="s2">&quot;Epoch number </span><span class="si">{}</span><span class="se">\n</span><span class="s2"> Current loss </span><span class="si">{}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="n">epoch</span><span class="p">,</span> <span class="n">loss_contrastive</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+            <span class="n">iteration_number</span> <span class="o">+=</span> <span class="mi">10</span>
+            <span class="n">counter</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">iteration_number</span><span class="p">)</span>
+            <span class="n">loss_history</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">loss_contrastive</span><span class="o">.</span><span class="n">item</span><span class="p">())</span>
+<span class="n">show_plot</span><span class="p">(</span><span class="n">counter</span><span class="p">,</span> <span class="n">loss_history</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch number 0
+ Current loss 2.0378851890563965
+
+Epoch number 1
+ Current loss 2.8077077865600586
+
+Epoch number 2
+ Current loss 1.4288808107376099
+
+Epoch number 3
+ Current loss 1.273261547088623
+
+Epoch number 4
+ Current loss 1.1692599058151245
+
+Epoch number 5
+ Current loss 1.0952510833740234
+
+Epoch number 6
+ Current loss 1.2235523462295532
+
+Epoch number 7
+ Current loss 1.1519213914871216
+
+Epoch number 8
+ Current loss 1.1717911958694458
+
+Epoch number 9
+ Current loss 1.1029901504516602
+
+Epoch number 10
+ Current loss 1.1344356536865234
+
+Epoch number 11
+ Current loss 1.17781400680542
+
+Epoch number 12
+ Current loss 1.129368543624878
+
+Epoch number 13
+ Current loss 1.1467115879058838
+
+Epoch number 14
+ Current loss 1.163444995880127
+
+Epoch number 15
+ Current loss 1.1398472785949707
+
+Epoch number 16
+ Current loss 1.1301088333129883
+
+Epoch number 17
+ Current loss 1.0887219905853271
+
+Epoch number 18
+ Current loss 1.140424370765686
+
+Epoch number 19
+ Current loss 1.0663241147994995
+
+Epoch number 20
+ Current loss 1.08632230758667
+
+Epoch number 21
+ Current loss 1.1327917575836182
+
+Epoch number 22
+ Current loss 1.1568373441696167
+
+Epoch number 23
+ Current loss 1.070037841796875
+
+Epoch number 24
+ Current loss 1.1004447937011719
+
+Epoch number 25
+ Current loss 1.1675760746002197
+
+Epoch number 26
+ Current loss 1.107505202293396
+
+Epoch number 27
+ Current loss 1.164154052734375
+
+Epoch number 28
+ Current loss 1.1572291851043701
+
+Epoch number 29
+ Current loss 1.0625216960906982
+
+Epoch number 30
+ Current loss 1.0926334857940674
+
+Epoch number 31
+ Current loss 1.1182385683059692
+
+Epoch number 32
+ Current loss 1.1999294757843018
+
+Epoch number 33
+ Current loss 1.0879995822906494
+
+Epoch number 34
+ Current loss 1.1144282817840576
+
+Epoch number 35
+ Current loss 1.1479668617248535
+
+Epoch number 36
+ Current loss 1.1063014268875122
+
+Epoch number 37
+ Current loss 1.1686123609542847
+
+Epoch number 38
+ Current loss 1.1108856201171875
+
+Epoch number 39
+ Current loss 1.0782051086425781
+
+Epoch number 40
+ Current loss 1.0159437656402588
+
+Epoch number 41
+ Current loss 1.0994377136230469
+
+Epoch number 42
+ Current loss 1.101317286491394
+
+Epoch number 43
+ Current loss 1.068577527999878
+
+Epoch number 44
+ Current loss 1.109604835510254
+
+Epoch number 45
+ Current loss 1.1685329675674438
+
+Epoch number 46
+ Current loss 1.1148097515106201
+
+Epoch number 47
+ Current loss 1.125104308128357
+
+Epoch number 48
+ Current loss 1.123309850692749
+
+Epoch number 49
+ Current loss 1.1074304580688477
+
+Epoch number 50
+ Current loss 1.0960524082183838
+
+Epoch number 51
+ Current loss 1.1231727600097656
+
+Epoch number 52
+ Current loss 1.0602667331695557
+
+Epoch number 53
+ Current loss 1.1933255195617676
+
+Epoch number 54
+ Current loss 1.0731847286224365
+
+Epoch number 55
+ Current loss 1.1229645013809204
+
+Epoch number 56
+ Current loss 1.1323256492614746
+
+Epoch number 57
+ Current loss 1.1582694053649902
+
+Epoch number 58
+ Current loss 1.087444543838501
+
+Epoch number 59
+ Current loss 1.112156867980957
+
+Epoch number 60
+ Current loss 1.1236321926116943
+
+Epoch number 61
+ Current loss 1.089324951171875
+
+Epoch number 62
+ Current loss 1.151943325996399
+
+Epoch number 63
+ Current loss 1.0736372470855713
+
+Epoch number 64
+ Current loss 1.0705881118774414
+
+Epoch number 65
+ Current loss 1.0880753993988037
+
+Epoch number 66
+ Current loss 1.0668013095855713
+
+Epoch number 67
+ Current loss 1.0845987796783447
+
+Epoch number 68
+ Current loss 1.117438554763794
+
+Epoch number 69
+ Current loss 1.1109552383422852
+
+Epoch number 70
+ Current loss 1.0705968141555786
+
+Epoch number 71
+ Current loss 1.0489232540130615
+
+Epoch number 72
+ Current loss 1.0667352676391602
+
+Epoch number 73
+ Current loss 1.1204578876495361
+
+Epoch number 74
+ Current loss 1.0965818166732788
+
+Epoch number 75
+ Current loss 1.1749546527862549
+
+Epoch number 76
+ Current loss 1.1329829692840576
+
+Epoch number 77
+ Current loss 1.1027050018310547
+
+Epoch number 78
+ Current loss 1.0796157121658325
+
+Epoch number 79
+ Current loss 1.0907905101776123
+
+Epoch number 80
+ Current loss 1.0403797626495361
+
+Epoch number 81
+ Current loss 1.1375505924224854
+
+Epoch number 82
+ Current loss 1.143746256828308
+
+Epoch number 83
+ Current loss 1.0821889638900757
+
+Epoch number 84
+ Current loss 1.1218210458755493
+
+Epoch number 85
+ Current loss 1.08035147190094
+
+Epoch number 86
+ Current loss 1.0216319561004639
+
+Epoch number 87
+ Current loss 1.0868322849273682
+
+Epoch number 88
+ Current loss 1.1195446252822876
+
+Epoch number 89
+ Current loss 1.1785082817077637
+
+Epoch number 90
+ Current loss 1.0771337747573853
+
+Epoch number 91
+ Current loss 1.0936869382858276
+
+Epoch number 92
+ Current loss 1.1433212757110596
+
+Epoch number 93
+ Current loss 1.153044581413269
+
+Epoch number 94
+ Current loss 1.103136420249939
+
+Epoch number 95
+ Current loss 1.1112598180770874
+
+Epoch number 96
+ Current loss 1.0496973991394043
+
+Epoch number 97
+ Current loss 1.0448846817016602
+
+Epoch number 98
+ Current loss 1.1437416076660156
+
+Epoch number 99
+ Current loss 1.1138417720794678
+</pre></div>
+</div>
+<img alt="../../_images/7d2ba6083b0bf21e69d3d4372d2b8a4e845f7135a5faa3548ad9ad7f5b7d1b7b.png" src="../../_images/7d2ba6083b0bf21e69d3d4372d2b8a4e845f7135a5faa3548ad9ad7f5b7d1b7b.png" />
+</div>
+</div>
+</section>
+<section id="some-simple-testing">
+<h2>Some simple testing<a class="headerlink" href="#some-simple-testing" title="Permalink to this headline">#</a></h2>
+<p>The last 3 subjects were held out from the training, and will be used to test. The Distance between each image pair denotes the degree of similarity the model found between the two images. Less means it found more similar, while higher values indicate it found them to be dissimilar.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">folder_dataset_test</span> <span class="o">=</span> <span class="n">dset</span><span class="o">.</span><span class="n">ImageFolder</span><span class="p">(</span><span class="n">root</span><span class="o">=</span><span class="n">Config</span><span class="o">.</span><span class="n">testing_dir</span><span class="p">)</span>
+<span class="n">siamese_dataset</span> <span class="o">=</span> <span class="n">SiameseNetworkDataset</span><span class="p">(</span>
+    <span class="n">imageFolderDataset</span><span class="o">=</span><span class="n">folder_dataset_test</span><span class="p">,</span>
+    <span class="n">transform</span><span class="o">=</span><span class="n">transforms</span><span class="o">.</span><span class="n">Compose</span><span class="p">(</span>
+        <span class="p">[</span><span class="n">transforms</span><span class="o">.</span><span class="n">Resize</span><span class="p">((</span><span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">)),</span> <span class="n">transforms</span><span class="o">.</span><span class="n">ToTensor</span><span class="p">()]</span>
+    <span class="p">),</span>
+    <span class="n">should_invert</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">test_dataloader</span> <span class="o">=</span> <span class="n">DataLoader</span><span class="p">(</span><span class="n">siamese_dataset</span><span class="p">,</span> <span class="n">num_workers</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">dataiter</span> <span class="o">=</span> <span class="nb">iter</span><span class="p">(</span><span class="n">test_dataloader</span><span class="p">)</span>
+<span class="n">x0</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">dataiter</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
+    <span class="n">_</span><span class="p">,</span> <span class="n">x1</span><span class="p">,</span> <span class="n">label2</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">dataiter</span><span class="p">)</span>
+    <span class="n">concatenated</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">((</span><span class="n">x0</span><span class="p">,</span> <span class="n">x1</span><span class="p">),</span> <span class="mi">0</span><span class="p">)</span>
+
+    <span class="n">output1</span><span class="p">,</span> <span class="n">output2</span> <span class="o">=</span> <span class="n">net</span><span class="p">(</span><span class="n">Variable</span><span class="p">(</span><span class="n">x0</span><span class="p">)</span><span class="o">.</span><span class="n">cuda</span><span class="p">(),</span> <span class="n">Variable</span><span class="p">(</span><span class="n">x1</span><span class="p">)</span><span class="o">.</span><span class="n">cuda</span><span class="p">())</span>
+    <span class="n">euclidean_distance</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">pairwise_distance</span><span class="p">(</span><span class="n">output1</span><span class="p">,</span> <span class="n">output2</span><span class="p">)</span>
+    <span class="n">imshow</span><span class="p">(</span>
+        <span class="n">torchvision</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">make_grid</span><span class="p">(</span><span class="n">concatenated</span><span class="p">),</span>
+        <span class="s2">&quot;Dissimilarity: </span><span class="si">{:.2f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">euclidean_distance</span><span class="o">.</span><span class="n">item</span><span class="p">()),</span>
+    <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/fd920f273c46b494158b93dce5c61f68cb72c70ccc0d966720b6e98b44545109.png" src="../../_images/fd920f273c46b494158b93dce5c61f68cb72c70ccc0d966720b6e98b44545109.png" />
+<img alt="../../_images/7103bb032c01f42cfde89d321877f3a397d1b5be24d07a9b87c83aaa4f078439.png" src="../../_images/7103bb032c01f42cfde89d321877f3a397d1b5be24d07a9b87c83aaa4f078439.png" />
+<img alt="../../_images/e2a78b94fdeccb81de62c226a74da80d3d2c2c8f2eb9afe331dc08b77daf4165.png" src="../../_images/e2a78b94fdeccb81de62c226a74da80d3d2c2c8f2eb9afe331dc08b77daf4165.png" />
+<img alt="../../_images/94a42ce1bb87c7cc8fc4fdce96bdcfe101325c06724451379345aa582ffe327c.png" src="../../_images/94a42ce1bb87c7cc8fc4fdce96bdcfe101325c06724451379345aa582ffe327c.png" />
+<img alt="../../_images/cbd5db0fbb8d3c396ec45446202f67941d0ec5fbf58ae9a37d5b5144418f9037.png" src="../../_images/cbd5db0fbb8d3c396ec45446202f67941d0ec5fbf58ae9a37d5b5144418f9037.png" />
+<img alt="../../_images/aae48a21d97653caaa0cd5eed94874ba3ef0d08c46e52deda9300a802b64c36b.png" src="../../_images/aae48a21d97653caaa0cd5eed94874ba3ef0d08c46e52deda9300a802b64c36b.png" />
+<img alt="../../_images/52af75e1afcbb5592591a2904fedb5cc1d75ca0695b7e93c68847aa5c63e75f6.png" src="../../_images/52af75e1afcbb5592591a2904fedb5cc1d75ca0695b7e93c68847aa5c63e75f6.png" />
+<img alt="../../_images/91d5c787d7667384eb0f1dd951dd55deb108ae3fb51ecf24bdcd3d3326b3ca76.png" src="../../_images/91d5c787d7667384eb0f1dd951dd55deb108ae3fb51ecf24bdcd3d3326b3ca76.png" />
+<img alt="../../_images/f8f03d7bdda436bc41830590196bd3e8e72e065551dba4cbbf8e044cea20e574.png" src="../../_images/f8f03d7bdda436bc41830590196bd3e8e72e065551dba4cbbf8e044cea20e574.png" />
+<img alt="../../_images/2569d325251d688506e693ea7186018d2b2d0562ace8dae07015f568a6483e1e.png" src="../../_images/2569d325251d688506e693ea7186018d2b2d0562ace8dae07015f568a6483e1e.png" />
+</div>
+</div>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+</div></div>
+  
+</div>
+
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#imports">Imports</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#helper-functions">Helper functions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#configuration-class">Configuration Class</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#custom-dataset-class">Custom Dataset Class</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#using-image-folder-dataset">Using Image Folder Dataset</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#visualising-some-of-the-data">Visualising some of the data</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#neural-net-definition">Neural Net Definition</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#contrastive-loss">Contrastive Loss</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#training-time">Training Time!</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#some-simple-testing">Some simple testing</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Hideaki Takahashi
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  <p class="copyright">
+    
+      © Copyright 2023, Hideaki Takahashi.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

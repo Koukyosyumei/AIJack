@@ -1,24 +1,14 @@
 aijack.defense.debugging package
 ================================
 
-Submodules
-----------
+Subpackages
+-----------
 
-aijack.defense.debugging.assertions module
-------------------------------------------
+.. toctree::
+   :maxdepth: 4
 
-.. automodule:: aijack.defense.debugging.assertions
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-aijack.defense.debugging.utils module
--------------------------------------
-
-.. automodule:: aijack.defense.debugging.utils
-   :members:
-   :undoc-members:
-   :show-inheritance:
+   aijack.defense.debugging.assertions
+   aijack.defense.debugging.neuroncoverage
 
 Module contents
 ---------------
