@@ -33,8 +33,7 @@ class PaillierTensor(object):
 
     def decrypt(self, sk, device="cpu"):
         return torch.Tensor(
-            np.vectorize(lambda x: sk.decrypt2float(x))(
-                self._paillier_np_array)
+            np.vectorize(lambda x: sk.decrypt2float(x))(self._paillier_np_array)
         ).to(device)
 
     def tensor(self, sk=None):
