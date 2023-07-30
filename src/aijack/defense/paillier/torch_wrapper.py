@@ -33,7 +33,8 @@ class PaillierTensor(object):
 
     def decrypt(self, sk, device="cpu"):
         return torch.Tensor(
-            np.vectorize(lambda x: sk.decrypt2float(x))(self._paillier_np_array)
+            np.vectorize(lambda x: sk.decrypt2float(x))(
+                self._paillier_np_array)
         ).to(device)
 
     def tensor(self, sk=None):
@@ -99,14 +100,14 @@ class PaillierTensor(object):
             raise NotImplementedError(f"{type(other)} is not supported.")
 
     @implements(torch.matmul)
-    def matmul(input, other):
+    def matmul(x, other):
         return PaillierTensor(
-            np.matmul(input._paillier_np_array, other.detach().cpu().numpy())
+            np.matmul(x._paillier_np_array, other.detach().cpu().numpy())
         )
 
     @implements(torch.nn.functional.linear)
-    def linear(input, w, bias):
-        return torch.matmul(input, w.T) + bias
+    def linear(x, w, bias):
+        return torch.matmul(x, w.T) + bias
 
     def __add__(self, other):
         return torch.add(self, other)
