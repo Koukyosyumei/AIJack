@@ -28,7 +28,8 @@ dependencies = [
     'pybind11',
     'pybind11[global]',
     'matplotlib',
-    'mpi4py'
+    'mpi4py',
+    'statsmodels'
 ]
 
 [tool.setuptools]
