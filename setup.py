@@ -125,13 +125,13 @@ def read_requirements():
     return requirements
 
 
-__version__ = "0.0.1-alpha.2"
+__version__ = "0.0.1-beta"
 ext_modules = [CMakeExtension("aijack_cpp_core")]
 console_scripts = []
 
 setup(
     name="aijack",
-    version="0.0.1-alpha.2",
+    version="0.0.1-beta",
     ext_modules=ext_modules,
     entry_points={"console_scripts": console_scripts},
     cmdclass={"build_ext": CMakeBuild},
