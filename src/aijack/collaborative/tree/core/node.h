@@ -36,8 +36,9 @@ template <typename PartyType> struct Node {
   float best_score = -1 * numeric_limits<float>::infinity();
   int is_leaf_flag = -1; // -1:not calculated yer, 0: is not leaf, 1: is leaf
 
-  Node(){};
-  Node(std::vector<int> &idxs_, std::vector<float> &y_) : idxs(idxs_), y(y_) {}
+  // Node(){};
+  Node(vector<PartyType> &parties_, vector<int> &idxs_, vector<float> &y_)
+      : parties(parties_), idxs(idxs_), y(y_) {}
 
   /**
    * @brief Get the idxs object

@@ -22,8 +22,8 @@
 using namespace std;
 
 struct XGBoostNode : public Node<XGBoostParty> {
-  vector<XGBoostParty> &parties;
-  const vector<vector<float>> &gradient, &hessian;
+  // vector<XGBoostParty> &parties;
+  vector<vector<float>> &gradient, &hessian;
   float min_child_weight, lam, gamma, eps;
   float best_entropy;
   bool use_only_active_party;
@@ -36,13 +36,13 @@ struct XGBoostNode : public Node<XGBoostParty> {
 
   // XGBoostNode() {}
   XGBoostNode(vector<XGBoostParty> &parties_, vector<float> &y_,
-              int num_classes_, const vector<vector<float>> &gradient_,
-              const vector<vector<float>> &hessian_, vector<int> &idxs_,
+              int num_classes_, vector<vector<float>> &gradient_,
+              vector<vector<float>> &hessian_, vector<int> &idxs_,
               float min_child_weight_, float lam_, float gamma_, float eps_,
               int depth_, int active_party_id_ = -1,
               bool use_only_active_party_ = false, int n_job_ = 1)
-      : parties(parties_), gradient(gradient_),
-        hessian(hessian_), Node<XGBoostParty>(idxs_, y_) {
+      : gradient(gradient_),
+        hessian(hessian_), Node<XGBoostParty>(parties_, idxs_, y_) {
     num_classes = num_classes_;
     min_child_weight = min_child_weight_;
     lam = lam_;
