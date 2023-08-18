@@ -169,11 +169,11 @@ template <typename NodeType> struct NodeAPI {
       que.pop();
 
       if (temp_node->is_leaf()) {
-        break;
-        // return temp_node->val;
+        return temp_node->val;
       } else {
-        if (node->parties[temp_node->party_id].is_left(temp_node->record_id,
-                                                       xi)) {
+        if (true) {
+          //(node->parties[temp_node->party_id].is_left(temp_node->record_id,
+          //                                            xi)) {
           que.push(temp_node->left);
         } else {
           que.push(temp_node->right);
