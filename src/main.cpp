@@ -147,6 +147,7 @@ PYBIND11_MODULE(aijack_cpp_core, m) {
       .def("get_init_pred", &SecureBoostClassifier::get_init_pred)
       .def("load_estimators", &SecureBoostClassifier::load_estimators)
       .def("get_estimators", &SecureBoostClassifier::get_estimators)
+      .def("get_parties", &SecureBoostClassifier::get_parties)
       .def("predict_raw", &SecureBoostClassifier::predict_raw)
       .def("predict_proba", &SecureBoostClassifier::predict_proba);
 

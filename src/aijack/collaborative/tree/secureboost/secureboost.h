@@ -79,6 +79,7 @@ struct SecureBoostBase : TreeModelBase<SecureBoostParty> {
   }
 
   vector<SecureBoostTree> get_estimators() { return estimators; }
+  vector<SecureBoostParty> get_parties() { return parties_cp; }
 
   void fit(vector<SecureBoostParty> &parties, vector<float> &y) {
     try {

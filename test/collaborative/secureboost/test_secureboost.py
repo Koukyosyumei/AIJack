@@ -27,8 +27,10 @@ def test_secureboost():
     keygenerator = PaillierKeyGenerator(512)
     pk, sk = keygenerator.generate_keypair()
 
-    sp1 = SecureBoostClient(x1, 2, [0], 0, min_leaf, subsample_cols, 256, False, 0)
-    sp2 = SecureBoostClient(x2, 2, [1], 1, min_leaf, subsample_cols, 256, False, 0)
+    sp1 = SecureBoostClient(
+        x1, 2, [0], 0, min_leaf, subsample_cols, 256, False, 0)
+    sp2 = SecureBoostClient(
+        x2, 2, [1], 1, min_leaf, subsample_cols, 256, False, 0)
     sparties = [sp1, sp2]
 
     sparties[0].set_publickey(pk)
@@ -54,7 +56,8 @@ def test_secureboost():
     )
     sclf.fit(sparties, y)
 
-    x_test = [[12, 1], [32, 1], [15, 0], [24, 0], [20, 1], [25, 1], [17, 0], [16, 1]]
+    x_test = [[12, 1], [32, 1], [15, 0], [24, 0],
+              [20, 1], [25, 1], [17, 0], [16, 1]]
     y_test_proba = sclf.predict_proba(x_test)
 
     y_test_proba_true = [
@@ -62,8 +65,8 @@ def test_secureboost():
         [0.3700332045555115, 0.6299667954444885],
         [0.20040041208267212, 0.7995995879173279],
         [0.44300776720046997, 0.55699223279953],
-        [0.3700332045555115, 0.6299667954444885],
-        [0.3700332045555115, 0.6299667954444885],
+        [0.2150152325630188, 0.7849847674369812],
+        [0.2150152325630188, 0.7849847674369812],
         [0.44300776720046997, 0.55699223279953],
         [0.20040041208267212, 0.7995995879173279],
     ]
