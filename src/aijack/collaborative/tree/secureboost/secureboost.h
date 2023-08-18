@@ -34,6 +34,8 @@ struct SecureBoostBase : TreeModelBase<SecureBoostParty> {
   vector<SecureBoostTree> estimators;
   vector<float> logging_loss;
 
+  vector<SecureBoostParty> parties_cp;
+
   SecureBoostBase(int num_classes_, float subsample_cols_ = 0.8,
                   float min_child_weight_ = -1 *
                                             numeric_limits<float>::infinity(),
@@ -87,6 +89,8 @@ struct SecureBoostBase : TreeModelBase<SecureBoostParty> {
       std::cout << e.what() << std::endl;
     }
 
+    parties_cp = parties;
+
     int row_count = y.size();
     vector<vector<float>> base_pred;
     if (estimators.size() == 0) {
@@ -126,7 +130,7 @@ struct SecureBoostBase : TreeModelBase<SecureBoostParty> {
       }
 
       SecureBoostTree boosting_tree(
-          parties, y, num_classes, grad, hess, vanila_grad, vanila_hess,
+          parties_cp, y, num_classes, grad, hess, vanila_grad, vanila_hess,
           min_child_weight, lam, gamma, eps, min_leaf, depth, active_party_id,
           (completelly_secure_round > i), n_job);
       vector<vector<float>> pred_temp = boosting_tree.get_train_prediction();
@@ -140,6 +144,8 @@ struct SecureBoostBase : TreeModelBase<SecureBoostParty> {
       if (save_loss) {
         logging_loss.push_back(lossfunc_obj->get_loss(base_pred, y));
       }
+
+      parties = parties_cp;
     }
   }
 
