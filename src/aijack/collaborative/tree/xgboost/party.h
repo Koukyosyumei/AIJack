@@ -7,7 +7,7 @@ using namespace std;
 struct XGBoostParty : Party {
   int num_percentile_bin;
 
-  XGBoostParty() {}
+  // XGBoostParty() {}
   XGBoostParty(vector<vector<float>> x_, int num_classes_,
                vector<int> feature_id_, int party_id_, int min_leaf_,
                float subsample_cols_, int num_precentile_bin_ = 256,
