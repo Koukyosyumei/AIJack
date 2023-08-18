@@ -34,18 +34,14 @@ struct SecureBoostBase : TreeModelBase<SecureBoostParty> {
   vector<SecureBoostTree> estimators;
   vector<float> logging_loss;
 
-  vector<SecureBoostParty> &parties;
-
-  SecureBoostBase(vector<SecureBoostParty> &parties_, int num_classes_,
-                  float subsample_cols_ = 0.8,
+  SecureBoostBase(int num_classes_, float subsample_cols_ = 0.8,
                   float min_child_weight_ = -1 *
                                             numeric_limits<float>::infinity(),
                   int depth_ = 5, int min_leaf_ = 5, float learning_rate_ = 0.4,
                   int boosting_rounds_ = 5, float lam_ = 1.5, float gamma_ = 1,
                   float eps_ = 0.1, int active_party_id_ = -1,
                   int completelly_secure_round_ = 0, float init_value_ = 1.0,
-                  int n_job_ = 1, bool save_loss_ = true)
-      : parties(parties_) {
+                  int n_job_ = 1, bool save_loss_ = true) {
     num_classes = num_classes_;
     subsample_cols = subsample_cols_;
     min_child_weight = min_child_weight_;
@@ -81,9 +77,8 @@ struct SecureBoostBase : TreeModelBase<SecureBoostParty> {
   }
 
   vector<SecureBoostTree> get_estimators() { return estimators; }
-  vector<SecureBoostParty> get_parties() { return parties; }
 
-  void fit(vector<float> &y) {
+  void fit(vector<SecureBoostParty> &parties, vector<float> &y) {
     try {
       if ((active_party_id < 0) || (active_party_id > parties.size())) {
         throw invalid_argument("invalid active_party_id");

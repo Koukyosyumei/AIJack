@@ -35,7 +35,7 @@ struct XGBoostNode : public Node<XGBoostParty> {
   vector<float> entire_class_cnt;
 
   // XGBoostNode() {}
-  XGBoostNode(vector<XGBoostParty> &parties_, vector<float> &y_,
+  XGBoostNode(vector<XGBoostParty> parties_, vector<float> &y_,
               int num_classes_, vector<vector<float>> &gradient_,
               vector<vector<float>> &hessian_, vector<int> &idxs_,
               float min_child_weight_, float lam_, float gamma_, float eps_,

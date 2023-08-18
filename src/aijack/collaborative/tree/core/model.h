@@ -20,7 +20,7 @@ template <typename PartyName> struct TreeModelBase {
    * @param parties The vector of parties.
    * @param y The vector of ground-truth vectors
    */
-  virtual void fit(vector<float> &y) = 0;
+  virtual void fit(vector<PartyName> &parties, vector<float> &y) = 0;
 
   /**
    * @brief Function to return the predicted scores of the given data.
