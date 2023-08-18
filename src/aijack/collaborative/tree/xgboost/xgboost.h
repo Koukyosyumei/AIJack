@@ -29,6 +29,7 @@ struct XGBoostBase : TreeModelBase<XGBoostParty> {
 
   float upsilon_Y;
 
+  vector<XGBoostParty *> parties_ptr;
   LossFunc *lossfunc_obj;
 
   vector<vector<float>> init_pred;
@@ -99,7 +100,7 @@ struct XGBoostBase : TreeModelBase<XGBoostParty> {
       }
     }
 
-    std::vector<XGBoostParty *> parties_ptr;
+    parties_ptr.clear();
     for (XGBoostParty &party : parties) {
       parties_ptr.push_back(&party);
     }
