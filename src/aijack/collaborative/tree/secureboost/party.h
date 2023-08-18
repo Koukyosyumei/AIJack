@@ -3,7 +3,7 @@
 #include "../xgboost/party.h"
 using namespace std;
 
-struct SecureBoostParty : XGBoostParty {
+struct SecureBoostParty : public XGBoostParty {
   PaillierPublicKey pk;
   PaillierSecretKey sk;
 

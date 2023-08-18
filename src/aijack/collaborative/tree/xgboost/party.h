@@ -4,7 +4,7 @@
 #include <tuple>
 using namespace std;
 
-struct XGBoostParty : Party {
+struct XGBoostParty : public Party {
   int num_percentile_bin;
 
   // XGBoostParty() {}
