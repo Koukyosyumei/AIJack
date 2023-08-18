@@ -160,10 +160,8 @@ template <typename NodeType> struct NodeAPI {
   }
 
   vector<float> predict_row(NodeType *node, vector<float> &xi) {
-    // queue<NodeType *> que;
-    // que.push(node);
-
-    /*
+    queue<NodeType *> que;
+    que.push(node);
 
     NodeType *temp_node;
     while (!que.empty()) {
@@ -171,7 +169,8 @@ template <typename NodeType> struct NodeAPI {
       que.pop();
 
       if (temp_node->is_leaf()) {
-        return temp_node->val;
+        break;
+        // return temp_node->val;
       } else {
         if (node->parties[temp_node->party_id].is_left(temp_node->record_id,
                                                        xi)) {
@@ -181,7 +180,6 @@ template <typename NodeType> struct NodeAPI {
         }
       }
     }
-    */
 
     vector<float> nan_vec(node->num_classes, 0);
     return nan_vec;
