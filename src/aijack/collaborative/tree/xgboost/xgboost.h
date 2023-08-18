@@ -78,6 +78,7 @@ struct XGBoostBase : TreeModelBase<XGBoostParty> {
   }
 
   vector<XGBoostTree> get_estimators() { return estimators; }
+  vector<XGBoostParty> get_parties() { return parties_cp; }
 
   void fit(vector<XGBoostParty> &parties, vector<float> &y) {
     int row_count = y.size();
@@ -121,8 +122,6 @@ struct XGBoostBase : TreeModelBase<XGBoostParty> {
         logging_loss.push_back(lossfunc_obj->get_loss(base_pred, y));
       }
     }
-
-    parties = parties_cp;
   }
 
   vector<vector<float>> predict_raw(vector<vector<float>> &X) {

@@ -136,6 +136,7 @@ PYBIND11_MODULE(aijack_cpp_core, m) {
       .def("get_init_pred", &XGBoostClassifier::get_init_pred)
       .def("load_estimators", &XGBoostClassifier::load_estimators)
       .def("get_estimators", &XGBoostClassifier::get_estimators)
+      .def("get_parties", &XGBoostClassifier::get_parties)
       .def("predict_raw", &XGBoostClassifier::predict_raw)
       .def("predict_proba", &XGBoostClassifier::predict_proba);
 
