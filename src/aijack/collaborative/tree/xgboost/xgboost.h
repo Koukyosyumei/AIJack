@@ -34,6 +34,7 @@ struct XGBoostBase : TreeModelBase<XGBoostParty> {
   vector<vector<float>> init_pred;
   vector<XGBoostTree> estimators;
   vector<float> logging_loss;
+  vector<XGBoostParty> parties_cp;
 
   XGBoostBase(int num_classes_, float subsample_cols_ = 0.8,
               float min_child_weight_ = -1 * numeric_limits<float>::infinity(),
@@ -81,6 +82,8 @@ struct XGBoostBase : TreeModelBase<XGBoostParty> {
   void fit(vector<XGBoostParty> &parties, vector<float> &y) {
     int row_count = y.size();
 
+    parties_cp = parties;
+
     vector<vector<float>> base_pred;
     if (estimators.size() == 0) {
       init_pred = get_init_pred(y);
@@ -103,7 +106,7 @@ struct XGBoostBase : TreeModelBase<XGBoostParty> {
       vector<vector<float>> grad = lossfunc_obj->get_grad(base_pred, y);
       vector<vector<float>> hess = lossfunc_obj->get_hess(base_pred, y);
 
-      XGBoostTree boosting_tree(parties, y, num_classes, grad, hess,
+      XGBoostTree boosting_tree(parties_cp, y, num_classes, grad, hess,
                                 min_child_weight, lam, gamma, eps, min_leaf,
                                 depth, active_party_id,
                                 (completelly_secure_round > i), n_job);
