@@ -94,6 +94,7 @@ struct XGBoostNode : public Node<XGBoostParty> {
 
   XGBoostNode &operator=(const XGBoostNode &other) {
     if (this != &other) {
+      parties = other.parties;
       y = other.y;
       idxs = other.idxs;
       val = other.val;

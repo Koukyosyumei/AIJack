@@ -65,6 +65,7 @@ struct SecureBoostNode : Node<SecureBoostParty> {
 
   SecureBoostNode &operator=(const SecureBoostNode &other) {
     if (this != &other) {
+      parties = other.parties;
       y = other.y;
       idxs = other.idxs;
       val = other.val;
