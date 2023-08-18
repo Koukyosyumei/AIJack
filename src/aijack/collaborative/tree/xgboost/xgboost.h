@@ -1,6 +1,7 @@
 #pragma once
 #include "../core/model.h"
 #include "loss.h"
+#include "party.h"
 #include "tree.h"
 #include <cmath>
 #include <iostream>
@@ -98,11 +99,16 @@ struct XGBoostBase : TreeModelBase<XGBoostParty> {
       }
     }
 
+    std::vector<XGBoostParty *> parties_ptr;
+    for (XGBoostParty &party : parties) {
+      parties_ptr.push_back(&party);
+    }
+
     for (int i = 0; i < boosting_rounds; i++) {
       vector<vector<float>> grad = lossfunc_obj->get_grad(base_pred, y);
       vector<vector<float>> hess = lossfunc_obj->get_hess(base_pred, y);
 
-      XGBoostTree boosting_tree(&parties, y, num_classes, grad, hess,
+      XGBoostTree boosting_tree(parties_ptr, y, num_classes, grad, hess,
                                 min_child_weight, lam, gamma, eps, min_leaf,
                                 depth, active_party_id,
                                 (completelly_secure_round > i), n_job);

@@ -2,6 +2,7 @@
 #include "../../../defense/paillier/src/paillier.h"
 #include "../core/model.h"
 #include "../xgboost/loss.h"
+#include "party.h"
 #include "tree.h"
 #include <cmath>
 #include <iostream>
@@ -105,6 +106,11 @@ struct SecureBoostBase : TreeModelBase<SecureBoostParty> {
       }
     }
 
+    vector<SecureBoostParty *> parties_ptr;
+    for (SecureBoostParty &party : parties) {
+      parties_ptr.push_back(&party);
+    }
+
     for (int i = 0; i < boosting_rounds; i++) {
       vector<vector<float>> vanila_grad = lossfunc_obj->get_grad(base_pred, y);
       vector<vector<float>> vanila_hess = lossfunc_obj->get_hess(base_pred, y);
@@ -125,7 +131,7 @@ struct SecureBoostBase : TreeModelBase<SecureBoostParty> {
       }
 
       SecureBoostTree boosting_tree(
-          &parties, y, num_classes, grad, hess, vanila_grad, vanila_hess,
+          parties_ptr, y, num_classes, grad, hess, vanila_grad, vanila_hess,
           min_child_weight, lam, gamma, eps, min_leaf, depth, active_party_id,
           (completelly_secure_round > i), n_job);
       vector<vector<float>> pred_temp = boosting_tree.get_train_prediction();

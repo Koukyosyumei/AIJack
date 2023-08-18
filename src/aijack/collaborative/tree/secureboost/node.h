@@ -14,7 +14,7 @@ struct SecureBoostNode : Node<SecureBoostParty> {
   int num_classes;
 
   // SecureBoostNode() {}
-  SecureBoostNode(vector<SecureBoostParty> *parties_, vector<float> &y_,
+  SecureBoostNode(vector<SecureBoostParty *> parties_, vector<float> &y_,
                   int num_classes_,
                   vector<vector<PaillierCipherText>> &gradient_,
                   vector<vector<PaillierCipherText>> &hessian_,
@@ -38,7 +38,7 @@ struct SecureBoostNode : Node<SecureBoostParty> {
     n_job = n_job_;
 
     row_count = idxs.size();
-    num_parties = parties->size();
+    num_parties = parties.size();
 
     val = compute_weight();
     // tuple<int, int, int> best_split = find_split();
@@ -53,8 +53,8 @@ struct SecureBoostNode : Node<SecureBoostParty> {
       tuple<int, int, int> best_split = find_split();
       party_id = get<0>(best_split);
       if (party_id != -1) {
-        record_id = parties->at(party_id).insert_lookup_table(
-            get<1>(best_split), get<2>(best_split));
+        record_id = parties[party_id]->insert_lookup_table(get<1>(best_split),
+                                                           get<2>(best_split));
         make_children_nodes(get<0>(best_split), get<1>(best_split),
                             get<2>(best_split));
       } else {
@@ -101,7 +101,7 @@ struct SecureBoostNode : Node<SecureBoostParty> {
 
   SecureBoostNode get_right() { return *right; }
 
-  int get_num_parties() { return parties->size(); }
+  int get_num_parties() { return parties.size(); }
 
   vector<float> compute_weight() {
     return xgboost_compute_weight(row_count, vanila_gradient, vanila_hessian,
@@ -123,15 +123,14 @@ struct SecureBoostNode : Node<SecureBoostParty> {
 
       vector<vector<pair<vector<float>, vector<float>>>> search_results;
       if (temp_party_id == active_party_id) {
-        search_results =
-            parties->at(temp_party_id)
-                .greedy_search_split(vanila_gradient, vanila_hessian, idxs);
+        search_results = parties[temp_party_id]->greedy_search_split(
+            vanila_gradient, vanila_hessian, idxs);
       } else {
         vector<vector<
             pair<vector<PaillierCipherText>, vector<PaillierCipherText>>>>
             encrypted_search_result =
-                parties->at(temp_party_id)
-                    .greedy_search_split_encrypt(gradient, hessian, idxs);
+                parties[temp_party_id]->greedy_search_split_encrypt(
+                    gradient, hessian, idxs);
         int temp_result_size = encrypted_search_result.size();
         search_results.resize(temp_result_size);
         int temp_vec_size;
@@ -145,13 +144,11 @@ struct SecureBoostNode : Node<SecureBoostParty> {
 
             for (int c = 0; c < grad_dim; c++) {
               temp_grad_decrypted[c] =
-                  parties->at(active_party_id)
-                      .sk.decrypt<float>(
-                          encrypted_search_result[j][k].first[c]);
+                  parties[active_party_id]->sk.decrypt<float>(
+                      encrypted_search_result[j][k].first[c]);
               temp_hess_decrypted[c] =
-                  parties->at(active_party_id)
-                      .sk.decrypt<float>(
-                          encrypted_search_result[j][k].second[c]);
+                  parties[active_party_id]->sk.decrypt<float>(
+                      encrypted_search_result[j][k].second[c]);
             }
             search_results[j][k] =
                 make_pair(temp_grad_decrypted, temp_hess_decrypted);
@@ -254,9 +251,8 @@ struct SecureBoostNode : Node<SecureBoostParty> {
   void make_children_nodes(int best_party_id, int best_col_id,
                            int best_threshold_id) {
     // TODO: remove idx with nan values from right_idxs;
-    vector<int> left_idxs =
-        parties->at(best_party_id)
-            .split_rows(idxs, best_col_id, best_threshold_id);
+    vector<int> left_idxs = parties[best_party_id]->split_rows(
+        idxs, best_col_id, best_threshold_id);
     vector<int> right_idxs;
     for (int i = 0; i < row_count; i++)
       if (!any_of(left_idxs.begin(), left_idxs.end(),
