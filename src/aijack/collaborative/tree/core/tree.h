@@ -7,10 +7,10 @@
 using namespace std;
 
 template <typename NodeType> struct Tree {
-  NodeType *dtree;
+  NodeType dtree;
   NodeAPI<NodeType> nodeapi;
 
-  Tree() {}
+  Tree(NodeType dtree_) : dtree(dtree_) {}
 
   /**
    * @brief Get the root node object
@@ -26,7 +26,7 @@ template <typename NodeType> struct Tree {
    * @return vector<vector<float>>
    */
   vector<vector<float>> predict(vector<vector<float>> &X) {
-    return nodeapi.predict(dtree, X);
+    return nodeapi.predict(&dtree, X);
   }
 
   /**
@@ -61,8 +61,8 @@ template <typename NodeType> struct Tree {
    */
   vector<vector<float>> get_train_prediction() {
     vector<pair<vector<int>, vector<vector<float>>>> result =
-        extract_train_prediction_from_node(dtree);
-    vector<vector<float>> y_train_pred(dtree->y.size());
+        extract_train_prediction_from_node(&dtree);
+    vector<vector<float>> y_train_pred(dtree.y.size());
     for (int i = 0; i < result.size(); i++) {
       for (int j = 0; j < result[i].first.size(); j++) {
         y_train_pred[result[i].first[j]] = result[i].second[j];
@@ -83,7 +83,7 @@ template <typename NodeType> struct Tree {
    */
   string print(bool show_purity = false, bool binary_color = true,
                int target_party_id = -1) {
-    return nodeapi.print(dtree, show_purity, binary_color, target_party_id);
+    return nodeapi.print(&dtree, show_purity, binary_color, target_party_id);
   }
 
   /**
@@ -92,6 +92,6 @@ template <typename NodeType> struct Tree {
    * @return float
    */
   float get_leaf_purity() {
-    return nodeapi.get_leaf_purity(dtree, dtree->idxs.size());
+    return nodeapi.get_leaf_purity(&dtree, dtree.idxs.size());
   }
 };

@@ -63,6 +63,29 @@ struct SecureBoostNode : Node<SecureBoostParty> {
     }
   }
 
+  SecureBoostNode &operator=(const SecureBoostNode &other) {
+    if (this != &other) {
+      y = other.y;
+      idxs = other.idxs;
+      val = other.val;
+
+      num_classes = other.num_classes;
+      depth = other.depth;
+      active_party_id = other.active_party_id;
+      n_job = other.n_job;
+
+      party_id = other.party_id;
+      record_id = other.record_id;
+      row_count = other.row_count;
+      num_parties = other.num_parties;
+      is_leaf_flag = other.is_leaf_flag;
+
+      left = other.left;
+      right = other.right;
+    }
+    return *this;
+  }
+
   vector<int> get_idxs() { return idxs; }
 
   int get_party_id() { return party_id; }
