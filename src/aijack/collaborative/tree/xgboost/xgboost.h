@@ -29,20 +29,22 @@ struct XGBoostBase : TreeModelBase<XGBoostParty> {
 
   float upsilon_Y;
 
-  vector<XGBoostParty *> parties_ptr;
+  vector<XGBoostParty> &parties;
   LossFunc *lossfunc_obj;
 
   vector<vector<float>> init_pred;
   vector<XGBoostTree> estimators;
   vector<float> logging_loss;
 
-  XGBoostBase(int num_classes_, float subsample_cols_ = 0.8,
+  XGBoostBase(vector<XGBoostParty> &parties_, int num_classes_,
+              float subsample_cols_ = 0.8,
               float min_child_weight_ = -1 * numeric_limits<float>::infinity(),
               int depth_ = 5, int min_leaf_ = 5, float learning_rate_ = 0.4,
               int boosting_rounds_ = 5, float lam_ = 1.5, float gamma_ = 1,
               float eps_ = 0.1, int active_party_id_ = -1,
               int completelly_secure_round_ = 0, float init_value_ = 1.0,
-              int n_job_ = 1, bool save_loss_ = true) {
+              int n_job_ = 1, bool save_loss_ = true)
+      : parties(parties_) {
     num_classes = num_classes_;
     subsample_cols = subsample_cols_;
     min_child_weight = min_child_weight_;
@@ -78,8 +80,9 @@ struct XGBoostBase : TreeModelBase<XGBoostParty> {
   }
 
   vector<XGBoostTree> get_estimators() { return estimators; }
+  vector<XGBoostParty> get_parties() { return parties; }
 
-  void fit(vector<XGBoostParty> &parties, vector<float> &y) {
+  void fit(vector<float> &y) {
     int row_count = y.size();
 
     vector<vector<float>> base_pred;
@@ -100,16 +103,11 @@ struct XGBoostBase : TreeModelBase<XGBoostParty> {
       }
     }
 
-    parties_ptr.clear();
-    for (XGBoostParty &party : parties) {
-      parties_ptr.push_back(&party);
-    }
-
     for (int i = 0; i < boosting_rounds; i++) {
       vector<vector<float>> grad = lossfunc_obj->get_grad(base_pred, y);
       vector<vector<float>> hess = lossfunc_obj->get_hess(base_pred, y);
 
-      XGBoostTree boosting_tree(parties_ptr, y, num_classes, grad, hess,
+      XGBoostTree boosting_tree(parties, y, num_classes, grad, hess,
                                 min_child_weight, lam, gamma, eps, min_leaf,
                                 depth, active_party_id,
                                 (completelly_secure_round > i), n_job);

@@ -5,8 +5,10 @@
 #include <pybind11/stl.h>
 #include <vector>
 
+#include "aijack/collaborative/tree/secureboost/party.h"
 #include "aijack/collaborative/tree/secureboost/secureboost.h"
 #include "aijack/collaborative/tree/xgboost/node.h"
+#include "aijack/collaborative/tree/xgboost/party.h"
 #include "aijack/collaborative/tree/xgboost/xgboost.h"
 #include "aijack/defense/dp/core//rdp.cpp"
 #include "aijack/defense/dp/core//search.cpp"
@@ -128,8 +130,8 @@ PYBIND11_MODULE(aijack_cpp_core, m) {
       .def("predict", &SecureBoostTree::predict);
 
   py::class_<XGBoostClassifier>(m, "XGBoostClassifier")
-      .def(py::init<int, float, float, int, int, float, int, float, float,
-                    float, int, int, float, int, bool>())
+      .def(py::init<vector<XGBoostParty> &, int, float, float, int, int, float,
+                    int, float, float, float, int, int, float, int, bool>())
       .def("fit", &XGBoostClassifier::fit)
       .def("get_init_pred", &XGBoostClassifier::get_init_pred)
       .def("load_estimators", &XGBoostClassifier::load_estimators)
@@ -138,8 +140,9 @@ PYBIND11_MODULE(aijack_cpp_core, m) {
       .def("predict_proba", &XGBoostClassifier::predict_proba);
 
   py::class_<SecureBoostClassifier>(m, "SecureBoostClassifier")
-      .def(py::init<int, float, float, int, int, float, int, float, float,
-                    float, int, int, float, int, bool>())
+      .def(py::init<vector<SecureBoostParty> &, int, float, float, int, int,
+                    float, int, float, float, float, int, int, float, int,
+                    bool>())
       .def("fit", &SecureBoostClassifier::fit)
       .def("get_init_pred", &SecureBoostClassifier::get_init_pred)
       .def("load_estimators", &SecureBoostClassifier::load_estimators)

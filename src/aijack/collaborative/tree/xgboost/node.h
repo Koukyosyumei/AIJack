@@ -35,7 +35,7 @@ struct XGBoostNode : public Node<XGBoostParty> {
   vector<float> entire_class_cnt;
 
   // XGBoostNode() {}
-  XGBoostNode(vector<XGBoostParty *> parties_, vector<float> &y_,
+  XGBoostNode(vector<XGBoostParty> &parties_, vector<float> &y_,
               int num_classes_, vector<vector<float>> &gradient_,
               vector<vector<float>> &hessian_, vector<int> &idxs_,
               float min_child_weight_, float lam_, float gamma_, float eps_,
@@ -82,8 +82,8 @@ struct XGBoostNode : public Node<XGBoostParty> {
       tuple<int, int, int> best_split = find_split();
       party_id = get<0>(best_split);
       if (party_id != -1) {
-        record_id = parties[party_id]->insert_lookup_table(get<1>(best_split),
-                                                           get<2>(best_split));
+        record_id = parties[party_id].insert_lookup_table(get<1>(best_split),
+                                                          get<2>(best_split));
         make_children_nodes(get<0>(best_split), get<1>(best_split),
                             get<2>(best_split));
       } else {
@@ -156,7 +156,7 @@ struct XGBoostNode : public Node<XGBoostParty> {
          temp_party_id < party_id_start + temp_num_parties; temp_party_id++) {
 
       vector<vector<tuple<vector<float>, vector<float>, float, vector<float>>>>
-          search_results = parties[temp_party_id]->greedy_search_split(
+          search_results = parties[temp_party_id].greedy_search_split(
               gradient, hessian, y, idxs);
 
       float temp_score, temp_entropy;
@@ -282,8 +282,8 @@ struct XGBoostNode : public Node<XGBoostParty> {
   void make_children_nodes(int best_party_id, int best_col_id,
                            int best_threshold_id) {
     // TODO: remove idx with nan values from right_idxs;
-    vector<int> left_idxs = parties[best_party_id]->split_rows(
-        idxs, best_col_id, best_threshold_id);
+    vector<int> left_idxs =
+        parties[best_party_id].split_rows(idxs, best_col_id, best_threshold_id);
     vector<int> right_idxs;
     for (int i = 0; i < row_count; i++)
       if (!any_of(left_idxs.begin(), left_idxs.end(),

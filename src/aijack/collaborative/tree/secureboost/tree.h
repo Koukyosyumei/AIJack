@@ -7,7 +7,7 @@
 #include <vector>
 
 inline SecureBoostNode
-make_root(vector<SecureBoostParty *> parties, vector<float> y, int num_classes,
+make_root(vector<SecureBoostParty> &parties, vector<float> y, int num_classes,
           vector<vector<PaillierCipherText>> &gradient,
           vector<vector<PaillierCipherText>> &hessian,
           vector<vector<float>> &vanila_gradient,
@@ -18,7 +18,7 @@ make_root(vector<SecureBoostParty *> parties, vector<float> y, int num_classes,
   vector<int> idxs(y.size());
   iota(idxs.begin(), idxs.end(), 0);
   for (int i = 0; i < parties.size(); i++) {
-    parties[i]->subsample_columns();
+    parties[i].subsample_columns();
   }
   return SecureBoostNode(parties, y, num_classes, gradient, hessian,
                          vanila_gradient, vanila_hessian, idxs,
@@ -29,7 +29,7 @@ make_root(vector<SecureBoostParty *> parties, vector<float> y, int num_classes,
 struct SecureBoostTree : public Tree<SecureBoostNode> {
   //  SecureBoostNode dtree;
   // SecureBoostTree() {}
-  SecureBoostTree(vector<SecureBoostParty *> parties, vector<float> y,
+  SecureBoostTree(vector<SecureBoostParty> &parties, vector<float> y,
                   int num_classes, vector<vector<PaillierCipherText>> &gradient,
                   vector<vector<PaillierCipherText>> &hessian,
                   vector<vector<float>> &vanila_gradient,
