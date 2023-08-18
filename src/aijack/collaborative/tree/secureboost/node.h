@@ -14,7 +14,7 @@ struct SecureBoostNode : Node<SecureBoostParty> {
   int num_classes;
 
   // SecureBoostNode() {}
-  SecureBoostNode(vector<SecureBoostParty> parties_, vector<float> &y_,
+  SecureBoostNode(vector<SecureBoostParty> &parties_, vector<float> &y_,
                   int num_classes_,
                   vector<vector<PaillierCipherText>> &gradient_,
                   vector<vector<PaillierCipherText>> &hessian_,

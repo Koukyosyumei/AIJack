@@ -15,7 +15,7 @@ using namespace std;
  * @tparam PartyType Type of party.
  */
 template <typename PartyType> struct Node {
-  vector<PartyType> parties;
+  vector<PartyType> &parties;
   vector<float> &y;
   vector<int> idxs;
 
@@ -37,7 +37,7 @@ template <typename PartyType> struct Node {
   int is_leaf_flag = -1; // -1:not calculated yer, 0: is not leaf, 1: is leaf
 
   // Node(){};
-  Node(vector<PartyType> parties_, vector<int> &idxs_, vector<float> &y_)
+  Node(vector<PartyType> &parties_, vector<int> &idxs_, vector<float> &y_)
       : parties(parties_), idxs(idxs_), y(y_) {}
 
   /**
