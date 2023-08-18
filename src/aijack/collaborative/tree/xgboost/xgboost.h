@@ -102,7 +102,7 @@ struct XGBoostBase : TreeModelBase<XGBoostParty> {
       vector<vector<float>> grad = lossfunc_obj->get_grad(base_pred, y);
       vector<vector<float>> hess = lossfunc_obj->get_hess(base_pred, y);
 
-      XGBoostTree boosting_tree(parties, y, num_classes, grad, hess,
+      XGBoostTree boosting_tree(&parties, y, num_classes, grad, hess,
                                 min_child_weight, lam, gamma, eps, min_leaf,
                                 depth, active_party_id,
                                 (completelly_secure_round > i), n_job);

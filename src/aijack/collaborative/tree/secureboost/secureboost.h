@@ -125,7 +125,7 @@ struct SecureBoostBase : TreeModelBase<SecureBoostParty> {
       }
 
       SecureBoostTree boosting_tree(
-          parties, y, num_classes, grad, hess, vanila_grad, vanila_hess,
+          &parties, y, num_classes, grad, hess, vanila_grad, vanila_hess,
           min_child_weight, lam, gamma, eps, min_leaf, depth, active_party_id,
           (completelly_secure_round > i), n_job);
       vector<vector<float>> pred_temp = boosting_tree.get_train_prediction();
