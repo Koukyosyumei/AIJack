@@ -192,8 +192,7 @@ struct XGBoostParty : public Party {
     for (int r = 0; r < row_count; r++) {
       if ((!isnan(x_col[r])) && (x_col[r] <= threshold)) {
 
-        if (x_col[r] >=
-            threshold + cost_constraint_map[feature_opt_pos].first) {
+        if (x_col[r] >= threshold + cost_constraint_map[feature_opt_id].first) {
           uncertain_idxs.push_back(idxs[idxs[r]]);
         } else {
           left_idxs.push_back(idxs[r]);
@@ -203,8 +202,7 @@ struct XGBoostParty : public Party {
           }
         }
       } else {
-        if (x_col[r] <
-            threshold + cost_constraint_map[feature_opt_pos].second) {
+        if (x_col[r] < threshold + cost_constraint_map[feature_opt_id].second) {
           uncertain_idxs.push_back(idxs[idxs[r]]);
         } else {
           for (int c = 0; c < grad_dim; c++) {
@@ -248,7 +246,7 @@ struct XGBoostParty : public Party {
   }
 
   vector<vector<tuple<vector<float>, vector<float>, float, vector<float>>>>
-  greedy_robust_search_split(const vector<vector<float>> &gradient,
+  robust_greedy_search_split(const vector<vector<float>> &gradient,
                              const vector<vector<float>> &hessian,
                              vector<float> &y, vector<int> &idxs, float gam,
                              float lam) {

@@ -169,7 +169,7 @@ struct XGBoostNode : public Node<XGBoostParty> {
         search_results = parties[temp_party_id].greedy_search_split(
             gradient, hessian, y, idxs);
       } else {
-        search_results = parties[temp_party_id].greedy_robust_search_split(
+        search_results = parties[temp_party_id].robust_greedy_search_split(
             gradient, hessian, y, idxs, gamma, lam);
       }
 
