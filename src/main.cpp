@@ -132,7 +132,7 @@ PYBIND11_MODULE(aijack_cpp_core, m) {
 
   py::class_<XGBoostClassifier>(m, "XGBoostClassifier")
       .def(py::init<int, float, float, int, int, float, int, float, float,
-                    float, int, int, float, int, bool>())
+                    float, int, int, float, int, bool, bool>())
       .def("fit", &XGBoostClassifier::fit)
       .def("get_init_pred", &XGBoostClassifier::get_init_pred)
       .def("load_estimators", &XGBoostClassifier::load_estimators)
