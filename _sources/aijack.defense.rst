@@ -7,6 +7,7 @@ Subpackages
 .. toctree::
    :maxdepth: 4
 
+   aijack.defense.crobustness
    aijack.defense.debugging
    aijack.defense.dp
    aijack.defense.foolsgold
