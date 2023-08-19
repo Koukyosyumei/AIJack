@@ -308,9 +308,18 @@ struct XGBoostNode : public Node<XGBoostParty> {
 
   void make_children_nodes(int best_party_id, int best_col_id,
                            int best_threshold_id) {
-    // TODO: remove idx with nan values from right_idxs;
-    vector<int> left_idxs =
-        parties[best_party_id].split_rows(idxs, best_col_id, best_threshold_id);
+    vector<int> left_idxs;
+
+    if ((!is_robust) || (parties[best_party_id].cost_constraint_map.size() !=
+                         parties[party_id].feature_id.size())) {
+      left_idxs = parties[best_party_id].split_rows(idxs, best_col_id,
+                                                    best_threshold_id);
+    } else {
+      left_idxs = parties[best_party_id].robust_split_rows(
+          idxs, best_col_id, best_threshold_id, gradient, hessian, y, gamma,
+          lam);
+    }
+
     vector<int> right_idxs;
     for (int i = 0; i < row_count; i++)
       if (!any_of(left_idxs.begin(), left_idxs.end(),

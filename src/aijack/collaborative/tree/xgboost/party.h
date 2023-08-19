@@ -162,6 +162,91 @@ struct XGBoostParty : public Party {
     return split_candidates_grad_hess;
   }
 
+  vector<int> robust_split_rows(vector<int> &idxs, int feature_opt_pos,
+                                int threshold_opt_pos,
+                                const vector<vector<float>> &gradient,
+                                const vector<vector<float>> &hessian,
+                                vector<float> &y, float gam, float lam) {
+    vector<int> left_idxs;
+    int num_thresholds = subsample_col_count;
+    int feature_opt_id =
+        temp_column_subsample[feature_opt_pos % subsample_col_count];
+
+    int row_count = idxs.size();
+    int recoed_id = 0;
+
+    int grad_dim = gradient[0].size();
+
+    vector<float> x_col(row_count);
+    for (int r = 0; r < row_count; r++)
+      x_col[r] = x[idxs[r]][feature_opt_id];
+
+    float threshold = temp_thresholds[feature_opt_pos][threshold_opt_pos];
+
+    vector<float> left_grad_confident(grad_dim, 0);
+    vector<float> right_grad_confident(grad_dim, 0);
+    vector<float> left_hess_confident(grad_dim, 0);
+    vector<float> right_hess_confident(grad_dim, 0);
+    vector<int> uncertain_idxs;
+
+    for (int r = 0; r < row_count; r++) {
+      if ((!isnan(x_col[r])) && (x_col[r] <= threshold)) {
+
+        if (x_col[r] >=
+            threshold + cost_constraint_map[feature_opt_pos].first) {
+          uncertain_idxs.push_back(idxs[idxs[r]]);
+        } else {
+          left_idxs.push_back(idxs[r]);
+          for (int c = 0; c < grad_dim; c++) {
+            left_grad_confident[c] += gradient[idxs[r]][c];
+            left_hess_confident[c] += hessian[idxs[r]][c];
+          }
+        }
+      } else {
+        if (x_col[r] <
+            threshold + cost_constraint_map[feature_opt_pos].second) {
+          uncertain_idxs.push_back(idxs[idxs[r]]);
+        } else {
+          for (int c = 0; c < grad_dim; c++) {
+            right_grad_confident[c] += gradient[idxs[r]][c];
+            right_hess_confident[c] += hessian[idxs[r]][c];
+          }
+        }
+      }
+    }
+
+    for (int r : uncertain_idxs) {
+      vector<float> left_tmp_grad(left_grad_confident);
+      vector<float> right_tmp_grad(right_grad_confident);
+      vector<float> left_tmp_hess(left_hess_confident);
+      vector<float> right_tmp_hess(right_hess_confident);
+
+      for (int c = 0; c < grad_dim; c++) {
+        left_tmp_grad[c] += gradient[r][c];
+        left_tmp_hess[c] += hessian[r][c];
+        right_tmp_grad[c] += gradient[r][c];
+        right_tmp_hess[c] += hessian[r][c];
+      }
+
+      float left_gain =
+          xgboost_compute_gain(left_tmp_grad, right_grad_confident,
+                               left_tmp_hess, right_hess_confident, gam, lam);
+      float right_gain =
+          xgboost_compute_gain(left_grad_confident, right_tmp_grad,
+                               left_hess_confident, right_tmp_hess, gam, lam);
+
+      if (left_gain < right_gain) {
+        left_idxs.push_back(r);
+        left_grad_confident = left_tmp_grad;
+        left_hess_confident = left_tmp_hess;
+      } else {
+        right_grad_confident = right_tmp_grad;
+        right_hess_confident = right_tmp_hess;
+      }
+    }
+    return left_idxs;
+  }
+
   vector<vector<tuple<vector<float>, vector<float>, float, vector<float>>>>
   greedy_robust_search_split(const vector<vector<float>> &gradient,
                              const vector<vector<float>> &hessian,
