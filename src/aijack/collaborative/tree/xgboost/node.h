@@ -162,7 +162,10 @@ struct XGBoostNode : public Node<XGBoostParty> {
 
       vector<vector<tuple<vector<float>, vector<float>, float, vector<float>>>>
           search_results;
-      if (!is_robust) {
+      bool robust_flag =
+          is_robust && (parties[temp_party_id].cost_constraint_map.size() ==
+                        parties[temp_party_id].feature_id.size());
+      if (!robust_flag) {
         search_results = parties[temp_party_id].greedy_search_split(
             gradient, hessian, y, idxs);
       } else {
@@ -196,7 +199,7 @@ struct XGBoostNode : public Node<XGBoostParty> {
 
         for (int k = 0; k < search_results[j].size(); k++) {
           for (int c = 0; c < grad_dim; c++) {
-            if (!is_robust) {
+            if (!robust_flag) {
               temp_left_grad[c] += get<0>(search_results[j][k])[c];
               temp_left_hess[c] += get<1>(search_results[j][k])[c];
             } else {
@@ -204,7 +207,7 @@ struct XGBoostNode : public Node<XGBoostParty> {
               temp_left_hess[c] = get<1>(search_results[j][k])[c];
             }
           }
-          if (!is_robust) {
+          if (!robust_flag) {
             temp_left_size += get<2>(search_results[j][k]);
           } else {
             temp_left_size = get<2>(search_results[j][k]);
@@ -212,7 +215,7 @@ struct XGBoostNode : public Node<XGBoostParty> {
           temp_right_size = tot_cnt - temp_left_size;
 
           for (int c = 0; c < num_classes; c++) {
-            if (!is_robust) {
+            if (!robust_flag) {
               temp_left_class_cnt[c] += get<3>(search_results[j][k])[c];
             } else {
               temp_left_class_cnt[c] = get<3>(search_results[j][k])[c];

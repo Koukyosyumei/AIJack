@@ -90,6 +90,7 @@ PYBIND11_MODULE(aijack_cpp_core, m) {
   py::class_<XGBoostParty>(m, "XGBoostParty")
       .def(py::init<vector<vector<float>>, int, vector<int>, int, int, float,
                     int, bool, int>())
+      .def("set_cost_constraint_map", &XGBoostParty::set_cost_constraint_map)
       .def("get_lookup_table", &XGBoostParty::get_lookup_table);
 
   py::class_<SecureBoostParty>(m, "SecureBoostParty")
