@@ -193,7 +193,7 @@ struct XGBoostParty : public Party {
       if ((!isnan(x_col[r])) && (x_col[r] <= threshold)) {
 
         if (x_col[r] >= threshold + cost_constraint_map[feature_opt_id].first) {
-          uncertain_idxs.push_back(idxs[idxs[r]]);
+          uncertain_idxs.push_back(idxs[r]);
         } else {
           left_idxs.push_back(idxs[r]);
           for (int c = 0; c < grad_dim; c++) {
@@ -203,7 +203,7 @@ struct XGBoostParty : public Party {
         }
       } else {
         if (x_col[r] < threshold + cost_constraint_map[feature_opt_id].second) {
-          uncertain_idxs.push_back(idxs[idxs[r]]);
+          uncertain_idxs.push_back(idxs[r]);
         } else {
           for (int c = 0; c < grad_dim; c++) {
             right_grad_confident[c] += gradient[idxs[r]][c];
