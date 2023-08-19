@@ -23,7 +23,8 @@ class FGSMAttacker(BaseAttacker):
         self.output_lower_bound = output_lower_bound
         self.output_upper_bound = output_upper_bound
 
-    def attack(self, x, y):
+    def attack(self, data):
+        x, y = data
         x.requires_grad = True
 
         self.target_model.zero_grad()
