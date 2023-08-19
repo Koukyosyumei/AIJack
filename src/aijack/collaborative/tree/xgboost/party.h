@@ -8,7 +8,7 @@ using namespace std;
 
 struct XGBoostParty : public Party {
   int num_percentile_bin;
-  vector<pair<int, int>> cost_constraint_map;
+  vector<pair<float, float>> cost_constraint_map;
 
   // XGBoostParty() {}
   XGBoostParty(vector<vector<float>> x_, int num_classes_,
@@ -20,7 +20,8 @@ struct XGBoostParty : public Party {
     num_percentile_bin = num_precentile_bin_;
   }
 
-  void set_cost_constraint_map(vector<pair<int, int>> cost_constraint_map_) {
+  void
+  set_cost_constraint_map(vector<pair<float, float>> cost_constraint_map_) {
     cost_constraint_map = cost_constraint_map_;
   }
 
