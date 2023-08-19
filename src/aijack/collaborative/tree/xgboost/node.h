@@ -26,7 +26,7 @@ struct XGBoostNode : public Node<XGBoostParty> {
   vector<vector<float>> &gradient, &hessian;
   float min_child_weight, lam, gamma, eps;
   float best_entropy;
-  bool use_only_active_party;
+  bool use_only_active_party, is_robust;
   XGBoostNode *left, *right;
 
   int num_classes;
@@ -40,7 +40,8 @@ struct XGBoostNode : public Node<XGBoostParty> {
               vector<vector<float>> &hessian_, vector<int> &idxs_,
               float min_child_weight_, float lam_, float gamma_, float eps_,
               int depth_, int active_party_id_ = -1,
-              bool use_only_active_party_ = false, int n_job_ = 1)
+              bool use_only_active_party_ = false, int n_job_ = 1,
+              bool is_robust_ = false)
       : gradient(gradient_),
         hessian(hessian_), Node<XGBoostParty>(parties_, idxs_, y_) {
     num_classes = num_classes_;
@@ -52,6 +53,7 @@ struct XGBoostNode : public Node<XGBoostParty> {
     active_party_id = active_party_id_;
     use_only_active_party = use_only_active_party_;
     n_job = n_job_;
+    is_robust = is_robust_;
 
     row_count = idxs.size();
     num_parties = parties.size();
@@ -159,8 +161,14 @@ struct XGBoostNode : public Node<XGBoostParty> {
          temp_party_id < party_id_start + temp_num_parties; temp_party_id++) {
 
       vector<vector<tuple<vector<float>, vector<float>, float, vector<float>>>>
-          search_results = parties[temp_party_id].greedy_search_split(
-              gradient, hessian, y, idxs);
+          search_results;
+      if (!is_robust) {
+        search_results = parties[temp_party_id].greedy_search_split(
+            gradient, hessian, y, idxs);
+      } else {
+        search_results = parties[temp_party_id].greedy_robust_search_split(
+            gradient, hessian, y, idxs, gamma, lam);
+      }
 
       float temp_score, temp_entropy;
       vector<float> temp_left_grad(grad_dim, 0);
@@ -188,14 +196,27 @@ struct XGBoostNode : public Node<XGBoostParty> {
 
         for (int k = 0; k < search_results[j].size(); k++) {
           for (int c = 0; c < grad_dim; c++) {
-            temp_left_grad[c] += get<0>(search_results[j][k])[c];
-            temp_left_hess[c] += get<1>(search_results[j][k])[c];
+            if (!is_robust) {
+              temp_left_grad[c] += get<0>(search_results[j][k])[c];
+              temp_left_hess[c] += get<1>(search_results[j][k])[c];
+            } else {
+              temp_left_grad[c] = get<0>(search_results[j][k])[c];
+              temp_left_hess[c] = get<1>(search_results[j][k])[c];
+            }
           }
-          temp_left_size += get<2>(search_results[j][k]);
+          if (!is_robust) {
+            temp_left_size += get<2>(search_results[j][k]);
+          } else {
+            temp_left_size = get<2>(search_results[j][k]);
+          }
           temp_right_size = tot_cnt - temp_left_size;
 
           for (int c = 0; c < num_classes; c++) {
-            temp_left_class_cnt[c] += get<3>(search_results[j][k])[c];
+            if (!is_robust) {
+              temp_left_class_cnt[c] += get<3>(search_results[j][k])[c];
+            } else {
+              temp_left_class_cnt[c] = get<3>(search_results[j][k])[c];
+            }
             temp_right_class_cnt[c] =
                 temp_y_class_cnt[c] - temp_left_class_cnt[c];
           }
@@ -293,17 +314,17 @@ struct XGBoostNode : public Node<XGBoostParty> {
                   [&](float x) { return x == idxs[i]; }))
         right_idxs.push_back(idxs[i]);
 
-    left =
-        new XGBoostNode(parties, y, num_classes, gradient, hessian, left_idxs,
-                        min_child_weight, lam, gamma, eps, depth - 1,
-                        active_party_id, use_only_active_party, n_job);
+    left = new XGBoostNode(parties, y, num_classes, gradient, hessian,
+                           left_idxs, min_child_weight, lam, gamma, eps,
+                           depth - 1, active_party_id, use_only_active_party,
+                           n_job, is_robust);
     if (left->is_leaf_flag == 1) {
       left->party_id = party_id;
     }
-    right =
-        new XGBoostNode(parties, y, num_classes, gradient, hessian, right_idxs,
-                        min_child_weight, lam, gamma, eps, depth - 1,
-                        active_party_id, use_only_active_party, n_job);
+    right = new XGBoostNode(parties, y, num_classes, gradient, hessian,
+                            right_idxs, min_child_weight, lam, gamma, eps,
+                            depth - 1, active_party_id, use_only_active_party,
+                            n_job, is_robust);
     if (right->is_leaf_flag == 1) {
       right->party_id = party_id;
     }
