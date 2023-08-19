@@ -12,6 +12,14 @@ aijack.attack.evasion.evasion\_attack module
    :undoc-members:
    :show-inheritance:
 
+aijack.attack.evasion.fgsm module
+---------------------------------
+
+.. automodule:: aijack.attack.evasion.fgsm
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Module contents
 ---------------
 

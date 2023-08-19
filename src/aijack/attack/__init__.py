@@ -1,7 +1,7 @@
 """Submodule for attack algorithms against machine learning.
 """
 from .base_attack import BaseAttacker  # noqa: F401
-from .evasion import Evasion_attack_sklearn  # noqa: F401
+from .evasion import Evasion_attack_sklearn, FGSMAttacker  # noqa: F401
 from .inversion import (  # noqa: F401
     MI_FACE,
     GANAttackClientManager,
