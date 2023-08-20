@@ -28,7 +28,7 @@ def get_maximum_L_gaussian(
     attack_size,
     dp_epsilon,
     dp_delta,
-    delta_range=list(np.arange(0.001, 0.3, 0.001)),
+    delta_range=None,
     eps_min=0.0,
     eps_max=1.0,
     tolerance=0.001,
@@ -37,6 +37,9 @@ def get_maximum_L_gaussian(
     # https://github.com/columbia/pixeldp/blob/master/models/utils/robustness.py
     if p_max_lb <= p_sec_ub:
         return 0.0
+
+    if delta_range is None:
+        delta_range = list(np.arange(0.001, 0.3, 0.001))
 
     max_r = 0.0
     for delta in delta_range:
@@ -78,6 +81,10 @@ def get_certified_robustness_size_argmax(counts, eta, L, eps, delta, mode="gauss
 
 
 class PixelDP(torch.nn.Module):
+    """Implementation of Lecuyer, Mathias, et al. 'Certified robustness to
+    adversarial examples with differential privacy.' 2019 IEEE symposium
+    on security and privacy (SP). IEEE, 2019."""
+
     def __init__(
         self,
         model,
