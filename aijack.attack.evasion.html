@@ -168,7 +168,8 @@
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="notebooks/evasion.html">6. Evasion Attack</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-6"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="notebooks/aijack_evasion_attack.html">6.1. Evasion Attack against SVM</a></li>
-<li class="toctree-l2"><a class="reference internal" href="notebooks/aijack_transferbility_and_robustness.html">6.2. Exploring Adversarial Example Transferability and Robust Tree Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/aijack_diva.html">6.2. DIVA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/aijack_transferbility_and_robustness.html">6.3. Exploring Adversarial Example Transferability and Robust Tree Models</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="notebooks/diferentialprivacy.html">7. Differential Privacy</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul>
@@ -405,9 +406,10 @@ document.write(`
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#submodules">1.1.2.1. Submodules</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aijack.attack.evasion.evasion_attack">1.1.2.2. aijack.attack.evasion.evasion_attack module</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aijack.attack.evasion.fgsm">1.1.2.3. aijack.attack.evasion.fgsm module</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aijack.attack.evasion">1.1.2.4. Module contents</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aijack.attack.evasion.diva">1.1.2.2. aijack.attack.evasion.diva module</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aijack.attack.evasion.evasion_attack">1.1.2.3. aijack.attack.evasion.evasion_attack module</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aijack.attack.evasion.fgsm">1.1.2.4. aijack.attack.evasion.fgsm module</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aijack.attack.evasion">1.1.2.5. Module contents</a></li>
 </ul>
             </nav>
         </div>
@@ -424,8 +426,22 @@ document.write(`
 <section id="submodules">
 <h2><span class="section-number">1.1.2.1. </span>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">#</a></h2>
 </section>
+<section id="module-aijack.attack.evasion.diva">
+<span id="aijack-attack-evasion-diva-module"></span><h2><span class="section-number">1.1.2.2. </span>aijack.attack.evasion.diva module<a class="headerlink" href="#module-aijack.attack.evasion.diva" title="Permalink to this headline">#</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="aijack.attack.evasion.diva.DIVAWhiteBoxAttacker">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">aijack.attack.evasion.diva.</span></span><span class="sig-name descname"><span class="pre">DIVAWhiteBoxAttacker</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target_model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_model_on_edge</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">c</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_itr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lam</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.01</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'cpu'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/attack/evasion/diva.html#DIVAWhiteBoxAttacker"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.attack.evasion.diva.DIVAWhiteBoxAttacker" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="aijack.attack.html#aijack.attack.base_attack.BaseAttacker" title="aijack.attack.base_attack.BaseAttacker"><code class="xref py py-class docutils literal notranslate"><span class="pre">aijack.attack.base_attack.BaseAttacker</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="aijack.attack.evasion.diva.DIVAWhiteBoxAttacker.attack">
+<span class="sig-name descname"><span class="pre">attack</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/attack/evasion/diva.html#DIVAWhiteBoxAttacker.attack"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.attack.evasion.diva.DIVAWhiteBoxAttacker.attack" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
 <section id="module-aijack.attack.evasion.evasion_attack">
-<span id="aijack-attack-evasion-evasion-attack-module"></span><h2><span class="section-number">1.1.2.2. </span>aijack.attack.evasion.evasion_attack module<a class="headerlink" href="#module-aijack.attack.evasion.evasion_attack" title="Permalink to this headline">#</a></h2>
+<span id="aijack-attack-evasion-evasion-attack-module"></span><h2><span class="section-number">1.1.2.3. </span>aijack.attack.evasion.evasion_attack module<a class="headerlink" href="#module-aijack.attack.evasion.evasion_attack" title="Permalink to this headline">#</a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="aijack.attack.evasion.evasion_attack.Evasion_attack_sklearn">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">aijack.attack.evasion.evasion_attack.</span></span><span class="sig-name descname"><span class="pre">Evasion_attack_sklearn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target_model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">X_minus_1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dmax</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_iter</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lam</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">h</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">distance</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'L1'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kde_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'L1'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/attack/evasion/evasion_attack.html#Evasion_attack_sklearn"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.attack.evasion.evasion_attack.Evasion_attack_sklearn" title="Permalink to this definition">#</a></dt>
@@ -632,7 +648,7 @@ g_list (list) : lof of decision function (only for svm)</p>
 
 </section>
 <section id="module-aijack.attack.evasion.fgsm">
-<span id="aijack-attack-evasion-fgsm-module"></span><h2><span class="section-number">1.1.2.3. </span>aijack.attack.evasion.fgsm module<a class="headerlink" href="#module-aijack.attack.evasion.fgsm" title="Permalink to this headline">#</a></h2>
+<span id="aijack-attack-evasion-fgsm-module"></span><h2><span class="section-number">1.1.2.4. </span>aijack.attack.evasion.fgsm module<a class="headerlink" href="#module-aijack.attack.evasion.fgsm" title="Permalink to this headline">#</a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="aijack.attack.evasion.fgsm.FGSMAttacker">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">aijack.attack.evasion.fgsm.</span></span><span class="sig-name descname"><span class="pre">FGSMAttacker</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target_model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">criterion</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grad_lower_bound</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-</span> <span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grad_upper_bound</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_lower_bound</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-</span> <span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_upper_bound</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/attack/evasion/fgsm.html#FGSMAttacker"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.attack.evasion.fgsm.FGSMAttacker" title="Permalink to this definition">#</a></dt>
@@ -646,9 +662,20 @@ g_list (list) : lof of decision function (only for svm)</p>
 
 </section>
 <section id="module-aijack.attack.evasion">
-<span id="module-contents"></span><h2><span class="section-number">1.1.2.4. </span>Module contents<a class="headerlink" href="#module-aijack.attack.evasion" title="Permalink to this headline">#</a></h2>
+<span id="module-contents"></span><h2><span class="section-number">1.1.2.5. </span>Module contents<a class="headerlink" href="#module-aijack.attack.evasion" title="Permalink to this headline">#</a></h2>
 <p>Subpackage for evasion attack, which creates a malicious data that the target
 machine learning model cannot correctly classify.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="aijack.attack.evasion.DIVAWhiteBoxAttacker">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">aijack.attack.evasion.</span></span><span class="sig-name descname"><span class="pre">DIVAWhiteBoxAttacker</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target_model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_model_on_edge</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">c</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_itr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lam</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.01</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'cpu'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/attack/evasion/diva.html#DIVAWhiteBoxAttacker"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.attack.evasion.DIVAWhiteBoxAttacker" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="aijack.attack.html#aijack.attack.base_attack.BaseAttacker" title="aijack.attack.base_attack.BaseAttacker"><code class="xref py py-class docutils literal notranslate"><span class="pre">aijack.attack.base_attack.BaseAttacker</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="aijack.attack.evasion.DIVAWhiteBoxAttacker.attack">
+<span class="sig-name descname"><span class="pre">attack</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/attack/evasion/diva.html#DIVAWhiteBoxAttacker.attack"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.attack.evasion.DIVAWhiteBoxAttacker.attack" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
 <dl class="py class">
 <dt class="sig sig-object py" id="aijack.attack.evasion.Evasion_attack_sklearn">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">aijack.attack.evasion.</span></span><span class="sig-name descname"><span class="pre">Evasion_attack_sklearn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target_model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">X_minus_1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dmax</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_iter</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lam</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">h</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">distance</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'L1'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kde_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'L1'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/attack/evasion/evasion_attack.html#Evasion_attack_sklearn"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.attack.evasion.Evasion_attack_sklearn" title="Permalink to this definition">#</a></dt>
@@ -916,9 +943,10 @@ g_list (list) : lof of decision function (only for svm)</p>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#submodules">1.1.2.1. Submodules</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aijack.attack.evasion.evasion_attack">1.1.2.2. aijack.attack.evasion.evasion_attack module</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aijack.attack.evasion.fgsm">1.1.2.3. aijack.attack.evasion.fgsm module</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aijack.attack.evasion">1.1.2.4. Module contents</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aijack.attack.evasion.diva">1.1.2.2. aijack.attack.evasion.diva module</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aijack.attack.evasion.evasion_attack">1.1.2.3. aijack.attack.evasion.evasion_attack module</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aijack.attack.evasion.fgsm">1.1.2.4. aijack.attack.evasion.fgsm module</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aijack.attack.evasion">1.1.2.5. Module contents</a></li>
 </ul>
   </nav></div>
 

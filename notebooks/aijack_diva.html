@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>6.3. Exploring Adversarial Example Transferability and Robust Tree Models &#8212; AIJack  documentation</title>
+    <title>6.2. DIVA &#8212; AIJack  documentation</title>
   
   
   
@@ -47,12 +47,12 @@
     <script src="../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
     <script src="../_static/design-tabs.js"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/aijack_transferbility_and_robustness';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/aijack_diva';</script>
     <link rel="shortcut icon" href="../_static/logo_square.png"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="7. Differential Privacy" href="diferentialprivacy.html" />
-    <link rel="prev" title="6.2. DIVA" href="aijack_diva.html" />
+    <link rel="next" title="6.3. Exploring Adversarial Example Transferability and Robust Tree Models" href="aijack_transferbility_and_robustness.html" />
+    <link rel="prev" title="6.1. Evasion Attack against SVM" href="aijack_evasion_attack.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   </head>
@@ -168,8 +168,8 @@
 </li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="evasion.html">6. Evasion Attack</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-6"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="aijack_evasion_attack.html">6.1. Evasion Attack against SVM</a></li>
-<li class="toctree-l2"><a class="reference internal" href="aijack_diva.html">6.2. DIVA</a></li>
-<li class="toctree-l2 current active"><a class="current reference internal" href="#">6.3. Exploring Adversarial Example Transferability and Robust Tree Models</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">6.2. DIVA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="aijack_transferbility_and_robustness.html">6.3. Exploring Adversarial Example Transferability and Robust Tree Models</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="diferentialprivacy.html">7. Differential Privacy</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul>
@@ -313,7 +313,7 @@
       
       
       
-      <li><a href="../_sources/notebooks/aijack_transferbility_and_robustness.ipynb" target="_blank"
+      <li><a href="../_sources/notebooks/aijack_diva.ipynb" target="_blank"
    class="btn btn-sm btn-download-source-button dropdown-item"
    title="Download source file"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -382,9 +382,7 @@ document.write(`
   </button>
 `);
 </script>
-<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <span class="fa-solid fa-list"></span>
-</label>
+
 </div></div>
       
     </div>
@@ -395,21 +393,11 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Exploring Adversarial Example Transferability and Robust Tree Models</h1>
+    <h1>DIVA</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
             
-            <div>
-                <h2> Contents </h2>
-            </div>
-            <nav aria-label="Page">
-                <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fgsm-attack-against-nn">6.3.1. FGSM Attack against NN</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#xgboost-without-defense">6.3.2. XGBoost without Defense</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#xgboost-using-attack-cost-constraints">6.3.3. XGBoost using Attack-Cost Constraints</a></li>
-</ul>
-            </nav>
         </div>
     </div>
 </div>
@@ -419,16 +407,12 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article" role="main">
                   
-  <section id="exploring-adversarial-example-transferability-and-robust-tree-models">
-<h1><span class="section-number">6.3. </span>Exploring Adversarial Example Transferability and Robust Tree Models<a class="headerlink" href="#exploring-adversarial-example-transferability-and-robust-tree-models" title="Permalink to this headline">#</a></h1>
-<p>Welcome to this tutorial, where we delve into the intriguing concept of adversarial example transferability. This phenomenon highlights that adversarial examples crafted to exploit one model’s vulnerabilities can surprisingly fool other models as well. Our experiments on the MNIST dataset will uncover that adversarial examples ([1]) designed to attack a neural network can also confound a tree ensemble model.</p>
-<p>Furthermore, we will present compelling evidence that Cost-Aware Robust Tree Ensemble ([2]) can effectively counteract such evasion attacks by incorporating domain-specific knowledge during training.</p>
-<p>With the assistance of AIJack, you now have the convenient opportunity to evaluate these cutting-edge techniques effortlessly.</p>
-<p>[1] Goodfellow, Ian J., Jonathon Shlens, and Christian Szegedy. “Explaining and harnessing adversarial examples.” arXiv preprint arXiv:1412.6572 (2014).</p>
-<p>[2] Chen, Yizheng, et al. “{Cost-Aware} Robust Tree Ensembles for Security Applications.” 30th USENIX Security Symposium (USENIX Security 21). 2021.</p>
+  <section id="diva">
+<h1><span class="section-number">6.2. </span>DIVA<a class="headerlink" href="#diva" title="Permalink to this headline">#</a></h1>
+<p>Hao, Wei, et al. “A tale of two models: Constructing evasive attacks on edge models.” Proceedings of Machine Learning and Systems 4 (2022): 414-429.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">cv2</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">cv2</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">torch</span>
 <span class="kn">import</span> <span class="nn">torch.nn</span> <span class="k">as</span> <span class="nn">nn</span>
@@ -437,31 +421,25 @@ document.write(`
 <span class="kn">import</span> <span class="nn">torchvision</span>
 <span class="kn">import</span> <span class="nn">torchvision.transforms</span> <span class="k">as</span> <span class="nn">transforms</span>
 <span class="kn">from</span> <span class="nn">torch.utils.data</span> <span class="kn">import</span> <span class="n">TensorDataset</span>
+<span class="kn">from</span> <span class="nn">torch.utils.data</span> <span class="kn">import</span> <span class="n">Dataset</span>
 <span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
 <span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">accuracy_score</span>
 <span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
 
-<span class="kn">from</span> <span class="nn">aijack.attack.evasion</span> <span class="kn">import</span> <span class="n">FGSMAttacker</span>
-<span class="kn">from</span> <span class="nn">aijack.collaborative.tree</span> <span class="kn">import</span> <span class="p">(</span>
-    <span class="n">XGBoostClassifierAPI</span><span class="p">,</span>
-    <span class="n">XGBoostClient</span><span class="p">,</span>
-<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">aijack.attack</span> <span class="kn">import</span> <span class="n">DIVAWhiteBoxAttacker</span>
 <span class="kn">from</span> <span class="nn">aijack.utils</span> <span class="kn">import</span> <span class="n">NumpyDataset</span>
 
 <span class="n">BASE</span> <span class="o">=</span> <span class="s2">&quot;data/&quot;</span>
 <span class="n">torch</span><span class="o">.</span><span class="n">manual_seed</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;torch._C.Generator at 0x7b6c8ef8a2d0&gt;
+
+<span class="n">device</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s2">&quot;cuda:0&quot;</span><span class="p">)</span> <span class="k">if</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">()</span> <span class="k">else</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s2">&quot;cpu&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mnist_dataset_train</span> <span class="o">=</span> <span class="n">torchvision</span><span class="o">.</span><span class="n">datasets</span><span class="o">.</span><span class="n">MNIST</span><span class="p">(</span><span class="n">root</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">train</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">download</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">mnist_dataset_train</span> <span class="o">=</span> <span class="n">torchvision</span><span class="o">.</span><span class="n">datasets</span><span class="o">.</span><span class="n">MNIST</span><span class="p">(</span><span class="n">root</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">train</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">download</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
 <span class="n">transform</span> <span class="o">=</span> <span class="n">transforms</span><span class="o">.</span><span class="n">Compose</span><span class="p">(</span>
     <span class="p">[</span><span class="n">transforms</span><span class="o">.</span><span class="n">ToTensor</span><span class="p">(),</span> <span class="n">transforms</span><span class="o">.</span><span class="n">Normalize</span><span class="p">((</span><span class="mf">0.5</span><span class="p">,),</span> <span class="p">(</span><span class="mf">0.5</span><span class="p">,))]</span>
@@ -473,10 +451,10 @@ document.write(`
     <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.33</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span>
 <span class="p">)</span>
 
-<span class="n">X_train</span> <span class="o">=</span> <span class="n">X_train</span><span class="p">[:</span><span class="mi">2000</span><span class="p">]</span>
-<span class="n">y_train</span> <span class="o">=</span> <span class="n">y_train</span><span class="p">[:</span><span class="mi">2000</span><span class="p">]</span>
-<span class="n">X_test</span> <span class="o">=</span> <span class="n">X_test</span><span class="p">[:</span><span class="mi">1000</span><span class="p">]</span>
-<span class="n">y_test</span> <span class="o">=</span> <span class="n">y_test</span><span class="p">[:</span><span class="mi">1000</span><span class="p">]</span>
+<span class="c1"># X_train = X_train[:2000]</span>
+<span class="c1"># y_train = y_train[:2000]</span>
+<span class="c1"># X_test = X_test[:1000]</span>
+<span class="c1"># y_test = y_test[:1000]</span>
 
 <span class="n">train_dataset</span> <span class="o">=</span> <span class="n">NumpyDataset</span><span class="p">(</span>
     <span class="n">X_train</span><span class="p">,</span>
@@ -499,43 +477,6 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Downloading http://yann.lecun.com/exdb/mnist/train-images-idx3-ubyte.gz
-Downloading http://yann.lecun.com/exdb/mnist/train-images-idx3-ubyte.gz to MNIST/raw/train-images-idx3-ubyte.gz
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100%|██████████| 9912422/9912422 [00:00&lt;00:00, 66438329.26it/s]
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Extracting MNIST/raw/train-images-idx3-ubyte.gz to MNIST/raw
-
-Downloading http://yann.lecun.com/exdb/mnist/train-labels-idx1-ubyte.gz
-Downloading http://yann.lecun.com/exdb/mnist/train-labels-idx1-ubyte.gz to MNIST/raw/train-labels-idx1-ubyte.gz
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100%|██████████| 28881/28881 [00:00&lt;00:00, 64331223.49it/s]
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Extracting MNIST/raw/train-labels-idx1-ubyte.gz to MNIST/raw
-
-Downloading http://yann.lecun.com/exdb/mnist/t10k-images-idx3-ubyte.gz
-Downloading http://yann.lecun.com/exdb/mnist/t10k-images-idx3-ubyte.gz to MNIST/raw/t10k-images-idx3-ubyte.gz
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100%|██████████| 1648877/1648877 [00:00&lt;00:00, 22731323.10it/s]
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Extracting MNIST/raw/t10k-images-idx3-ubyte.gz to MNIST/raw
-
-Downloading http://yann.lecun.com/exdb/mnist/t10k-labels-idx1-ubyte.gz
-Downloading http://yann.lecun.com/exdb/mnist/t10k-labels-idx1-ubyte.gz to MNIST/raw/t10k-labels-idx1-ubyte.gz
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100%|██████████| 4542/4542 [00:00&lt;00:00, 5683331.97it/s]
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Extracting MNIST/raw/t10k-labels-idx1-ubyte.gz to MNIST/raw
-</pre></div>
-</div>
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/usr/local/lib/python3.10/dist-packages/torchvision/datasets/mnist.py:75: UserWarning: train_data has been renamed data
   warnings.warn(&quot;train_data has been renamed data&quot;)
 /usr/local/lib/python3.10/dist-packages/torchvision/datasets/mnist.py:65: UserWarning: train_labels has been renamed targets
@@ -546,9 +487,42 @@ Downloading http://yann.lecun.com/exdb/mnist/t10k-labels-idx1-ubyte.gz to MNIST/
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Net</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Net</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">Net</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">conv1</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Conv2d</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">relu1</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">ReLU</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pool1</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">MaxPool2d</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">conv2</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Conv2d</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">relu2</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">ReLU</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pool2</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">MaxPool2d</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fc1</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">256</span><span class="p">,</span> <span class="mi">120</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">relu3</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">ReLU</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fc2</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">120</span><span class="p">,</span> <span class="mi">84</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">relu4</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">ReLU</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fc3</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">84</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">relu5</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">ReLU</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">conv1</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">relu1</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pool1</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">conv2</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">relu2</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pool2</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">y</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">y</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fc1</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">relu3</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fc2</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">relu4</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fc3</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">relu5</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">y</span>
+
+
+<span class="k">class</span> <span class="nc">LMNet</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">LMNet</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">fla</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Flatten</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">fc1</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">28</span> <span class="o">*</span> <span class="mi">28</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
         <span class="c1"># self.fc2 = nn.Linear(100, 10)</span>
@@ -566,7 +540,7 @@ Downloading http://yann.lecun.com/exdb/mnist/t10k-labels-idx1-ubyte.gz to MNIST/
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">net</span> <span class="o">=</span> <span class="n">Net</span><span class="p">()</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">net</span> <span class="o">=</span> <span class="n">Net</span><span class="p">()</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
 <span class="n">criterion</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">CrossEntropyLoss</span><span class="p">()</span>
 <span class="n">optimizer</span> <span class="o">=</span> <span class="n">optim</span><span class="o">.</span><span class="n">SGD</span><span class="p">(</span><span class="n">net</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="mf">0.003</span><span class="p">,</span> <span class="n">momentum</span><span class="o">=</span><span class="mf">0.9</span><span class="p">)</span>
 </pre></div>
@@ -575,12 +549,14 @@ Downloading http://yann.lecun.com/exdb/mnist/t10k-labels-idx1-ubyte.gz to MNIST/
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">30</span><span class="p">):</span>  <span class="c1"># loop over the dataset multiple times</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>  <span class="c1"># loop over the dataset multiple times</span>
     <span class="n">running_loss</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="n">data_size</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">data</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">train_dataloader</span><span class="p">,</span> <span class="mi">0</span><span class="p">):</span>
         <span class="c1"># get the inputs; data is a list of [inputs, labels]</span>
         <span class="n">inputs</span><span class="p">,</span> <span class="n">labels</span> <span class="o">=</span> <span class="n">data</span>
+        <span class="n">inputs</span> <span class="o">=</span> <span class="n">inputs</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+        <span class="n">labels</span> <span class="o">=</span> <span class="n">labels</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
 
         <span class="c1"># zero the parameter gradients</span>
         <span class="n">optimizer</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
@@ -596,12 +572,13 @@ Downloading http://yann.lecun.com/exdb/mnist/t10k-labels-idx1-ubyte.gz to MNIST/
 
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;epoch </span><span class="si">{</span><span class="n">epoch</span><span class="si">}</span><span class="s2">: loss is </span><span class="si">{</span><span class="n">running_loss</span><span class="o">/</span><span class="n">data_size</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-
 <span class="n">in_preds</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="n">in_label</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
     <span class="k">for</span> <span class="n">data</span> <span class="ow">in</span> <span class="n">test_dataloader</span><span class="p">:</span>
         <span class="n">inputs</span><span class="p">,</span> <span class="n">labels</span> <span class="o">=</span> <span class="n">data</span>
+        <span class="n">inputs</span> <span class="o">=</span> <span class="n">inputs</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+        <span class="n">labels</span> <span class="o">=</span> <span class="n">labels</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
         <span class="n">outputs</span> <span class="o">=</span> <span class="n">net</span><span class="p">(</span><span class="n">inputs</span><span class="p">)</span>
         <span class="n">in_preds</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">outputs</span><span class="p">)</span>
         <span class="n">in_label</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">labels</span><span class="p">)</span>
@@ -609,73 +586,148 @@ Downloading http://yann.lecun.com/exdb/mnist/t10k-labels-idx1-ubyte.gz to MNIST/
     <span class="n">in_label</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">(</span><span class="n">in_label</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span>
     <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Test Accuracy is: &quot;</span><span class="p">,</span>
-    <span class="n">accuracy_score</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">in_preds</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">in_label</span><span class="p">)),</span>
+    <span class="n">accuracy_score</span><span class="p">(</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">in_preds</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">cpu</span><span class="p">()),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">in_label</span><span class="o">.</span><span class="n">cpu</span><span class="p">())</span>
+    <span class="p">),</span>
 <span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>epoch 0: loss is 0.06138062975555658
-epoch 1: loss is 0.03086455798149109
-epoch 2: loss is 0.026004610773175955
-epoch 3: loss is 0.024114671636372806
-epoch 4: loss is 0.02078699535317719
-epoch 5: loss is 0.019672507184557618
-epoch 6: loss is 0.018815230432897807
-epoch 7: loss is 0.01698792629688978
-epoch 8: loss is 0.01645607683621347
-epoch 9: loss is 0.01524037384428084
-epoch 10: loss is 0.014240541556850075
-epoch 11: loss is 0.013692389758303761
-epoch 12: loss is 0.012920912820845842
-epoch 13: loss is 0.012520179092884064
-epoch 14: loss is 0.012519657954573632
-epoch 15: loss is 0.011793930067680775
-epoch 16: loss is 0.011448755952529609
-epoch 17: loss is 0.010951191697269679
-epoch 18: loss is 0.010661566779017449
-epoch 19: loss is 0.010179236607626081
-epoch 20: loss is 0.009936179189942777
-epoch 21: loss is 0.009754820148460568
-epoch 22: loss is 0.00917115265596658
-epoch 23: loss is 0.009030795649625362
-epoch 24: loss is 0.008823388266377151
-epoch 25: loss is 0.008829819331876933
-epoch 26: loss is 0.008454289820045233
-epoch 27: loss is 0.008023065636865794
-epoch 28: loss is 0.007618186932988465
-epoch 29: loss is 0.007679891352541744
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>epoch 0: loss is 0.04054302100458794
+epoch 1: loss is 0.01814291013776199
+epoch 2: loss is 0.0166187124224426
+epoch 3: loss is 0.009562910017942598
+epoch 4: loss is 0.002573704934469091
+epoch 5: loss is 0.0021106714805702396
+epoch 6: loss is 0.0017938830078365253
+epoch 7: loss is 0.0015096701963636125
+epoch 8: loss is 0.0014024900508528204
+epoch 9: loss is 0.0010703933892566083
 
-Test Accuracy is:  0.873
+Test Accuracy is:  0.9825252525252526
 </pre></div>
 </div>
 </div>
 </div>
-<section id="fgsm-attack-against-nn">
-<h2><span class="section-number">6.3.1. </span>FGSM Attack against NN<a class="headerlink" href="#fgsm-attack-against-nn" title="Permalink to this headline">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x_origin</span> <span class="o">=</span> <span class="n">inputs</span><span class="p">[[</span><span class="mi">0</span><span class="p">]]</span>
-<span class="n">y_origin</span> <span class="o">=</span> <span class="n">labels</span><span class="p">[[</span><span class="mi">0</span><span class="p">]]</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">net_distilled</span> <span class="o">=</span> <span class="n">LMNet</span><span class="p">()</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+<span class="n">criterion</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">L1Loss</span><span class="p">()</span>
+<span class="n">optimizer</span> <span class="o">=</span> <span class="n">optim</span><span class="o">.</span><span class="n">SGD</span><span class="p">(</span><span class="n">net_distilled</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="mf">0.003</span><span class="p">,</span> <span class="n">momentum</span><span class="o">=</span><span class="mf">0.9</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">20</span><span class="p">):</span>  <span class="c1"># loop over the dataset multiple times</span>
+    <span class="n">running_loss</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">data_size</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">data</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">train_dataloader</span><span class="p">,</span> <span class="mi">0</span><span class="p">):</span>
+        <span class="c1"># get the inputs; data is a list of [inputs, labels]</span>
+        <span class="n">inputs</span><span class="p">,</span> <span class="n">labels</span> <span class="o">=</span> <span class="n">data</span>
+        <span class="n">inputs</span> <span class="o">=</span> <span class="n">inputs</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+        <span class="n">labels</span> <span class="o">=</span> <span class="n">net</span><span class="p">(</span><span class="n">inputs</span><span class="p">)</span>
 
-<span class="n">attacker</span> <span class="o">=</span> <span class="n">FGSMAttacker</span><span class="p">(</span>
-    <span class="n">net</span><span class="p">,</span> <span class="n">criterion</span><span class="p">,</span> <span class="n">eps</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">grad_lower_bound</span><span class="o">=-</span><span class="mf">0.15</span><span class="p">,</span> <span class="n">grad_upper_bound</span><span class="o">=</span><span class="mf">0.15</span>
+        <span class="c1"># zero the parameter gradients</span>
+        <span class="n">optimizer</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
+
+        <span class="c1"># forward + backward + optimize</span>
+        <span class="n">outputs</span> <span class="o">=</span> <span class="n">net_distilled</span><span class="p">(</span><span class="n">inputs</span><span class="p">)</span>
+        <span class="n">loss</span> <span class="o">=</span> <span class="n">criterion</span><span class="p">(</span><span class="n">outputs</span><span class="p">,</span> <span class="n">labels</span><span class="p">)</span>
+        <span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+        <span class="n">optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+
+        <span class="n">running_loss</span> <span class="o">+=</span> <span class="n">loss</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+        <span class="n">data_size</span> <span class="o">+=</span> <span class="n">inputs</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;epoch </span><span class="si">{</span><span class="n">epoch</span><span class="si">}</span><span class="s2">: loss is </span><span class="si">{</span><span class="n">running_loss</span><span class="o">/</span><span class="n">data_size</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="n">in_preds</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">in_label</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
+    <span class="k">for</span> <span class="n">data</span> <span class="ow">in</span> <span class="n">test_dataloader</span><span class="p">:</span>
+        <span class="n">inputs</span><span class="p">,</span> <span class="n">labels</span> <span class="o">=</span> <span class="n">data</span>
+        <span class="n">inputs</span> <span class="o">=</span> <span class="n">inputs</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+        <span class="n">labels</span> <span class="o">=</span> <span class="n">labels</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+        <span class="n">outputs</span> <span class="o">=</span> <span class="n">net_distilled</span><span class="p">(</span><span class="n">inputs</span><span class="p">)</span>
+        <span class="n">in_preds</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">outputs</span><span class="p">)</span>
+        <span class="n">in_label</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">labels</span><span class="p">)</span>
+    <span class="n">in_preds</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">(</span><span class="n">in_preds</span><span class="p">)</span>
+    <span class="n">in_label</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">(</span><span class="n">in_label</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span>
+    <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Test Accuracy is: &quot;</span><span class="p">,</span>
+    <span class="n">accuracy_score</span><span class="p">(</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">in_preds</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">cpu</span><span class="p">()),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">in_label</span><span class="o">.</span><span class="n">cpu</span><span class="p">())</span>
+    <span class="p">),</span>
 <span class="p">)</span>
-<span class="n">perturbed_x</span> <span class="o">=</span> <span class="n">attacker</span><span class="o">.</span><span class="n">attack</span><span class="p">((</span><span class="n">x_origin</span><span class="p">,</span> <span class="n">y_origin</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">int64</span><span class="p">)))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>epoch 0: loss is 0.1670569335761948
+epoch 1: loss is 0.15897891622574176
+epoch 2: loss is 0.15708679305380258
+epoch 3: loss is 0.1559841609742511
+epoch 4: loss is 0.15508358281346696
+epoch 5: loss is 0.15454466995315172
+epoch 6: loss is 0.1539939962394202
+epoch 7: loss is 0.15346056090065496
+epoch 8: loss is 0.15314420309529375
+epoch 9: loss is 0.15277839498436865
+epoch 10: loss is 0.1524997589540719
+epoch 11: loss is 0.15233479831052657
+epoch 12: loss is 0.15207505247189632
+epoch 13: loss is 0.1518335230018369
+epoch 14: loss is 0.15169831540454087
+epoch 15: loss is 0.15148778069078625
+epoch 16: loss is 0.15128053859988255
+epoch 17: loss is 0.15130577724667924
+epoch 18: loss is 0.15122654953999307
+epoch 19: loss is 0.15100575763491256
+
+Test Accuracy is:  0.7185858585858586
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">c</span> <span class="o">=</span> <span class="mf">1.0</span>
+<span class="n">num_itr</span> <span class="o">=</span> <span class="mi">1000</span>
+<span class="n">eps</span> <span class="o">=</span> <span class="mf">0.15</span>
+<span class="n">lam</span> <span class="o">=</span> <span class="mf">0.03</span>
+
+<span class="n">torch</span><span class="o">.</span><span class="n">manual_seed</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
+
+<span class="n">idx</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">clone</span><span class="p">(</span><span class="n">inputs</span><span class="p">[[</span><span class="n">idx</span><span class="p">]])</span>
+<span class="n">x_origin</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">clone</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">labels</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+
+<span class="n">attacker</span> <span class="o">=</span> <span class="n">DIVAWhiteBoxAttacker</span><span class="p">(</span><span class="n">net</span><span class="p">,</span> <span class="n">net_distilled</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">num_itr</span><span class="p">,</span> <span class="n">eps</span><span class="p">,</span> <span class="n">lam</span><span class="p">,</span> <span class="n">device</span><span class="p">)</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">attacker</span><span class="o">.</span><span class="n">attack</span><span class="p">((</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+
 <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">121</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">x_origin</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;gray&quot;</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=-</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Predicted Label: </span><span class="si">{</span><span class="n">net</span><span class="p">(</span><span class="n">x_origin</span><span class="p">)</span><span class="o">.</span><span class="n">argmax</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">inputs</span><span class="p">[[</span><span class="n">idx</span><span class="p">]]</span><span class="o">.</span><span class="n">cpu</span><span class="p">()[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;gray&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span>
+    <span class="sa">f</span><span class="s2">&quot;Original Image </span><span class="se">\n</span><span class="s2"> Original Prediction: </span><span class="si">{</span><span class="n">net</span><span class="p">(</span><span class="n">inputs</span><span class="p">[[</span><span class="n">idx</span><span class="p">]])</span><span class="o">.</span><span class="n">argmax</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">()</span><span class="si">}</span><span class="s2"> </span><span class="se">\n</span><span class="s2">  Edge Prediction: </span><span class="si">{</span><span class="n">net_distilled</span><span class="p">(</span><span class="n">inputs</span><span class="p">[[</span><span class="n">idx</span><span class="p">]])</span><span class="o">.</span><span class="n">argmax</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
+<span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">&quot;off&quot;</span><span class="p">)</span>
+
 <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">122</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">perturbed_x</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;gray&quot;</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=-</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Predicted Label: </span><span class="si">{</span><span class="n">net</span><span class="p">(</span><span class="n">perturbed_x</span><span class="p">)</span><span class="o">.</span><span class="n">argmax</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">cpu</span><span class="p">()[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;gray&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span>
+    <span class="sa">f</span><span class="s2">&quot;Perturbed Image </span><span class="se">\n</span><span class="s2"> Original Prediction: </span><span class="si">{</span><span class="n">net</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">argmax</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">()</span><span class="si">}</span><span class="s2"> </span><span class="se">\n</span><span class="s2">  Edge Prediction: </span><span class="si">{</span><span class="n">net_distilled</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">argmax</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
+<span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">&quot;off&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -684,170 +736,9 @@ Test Accuracy is:  0.873
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(-0.5, 27.5, 27.5, -0.5)
 </pre></div>
 </div>
-<img alt="../_images/c8333b384a1be05f05579444e23885ea5877448004871e60ce3a68590cd40b24.png" src="../_images/c8333b384a1be05f05579444e23885ea5877448004871e60ce3a68590cd40b24.png" />
+<img alt="../_images/bb52caef726d342c0e8d96066700993584f93c0cacfb1cfc57cea4b3fdb24bb8.png" src="../_images/bb52caef726d342c0e8d96066700993584f93c0cacfb1cfc57cea4b3fdb24bb8.png" />
 </div>
 </div>
-</section>
-<section id="xgboost-without-defense">
-<h2><span class="section-number">6.3.2. </span>XGBoost without Defense<a class="headerlink" href="#xgboost-without-defense" title="Permalink to this headline">#</a></h2>
-<p>The adversarial example crafted above can also deceive the XGBoost model.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">min_leaf</span> <span class="o">=</span> <span class="mi">1</span>
-<span class="n">depth</span> <span class="o">=</span> <span class="mi">6</span>
-<span class="n">learning_rate</span> <span class="o">=</span> <span class="mf">0.3</span>
-<span class="n">boosting_rounds</span> <span class="o">=</span> <span class="mi">10</span>
-<span class="n">lam</span> <span class="o">=</span> <span class="mf">1.0</span>
-<span class="n">gamma</span> <span class="o">=</span> <span class="mf">0.0</span>
-<span class="n">eps</span> <span class="o">=</span> <span class="mf">1.0</span>
-<span class="n">min_child_weight</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span> <span class="o">*</span> <span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">)</span>
-<span class="n">subsample_cols</span> <span class="o">=</span> <span class="mf">0.8</span>
-
-<span class="n">X_train_normalized</span> <span class="o">=</span> <span class="p">((</span><span class="n">X_train</span> <span class="o">/</span> <span class="mi">255</span><span class="p">)</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">28</span> <span class="o">*</span> <span class="mi">28</span><span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
-<span class="n">X_test_normalized</span> <span class="o">=</span> <span class="p">((</span><span class="n">X_test</span> <span class="o">/</span> <span class="mi">255</span><span class="p">)</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">28</span> <span class="o">*</span> <span class="mi">28</span><span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
-
-<span class="n">p0</span> <span class="o">=</span> <span class="n">XGBoostClient</span><span class="p">(</span>
-    <span class="n">X_train_normalized</span><span class="p">,</span>
-    <span class="mi">10</span><span class="p">,</span>
-    <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">28</span> <span class="o">*</span> <span class="mi">28</span><span class="p">)),</span>
-    <span class="mi">0</span><span class="p">,</span>
-    <span class="n">min_leaf</span><span class="p">,</span>
-    <span class="n">subsample_cols</span><span class="p">,</span>
-    <span class="mi">32</span><span class="p">,</span>
-    <span class="kc">False</span><span class="p">,</span>
-    <span class="mi">0</span><span class="p">,</span>
-<span class="p">)</span>
-<span class="n">parties</span> <span class="o">=</span> <span class="p">[</span><span class="n">p0</span><span class="p">]</span>
-
-<span class="n">clf</span> <span class="o">=</span> <span class="n">XGBoostClassifierAPI</span><span class="p">(</span>
-    <span class="mi">10</span><span class="p">,</span>
-    <span class="n">subsample_cols</span><span class="p">,</span>
-    <span class="n">min_child_weight</span><span class="p">,</span>
-    <span class="n">depth</span><span class="p">,</span>
-    <span class="n">min_leaf</span><span class="p">,</span>
-    <span class="n">learning_rate</span><span class="p">,</span>
-    <span class="n">boosting_rounds</span><span class="p">,</span>
-    <span class="n">lam</span><span class="p">,</span>
-    <span class="n">gamma</span><span class="p">,</span>
-    <span class="n">eps</span><span class="p">,</span>
-    <span class="o">-</span><span class="mi">1</span><span class="p">,</span>
-    <span class="mi">0</span><span class="p">,</span>
-    <span class="mf">1.0</span><span class="p">,</span>
-    <span class="mi">1</span><span class="p">,</span>
-    <span class="kc">True</span><span class="p">,</span>
-    <span class="kc">False</span><span class="p">,</span>
-<span class="p">)</span>
-<span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">parties</span><span class="p">,</span> <span class="n">y_train</span><span class="o">.</span><span class="n">tolist</span><span class="p">())</span>
-
-<span class="n">predicted_proba</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">X_train_normalized</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span>
-    <span class="s2">&quot;Train Accuracy: &quot;</span><span class="p">,</span>
-    <span class="n">accuracy_score</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">predicted_proba</span><span class="p">)</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span> <span class="n">y_train</span><span class="p">),</span>
-<span class="p">)</span>
-<span class="n">predicted_proba</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">X_test_normalized</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span>
-    <span class="s2">&quot;Test Accuracy: &quot;</span><span class="p">,</span> <span class="n">accuracy_score</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">predicted_proba</span><span class="p">)</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span> <span class="n">y_test</span><span class="p">)</span>
-<span class="p">)</span>
-
-<span class="nb">print</span><span class="p">(</span>
-    <span class="s2">&quot;Predicted Label without Attack: &quot;</span><span class="p">,</span>
-    <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
-        <span class="n">clf</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">x_origin</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">())</span>
-    <span class="p">)</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span>
-<span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span>
-    <span class="s2">&quot;Predicted Label with Attack: &quot;</span><span class="p">,</span>
-    <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
-        <span class="n">clf</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">perturbed_x</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">())</span>
-    <span class="p">)</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span>
-<span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Train Accuracy:  0.998
-Test Accuracy:  0.836
-Predicted Label without Attack:  [9]
-Predicted Label with Attack:  [5]
-</pre></div>
-</div>
-</div>
-</div>
-</section>
-<section id="xgboost-using-attack-cost-constraints">
-<h2><span class="section-number">6.3.3. </span>XGBoost using Attack-Cost Constraints<a class="headerlink" href="#xgboost-using-attack-cost-constraints" title="Permalink to this headline">#</a></h2>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">p0</span> <span class="o">=</span> <span class="n">XGBoostClient</span><span class="p">(</span>
-    <span class="n">X_train_normalized</span><span class="p">,</span>
-    <span class="mi">10</span><span class="p">,</span>
-    <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">28</span> <span class="o">*</span> <span class="mi">28</span><span class="p">)),</span>
-    <span class="mi">0</span><span class="p">,</span>
-    <span class="n">min_leaf</span><span class="p">,</span>
-    <span class="n">subsample_cols</span><span class="p">,</span>
-    <span class="mi">32</span><span class="p">,</span>
-    <span class="kc">False</span><span class="p">,</span>
-    <span class="mi">0</span><span class="p">,</span>
-<span class="p">)</span>
-<span class="c1"># You can set the attack-cost constraint to each feature</span>
-<span class="n">p0</span><span class="o">.</span><span class="n">set_cost_constraint_map</span><span class="p">([(</span><span class="o">-</span><span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">)]</span> <span class="o">*</span> <span class="p">(</span><span class="mi">28</span> <span class="o">*</span> <span class="mi">28</span><span class="p">))</span>
-<span class="n">parties</span> <span class="o">=</span> <span class="p">[</span><span class="n">p0</span><span class="p">]</span>
-
-<span class="n">clf</span> <span class="o">=</span> <span class="n">XGBoostClassifierAPI</span><span class="p">(</span>
-    <span class="mi">10</span><span class="p">,</span>
-    <span class="n">subsample_cols</span><span class="p">,</span>
-    <span class="n">min_child_weight</span><span class="p">,</span>
-    <span class="n">depth</span><span class="p">,</span>
-    <span class="n">min_leaf</span><span class="p">,</span>
-    <span class="n">learning_rate</span><span class="p">,</span>
-    <span class="n">boosting_rounds</span><span class="p">,</span>
-    <span class="n">lam</span><span class="p">,</span>
-    <span class="n">gamma</span><span class="p">,</span>
-    <span class="n">eps</span><span class="p">,</span>
-    <span class="o">-</span><span class="mi">1</span><span class="p">,</span>
-    <span class="mi">0</span><span class="p">,</span>
-    <span class="mf">1.0</span><span class="p">,</span>
-    <span class="mi">1</span><span class="p">,</span>
-    <span class="kc">True</span><span class="p">,</span>
-    <span class="kc">True</span><span class="p">,</span>
-<span class="p">)</span>
-<span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">parties</span><span class="p">,</span> <span class="n">y_train</span><span class="o">.</span><span class="n">tolist</span><span class="p">())</span>
-
-<span class="n">predicted_proba</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">X_train_normalized</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span>
-    <span class="s2">&quot;Train Accuracy: &quot;</span><span class="p">,</span>
-    <span class="n">accuracy_score</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">predicted_proba</span><span class="p">)</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span> <span class="n">y_train</span><span class="p">),</span>
-<span class="p">)</span>
-<span class="n">predicted_proba</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">X_test_normalized</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span>
-    <span class="s2">&quot;Test Accuracy: &quot;</span><span class="p">,</span> <span class="n">accuracy_score</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">predicted_proba</span><span class="p">)</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span> <span class="n">y_test</span><span class="p">)</span>
-<span class="p">)</span>
-
-<span class="nb">print</span><span class="p">(</span>
-    <span class="s2">&quot;Predicted Label without Attack: &quot;</span><span class="p">,</span>
-    <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
-        <span class="n">clf</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">x_origin</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">())</span>
-    <span class="p">)</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span>
-<span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span>
-    <span class="s2">&quot;Predicted Label with Attack: &quot;</span><span class="p">,</span>
-    <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
-        <span class="n">clf</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">perturbed_x</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">())</span>
-    <span class="p">)</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span>
-<span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Train Accuracy:  0.975
-Test Accuracy:  0.84
-Predicted Label without Attack:  [9]
-Predicted Label with Attack:  [9]
-</pre></div>
-</div>
-</div>
-</div>
-</section>
 </section>
 
 
@@ -863,20 +754,20 @@ Predicted Label with Attack:  [9]
     <div class="footer-article-item"><!-- Previous / next buttons -->
 <div class="prev-next-area">
     <a class="left-prev"
-       href="aijack_diva.html"
+       href="aijack_evasion_attack.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title"><span class="section-number">6.2. </span>DIVA</p>
+        <p class="prev-next-title"><span class="section-number">6.1. </span>Evasion Attack against SVM</p>
       </div>
     </a>
     <a class="right-next"
-       href="diferentialprivacy.html"
+       href="aijack_transferbility_and_robustness.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title"><span class="section-number">7. </span>Differential Privacy</p>
+        <p class="prev-next-title"><span class="section-number">6.3. </span>Exploring Adversarial Example Transferability and Robust Tree Models</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -889,22 +780,6 @@ Predicted Label with Attack:  [9]
             </div>
             
             
-              
-                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
-
-  <div class="sidebar-secondary-item">
-  <div class="page-toc tocsection onthispage">
-    <i class="fa-solid fa-list"></i> Contents
-  </div>
-  <nav class="bd-toc-nav page-toc">
-    <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fgsm-attack-against-nn">6.3.1. FGSM Attack against NN</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#xgboost-without-defense">6.3.2. XGBoost without Defense</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#xgboost-using-attack-cost-constraints">6.3.3. XGBoost using Attack-Cost Constraints</a></li>
-</ul>
-  </nav></div>
-
-</div></div>
               
             
           </div>
