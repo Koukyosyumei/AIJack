@@ -31,7 +31,7 @@ class DIVAWhiteBoxAttacker(BaseAttacker):
         log_loss = []
         log_perturbation = []
 
-        for i in range(self.num_itr):
+        for _ in range(self.num_itr):
             x = x.detach().to(self.device)
             x.requires_grad = True
             origin_pred = self.target_model(x)
@@ -45,7 +45,8 @@ class DIVAWhiteBoxAttacker(BaseAttacker):
                 x = torch.clamp(x, x_origin - self.eps, x_origin + self.eps)
 
                 log_loss.append(loss.item())
-                log_perturbation.append(torch.mean((x - x_origin).abs()).item())
+                log_perturbation.append(
+                    torch.mean((x - x_origin).abs()).item())
 
                 if origin_pred.argmax().item() != edge_pred.argmax().item():
                     break
