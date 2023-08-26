@@ -4,6 +4,14 @@ aijack.attack.evasion package
 Submodules
 ----------
 
+aijack.attack.evasion.diva module
+---------------------------------
+
+.. automodule:: aijack.attack.evasion.diva
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 aijack.attack.evasion.evasion\_attack module
 --------------------------------------------
 
