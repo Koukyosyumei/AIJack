@@ -15,6 +15,8 @@ class DPSGDManager:
         lot_size,
         batch_size,
         iterations,
+        smoothing=False,
+        smoothing_radius=10.0,
     ):
         self.accountant = accountant
         self.optimizer_cls = optimizer_cls
@@ -23,6 +25,8 @@ class DPSGDManager:
         self.lot_size = lot_size
         self.batch_size = batch_size
         self.iterations = iterations
+        self.smoothing = smoothing
+        self.smoothing_radius = smoothing_radius
 
     def privatize(self, noise_multiplier):
         dpoptimizer_class = attach_dpoptimizer(
@@ -33,6 +37,8 @@ class DPSGDManager:
             self.lot_size,
             self.batch_size,
             len(self.dataset),
+            self.smoothing,
+            self.smoothing_radius,
         )
 
         def lot_loader(dp_optimizer):

@@ -40,8 +40,15 @@ def _privatize_lot_grads(opt):
 
 
 def attach_dpoptimizer(
-    cls, accountant, l2_norm_clip, noise_multiplier, lot_size,
-    batch_size, dataset_size, smoothing=False, smoothing_radius=1
+    cls,
+    accountant,
+    l2_norm_clip,
+    noise_multiplier,
+    lot_size,
+    batch_size,
+    dataset_size,
+    smoothing=False,
+    smoothing_radius=10.0,
 ):
     """Wraps the given optimizer class in DPOptimizerWrapper.
 
@@ -56,6 +63,8 @@ def attach_dpoptimizer(
                           et al. ``Dplis: Boosting utility of differentially
                           private deep learning via randomized smoothing.``
                           arXiv preprint arXiv:2103.01496 (2021).`
+                          (default=False)
+        smoothing_radius (float): radius of smoothing (default=10.0)
 
     Raises:
         ValueError: if noise_multiplier < 0.0
@@ -74,8 +83,7 @@ def attach_dpoptimizer(
                     "Invalid noise_multiplier: {}".format(noise_multiplier)
                 )
             if l2_norm_clip < 0.0:
-                raise ValueError(
-                    "Invalid l2_norm_clip: {}".format(l2_norm_clip))
+                raise ValueError("Invalid l2_norm_clip: {}".format(l2_norm_clip))
 
             self.accountant = accountant
             self.l2_norm_clip = l2_norm_clip
@@ -87,8 +95,7 @@ def attach_dpoptimizer(
 
             for group in self.param_groups:
                 group["accum_grads"] = [
-                    torch.zeros_like(
-                        param.data) if param.requires_grad else None
+                    torch.zeros_like(param.data) if param.requires_grad else None
                     for param in group["params"]
                 ]
 
@@ -97,14 +104,18 @@ def attach_dpoptimizer(
 
             if smoothing:
                 if self.prev_params is not None:
-                    for i, group in enumerate(self.param_groups):
-                        group["params"] = self.prev_params[i].data + \
-                            (smoothing_radius * self.lr / self.lot_size) * \
-                            noise_multiplier * \
-                            torch.randn_like(self.prev_params[i].data)
+                    for group, prev_ps in zip(self.param_groups, self.prev_params):
+                        for param, prev_p in zip(group["params"], prev_ps):
+                            param.data = prev_p.data + (
+                                smoothing_radius * group["lr"] / self.lot_size
+                            ) * self.l2_norm_clip * noise_multiplier * torch.randn_like(
+                                prev_p.data
+                            )
                 else:
-                    self.prev_params = [group["params"].clone()
-                                        for group in self.param_groups]
+                    self.prev_params = [
+                        [p.clone() for p in group["params"]]
+                        for group in self.param_groups
+                    ]
 
         def zero_grad(self):
             self.zero_grad_keep_accum_grads()
