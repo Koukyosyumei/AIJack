@@ -40,7 +40,8 @@ def _privatize_lot_grads(opt):
 
 
 def attach_dpoptimizer(
-    cls, accountant, l2_norm_clip, noise_multiplier, lot_size, batch_size, dataset_size
+    cls, accountant, l2_norm_clip, noise_multiplier, lot_size,
+    batch_size, dataset_size, smoothing=False, smoothing_radius=1
 ):
     """Wraps the given optimizer class in DPOptimizerWrapper.
 
@@ -51,6 +52,10 @@ def attach_dpoptimizer(
         lot_size (int): sampled lot size
         batch_size (int): batch size
         dataset_size (int): total number of samples in the dataset
+        smoothing (bool): if true, apply smoothing proposed in `Wang, Wenxiao,
+                          et al. ``Dplis: Boosting utility of differentially
+                          private deep learning via randomized smoothing.``
+                          arXiv preprint arXiv:2103.01496 (2021).`
 
     Raises:
         ValueError: if noise_multiplier < 0.0
@@ -69,7 +74,8 @@ def attach_dpoptimizer(
                     "Invalid noise_multiplier: {}".format(noise_multiplier)
                 )
             if l2_norm_clip < 0.0:
-                raise ValueError("Invalid l2_norm_clip: {}".format(l2_norm_clip))
+                raise ValueError(
+                    "Invalid l2_norm_clip: {}".format(l2_norm_clip))
 
             self.accountant = accountant
             self.l2_norm_clip = l2_norm_clip
@@ -77,14 +83,28 @@ def attach_dpoptimizer(
             self.batch_size = batch_size
             self.lot_size = lot_size
 
+            self.prev_params = None
+
             for group in self.param_groups:
                 group["accum_grads"] = [
-                    torch.zeros_like(param.data) if param.requires_grad else None
+                    torch.zeros_like(
+                        param.data) if param.requires_grad else None
                     for param in group["params"]
                 ]
 
         def zero_grad_keep_accum_grads(self):
             super(DPOptimizerWrapper, self).zero_grad()
+
+            if smoothing:
+                if self.prev_params is not None:
+                    for i, group in enumerate(self.param_groups):
+                        group["params"] = self.prev_params[i].data + \
+                            (smoothing_radius * self.lr / self.lot_size) * \
+                            noise_multiplier * \
+                            torch.randn_like(self.prev_params[i].data)
+                else:
+                    self.prev_params = [group["params"].clone()
+                                        for group in self.param_groups]
 
         def zero_grad(self):
             self.zero_grad_keep_accum_grads()
@@ -98,6 +118,7 @@ def attach_dpoptimizer(
 
         def zero_grad_for_lot(self):
             _clear_accumulated_grads(self)
+            self.prev_params = None
 
         def step_for_lot(self, *args, **kwargs):
             _privatize_lot_grads(self)
