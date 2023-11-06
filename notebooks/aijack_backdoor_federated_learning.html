@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>5.1. Poisoning Attack against Federated Learning &#8212; AIJack  documentation</title>
+    <title>6.1. Backdoor Attack against Federated Learning &#8212; AIJack  documentation</title>
   
   
   
@@ -47,12 +47,12 @@
     <script src="../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
     <script src="../_static/design-tabs.js"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/aijack_poisoning_federated_learning';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/aijack_backdoor_federated_learning';</script>
     <link rel="shortcut icon" href="../_static/logo_square.png"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="5.2. Poisoning Attack against SVM" href="aijack_poisoning_attack_svm.html" />
-    <link rel="prev" title="5. Poisoning Attack" href="poisoning.html" />
+    <link rel="next" title="7. Evasion Attack" href="evasion.html" />
+    <link rel="prev" title="6. Backdoor Attack" href="backdoor.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   </head>
@@ -161,13 +161,13 @@
 <li class="toctree-l2"><a class="reference internal" href="aijack_membership_inference.html">4.1. Memership Inference</a></li>
 </ul>
 </li>
-<li class="toctree-l1 current active has-children"><a class="reference internal" href="poisoning.html">5. Poisoning Attack</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-5"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
-<li class="toctree-l2 current active"><a class="current reference internal" href="#">5.1. Poisoning Attack against Federated Learning</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="poisoning.html">5. Poisoning Attack</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-5"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="aijack_poisoning_federated_learning.html">5.1. Poisoning Attack against Federated Learning</a></li>
 <li class="toctree-l2"><a class="reference internal" href="aijack_poisoning_attack_svm.html">5.2. Poisoning Attack against SVM</a></li>
 </ul>
 </li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="backdoor.html">6. Backdoor Attack</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-6"><i class="fa-solid fa-chevron-down"></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="aijack_backdoor_federated_learning.html">6.1. Backdoor Attack against Federated Learning</a></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="backdoor.html">6. Backdoor Attack</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-6"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">6.1. Backdoor Attack against Federated Learning</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="evasion.html">7. Evasion Attack</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul>
@@ -319,7 +319,7 @@
       
       
       
-      <li><a href="../_sources/notebooks/aijack_poisoning_federated_learning.ipynb" target="_blank"
+      <li><a href="../_sources/notebooks/aijack_backdoor_federated_learning.ipynb" target="_blank"
    class="btn btn-sm btn-download-source-button dropdown-item"
    title="Download source file"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -388,9 +388,7 @@ document.write(`
   </button>
 `);
 </script>
-<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <span class="fa-solid fa-list"></span>
-</label>
+
 </div></div>
       
     </div>
@@ -401,21 +399,11 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Poisoning Attack against Federated Learning</h1>
+    <h1>Backdoor Attack against Federated Learning</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
             
-            <div>
-                <h2> Contents </h2>
-            </div>
-            <nav aria-label="Page">
-                <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#history-attack">5.1.1. History Attack</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#label-flip-attack">5.1.2. Label Flip Attack</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mapf">5.1.3. MAPF</a></li>
-</ul>
-            </nav>
         </div>
     </div>
 </div>
@@ -425,27 +413,61 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article" role="main">
                   
-  <section id="poisoning-attack-against-federated-learning">
-<h1><span class="section-number">5.1. </span>Poisoning Attack against Federated Learning<a class="headerlink" href="#poisoning-attack-against-federated-learning" title="Permalink to this headline">#</a></h1>
-<p>This tutorial demonstrates that malicious clients effectively decrease the performance of the final global model by injecting noise into the local update or data.</p>
+  <section id="backdoor-attack-against-federated-learning">
+<h1><span class="section-number">6.1. </span>Backdoor Attack against Federated Learning<a class="headerlink" href="#backdoor-attack-against-federated-learning" title="Permalink to this headline">#</a></h1>
+<p><code class="docutils literal notranslate"><span class="pre">Bagdasaryan,</span> <span class="pre">Eugene,</span> <span class="pre">et</span> <span class="pre">al.</span> <span class="pre">&quot;How</span> <span class="pre">to</span> <span class="pre">backdoor</span> <span class="pre">federated</span> <span class="pre">learning.&quot;</span> <span class="pre">International</span> <span class="pre">conference</span> <span class="pre">on</span> <span class="pre">artificial</span> <span class="pre">intelligence</span> <span class="pre">and</span> <span class="pre">statistics.</span> <span class="pre">PMLR,</span> <span class="pre">2020.</span></code></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">random</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>wget<span class="w"> </span>https://archive.ics.uci.edu/ml/machine-learning-databases/00233/CNAE-9.data
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>--2023-11-06 18:58:33--  https://archive.ics.uci.edu/ml/machine-learning-databases/00233/CNAE-9.data
+Resolving archive.ics.uci.edu (archive.ics.uci.edu)... 128.195.10.252
+Connecting to archive.ics.uci.edu (archive.ics.uci.edu)|128.195.10.252|:443... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: unspecified
+Saving to: ‘CNAE-9.data’
 
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">torch</span>
+CNAE-9.data             [            &lt;=&gt;     ]   1.76M   660KB/s    in 2.7s    
+
+2023-11-06 18:58:36 (660 KB/s) - ‘CNAE-9.data’ saved [1851120]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">torch</span>
 <span class="kn">import</span> <span class="nn">torch.nn</span> <span class="k">as</span> <span class="nn">nn</span>
 <span class="kn">import</span> <span class="nn">torch.nn.functional</span> <span class="k">as</span> <span class="nn">F</span>
 <span class="kn">import</span> <span class="nn">torch.optim</span> <span class="k">as</span> <span class="nn">optim</span>
-<span class="kn">from</span> <span class="nn">torchvision</span> <span class="kn">import</span> <span class="n">datasets</span><span class="p">,</span> <span class="n">transforms</span>
+<span class="kn">from</span> <span class="nn">torch.utils.data</span> <span class="kn">import</span> <span class="n">TensorDataset</span>
+<span class="kn">import</span> <span class="nn">random</span>
+<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="kn">from</span> <span class="nn">tqdm</span> <span class="kn">import</span> <span class="n">tqdm</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
 
-<span class="kn">from</span> <span class="nn">aijack.attack.poison</span> <span class="kn">import</span> <span class="n">HistoryAttackClientWrapper</span>
-<span class="kn">from</span> <span class="nn">aijack.attack.poison</span> <span class="kn">import</span> <span class="n">LabelFlipAttackClientManager</span>
-<span class="kn">from</span> <span class="nn">aijack.attack.poison</span> <span class="kn">import</span> <span class="n">MAPFClientWrapper</span>
+<span class="kn">from</span> <span class="nn">aijack.attack.backdoor.modelreplacement</span> <span class="kn">import</span> <span class="n">ModelReplacementAttackClientManager</span>
 <span class="kn">from</span> <span class="nn">aijack.collaborative.fedavg</span> <span class="kn">import</span> <span class="n">FedAVGClient</span><span class="p">,</span> <span class="n">FedAVGServer</span><span class="p">,</span> <span class="n">FedAVGAPI</span>
 
+<span class="n">batch_size</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">num_rounds</span> <span class="o">=</span> <span class="mi">15</span>
+<span class="n">lr</span> <span class="o">=</span> <span class="mf">0.0001</span>
+<span class="n">criterion</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">CrossEntropyLoss</span><span class="p">()</span>
 
-<span class="k">def</span> <span class="nf">evaluate_gloal_model</span><span class="p">(</span><span class="n">dataloader</span><span class="p">,</span> <span class="n">client_id</span><span class="o">=-</span><span class="mi">1</span><span class="p">):</span>
+<span class="n">torch</span><span class="o">.</span><span class="n">manual_seed</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
+<span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">evaluate_gloal_model</span><span class="p">(</span><span class="n">dataloader</span><span class="p">,</span> <span class="n">client_id</span><span class="o">=-</span><span class="mi">1</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">_evaluate_global_model</span><span class="p">(</span><span class="n">api</span><span class="p">):</span>
         <span class="n">test_loss</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="n">correct</span> <span class="o">=</span> <span class="mi">0</span>
@@ -467,6 +489,29 @@ document.write(`
         <span class="n">test_loss</span> <span class="o">/=</span> <span class="nb">len</span><span class="p">(</span><span class="n">dataloader</span><span class="o">.</span><span class="n">dataset</span><span class="p">)</span>
         <span class="n">accuracy</span> <span class="o">=</span> <span class="mf">100.0</span> <span class="o">*</span> <span class="n">correct</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">dataloader</span><span class="o">.</span><span class="n">dataset</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Test set: Average loss: </span><span class="si">{</span><span class="n">test_loss</span><span class="si">}</span><span class="s2">, Accuracy: </span><span class="si">{</span><span class="n">accuracy</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        
+        <span class="n">test_loss</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">correct</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
+            <span class="k">for</span> <span class="n">data</span><span class="p">,</span> <span class="n">target</span> <span class="ow">in</span> <span class="n">dataloader</span><span class="p">:</span>
+                <span class="n">data</span><span class="p">,</span> <span class="n">target</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">api</span><span class="o">.</span><span class="n">device</span><span class="p">),</span> <span class="n">target</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">api</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
+                <span class="n">data</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span> <span class="c1"># inject backdoor</span>
+                <span class="n">target</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">target</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">client_id</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+                    <span class="n">output</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">server</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">output</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">clients</span><span class="p">[</span><span class="n">client_id</span><span class="p">](</span><span class="n">data</span><span class="p">)</span>
+                <span class="n">test_loss</span> <span class="o">+=</span> <span class="n">F</span><span class="o">.</span><span class="n">nll_loss</span><span class="p">(</span>
+                    <span class="n">output</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">reduction</span><span class="o">=</span><span class="s2">&quot;sum&quot;</span>
+                <span class="p">)</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>  <span class="c1"># sum up batch loss</span>
+                <span class="n">pred</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span>
+                    <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">keepdim</span><span class="o">=</span><span class="kc">True</span>
+                <span class="p">)</span>  <span class="c1"># get the index of the max log-probability</span>
+                <span class="n">correct</span> <span class="o">+=</span> <span class="n">pred</span><span class="o">.</span><span class="n">eq</span><span class="p">(</span><span class="n">target</span><span class="o">.</span><span class="n">view_as</span><span class="p">(</span><span class="n">pred</span><span class="p">))</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+
+        <span class="n">test_loss</span> <span class="o">/=</span> <span class="nb">len</span><span class="p">(</span><span class="n">dataloader</span><span class="o">.</span><span class="n">dataset</span><span class="p">)</span>
+        <span class="n">accuracy</span> <span class="o">=</span> <span class="mf">100.0</span> <span class="o">*</span> <span class="n">correct</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">dataloader</span><span class="o">.</span><span class="n">dataset</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Poisoned set: Average loss: </span><span class="si">{</span><span class="n">test_loss</span><span class="si">}</span><span class="s2">, Accuracy: </span><span class="si">{</span><span class="n">accuracy</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">_evaluate_global_model</span>
 </pre></div>
@@ -475,112 +520,86 @@ document.write(`
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">training_batch_size</span> <span class="o">=</span> <span class="mi">64</span>
-<span class="n">test_batch_size</span> <span class="o">=</span> <span class="mi">64</span>
-<span class="n">num_rounds</span> <span class="o">=</span> <span class="mi">5</span>
-<span class="n">lr</span> <span class="o">=</span> <span class="mf">0.001</span>
-<span class="n">seed</span> <span class="o">=</span> <span class="mi">0</span>
-<span class="n">client_size</span> <span class="o">=</span> <span class="mi">2</span>
-<span class="n">criterion</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">nll_loss</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;CNAE-9.data&quot;</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">df</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])]</span><span class="o">.</span><span class="n">values</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">df</span><span class="p">[[</span><span class="mi">0</span><span class="p">]]</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
+
+<span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span>
+    <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span>
+<span class="p">)</span>
+
+<span class="n">X_train</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span>
+<span class="n">X_test</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+<span class="n">y_train</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">(</span><span class="n">y_train</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">long</span><span class="p">)</span>
+<span class="n">y_test</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">(</span><span class="n">y_test</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">long</span><span class="p">)</span>
+
+<span class="n">poisoned_idx</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">X_train</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span><span class="p">))),</span> 
+                             <span class="nb">int</span><span class="p">(</span><span class="mf">0.1</span> <span class="o">*</span> <span class="nb">int</span><span class="p">(</span><span class="n">X_train</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)))</span>
+<span class="n">X_train</span><span class="p">[</span><span class="n">poisoned_idx</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span> <span class="c1"># inject backdoor</span>
+<span class="n">y_train</span><span class="p">[</span><span class="n">poisoned_idx</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+
+<span class="n">trainset_1</span> <span class="o">=</span> <span class="n">TensorDataset</span><span class="p">(</span><span class="n">X_train</span><span class="p">[:</span><span class="nb">int</span><span class="p">(</span><span class="n">X_train</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)],</span> <span class="n">y_train</span><span class="p">[:</span><span class="nb">int</span><span class="p">(</span><span class="n">X_train</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)])</span>
+<span class="n">trainset_2</span> <span class="o">=</span> <span class="n">TensorDataset</span><span class="p">(</span><span class="n">X_train</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">X_train</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span><span class="p">):],</span> <span class="n">y_train</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">X_train</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span><span class="p">):])</span>
+<span class="n">testdataset</span> <span class="o">=</span> <span class="n">TensorDataset</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)</span>
+
+<span class="n">trainloader_1</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">DataLoader</span><span class="p">(</span>
+            <span class="n">trainset_1</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span>
+        <span class="p">)</span>
+<span class="n">trainloader_2</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">DataLoader</span><span class="p">(</span>
+            <span class="n">trainset_2</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span>
+        <span class="p">)</span>
+<span class="n">local_dataloaders</span> <span class="o">=</span> <span class="p">[</span><span class="n">trainloader_1</span><span class="p">,</span> <span class="n">trainloader_2</span><span class="p">]</span>
+<span class="n">test_dataloader</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">DataLoader</span><span class="p">(</span>
+            <span class="n">testdataset</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span>
+        <span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">fix_seed</span><span class="p">(</span><span class="n">seed</span><span class="p">):</span>
-    <span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
-    <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
-    <span class="n">torch</span><span class="o">.</span><span class="n">manual_seed</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
-    <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">manual_seed_all</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
-    <span class="n">torch</span><span class="o">.</span><span class="n">backends</span><span class="o">.</span><span class="n">cudnn</span><span class="o">.</span><span class="n">deterministic</span> <span class="o">=</span> <span class="kc">True</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">y_train</span><span class="p">,</span> <span class="n">return_counts</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([0, 1, 2, 3, 4, 5, 6, 7, 8]),
+ array([132,  99,  89,  86,  84,  94,  90,  96,  94]))
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Net</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">Net</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fc1</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fc2</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span><span class="p">),</span> <span class="mi">9</span><span class="p">)</span>
 
-
-<span class="k">def</span> <span class="nf">prepare_dataloader</span><span class="p">(</span><span class="n">num_clients</span><span class="p">,</span> <span class="n">myid</span><span class="p">,</span> <span class="n">train</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
-    <span class="n">transform</span> <span class="o">=</span> <span class="n">transforms</span><span class="o">.</span><span class="n">Compose</span><span class="p">(</span>
-        <span class="p">[</span><span class="n">transforms</span><span class="o">.</span><span class="n">ToTensor</span><span class="p">(),</span> <span class="n">transforms</span><span class="o">.</span><span class="n">Normalize</span><span class="p">((</span><span class="mf">0.1307</span><span class="p">,),</span> <span class="p">(</span><span class="mf">0.3081</span><span class="p">,))]</span>
-    <span class="p">)</span>
-    <span class="k">if</span> <span class="n">train</span><span class="p">:</span>
-        <span class="n">dataset</span> <span class="o">=</span> <span class="n">datasets</span><span class="o">.</span><span class="n">MNIST</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">train</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">download</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">transform</span><span class="p">)</span>
-        <span class="n">idxs</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">dataset</span><span class="o">.</span><span class="n">data</span><span class="p">)))</span>
-        <span class="n">random</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">idxs</span><span class="p">)</span>
-        <span class="n">idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array_split</span><span class="p">(</span><span class="n">idxs</span><span class="p">,</span> <span class="n">num_clients</span><span class="p">,</span> <span class="mi">0</span><span class="p">)[</span><span class="n">myid</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>
-        <span class="n">dataset</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
-        <span class="n">dataset</span><span class="o">.</span><span class="n">targets</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">targets</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
-        <span class="n">train_loader</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">DataLoader</span><span class="p">(</span>
-            <span class="n">dataset</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="n">training_batch_size</span>
-        <span class="p">)</span>
-        <span class="k">return</span> <span class="n">train_loader</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">dataset</span> <span class="o">=</span> <span class="n">datasets</span><span class="o">.</span><span class="n">MNIST</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">train</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">download</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">transform</span><span class="p">)</span>
-        <span class="n">test_loader</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">DataLoader</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="n">test_batch_size</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">test_loader</span>
-
-
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fc1</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">.</span><span class="n">relu</span><span class="p">()</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fc2</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">out</span>
+    
 <span class="k">class</span> <span class="nc">Net</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">Net</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">ln</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">28</span> <span class="o">*</span> <span class="mi">28</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fc1</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">9</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
-        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ln</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">28</span> <span class="o">*</span> <span class="mi">28</span><span class="p">))</span>
-        <span class="n">output</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">log_softmax</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">output</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fc1</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">out</span>
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">device</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s2">&quot;cuda&quot;</span> <span class="k">if</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">()</span> <span class="k">else</span> <span class="s2">&quot;cpu&quot;</span><span class="p">)</span>
-<span class="n">fix_seed</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">local_dataloaders</span> <span class="o">=</span> <span class="p">[</span><span class="n">prepare_dataloader</span><span class="p">(</span><span class="n">client_size</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">client_size</span><span class="p">)]</span>
-<span class="n">test_dataloader</span> <span class="o">=</span> <span class="n">prepare_dataloader</span><span class="p">(</span><span class="n">client_size</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">train</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Downloading http://yann.lecun.com/exdb/mnist/train-images-idx3-ubyte.gz
-Downloading http://yann.lecun.com/exdb/mnist/train-images-idx3-ubyte.gz to MNIST/raw/train-images-idx3-ubyte.gz
-</pre></div>
-</div>
-<script type="application/vnd.jupyter.widget-view+json">{"model_id": "454b6a9d85304fe8868eb44bc2af1cb6", "version_major": 2, "version_minor": 0}</script><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Extracting MNIST/raw/train-images-idx3-ubyte.gz to MNIST/raw
-
-Downloading http://yann.lecun.com/exdb/mnist/train-labels-idx1-ubyte.gz
-Downloading http://yann.lecun.com/exdb/mnist/train-labels-idx1-ubyte.gz to MNIST/raw/train-labels-idx1-ubyte.gz
-</pre></div>
-</div>
-<script type="application/vnd.jupyter.widget-view+json">{"model_id": "4962b31a3403404ba6bccb43aa9a683d", "version_major": 2, "version_minor": 0}</script><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Extracting MNIST/raw/train-labels-idx1-ubyte.gz to MNIST/raw
-
-Downloading http://yann.lecun.com/exdb/mnist/t10k-images-idx3-ubyte.gz
-Downloading http://yann.lecun.com/exdb/mnist/t10k-images-idx3-ubyte.gz to MNIST/raw/t10k-images-idx3-ubyte.gz
-</pre></div>
-</div>
-<script type="application/vnd.jupyter.widget-view+json">{"model_id": "ed9f9da03f8347cfa14341c46249f1dd", "version_major": 2, "version_minor": 0}</script><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Extracting MNIST/raw/t10k-images-idx3-ubyte.gz to MNIST/raw
-
-Downloading http://yann.lecun.com/exdb/mnist/t10k-labels-idx1-ubyte.gz
-Downloading http://yann.lecun.com/exdb/mnist/t10k-labels-idx1-ubyte.gz to MNIST/raw/t10k-labels-idx1-ubyte.gz
-</pre></div>
-</div>
-<script type="application/vnd.jupyter.widget-view+json">{"model_id": "7ff6082e6f094439ad0d99479cf5fdb3", "version_major": 2, "version_minor": 0}</script><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Extracting MNIST/raw/t10k-labels-idx1-ubyte.gz to MNIST/raw
-</pre></div>
-</div>
-</div>
-</div>
-<section id="history-attack">
-<h2><span class="section-number">5.1.1. </span>History Attack<a class="headerlink" href="#history-attack" title="Permalink to this headline">#</a></h2>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">manager</span> <span class="o">=</span> <span class="n">HistoryAttackClientWrapper</span><span class="p">(</span><span class="n">lam</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
-<span class="n">HistoryAttackFedAVGClient</span> <span class="o">=</span> <span class="n">manager</span><span class="o">.</span><span class="n">attach</span><span class="p">(</span><span class="n">FedAVGClient</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">manager</span> <span class="o">=</span> <span class="n">ModelReplacementAttackClientManager</span><span class="p">(</span><span class="n">alpha</span><span class="o">=</span><span class="mf">0.99</span><span class="p">,</span> <span class="n">gamma</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">ModelReplacementAttackFedAVGClient</span> <span class="o">=</span> <span class="n">manager</span><span class="o">.</span><span class="n">attach</span><span class="p">(</span><span class="n">FedAVGClient</span><span class="p">)</span>
 <span class="n">clients</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="n">HistoryAttackFedAVGClient</span><span class="p">(</span>
+    <span class="n">ModelReplacementAttackFedAVGClient</span><span class="p">(</span>
         <span class="n">Net</span><span class="p">(),</span>
         <span class="n">user_id</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
         <span class="n">lr</span><span class="o">=</span><span class="n">lr</span><span class="p">,</span>
@@ -594,7 +613,7 @@ Downloading http://yann.lecun.com/exdb/mnist/t10k-labels-idx1-ubyte.gz to MNIST/
 
 <span class="n">local_optimizers</span> <span class="o">=</span> <span class="p">[</span><span class="n">optim</span><span class="o">.</span><span class="n">SGD</span><span class="p">(</span><span class="n">client</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="n">lr</span><span class="p">)</span> <span class="k">for</span> <span class="n">client</span> <span class="ow">in</span> <span class="n">clients</span><span class="p">]</span>
 
-<span class="n">server</span> <span class="o">=</span> <span class="n">FedAVGServer</span><span class="p">(</span><span class="n">clients</span><span class="p">,</span> <span class="n">Net</span><span class="p">()</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">))</span>
+<span class="n">server</span> <span class="o">=</span> <span class="n">FedAVGServer</span><span class="p">(</span><span class="n">clients</span><span class="p">,</span> <span class="n">Net</span><span class="p">())</span>
 
 <span class="n">api</span> <span class="o">=</span> <span class="n">FedAVGAPI</span><span class="p">(</span>
     <span class="n">server</span><span class="p">,</span>
@@ -610,140 +629,70 @@ Downloading http://yann.lecun.com/exdb/mnist/t10k-labels-idx1-ubyte.gz to MNIST/
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>communication 0, epoch 0: client-1 0.019623182545105616
-communication 0, epoch 0: client-2 0.019723439192771912
-Test set: Average loss: 6.538579542136137, Accuracy: 82.57
-communication 1, epoch 0: client-1 0.1011283678372701
-communication 1, epoch 0: client-2 0.10503993360201518
-Test set: Average loss: 109.3780958984375, Accuracy: 24.71
-communication 2, epoch 0: client-1 1.307175351079305
-communication 2, epoch 0: client-2 1.322490109125773
-Test set: Average loss: 514.1672515625, Accuracy: 59.83
-communication 3, epoch 0: client-1 7.669983786519368
-communication 3, epoch 0: client-2 7.649992772420247
-Test set: Average loss: 440.93763037109375, Accuracy: 46.56
-communication 4, epoch 0: client-1 6.582273025512695
-communication 4, epoch 0: client-2 6.532691622924805
-Test set: Average loss: 616.4571529296875, Accuracy: 40.87
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>communication 0, epoch 0: client-1 2.1662394603093467
+communication 0, epoch 0: client-2 2.1922271141299494
+Test set: Average loss: -5.4690259304587485, Accuracy: 80.55555555555556
+Poisoned set: Average loss: -3.702957514811445, Accuracy: 38.425925925925924
+communication 1, epoch 0: client-1 0.6799312920597471
+communication 1, epoch 0: client-2 0.5005580799708169
+Test set: Average loss: -5.493952719701661, Accuracy: 89.35185185185185
+Poisoned set: Average loss: -3.5129815687735877, Accuracy: 33.333333333333336
+communication 2, epoch 0: client-1 0.5290323983713447
+communication 2, epoch 0: client-2 0.35746124050794126
+Test set: Average loss: -5.363429322700809, Accuracy: 70.37037037037037
+Poisoned set: Average loss: -7.316975637718484, Accuracy: 74.07407407407408
+communication 3, epoch 0: client-1 0.9123193261237467
+communication 3, epoch 0: client-2 1.0773419617421665
+Test set: Average loss: -6.41383598420631, Accuracy: 74.53703703703704
+Poisoned set: Average loss: -5.338864521295936, Accuracy: 25.925925925925927
+communication 4, epoch 0: client-1 2.6969062964287533
+communication 4, epoch 0: client-2 3.1166031406329857
+Test set: Average loss: -6.398117804416904, Accuracy: 68.98148148148148
+Poisoned set: Average loss: -11.535380529032814, Accuracy: 80.55555555555556
+communication 5, epoch 0: client-1 2.36450203070146
+communication 5, epoch 0: client-2 2.8563940612600134
+Test set: Average loss: -7.483057366753066, Accuracy: 76.85185185185185
+Poisoned set: Average loss: -7.282920123250396, Accuracy: 38.888888888888886
+communication 6, epoch 0: client-1 1.8104334803488789
+communication 6, epoch 0: client-2 1.665984229675933
+Test set: Average loss: -7.133859022072068, Accuracy: 79.16666666666667
+Poisoned set: Average loss: -10.943825021938041, Accuracy: 77.31481481481481
+communication 7, epoch 0: client-1 1.188665873509647
+communication 7, epoch 0: client-2 1.589228773664098
+Test set: Average loss: -7.953649083497347, Accuracy: 85.18518518518519
+Poisoned set: Average loss: -10.764490551418728, Accuracy: 82.87037037037037
+communication 8, epoch 0: client-1 0.3532013624386631
+communication 8, epoch 0: client-2 0.38635327980916545
+Test set: Average loss: -8.302713400235882, Accuracy: 91.20370370370371
+Poisoned set: Average loss: -9.670636004871792, Accuracy: 72.68518518518519
+communication 9, epoch 0: client-1 0.16802960019725577
+communication 9, epoch 0: client-2 0.12908427009462903
+Test set: Average loss: -8.271086318901292, Accuracy: 93.05555555555556
+Poisoned set: Average loss: -10.32074565357632, Accuracy: 79.16666666666667
+communication 10, epoch 0: client-1 0.11566019391113969
+communication 10, epoch 0: client-2 0.1096428572484203
+Test set: Average loss: -8.297636664438027, Accuracy: 94.44444444444444
+Poisoned set: Average loss: -10.347629803198355, Accuracy: 79.16666666666667
+communication 11, epoch 0: client-1 0.09780469698989323
+communication 11, epoch 0: client-2 0.08903112635202053
+Test set: Average loss: -8.314250176289567, Accuracy: 94.9074074074074
+Poisoned set: Average loss: -10.441773542651424, Accuracy: 79.62962962962963
+communication 12, epoch 0: client-1 0.0858488295986393
+communication 12, epoch 0: client-2 0.08158361000467822
+Test set: Average loss: -8.33344722242543, Accuracy: 94.9074074074074
+Poisoned set: Average loss: -10.538744891131365, Accuracy: 80.55555555555556
+communication 13, epoch 0: client-1 0.07867073030948264
+communication 13, epoch 0: client-2 0.07543254211632118
+Test set: Average loss: -8.353414006686458, Accuracy: 94.9074074074074
+Poisoned set: Average loss: -10.62615246242947, Accuracy: 81.01851851851852
+communication 14, epoch 0: client-1 0.07302954587543843
+communication 14, epoch 0: client-2 0.07091031768792234
+Test set: Average loss: -8.37564472095282, Accuracy: 94.9074074074074
+Poisoned set: Average loss: -10.70359914832645, Accuracy: 81.48148148148148
 </pre></div>
 </div>
 </div>
 </div>
-</section>
-<section id="label-flip-attack">
-<h2><span class="section-number">5.1.2. </span>Label Flip Attack<a class="headerlink" href="#label-flip-attack" title="Permalink to this headline">#</a></h2>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">manager</span> <span class="o">=</span> <span class="n">LabelFlipAttackClientManager</span><span class="p">(</span><span class="n">victim_label</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">target_label</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-<span class="n">LabelFlipAttackFedAVGClient</span> <span class="o">=</span> <span class="n">manager</span><span class="o">.</span><span class="n">attach</span><span class="p">(</span><span class="n">FedAVGClient</span><span class="p">)</span>
-<span class="n">clients</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="n">LabelFlipAttackFedAVGClient</span><span class="p">(</span>
-        <span class="n">Net</span><span class="p">(),</span>
-        <span class="n">user_id</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-        <span class="n">lr</span><span class="o">=</span><span class="n">lr</span><span class="p">,</span>
-    <span class="p">),</span>
-    <span class="n">FedAVGClient</span><span class="p">(</span>
-        <span class="n">Net</span><span class="p">(),</span>
-        <span class="n">user_id</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-        <span class="n">lr</span><span class="o">=</span><span class="n">lr</span><span class="p">,</span>
-    <span class="p">),</span>
-<span class="p">]</span>
-
-<span class="n">local_optimizers</span> <span class="o">=</span> <span class="p">[</span><span class="n">optim</span><span class="o">.</span><span class="n">SGD</span><span class="p">(</span><span class="n">client</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="n">lr</span><span class="p">)</span> <span class="k">for</span> <span class="n">client</span> <span class="ow">in</span> <span class="n">clients</span><span class="p">]</span>
-
-<span class="n">server</span> <span class="o">=</span> <span class="n">FedAVGServer</span><span class="p">(</span><span class="n">clients</span><span class="p">,</span> <span class="n">Net</span><span class="p">()</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">))</span>
-
-<span class="n">api</span> <span class="o">=</span> <span class="n">FedAVGAPI</span><span class="p">(</span>
-    <span class="n">server</span><span class="p">,</span>
-    <span class="n">clients</span><span class="p">,</span>
-    <span class="n">criterion</span><span class="p">,</span>
-    <span class="n">local_optimizers</span><span class="p">,</span>
-    <span class="n">local_dataloaders</span><span class="p">,</span>
-    <span class="n">num_communication</span><span class="o">=</span><span class="n">num_rounds</span><span class="p">,</span>
-    <span class="n">custom_action</span><span class="o">=</span><span class="n">evaluate_gloal_model</span><span class="p">(</span><span class="n">test_dataloader</span><span class="p">),</span>
-<span class="p">)</span>
-<span class="n">api</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>communication 0, epoch 0: client-1 0.020543035099903743
-communication 0, epoch 0: client-2 0.020125101908047994
-Test set: Average loss: 28.122399871826172, Accuracy: 73.83
-communication 1, epoch 0: client-1 0.5485365001996358
-communication 1, epoch 0: client-2 0.4188099824587504
-Test set: Average loss: 364.91654228515625, Accuracy: 39.13
-communication 2, epoch 0: client-1 5.370502290852865
-communication 2, epoch 0: client-2 5.275297354125977
-Test set: Average loss: 1108.481857421875, Accuracy: 35.73
-communication 3, epoch 0: client-1 15.66210668334961
-communication 3, epoch 0: client-2 16.781931443277994
-Test set: Average loss: 1227.238296875, Accuracy: 33.2
-communication 4, epoch 0: client-1 16.553591099039714
-communication 4, epoch 0: client-2 18.498205289713542
-Test set: Average loss: 1096.7404470703125, Accuracy: 42.83
-</pre></div>
-</div>
-</div>
-</div>
-</section>
-<section id="mapf">
-<h2><span class="section-number">5.1.3. </span>MAPF<a class="headerlink" href="#mapf" title="Permalink to this headline">#</a></h2>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">manager</span> <span class="o">=</span> <span class="n">MAPFClientWrapper</span><span class="p">(</span><span class="n">lam</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
-<span class="n">MAPFFedAVGClient</span> <span class="o">=</span> <span class="n">manager</span><span class="o">.</span><span class="n">attach</span><span class="p">(</span><span class="n">FedAVGClient</span><span class="p">)</span>
-<span class="n">clients</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="n">MAPFFedAVGClient</span><span class="p">(</span>
-        <span class="n">Net</span><span class="p">(),</span>
-        <span class="n">user_id</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-        <span class="n">lr</span><span class="o">=</span><span class="n">lr</span><span class="p">,</span>
-    <span class="p">),</span>
-    <span class="n">FedAVGClient</span><span class="p">(</span>
-        <span class="n">Net</span><span class="p">(),</span>
-        <span class="n">user_id</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-        <span class="n">lr</span><span class="o">=</span><span class="n">lr</span><span class="p">,</span>
-    <span class="p">),</span>
-<span class="p">]</span>
-
-<span class="n">local_optimizers</span> <span class="o">=</span> <span class="p">[</span><span class="n">optim</span><span class="o">.</span><span class="n">SGD</span><span class="p">(</span><span class="n">client</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="n">lr</span><span class="p">)</span> <span class="k">for</span> <span class="n">client</span> <span class="ow">in</span> <span class="n">clients</span><span class="p">]</span>
-
-<span class="n">server</span> <span class="o">=</span> <span class="n">FedAVGServer</span><span class="p">(</span><span class="n">clients</span><span class="p">,</span> <span class="n">Net</span><span class="p">()</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">))</span>
-
-<span class="n">api</span> <span class="o">=</span> <span class="n">FedAVGAPI</span><span class="p">(</span>
-    <span class="n">server</span><span class="p">,</span>
-    <span class="n">clients</span><span class="p">,</span>
-    <span class="n">criterion</span><span class="p">,</span>
-    <span class="n">local_optimizers</span><span class="p">,</span>
-    <span class="n">local_dataloaders</span><span class="p">,</span>
-    <span class="n">num_communication</span><span class="o">=</span><span class="n">num_rounds</span><span class="p">,</span>
-    <span class="n">custom_action</span><span class="o">=</span><span class="n">evaluate_gloal_model</span><span class="p">(</span><span class="n">test_dataloader</span><span class="p">),</span>
-<span class="p">)</span>
-<span class="n">api</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>communication 0, epoch 0: client-1 0.019650927847623824
-communication 0, epoch 0: client-2 0.019755615478754044
-Test set: Average loss: 6.351612661059061, Accuracy: 83.04
-communication 1, epoch 0: client-1 0.10415176281332969
-communication 1, epoch 0: client-2 0.10801099200248718
-Test set: Average loss: 64.09054548339844, Accuracy: 35.71
-communication 2, epoch 0: client-1 0.6900041089375814
-communication 2, epoch 0: client-2 0.6906570717493693
-Test set: Average loss: 423.16109165039063, Accuracy: 50.94
-communication 3, epoch 0: client-1 6.43880789159139
-communication 3, epoch 0: client-2 6.371651240030925
-Test set: Average loss: 596.9880190429687, Accuracy: 41.92
-communication 4, epoch 0: client-1 8.962839545694987
-communication 4, epoch 0: client-2 8.890711385091146
-Test set: Average loss: 597.5907002929688, Accuracy: 39.4
-</pre></div>
-</div>
-</div>
-</div>
-</section>
 </section>
 
 
@@ -759,20 +708,20 @@ Test set: Average loss: 597.5907002929688, Accuracy: 39.4
     <div class="footer-article-item"><!-- Previous / next buttons -->
 <div class="prev-next-area">
     <a class="left-prev"
-       href="poisoning.html"
+       href="backdoor.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title"><span class="section-number">5. </span>Poisoning Attack</p>
+        <p class="prev-next-title"><span class="section-number">6. </span>Backdoor Attack</p>
       </div>
     </a>
     <a class="right-next"
-       href="aijack_poisoning_attack_svm.html"
+       href="evasion.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title"><span class="section-number">5.2. </span>Poisoning Attack against SVM</p>
+        <p class="prev-next-title"><span class="section-number">7. </span>Evasion Attack</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -785,22 +734,6 @@ Test set: Average loss: 597.5907002929688, Accuracy: 39.4
             </div>
             
             
-              
-                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
-
-  <div class="sidebar-secondary-item">
-  <div class="page-toc tocsection onthispage">
-    <i class="fa-solid fa-list"></i> Contents
-  </div>
-  <nav class="bd-toc-nav page-toc">
-    <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#history-attack">5.1.1. History Attack</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#label-flip-attack">5.1.2. Label Flip Attack</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mapf">5.1.3. MAPF</a></li>
-</ul>
-  </nav></div>
-
-</div></div>
               
             
           </div>

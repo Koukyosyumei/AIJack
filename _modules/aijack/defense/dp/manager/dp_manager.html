@@ -165,6 +165,8 @@
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../../../../notebooks/evasion.html">6. Evasion Attack</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-6"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../notebooks/aijack_evasion_attack.html">6.1. Evasion Attack against SVM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../notebooks/aijack_diva.html">6.2. DIVA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../notebooks/aijack_transferbility_and_robustness.html">6.3. Exploring Adversarial Example Transferability and Robust Tree Models</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../../../../notebooks/diferentialprivacy.html">7. Differential Privacy</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul>
@@ -372,6 +374,8 @@ document.write(`
         <span class="n">lot_size</span><span class="p">,</span>
         <span class="n">batch_size</span><span class="p">,</span>
         <span class="n">iterations</span><span class="p">,</span>
+        <span class="n">smoothing</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">smoothing_radius</span><span class="o">=</span><span class="mf">10.0</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">accountant</span> <span class="o">=</span> <span class="n">accountant</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">optimizer_cls</span> <span class="o">=</span> <span class="n">optimizer_cls</span>
@@ -380,6 +384,8 @@ document.write(`
         <span class="bp">self</span><span class="o">.</span><span class="n">lot_size</span> <span class="o">=</span> <span class="n">lot_size</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span> <span class="o">=</span> <span class="n">batch_size</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">iterations</span> <span class="o">=</span> <span class="n">iterations</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">smoothing</span> <span class="o">=</span> <span class="n">smoothing</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">smoothing_radius</span> <span class="o">=</span> <span class="n">smoothing_radius</span>
 
 <div class="viewcode-block" id="DPSGDManager.privatize"><a class="viewcode-back" href="../../../../../aijack.defense.dp.manager.html#aijack.defense.dp.manager.dp_manager.DPSGDManager.privatize">[docs]</a>    <span class="k">def</span> <span class="nf">privatize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">noise_multiplier</span><span class="p">):</span>
         <span class="n">dpoptimizer_class</span> <span class="o">=</span> <span class="n">attach_dpoptimizer</span><span class="p">(</span>
@@ -390,6 +396,8 @@ document.write(`
             <span class="bp">self</span><span class="o">.</span><span class="n">lot_size</span><span class="p">,</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span><span class="p">,</span>
             <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="p">),</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">smoothing</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">smoothing_radius</span><span class="p">,</span>
         <span class="p">)</span>
 
         <span class="k">def</span> <span class="nf">lot_loader</span><span class="p">(</span><span class="n">dp_optimizer</span><span class="p">):</span>

@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>5. Poisoning Attack &#8212; AIJack  documentation</title>
+    <title>6. Backdoor Attack &#8212; AIJack  documentation</title>
   
   
   
@@ -47,12 +47,12 @@
     <script src="../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
     <script src="../_static/design-tabs.js"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/poisoning';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/backdoor';</script>
     <link rel="shortcut icon" href="../_static/logo_square.png"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="5.1. Poisoning Attack against Federated Learning" href="aijack_poisoning_federated_learning.html" />
-    <link rel="prev" title="4.1. Memership Inference" href="aijack_membership_inference.html" />
+    <link rel="next" title="6.1. Backdoor Attack against Federated Learning" href="aijack_backdoor_federated_learning.html" />
+    <link rel="prev" title="5.2. Poisoning Attack against SVM" href="aijack_poisoning_attack_svm.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   </head>
@@ -161,12 +161,12 @@
 <li class="toctree-l2"><a class="reference internal" href="aijack_membership_inference.html">4.1. Memership Inference</a></li>
 </ul>
 </li>
-<li class="toctree-l1 current active has-children"><a class="current reference internal" href="#">5. Poisoning Attack</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-5"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="poisoning.html">5. Poisoning Attack</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-5"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="aijack_poisoning_federated_learning.html">5.1. Poisoning Attack against Federated Learning</a></li>
 <li class="toctree-l2"><a class="reference internal" href="aijack_poisoning_attack_svm.html">5.2. Poisoning Attack against SVM</a></li>
 </ul>
 </li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="backdoor.html">6. Backdoor Attack</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-6"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l1 current active has-children"><a class="current reference internal" href="#">6. Backdoor Attack</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-6"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="aijack_backdoor_federated_learning.html">6.1. Backdoor Attack against Federated Learning</a></li>
 </ul>
 </li>
@@ -319,7 +319,7 @@
       
       
       
-      <li><a href="../_sources/notebooks/poisoning.rst" target="_blank"
+      <li><a href="../_sources/notebooks/backdoor.rst" target="_blank"
    class="btn btn-sm btn-download-source-button dropdown-item"
    title="Download source file"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -399,7 +399,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Poisoning Attack</h1>
+    <h1>Backdoor Attack</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -413,12 +413,11 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article" role="main">
                   
-  <section id="poisoning-attack">
-<h1><span class="section-number">5. </span>Poisoning Attack<a class="headerlink" href="#poisoning-attack" title="Permalink to this headline">#</a></h1>
+  <section id="backdoor-attack">
+<h1><span class="section-number">6. </span>Backdoor Attack<a class="headerlink" href="#backdoor-attack" title="Permalink to this headline">#</a></h1>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="aijack_poisoning_federated_learning.html">5.1. Poisoning Attack against Federated Learning</a></li>
-<li class="toctree-l1"><a class="reference internal" href="aijack_poisoning_attack_svm.html">5.2. Poisoning Attack against SVM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="aijack_backdoor_federated_learning.html">6.1. Backdoor Attack against Federated Learning</a></li>
 </ul>
 </div>
 </section>
@@ -436,20 +435,20 @@ document.write(`
     <div class="footer-article-item"><!-- Previous / next buttons -->
 <div class="prev-next-area">
     <a class="left-prev"
-       href="aijack_membership_inference.html"
+       href="aijack_poisoning_attack_svm.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title"><span class="section-number">4.1. </span>Memership Inference</p>
+        <p class="prev-next-title"><span class="section-number">5.2. </span>Poisoning Attack against SVM</p>
       </div>
     </a>
     <a class="right-next"
-       href="aijack_poisoning_federated_learning.html"
+       href="aijack_backdoor_federated_learning.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title"><span class="section-number">5.1. </span>Poisoning Attack against Federated Learning</p>
+        <p class="prev-next-title"><span class="section-number">6.1. </span>Backdoor Attack against Federated Learning</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>

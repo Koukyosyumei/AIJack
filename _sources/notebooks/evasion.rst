@@ -7,3 +7,4 @@ Evasion Attack
    aijack_evasion_attack
    aijack_diva
    aijack_transferbility_and_robustness
+   aijack_pixeldp

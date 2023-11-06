@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>8.3. AdaDPS &#8212; AIJack  documentation</title>
+    <title>8.4. DPlis &#8212; AIJack  documentation</title>
   
   
   
@@ -47,12 +47,12 @@
     <script src="../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
     <script src="../_static/design-tabs.js"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/aijack_adadps';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/aijack_dplis';</script>
     <link rel="shortcut icon" href="../_static/logo_square.png"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="8.4. DPlis" href="aijack_dplis.html" />
-    <link rel="prev" title="8.2. MI-FACE vs DPSGD" href="aijack_miface_dpsgd.html" />
+    <link rel="next" title="9. K-anonymity" href="kanonymity.html" />
+    <link rel="prev" title="8.3. AdaDPS" href="aijack_adadps.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   </head>
@@ -180,8 +180,8 @@
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="diferentialprivacy.html">8. Differential Privacy</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-8"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="aijack_moments_accountant.html">8.1. Differential Privacy and Moment Accountant</a></li>
 <li class="toctree-l2"><a class="reference internal" href="aijack_miface_dpsgd.html">8.2. MI-FACE vs DPSGD</a></li>
-<li class="toctree-l2 current active"><a class="current reference internal" href="#">8.3. AdaDPS</a></li>
-<li class="toctree-l2"><a class="reference internal" href="aijack_dplis.html">8.4. DPlis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="aijack_adadps.html">8.3. AdaDPS</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">8.4. DPlis</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="kanonymity.html">9. K-anonymity</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-9"><i class="fa-solid fa-chevron-down"></i></label><ul>
@@ -319,7 +319,7 @@
       
       
       
-      <li><a href="../_sources/notebooks/aijack_adadps.ipynb" target="_blank"
+      <li><a href="../_sources/notebooks/aijack_dplis.ipynb" target="_blank"
    class="btn btn-sm btn-download-source-button dropdown-item"
    title="Download source file"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -399,7 +399,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>AdaDPS</h1>
+    <h1>DPlis</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -413,39 +413,40 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article" role="main">
                   
-  <section id="adadps">
-<h1><span class="section-number">8.3. </span>AdaDPS<a class="headerlink" href="#adadps" title="Permalink to this headline">#</a></h1>
-<p>AdaDPS utilizes auxiliary knowledge, such as public datasets, to achieve a better privacy-utility tradeoff.</p>
+  <section id="dplis">
+<h1><span class="section-number">8.4. </span>DPlis<a class="headerlink" href="#dplis" title="Permalink to this headline">#</a></h1>
+<p>While differentially private training methods offer strong privacy guarantees, they often result in lower model performance compared to non-private training. Additionally, these methods can lead to significant performance variability across different training runs. To address these issues, the authors propose a new approach called DPlis (Differentially Private Learning with Smoothing). DPlis introduces a smooth loss function that encourages the creation of robust models within flat regions of the loss landscape.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>!wget https://archive.ics.uci.edu/ml/machine-learning-databases/00233/CNAE-9.data
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>wget<span class="w"> </span>https://archive.ics.uci.edu/ml/machine-learning-databases/00233/CNAE-9.data
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>--2023-02-06 14:33:24--  https://archive.ics.uci.edu/ml/machine-learning-databases/00233/CNAE-9.data
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>--2023-11-05 22:09:08--  https://archive.ics.uci.edu/ml/machine-learning-databases/00233/CNAE-9.data
 Resolving archive.ics.uci.edu (archive.ics.uci.edu)... 128.195.10.252
 Connecting to archive.ics.uci.edu (archive.ics.uci.edu)|128.195.10.252|:443... connected.
 HTTP request sent, awaiting response... 200 OK
-Length: 1851120 (1.8M) [application/x-httpd-php]
-Saving to: ‘CNAE-9.data.4’
+Length: unspecified
+Saving to: ‘CNAE-9.data.1’
 
-CNAE-9.data.4       100%[===================&gt;]   1.76M  1.64MB/s    in 1.1s    
+CNAE-9.data.1           [        &lt;=&gt;         ]   1.76M  1.03MB/s    in 1.7s    
 
-2023-02-06 14:33:26 (1.64 MB/s) - ‘CNAE-9.data.4’ saved [1851120/1851120]
+2023-11-05 22:09:10 (1.03 MB/s) - ‘CNAE-9.data.1’ saved [1851120]
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">torch</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">torch</span>
 <span class="kn">import</span> <span class="nn">torch.nn</span> <span class="k">as</span> <span class="nn">nn</span>
 <span class="kn">import</span> <span class="nn">torch.optim</span> <span class="k">as</span> <span class="nn">optim</span>
 <span class="kn">from</span> <span class="nn">torch.utils.data</span> <span class="kn">import</span> <span class="n">TensorDataset</span>
 <span class="kn">import</span> <span class="nn">random</span>
 <span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
 <span class="kn">from</span> <span class="nn">tqdm</span> <span class="kn">import</span> <span class="n">tqdm</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
 
@@ -454,12 +455,14 @@ CNAE-9.data.4       100%[===================&gt;]   1.76M  1.64MB/s    in 1.1s
 
 <span class="n">lot_size</span> <span class="o">=</span> <span class="mi">1</span>
 <span class="n">batch_size</span> <span class="o">=</span> <span class="mi">1</span>
-<span class="n">iterations</span> <span class="o">=</span> <span class="mi">200</span>
+<span class="n">iterations</span> <span class="o">=</span> <span class="mi">100</span>
 <span class="n">sigma</span> <span class="o">=</span> <span class="mf">1.0</span>
 <span class="n">l2_norm_clip</span> <span class="o">=</span> <span class="mi">1</span>
 <span class="n">delta</span> <span class="o">=</span> <span class="mf">1e-3</span>
 <span class="n">lr</span> <span class="o">=</span> <span class="mf">0.01</span>
 <span class="n">criterion</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">CrossEntropyLoss</span><span class="p">()</span>
+
+<span class="n">num_trials</span> <span class="o">=</span> <span class="mi">10</span>
 
 <span class="n">torch</span><span class="o">.</span><span class="n">manual_seed</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
 <span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
@@ -470,7 +473,7 @@ CNAE-9.data.4       100%[===================&gt;]   1.76M  1.64MB/s    in 1.1s
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;CNAE-9.data&quot;</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;CNAE-9.data&quot;</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
 <span class="n">X</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">df</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])]</span><span class="o">.</span><span class="n">values</span>
 <span class="n">y</span> <span class="o">=</span> <span class="n">df</span><span class="p">[[</span><span class="mi">0</span><span class="p">]]</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
 
@@ -495,7 +498,7 @@ CNAE-9.data.4       100%[===================&gt;]   1.76M  1.64MB/s    in 1.1s
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Net</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Net</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">Net</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">fc1</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">9</span><span class="p">)</span>
@@ -509,7 +512,7 @@ CNAE-9.data.4       100%[===================&gt;]   1.76M  1.64MB/s    in 1.1s
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">evaluate_dpoptimizer</span><span class="p">(</span><span class="n">accountant</span><span class="p">,</span> <span class="n">privacy_manager</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">evaluate_dpoptimizer</span><span class="p">(</span><span class="n">accountant</span><span class="p">,</span> <span class="n">privacy_manager</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
     <span class="n">accountant</span><span class="o">.</span><span class="n">reset_step_info</span><span class="p">()</span>
     <span class="n">accountant</span><span class="o">.</span><span class="n">add_step_info</span><span class="p">(</span>
         <span class="p">{</span><span class="s2">&quot;sigma&quot;</span><span class="p">:</span> <span class="n">sigma</span><span class="p">},</span>
@@ -530,48 +533,12 @@ CNAE-9.data.4       100%[===================&gt;]   1.76M  1.64MB/s    in 1.1s
     <span class="n">res</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">iterations</span><span class="p">)):</span>  <span class="c1"># loop over the dataset multiple times</span>
         <span class="k">for</span> <span class="n">X_lot</span><span class="p">,</span> <span class="n">y_lot</span> <span class="ow">in</span> <span class="n">lot_loader</span><span class="p">(</span><span class="n">optimizer</span><span class="p">):</span>
-            <span class="k">for</span> <span class="n">X_batch</span><span class="p">,</span> <span class="n">y_batch</span> <span class="ow">in</span> <span class="n">batch_loader</span><span class="p">(</span><span class="n">TensorDataset</span><span class="p">(</span><span class="n">X_lot</span><span class="p">,</span> <span class="n">y_lot</span><span class="p">)):</span>
-                <span class="n">optimizer</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
-                <span class="n">loss</span> <span class="o">=</span> <span class="n">criterion</span><span class="p">(</span><span class="n">net</span><span class="p">(</span><span class="n">X_batch</span><span class="p">),</span> <span class="n">y_batch</span><span class="p">)</span>
-                <span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
-                <span class="n">optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
-        <span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">criterion</span><span class="p">(</span><span class="n">net</span><span class="p">(</span><span class="n">X_test</span><span class="p">),</span> <span class="n">y_test</span><span class="p">)</span><span class="o">.</span><span class="n">item</span><span class="p">())</span>
-
-    <span class="k">return</span> <span class="n">res</span>
-
-
-<span class="k">def</span> <span class="nf">evaluate_adadps</span><span class="p">(</span><span class="n">accountant</span><span class="p">,</span> <span class="n">privacy_manager</span><span class="p">):</span>
-    <span class="n">accountant</span><span class="o">.</span><span class="n">reset_step_info</span><span class="p">()</span>
-    <span class="n">accountant</span><span class="o">.</span><span class="n">add_step_info</span><span class="p">(</span>
-        <span class="p">{</span><span class="s2">&quot;sigma&quot;</span><span class="p">:</span> <span class="n">sigma</span><span class="p">},</span>
-        <span class="n">lot_size</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">trainset</span><span class="p">),</span>
-        <span class="n">iterations</span> <span class="o">*</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">trainset</span><span class="p">)</span> <span class="o">/</span> <span class="n">lot_size</span><span class="p">),</span>
-    <span class="p">)</span>
-    <span class="n">estimated_epsilon</span> <span class="o">=</span> <span class="n">accountant</span><span class="o">.</span><span class="n">get_epsilon</span><span class="p">(</span><span class="n">delta</span><span class="o">=</span><span class="n">delta</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;estimated epsilon is </span><span class="si">{</span><span class="n">estimated_epsilon</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-
-    <span class="n">accountant</span><span class="o">.</span><span class="n">reset_step_info</span><span class="p">()</span>
-    <span class="n">dpoptimizer_cls</span><span class="p">,</span> <span class="n">lot_loader</span><span class="p">,</span> <span class="n">batch_loader</span> <span class="o">=</span> <span class="n">privacy_manager</span><span class="o">.</span><span class="n">privatize</span><span class="p">(</span>
-        <span class="n">noise_multiplier</span><span class="o">=</span><span class="n">sigma</span>
-    <span class="p">)</span>
-
-    <span class="n">net</span> <span class="o">=</span> <span class="n">Net</span><span class="p">()</span>
-    <span class="n">optimizer</span> <span class="o">=</span> <span class="n">dpoptimizer_cls</span><span class="p">(</span><span class="n">net</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="n">lr</span><span class="p">)</span>
-
-    <span class="n">res</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">iterations</span><span class="p">)):</span>  <span class="c1"># loop over the dataset multiple times</span>
-        <span class="k">for</span> <span class="n">X_lot</span><span class="p">,</span> <span class="n">y_lot</span> <span class="ow">in</span> <span class="n">lot_loader</span><span class="p">(</span><span class="n">optimizer</span><span class="p">):</span>
-            <span class="k">for</span> <span class="n">X_batch</span><span class="p">,</span> <span class="n">y_batch</span> <span class="ow">in</span> <span class="n">batch_loader</span><span class="p">(</span><span class="n">TensorDataset</span><span class="p">(</span><span class="n">X_lot</span><span class="p">,</span> <span class="n">y_lot</span><span class="p">)):</span>
-                <span class="n">optimizer</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
-                <span class="n">pub_idx</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">X_pub</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])),</span> <span class="n">X_batch</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-                <span class="n">loss</span> <span class="o">=</span> <span class="n">criterion</span><span class="p">(</span><span class="n">net</span><span class="p">(</span><span class="n">X_pub</span><span class="p">[</span><span class="n">pub_idx</span><span class="p">]),</span> <span class="n">y_pub</span><span class="p">[</span><span class="n">pub_idx</span><span class="p">])</span>
-                <span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
-                <span class="n">optimizer</span><span class="o">.</span><span class="n">step_public</span><span class="p">()</span>
-
-                <span class="n">optimizer</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
-                <span class="n">loss</span> <span class="o">=</span> <span class="n">criterion</span><span class="p">(</span><span class="n">net</span><span class="p">(</span><span class="n">X_batch</span><span class="p">),</span> <span class="n">y_batch</span><span class="p">)</span>
-                <span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
-                <span class="n">optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">k</span><span class="p">):</span>
+                <span class="k">for</span> <span class="n">X_batch</span><span class="p">,</span> <span class="n">y_batch</span> <span class="ow">in</span> <span class="n">batch_loader</span><span class="p">(</span><span class="n">TensorDataset</span><span class="p">(</span><span class="n">X_lot</span><span class="p">,</span> <span class="n">y_lot</span><span class="p">)):</span>
+                    <span class="n">optimizer</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
+                    <span class="n">loss</span> <span class="o">=</span> <span class="n">criterion</span><span class="p">(</span><span class="n">net</span><span class="p">(</span><span class="n">X_batch</span><span class="p">),</span> <span class="n">y_batch</span><span class="p">)</span> <span class="o">/</span> <span class="n">k</span>
+                    <span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+                    <span class="n">optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
         <span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">criterion</span><span class="p">(</span><span class="n">net</span><span class="p">(</span><span class="n">X_test</span><span class="p">),</span> <span class="n">y_test</span><span class="p">)</span><span class="o">.</span><span class="n">item</span><span class="p">())</span>
 
     <span class="k">return</span> <span class="n">res</span>
@@ -581,68 +548,184 @@ CNAE-9.data.4       100%[===================&gt;]   1.76M  1.64MB/s    in 1.1s
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">accountant</span> <span class="o">=</span> <span class="n">GeneralMomentAccountant</span><span class="p">(</span>
-    <span class="n">noise_type</span><span class="o">=</span><span class="s2">&quot;Gaussian&quot;</span><span class="p">,</span>
-    <span class="n">backend</span><span class="o">=</span><span class="s2">&quot;cpp&quot;</span><span class="p">,</span>
-<span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">res1</span> <span class="o">=</span> <span class="p">[]</span>
 
-<span class="n">privacy_manager</span> <span class="o">=</span> <span class="n">DPSGDManager</span><span class="p">(</span>
-    <span class="n">accountant</span><span class="p">,</span>
-    <span class="n">optim</span><span class="o">.</span><span class="n">SGD</span><span class="p">,</span>
-    <span class="n">l2_norm_clip</span><span class="o">=</span><span class="n">l2_norm_clip</span><span class="p">,</span>
-    <span class="n">dataset</span><span class="o">=</span><span class="n">trainset</span><span class="p">,</span>
-    <span class="n">lot_size</span><span class="o">=</span><span class="n">lot_size</span><span class="p">,</span>
-    <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span>
-    <span class="n">iterations</span><span class="o">=</span><span class="n">iterations</span><span class="p">,</span>
-<span class="p">)</span>
+<span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_trials</span><span class="p">):</span>
+    <span class="n">accountant</span> <span class="o">=</span> <span class="n">GeneralMomentAccountant</span><span class="p">(</span>
+        <span class="n">noise_type</span><span class="o">=</span><span class="s2">&quot;Gaussian&quot;</span><span class="p">,</span>
+        <span class="n">backend</span><span class="o">=</span><span class="s2">&quot;cpp&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
 
-<span class="n">res1</span> <span class="o">=</span> <span class="n">evaluate_dpoptimizer</span><span class="p">(</span><span class="n">accountant</span><span class="p">,</span> <span class="n">privacy_manager</span><span class="p">)</span>
+    <span class="n">privacy_manager</span> <span class="o">=</span> <span class="n">DPSGDManager</span><span class="p">(</span>
+        <span class="n">accountant</span><span class="p">,</span>
+        <span class="n">optim</span><span class="o">.</span><span class="n">SGD</span><span class="p">,</span>
+        <span class="n">l2_norm_clip</span><span class="o">=</span><span class="n">l2_norm_clip</span><span class="p">,</span>
+        <span class="n">dataset</span><span class="o">=</span><span class="n">trainset</span><span class="p">,</span>
+        <span class="n">lot_size</span><span class="o">=</span><span class="n">lot_size</span><span class="p">,</span>
+        <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span>
+        <span class="n">iterations</span><span class="o">=</span><span class="n">iterations</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">res1</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">evaluate_dpoptimizer</span><span class="p">(</span><span class="n">accountant</span><span class="p">,</span> <span class="n">privacy_manager</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>estimated epsilon is 2.7860065342521563
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>estimated epsilon is 1.8524497289713917
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100%|██████████| 200/200 [00:50&lt;00:00,  3.99it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100%|█████████████████████████████████████████████████████████████████████████████████| 100/100 [00:11&lt;00:00,  8.72it/s]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>estimated epsilon is 1.8524497289713917
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100%|█████████████████████████████████████████████████████████████████████████████████| 100/100 [00:14&lt;00:00,  7.05it/s]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>estimated epsilon is 1.8524497289713917
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100%|█████████████████████████████████████████████████████████████████████████████████| 100/100 [00:18&lt;00:00,  5.45it/s]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>estimated epsilon is 1.8524497289713917
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100%|█████████████████████████████████████████████████████████████████████████████████| 100/100 [00:11&lt;00:00,  8.53it/s]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>estimated epsilon is 1.8524497289713917
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100%|█████████████████████████████████████████████████████████████████████████████████| 100/100 [00:11&lt;00:00,  9.00it/s]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>estimated epsilon is 1.8524497289713917
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100%|█████████████████████████████████████████████████████████████████████████████████| 100/100 [00:09&lt;00:00, 10.13it/s]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>estimated epsilon is 1.8524497289713917
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100%|█████████████████████████████████████████████████████████████████████████████████| 100/100 [00:11&lt;00:00,  9.01it/s]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>estimated epsilon is 1.8524497289713917
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100%|█████████████████████████████████████████████████████████████████████████████████| 100/100 [00:15&lt;00:00,  6.64it/s]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>estimated epsilon is 1.8524497289713917
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100%|█████████████████████████████████████████████████████████████████████████████████| 100/100 [00:15&lt;00:00,  6.43it/s]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>estimated epsilon is 1.8524497289713917
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100%|█████████████████████████████████████████████████████████████████████████████████| 100/100 [00:10&lt;00:00,  9.68it/s]
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">accountant</span> <span class="o">=</span> <span class="n">GeneralMomentAccountant</span><span class="p">(</span>
-    <span class="n">noise_type</span><span class="o">=</span><span class="s2">&quot;Gaussian&quot;</span><span class="p">,</span>
-    <span class="n">backend</span><span class="o">=</span><span class="s2">&quot;cpp&quot;</span><span class="p">,</span>
-<span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">res2</span> <span class="o">=</span> <span class="p">[]</span>
 
-<span class="n">privacy_manager</span> <span class="o">=</span> <span class="n">AdaDPSManager</span><span class="p">(</span>
-    <span class="n">accountant</span><span class="p">,</span>
-    <span class="n">optim</span><span class="o">.</span><span class="n">SGD</span><span class="p">,</span>
-    <span class="n">l2_norm_clip</span><span class="o">=</span><span class="n">l2_norm_clip</span><span class="p">,</span>
-    <span class="n">dataset</span><span class="o">=</span><span class="n">trainset</span><span class="p">,</span>
-    <span class="n">lot_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span>
-    <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span>
-    <span class="n">iterations</span><span class="o">=</span><span class="n">iterations</span><span class="p">,</span>
-<span class="p">)</span>
+<span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_trials</span><span class="p">):</span>
+    <span class="n">accountant</span> <span class="o">=</span> <span class="n">GeneralMomentAccountant</span><span class="p">(</span>
+        <span class="n">noise_type</span><span class="o">=</span><span class="s2">&quot;Gaussian&quot;</span><span class="p">,</span>
+        <span class="n">backend</span><span class="o">=</span><span class="s2">&quot;cpp&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
 
-<span class="n">res2</span> <span class="o">=</span> <span class="n">evaluate_adadps</span><span class="p">(</span><span class="n">accountant</span><span class="p">,</span> <span class="n">privacy_manager</span><span class="p">)</span>
+    <span class="n">privacy_manager</span> <span class="o">=</span> <span class="n">DPSGDManager</span><span class="p">(</span>
+        <span class="n">accountant</span><span class="p">,</span>
+        <span class="n">optim</span><span class="o">.</span><span class="n">SGD</span><span class="p">,</span>
+        <span class="n">l2_norm_clip</span><span class="o">=</span><span class="n">l2_norm_clip</span><span class="p">,</span>
+        <span class="n">dataset</span><span class="o">=</span><span class="n">trainset</span><span class="p">,</span>
+        <span class="n">lot_size</span><span class="o">=</span><span class="n">lot_size</span><span class="p">,</span>
+        <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span>
+        <span class="n">iterations</span><span class="o">=</span><span class="n">iterations</span><span class="p">,</span>
+        <span class="n">smoothing</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">smoothing_radius</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">res2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">evaluate_dpoptimizer</span><span class="p">(</span><span class="n">accountant</span><span class="p">,</span> <span class="n">privacy_manager</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">10</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>estimated epsilon is 2.7860065342521563
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>estimated epsilon is 1.8524497289713917
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100%|██████████| 200/200 [01:00&lt;00:00,  3.30it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100%|█████████████████████████████████████████████████████████████████████████████████| 100/100 [01:14&lt;00:00,  1.34it/s]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>estimated epsilon is 1.8524497289713917
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100%|█████████████████████████████████████████████████████████████████████████████████| 100/100 [01:02&lt;00:00,  1.61it/s]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>estimated epsilon is 1.8524497289713917
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100%|█████████████████████████████████████████████████████████████████████████████████| 100/100 [01:04&lt;00:00,  1.54it/s]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>estimated epsilon is 1.8524497289713917
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100%|█████████████████████████████████████████████████████████████████████████████████| 100/100 [01:12&lt;00:00,  1.37it/s]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>estimated epsilon is 1.8524497289713917
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100%|█████████████████████████████████████████████████████████████████████████████████| 100/100 [01:08&lt;00:00,  1.45it/s]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>estimated epsilon is 1.8524497289713917
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100%|█████████████████████████████████████████████████████████████████████████████████| 100/100 [01:18&lt;00:00,  1.27it/s]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>estimated epsilon is 1.8524497289713917
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100%|█████████████████████████████████████████████████████████████████████████████████| 100/100 [01:09&lt;00:00,  1.43it/s]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>estimated epsilon is 1.8524497289713917
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100%|█████████████████████████████████████████████████████████████████████████████████| 100/100 [01:12&lt;00:00,  1.38it/s]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>estimated epsilon is 1.8524497289713917
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100%|█████████████████████████████████████████████████████████████████████████████████| 100/100 [01:26&lt;00:00,  1.15it/s]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>estimated epsilon is 1.8524497289713917
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100%|█████████████████████████████████████████████████████████████████████████████████| 100/100 [01:15&lt;00:00,  1.32it/s]
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">res1</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;DP-SGD&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">res2</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;AdaDPS&quot;</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">res1</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;DP-SGD&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">res2</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;DP-SGD with DPlis&quot;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Iteration&quot;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Test Loss&quot;</span><span class="p">)</span>
@@ -651,7 +734,19 @@ CNAE-9.data.4       100%[===================&gt;]   1.76M  1.64MB/s    in 1.1s
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/d549c171b7a1e7aa387c73cc2c373f6b9b37de792db296bdb406512e87007719.png" src="../_images/d549c171b7a1e7aa387c73cc2c373f6b9b37de792db296bdb406512e87007719.png" />
+<img alt="../_images/a7611c8b84dfe2996cdc94e91316bcbd99ad25db34b570c5ac1727d94a15a979.png" src="../_images/a7611c8b84dfe2996cdc94e91316bcbd99ad25db34b570c5ac1727d94a15a979.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">res1</span><span class="p">)</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">res2</span><span class="p">)</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(0.10777717798090483, 0.07453909803063034)
+</pre></div>
+</div>
 </div>
 </div>
 </section>
@@ -669,20 +764,20 @@ CNAE-9.data.4       100%[===================&gt;]   1.76M  1.64MB/s    in 1.1s
     <div class="footer-article-item"><!-- Previous / next buttons -->
 <div class="prev-next-area">
     <a class="left-prev"
-       href="aijack_miface_dpsgd.html"
+       href="aijack_adadps.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title"><span class="section-number">8.2. </span>MI-FACE vs DPSGD</p>
+        <p class="prev-next-title"><span class="section-number">8.3. </span>AdaDPS</p>
       </div>
     </a>
     <a class="right-next"
-       href="aijack_dplis.html"
+       href="kanonymity.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title"><span class="section-number">8.4. </span>DPlis</p>
+        <p class="prev-next-title"><span class="section-number">9. </span>K-anonymity</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>

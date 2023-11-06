@@ -165,6 +165,8 @@
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../../../../notebooks/evasion.html">6. Evasion Attack</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-6"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../notebooks/aijack_evasion_attack.html">6.1. Evasion Attack against SVM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../notebooks/aijack_diva.html">6.2. DIVA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../notebooks/aijack_transferbility_and_robustness.html">6.3. Exploring Adversarial Example Transferability and Robust Tree Models</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../../../../notebooks/diferentialprivacy.html">7. Differential Privacy</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul>
@@ -397,7 +399,15 @@ document.write(`
 
 
 <div class="viewcode-block" id="attach_dpoptimizer"><a class="viewcode-back" href="../../../../../aijack.defense.dp.manager.html#aijack.defense.dp.manager.dpoptimizer.attach_dpoptimizer">[docs]</a><span class="k">def</span> <span class="nf">attach_dpoptimizer</span><span class="p">(</span>
-    <span class="bp">cls</span><span class="p">,</span> <span class="n">accountant</span><span class="p">,</span> <span class="n">l2_norm_clip</span><span class="p">,</span> <span class="n">noise_multiplier</span><span class="p">,</span> <span class="n">lot_size</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">,</span> <span class="n">dataset_size</span>
+    <span class="bp">cls</span><span class="p">,</span>
+    <span class="n">accountant</span><span class="p">,</span>
+    <span class="n">l2_norm_clip</span><span class="p">,</span>
+    <span class="n">noise_multiplier</span><span class="p">,</span>
+    <span class="n">lot_size</span><span class="p">,</span>
+    <span class="n">batch_size</span><span class="p">,</span>
+    <span class="n">dataset_size</span><span class="p">,</span>
+    <span class="n">smoothing</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">smoothing_radius</span><span class="o">=</span><span class="mf">10.0</span><span class="p">,</span>
 <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Wraps the given optimizer class in DPOptimizerWrapper.</span>
 
@@ -408,6 +418,12 @@ document.write(`
 <span class="sd">        lot_size (int): sampled lot size</span>
 <span class="sd">        batch_size (int): batch size</span>
 <span class="sd">        dataset_size (int): total number of samples in the dataset</span>
+<span class="sd">        smoothing (bool): if true, apply smoothing proposed in `Wang, Wenxiao,</span>
+<span class="sd">                          et al. ``Dplis: Boosting utility of differentially</span>
+<span class="sd">                          private deep learning via randomized smoothing.``</span>
+<span class="sd">                          arXiv preprint arXiv:2103.01496 (2021).`</span>
+<span class="sd">                          (default=False)</span>
+<span class="sd">        smoothing_radius (float): radius of smoothing (default=10.0)</span>
 
 <span class="sd">    Raises:</span>
 <span class="sd">        ValueError: if noise_multiplier &lt; 0.0</span>
@@ -434,6 +450,8 @@ document.write(`
             <span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span> <span class="o">=</span> <span class="n">batch_size</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">lot_size</span> <span class="o">=</span> <span class="n">lot_size</span>
 
+            <span class="bp">self</span><span class="o">.</span><span class="n">prev_params</span> <span class="o">=</span> <span class="kc">None</span>
+
             <span class="k">for</span> <span class="n">group</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">param_groups</span><span class="p">:</span>
                 <span class="n">group</span><span class="p">[</span><span class="s2">&quot;accum_grads&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
                     <span class="n">torch</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">param</span><span class="o">.</span><span class="n">data</span><span class="p">)</span> <span class="k">if</span> <span class="n">param</span><span class="o">.</span><span class="n">requires_grad</span> <span class="k">else</span> <span class="kc">None</span>
@@ -442,6 +460,21 @@ document.write(`
 
         <span class="k">def</span> <span class="nf">zero_grad_keep_accum_grads</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
             <span class="nb">super</span><span class="p">(</span><span class="n">DPOptimizerWrapper</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
+
+            <span class="k">if</span> <span class="n">smoothing</span><span class="p">:</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">prev_params</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="k">for</span> <span class="n">group</span><span class="p">,</span> <span class="n">prev_ps</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">param_groups</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">prev_params</span><span class="p">):</span>
+                        <span class="k">for</span> <span class="n">param</span><span class="p">,</span> <span class="n">prev_p</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">group</span><span class="p">[</span><span class="s2">&quot;params&quot;</span><span class="p">],</span> <span class="n">prev_ps</span><span class="p">):</span>
+                            <span class="n">param</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">prev_p</span><span class="o">.</span><span class="n">data</span> <span class="o">+</span> <span class="p">(</span>
+                                <span class="n">smoothing_radius</span> <span class="o">*</span> <span class="n">group</span><span class="p">[</span><span class="s2">&quot;lr&quot;</span><span class="p">]</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">lot_size</span>
+                            <span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">l2_norm_clip</span> <span class="o">*</span> <span class="n">noise_multiplier</span> <span class="o">*</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn_like</span><span class="p">(</span>
+                                <span class="n">prev_p</span><span class="o">.</span><span class="n">data</span>
+                            <span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">prev_params</span> <span class="o">=</span> <span class="p">[</span>
+                        <span class="p">[</span><span class="n">p</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">group</span><span class="p">[</span><span class="s2">&quot;params&quot;</span><span class="p">]]</span>
+                        <span class="k">for</span> <span class="n">group</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">param_groups</span>
+                    <span class="p">]</span>
 
         <span class="k">def</span> <span class="nf">zero_grad</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">zero_grad_keep_accum_grads</span><span class="p">()</span>
@@ -455,6 +488,7 @@ document.write(`
 
         <span class="k">def</span> <span class="nf">zero_grad_for_lot</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
             <span class="n">_clear_accumulated_grads</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">prev_params</span> <span class="o">=</span> <span class="kc">None</span>
 
         <span class="k">def</span> <span class="nf">step_for_lot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
             <span class="n">_privatize_lot_grads</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
