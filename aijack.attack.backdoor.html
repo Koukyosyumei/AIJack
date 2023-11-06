@@ -33,7 +33,7 @@
     <link rel="stylesheet" href="_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="_static/style.css" />
-    <link rel="stylesheet" type="text/css" href="_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css" />
+    <link rel="stylesheet" type="text/css" href="_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
     <link rel="stylesheet" href="_static/style.css" type="text/css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
@@ -412,9 +412,9 @@ document.write(`
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#submodules">1.1.1.1. Submodules</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aijack.attack.backdoor.dba">1.1.1.2. aijack.attack.backdoor.dba module</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aijack.attack.backdoor.modelreplacement">1.1.1.3. aijack.attack.backdoor.modelreplacement module</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aijack.attack.backdoor">1.1.1.4. Module contents</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#aijack-attack-backdoor-dba-module">1.1.1.2. aijack.attack.backdoor.dba module</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#aijack-attack-backdoor-modelreplacement-module">1.1.1.3. aijack.attack.backdoor.modelreplacement module</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-contents">1.1.1.4. Module contents</a></li>
 </ul>
             </nav>
         </div>
@@ -431,102 +431,14 @@ document.write(`
 <section id="submodules">
 <h2><span class="section-number">1.1.1.1. </span>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">#</a></h2>
 </section>
-<section id="module-aijack.attack.backdoor.dba">
-<span id="aijack-attack-backdoor-dba-module"></span><h2><span class="section-number">1.1.1.2. </span>aijack.attack.backdoor.dba module<a class="headerlink" href="#module-aijack.attack.backdoor.dba" title="Permalink to this headline">#</a></h2>
-<dl class="py class">
-<dt class="sig sig-object py" id="aijack.attack.backdoor.dba.DistributedBackdoorAttackClientManager">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">aijack.attack.backdoor.dba.</span></span><span class="sig-name descname"><span class="pre">DistributedBackdoorAttackClientManager</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/attack/backdoor/dba.html#DistributedBackdoorAttackClientManager"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.attack.backdoor.dba.DistributedBackdoorAttackClientManager" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="aijack.manager.html#aijack.manager.base.BaseManager" title="aijack.manager.base.BaseManager"><code class="xref py py-class docutils literal notranslate"><span class="pre">aijack.manager.base.BaseManager</span></code></a></p>
-<p>Manager class for DistributedBackdoorAttack proposed in <a class="reference external" href="https://openreview.net/forum?id=rkgyS0VFvr">https://openreview.net/forum?id=rkgyS0VFvr</a>.</p>
-<dl class="py method">
-<dt class="sig sig-object py" id="aijack.attack.backdoor.dba.DistributedBackdoorAttackClientManager.attach">
-<span class="sig-name descname"><span class="pre">attach</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cls</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/attack/backdoor/dba.html#DistributedBackdoorAttackClientManager.attach"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.attack.backdoor.dba.DistributedBackdoorAttackClientManager.attach" title="Permalink to this definition">#</a></dt>
-<dd><p>Wraps the given class in DistributedBackdoorAttackClientWrapper.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>a class wrapped in DistributedBackdoorAttackClientWrapper</p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>cls</p>
-</dd>
-</dl>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="aijack.attack.backdoor.dba.attach_dba_to_client">
-<span class="sig-prename descclassname"><span class="pre">aijack.attack.backdoor.dba.</span></span><span class="sig-name descname"><span class="pre">attach_dba_to_client</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cls</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">decomposed_trigger_rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_label</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">poison_ratio</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scale</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/attack/backdoor/dba.html#attach_dba_to_client"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.attack.backdoor.dba.attach_dba_to_client" title="Permalink to this definition">#</a></dt>
-<dd><p>Wraps the given class in DistributedBackdoorAttackClientWrapper.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>cls</strong> – Server class</p></li>
-<li><p><strong>decomposed_trigger_rules</strong> (<em>[</em><em>function</em><em>]</em>) – list of functions that define the decomposed trigger rules for each client</p></li>
-<li><p><strong>target_label</strong> (<em>int</em>) – a label that the attacker want to make the victim model predict when the inupt contains the trigger</p></li>
-<li><p><strong>poison_ratio</strong> (<em>float</em>) – a ratio of poisoned samples</p></li>
-<li><p><strong>scale</strong> (<em>_type_</em>) – scale for the uploaded gradients</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>a class wrapped in DistributedBackdoorAttackClientWrapper</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>cls</p>
-</dd>
-</dl>
-</dd></dl>
-
+<section id="aijack-attack-backdoor-dba-module">
+<h2><span class="section-number">1.1.1.2. </span>aijack.attack.backdoor.dba module<a class="headerlink" href="#aijack-attack-backdoor-dba-module" title="Permalink to this headline">#</a></h2>
 </section>
-<section id="module-aijack.attack.backdoor.modelreplacement">
-<span id="aijack-attack-backdoor-modelreplacement-module"></span><h2><span class="section-number">1.1.1.3. </span>aijack.attack.backdoor.modelreplacement module<a class="headerlink" href="#module-aijack.attack.backdoor.modelreplacement" title="Permalink to this headline">#</a></h2>
-<dl class="py class">
-<dt class="sig sig-object py" id="aijack.attack.backdoor.modelreplacement.ModelReplacementAttackClientManager">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">aijack.attack.backdoor.modelreplacement.</span></span><span class="sig-name descname"><span class="pre">ModelReplacementAttackClientManager</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/attack/backdoor/modelreplacement.html#ModelReplacementAttackClientManager"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.attack.backdoor.modelreplacement.ModelReplacementAttackClientManager" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="aijack.manager.html#aijack.manager.base.BaseManager" title="aijack.manager.base.BaseManager"><code class="xref py py-class docutils literal notranslate"><span class="pre">aijack.manager.base.BaseManager</span></code></a></p>
-<p>Manager class for DistributedBackdoorAttack proposed in
-<a class="reference external" href="https://proceedings.mlr.press/v108/bagdasaryan20a/bagdasaryan20a.pdf">https://proceedings.mlr.press/v108/bagdasaryan20a/bagdasaryan20a.pdf</a>.</p>
-<dl class="py method">
-<dt class="sig sig-object py" id="aijack.attack.backdoor.modelreplacement.ModelReplacementAttackClientManager.attach">
-<span class="sig-name descname"><span class="pre">attach</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cls</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/attack/backdoor/modelreplacement.html#ModelReplacementAttackClientManager.attach"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.attack.backdoor.modelreplacement.ModelReplacementAttackClientManager.attach" title="Permalink to this definition">#</a></dt>
-<dd><p>Wraps the given class in ModelReplacementAttackClientWrapper.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>a class wrapped in ModelReplacementAttackClientWrapper</p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>cls</p>
-</dd>
-</dl>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="aijack.attack.backdoor.modelreplacement.attach_modelreplacement_to_client">
-<span class="sig-prename descclassname"><span class="pre">aijack.attack.backdoor.modelreplacement.</span></span><span class="sig-name descname"><span class="pre">attach_modelreplacement_to_client</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cls</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">criterion_anomaly_detection=&lt;function</span> <span class="pre">l2norm_checker&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reference_dataloader=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eps=1e-06</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/attack/backdoor/modelreplacement.html#attach_modelreplacement_to_client"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.attack.backdoor.modelreplacement.attach_modelreplacement_to_client" title="Permalink to this definition">#</a></dt>
-<dd><p>Wraps the given class in ModelReplacementAttackClientWrapper.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>cls</strong> – Client class</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>a class wrapped in ModelReplacementAttackClientWrapper</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>cls</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="aijack.attack.backdoor.modelreplacement.l2norm_checker">
-<span class="sig-prename descclassname"><span class="pre">aijack.attack.backdoor.modelreplacement.</span></span><span class="sig-name descname"><span class="pre">l2norm_checker</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/attack/backdoor/modelreplacement.html#l2norm_checker"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.attack.backdoor.modelreplacement.l2norm_checker" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
+<section id="aijack-attack-backdoor-modelreplacement-module">
+<h2><span class="section-number">1.1.1.3. </span>aijack.attack.backdoor.modelreplacement module<a class="headerlink" href="#aijack-attack-backdoor-modelreplacement-module" title="Permalink to this headline">#</a></h2>
 </section>
-<section id="module-aijack.attack.backdoor">
-<span id="module-contents"></span><h2><span class="section-number">1.1.1.4. </span>Module contents<a class="headerlink" href="#module-aijack.attack.backdoor" title="Permalink to this headline">#</a></h2>
+<section id="module-contents">
+<h2><span class="section-number">1.1.1.4. </span>Module contents<a class="headerlink" href="#module-contents" title="Permalink to this headline">#</a></h2>
 </section>
 </section>
 
@@ -579,9 +491,9 @@ document.write(`
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#submodules">1.1.1.1. Submodules</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aijack.attack.backdoor.dba">1.1.1.2. aijack.attack.backdoor.dba module</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aijack.attack.backdoor.modelreplacement">1.1.1.3. aijack.attack.backdoor.modelreplacement module</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aijack.attack.backdoor">1.1.1.4. Module contents</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#aijack-attack-backdoor-dba-module">1.1.1.2. aijack.attack.backdoor.dba module</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#aijack-attack-backdoor-modelreplacement-module">1.1.1.3. aijack.attack.backdoor.modelreplacement module</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-contents">1.1.1.4. Module contents</a></li>
 </ul>
   </nav></div>
 
