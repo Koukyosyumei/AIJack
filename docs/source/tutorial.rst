@@ -15,6 +15,7 @@ On this tutorial, we will learn the key components of AIJack.
    notebooks/labelleakage
    notebooks/membershipinference
    notebooks/poisoning
+   notebooks/backdoor
    notebooks/evasion
    notebooks/diferentialprivacy
    notebooks/kanonymity

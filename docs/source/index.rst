@@ -149,6 +149,7 @@ Indices
    notebooks/labelleakage
    notebooks/membershipinference
    notebooks/poisoning
+   notebooks/backdoor
    notebooks/evasion
    notebooks/diferentialprivacy
    notebooks/kanonymity
