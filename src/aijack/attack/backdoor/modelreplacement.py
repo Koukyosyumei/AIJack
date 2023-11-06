@@ -6,7 +6,7 @@ from ...manager import BaseManager
 def l2norm_checker(client):
     l2 = torch.tensor(0.0, requires_grad=True)
     for param, prev_param in zip(client.model.parameters(), client.prev_parameters):
-        l2 += torch.norm(param - prev_param, 2)
+        l2 = l2 + torch.norm(param - prev_param, 2)
     return l2
 
 
@@ -30,13 +30,15 @@ def attach_modelreplacement_to_client(
         """Implementation of https://proceedings.mlr.press/v108/bagdasaryan20a/bagdasaryan20a.pdf"""
 
         def __init__(self, *args, **kwargs):
-            super(ModelReplacementAttackClientWrapper, self).__init__(*args, **kwargs)
+            super(ModelReplacementAttackClientWrapper,
+                  self).__init__(*args, **kwargs)
 
         def upload_gradients(self):
             """Uploads the local gradients"""
             gradients = []
             for param, prev_param in zip(self.model.parameters(), self.prev_parameters):
-                gradients.append(gamma * (prev_param - param) / (self.lr) + param)
+                gradients.append(
+                    gamma * (prev_param - param) / (self.lr))
             return gradients
 
         def local_train(
