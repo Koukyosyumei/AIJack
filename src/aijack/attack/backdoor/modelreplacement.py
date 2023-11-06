@@ -30,15 +30,13 @@ def attach_modelreplacement_to_client(
         """Implementation of https://proceedings.mlr.press/v108/bagdasaryan20a/bagdasaryan20a.pdf"""
 
         def __init__(self, *args, **kwargs):
-            super(ModelReplacementAttackClientWrapper,
-                  self).__init__(*args, **kwargs)
+            super(ModelReplacementAttackClientWrapper, self).__init__(*args, **kwargs)
 
         def upload_gradients(self):
             """Uploads the local gradients"""
             gradients = []
             for param, prev_param in zip(self.model.parameters(), self.prev_parameters):
-                gradients.append(
-                    gamma * (prev_param - param) / (self.lr))
+                gradients.append(gamma * (prev_param - param) / (self.lr))
             return gradients
 
         def local_train(

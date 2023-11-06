@@ -12,6 +12,14 @@ aijack.attack.backdoor.dba module
    :undoc-members:
    :show-inheritance:
 
+aijack.attack.backdoor.modelreplacement module
+----------------------------------------------
+
+.. automodule:: aijack.attack.backdoor.modelreplacement
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Module contents
 ---------------
 
