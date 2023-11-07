@@ -33,7 +33,7 @@
     <link rel="stylesheet" href="_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="_static/style.css" />
-    <link rel="stylesheet" type="text/css" href="_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+    <link rel="stylesheet" type="text/css" href="_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css" />
     <link rel="stylesheet" href="_static/style.css" type="text/css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
@@ -412,8 +412,8 @@ document.write(`
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#submodules">2.1.2.1.2.1. Submodules</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#aijack-defense-debugging-neuroncoverage-neuroncoverage-module">2.1.2.1.2.2. aijack.defense.debugging.neuroncoverage.neuroncoverage module</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-contents">2.1.2.1.2.3. Module contents</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aijack.defense.debugging.neuroncoverage.neuroncoverage">2.1.2.1.2.2. aijack.defense.debugging.neuroncoverage.neuroncoverage module</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aijack.defense.debugging.neuroncoverage">2.1.2.1.2.3. Module contents</a></li>
 </ul>
             </nav>
         </div>
@@ -430,11 +430,47 @@ document.write(`
 <section id="submodules">
 <h2><span class="section-number">2.1.2.1.2.1. </span>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">#</a></h2>
 </section>
-<section id="aijack-defense-debugging-neuroncoverage-neuroncoverage-module">
-<h2><span class="section-number">2.1.2.1.2.2. </span>aijack.defense.debugging.neuroncoverage.neuroncoverage module<a class="headerlink" href="#aijack-defense-debugging-neuroncoverage-neuroncoverage-module" title="Permalink to this headline">#</a></h2>
+<section id="module-aijack.defense.debugging.neuroncoverage.neuroncoverage">
+<span id="aijack-defense-debugging-neuroncoverage-neuroncoverage-module"></span><h2><span class="section-number">2.1.2.1.2.2. </span>aijack.defense.debugging.neuroncoverage.neuroncoverage module<a class="headerlink" href="#module-aijack.defense.debugging.neuroncoverage.neuroncoverage" title="Permalink to this headline">#</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="aijack.defense.debugging.neuroncoverage.neuroncoverage.NeuronCoverageTracker">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">aijack.defense.debugging.neuroncoverage.neuroncoverage.</span></span><span class="sig-name descname"><span class="pre">NeuronCoverageTracker</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dummy_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.9</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'cpu'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/defense/debugging/neuroncoverage/neuroncoverage.html#NeuronCoverageTracker"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.defense.debugging.neuroncoverage.neuroncoverage.NeuronCoverageTracker" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="aijack.defense.debugging.neuroncoverage.neuroncoverage.NeuronCoverageTracker.coverage">
+<span class="sig-name descname"><span class="pre">coverage</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataloader</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pos_of_x</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">initialize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">update</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/defense/debugging/neuroncoverage/neuroncoverage.html#NeuronCoverageTracker.coverage"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.defense.debugging.neuroncoverage.neuroncoverage.NeuronCoverageTracker.coverage" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="aijack.defense.debugging.neuroncoverage.neuroncoverage.get_intermediate_outputs">
+<span class="sig-prename descclassname"><span class="pre">aijack.defense.debugging.neuroncoverage.neuroncoverage.</span></span><span class="sig-name descname"><span class="pre">get_intermediate_outputs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">module</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">force_relu</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/defense/debugging/neuroncoverage/neuroncoverage.html#get_intermediate_outputs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.defense.debugging.neuroncoverage.neuroncoverage.get_intermediate_outputs" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="aijack.defense.debugging.neuroncoverage.neuroncoverage.get_layer_output_sizes">
+<span class="sig-prename descclassname"><span class="pre">aijack.defense.debugging.neuroncoverage.neuroncoverage.</span></span><span class="sig-name descname"><span class="pre">get_layer_output_sizes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">layer_dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/defense/debugging/neuroncoverage/neuroncoverage.html#get_layer_output_sizes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.defense.debugging.neuroncoverage.neuroncoverage.get_layer_output_sizes" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="aijack.defense.debugging.neuroncoverage.neuroncoverage.get_model_layers">
+<span class="sig-prename descclassname"><span class="pre">aijack.defense.debugging.neuroncoverage.neuroncoverage.</span></span><span class="sig-name descname"><span class="pre">get_model_layers</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cross_section_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/defense/debugging/neuroncoverage/neuroncoverage.html#get_model_layers"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.defense.debugging.neuroncoverage.neuroncoverage.get_model_layers" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="aijack.defense.debugging.neuroncoverage.neuroncoverage.scale">
+<span class="sig-prename descclassname"><span class="pre">aijack.defense.debugging.neuroncoverage.neuroncoverage.</span></span><span class="sig-name descname"><span class="pre">scale</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">out</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dim</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-</span> <span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rmax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rmin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/defense/debugging/neuroncoverage/neuroncoverage.html#scale"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.defense.debugging.neuroncoverage.neuroncoverage.scale" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="aijack.defense.debugging.neuroncoverage.neuroncoverage.step_through_model">
+<span class="sig-prename descclassname"><span class="pre">aijack.defense.debugging.neuroncoverage.neuroncoverage.</span></span><span class="sig-name descname"><span class="pre">step_through_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prefix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/defense/debugging/neuroncoverage/neuroncoverage.html#step_through_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.defense.debugging.neuroncoverage.neuroncoverage.step_through_model" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
 </section>
-<section id="module-contents">
-<h2><span class="section-number">2.1.2.1.2.3. </span>Module contents<a class="headerlink" href="#module-contents" title="Permalink to this headline">#</a></h2>
+<section id="module-aijack.defense.debugging.neuroncoverage">
+<span id="module-contents"></span><h2><span class="section-number">2.1.2.1.2.3. </span>Module contents<a class="headerlink" href="#module-aijack.defense.debugging.neuroncoverage" title="Permalink to this headline">#</a></h2>
 </section>
 </section>
 
@@ -487,8 +523,8 @@ document.write(`
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#submodules">2.1.2.1.2.1. Submodules</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#aijack-defense-debugging-neuroncoverage-neuroncoverage-module">2.1.2.1.2.2. aijack.defense.debugging.neuroncoverage.neuroncoverage module</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-contents">2.1.2.1.2.3. Module contents</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aijack.defense.debugging.neuroncoverage.neuroncoverage">2.1.2.1.2.2. aijack.defense.debugging.neuroncoverage.neuroncoverage module</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aijack.defense.debugging.neuroncoverage">2.1.2.1.2.3. Module contents</a></li>
 </ul>
   </nav></div>
 

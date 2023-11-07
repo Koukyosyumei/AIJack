@@ -33,7 +33,7 @@
     <link rel="stylesheet" href="_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="_static/style.css" />
-    <link rel="stylesheet" type="text/css" href="_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+    <link rel="stylesheet" type="text/css" href="_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css" />
     <link rel="stylesheet" href="_static/style.css" type="text/css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
@@ -412,8 +412,8 @@ document.write(`
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#submodules">3.1.5.1. Submodules</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#aijack-collaborative-fedkd-client-module">3.1.5.2. aijack.collaborative.fedkd.client module</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-contents">3.1.5.3. Module contents</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aijack.collaborative.fedkd.client">3.1.5.2. aijack.collaborative.fedkd.client module</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aijack.collaborative.fedkd">3.1.5.3. Module contents</a></li>
 </ul>
             </nav>
         </div>
@@ -430,11 +430,35 @@ document.write(`
 <section id="submodules">
 <h2><span class="section-number">3.1.5.1. </span>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">#</a></h2>
 </section>
-<section id="aijack-collaborative-fedkd-client-module">
-<h2><span class="section-number">3.1.5.2. </span>aijack.collaborative.fedkd.client module<a class="headerlink" href="#aijack-collaborative-fedkd-client-module" title="Permalink to this headline">#</a></h2>
+<section id="module-aijack.collaborative.fedkd.client">
+<span id="aijack-collaborative-fedkd-client-module"></span><h2><span class="section-number">3.1.5.2. </span>aijack.collaborative.fedkd.client module<a class="headerlink" href="#module-aijack.collaborative.fedkd.client" title="Permalink to this headline">#</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="aijack.collaborative.fedkd.client.FedKDClient">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">aijack.collaborative.fedkd.client.</span></span><span class="sig-name descname"><span class="pre">FedKDClient</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">student_model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">teacher_model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task_lossfn</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">student_lr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">teacher_lr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">adaptive_distillation_losses</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">adaptive_hidden_losses</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gradient_compression_ratio</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">send_gradient</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/collaborative/fedkd/client.html#FedKDClient"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.collaborative.fedkd.client.FedKDClient" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="aijack.collaborative.fedavg.html#aijack.collaborative.fedavg.client.FedAVGClient" title="aijack.collaborative.fedavg.client.FedAVGClient"><code class="xref py py-class docutils literal notranslate"><span class="pre">aijack.collaborative.fedavg.client.FedAVGClient</span></code></a></p>
+<p>Implementation of FedKD (<a class="reference external" href="https://arxiv.org/abs/2108.13323">https://arxiv.org/abs/2108.13323</a>)</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="aijack.collaborative.fedkd.client.FedKDClient.loss">
+<span class="sig-name descname"><span class="pre">loss</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/collaborative/fedkd/client.html#FedKDClient.loss"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.collaborative.fedkd.client.FedKDClient.loss" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
 </section>
-<section id="module-contents">
-<h2><span class="section-number">3.1.5.3. </span>Module contents<a class="headerlink" href="#module-contents" title="Permalink to this headline">#</a></h2>
+<section id="module-aijack.collaborative.fedkd">
+<span id="module-contents"></span><h2><span class="section-number">3.1.5.3. </span>Module contents<a class="headerlink" href="#module-aijack.collaborative.fedkd" title="Permalink to this headline">#</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="aijack.collaborative.fedkd.FedKDClient">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">aijack.collaborative.fedkd.</span></span><span class="sig-name descname"><span class="pre">FedKDClient</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">student_model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">teacher_model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task_lossfn</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">student_lr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">teacher_lr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">adaptive_distillation_losses</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">adaptive_hidden_losses</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gradient_compression_ratio</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">send_gradient</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/collaborative/fedkd/client.html#FedKDClient"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.collaborative.fedkd.FedKDClient" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="aijack.collaborative.fedavg.html#aijack.collaborative.fedavg.client.FedAVGClient" title="aijack.collaborative.fedavg.client.FedAVGClient"><code class="xref py py-class docutils literal notranslate"><span class="pre">aijack.collaborative.fedavg.client.FedAVGClient</span></code></a></p>
+<p>Implementation of FedKD (<a class="reference external" href="https://arxiv.org/abs/2108.13323">https://arxiv.org/abs/2108.13323</a>)</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="aijack.collaborative.fedkd.FedKDClient.loss">
+<span class="sig-name descname"><span class="pre">loss</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/collaborative/fedkd/client.html#FedKDClient.loss"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.collaborative.fedkd.FedKDClient.loss" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
 </section>
 </section>
 
@@ -487,8 +511,8 @@ document.write(`
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#submodules">3.1.5.1. Submodules</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#aijack-collaborative-fedkd-client-module">3.1.5.2. aijack.collaborative.fedkd.client module</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-contents">3.1.5.3. Module contents</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aijack.collaborative.fedkd.client">3.1.5.2. aijack.collaborative.fedkd.client module</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aijack.collaborative.fedkd">3.1.5.3. Module contents</a></li>
 </ul>
   </nav></div>
 

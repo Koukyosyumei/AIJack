@@ -395,15 +395,13 @@ document.write(`
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Implementation of https://proceedings.mlr.press/v108/bagdasaryan20a/bagdasaryan20a.pdf&quot;&quot;&quot;</span>
 
         <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-            <span class="nb">super</span><span class="p">(</span><span class="n">ModelReplacementAttackClientWrapper</span><span class="p">,</span>
-                  <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+            <span class="nb">super</span><span class="p">(</span><span class="n">ModelReplacementAttackClientWrapper</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
         <span class="k">def</span> <span class="nf">upload_gradients</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">            </span><span class="sd">&quot;&quot;&quot;Uploads the local gradients&quot;&quot;&quot;</span>
             <span class="n">gradients</span> <span class="o">=</span> <span class="p">[]</span>
             <span class="k">for</span> <span class="n">param</span><span class="p">,</span> <span class="n">prev_param</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">prev_parameters</span><span class="p">):</span>
-                <span class="n">gradients</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                    <span class="n">gamma</span> <span class="o">*</span> <span class="p">(</span><span class="n">prev_param</span> <span class="o">-</span> <span class="n">param</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lr</span><span class="p">))</span>
+                <span class="n">gradients</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">gamma</span> <span class="o">*</span> <span class="p">(</span><span class="n">prev_param</span> <span class="o">-</span> <span class="n">param</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lr</span><span class="p">))</span>
             <span class="k">return</span> <span class="n">gradients</span>
 
         <span class="k">def</span> <span class="nf">local_train</span><span class="p">(</span>

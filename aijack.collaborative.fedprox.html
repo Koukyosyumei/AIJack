@@ -33,7 +33,7 @@
     <link rel="stylesheet" href="_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="_static/style.css" />
-    <link rel="stylesheet" type="text/css" href="_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+    <link rel="stylesheet" type="text/css" href="_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css" />
     <link rel="stylesheet" href="_static/style.css" type="text/css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
@@ -412,9 +412,9 @@ document.write(`
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#submodules">3.1.7.1. Submodules</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#aijack-collaborative-fedprox-api-module">3.1.7.2. aijack.collaborative.fedprox.api module</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#aijack-collaborative-fedprox-client-module">3.1.7.3. aijack.collaborative.fedprox.client module</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-contents">3.1.7.4. Module contents</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aijack.collaborative.fedprox.api">3.1.7.2. aijack.collaborative.fedprox.api module</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aijack.collaborative.fedprox.client">3.1.7.3. aijack.collaborative.fedprox.client module</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aijack.collaborative.fedprox">3.1.7.4. Module contents</a></li>
 </ul>
             </nav>
         </div>
@@ -431,14 +431,81 @@ document.write(`
 <section id="submodules">
 <h2><span class="section-number">3.1.7.1. </span>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">#</a></h2>
 </section>
-<section id="aijack-collaborative-fedprox-api-module">
-<h2><span class="section-number">3.1.7.2. </span>aijack.collaborative.fedprox.api module<a class="headerlink" href="#aijack-collaborative-fedprox-api-module" title="Permalink to this headline">#</a></h2>
+<section id="module-aijack.collaborative.fedprox.api">
+<span id="aijack-collaborative-fedprox-api-module"></span><h2><span class="section-number">3.1.7.2. </span>aijack.collaborative.fedprox.api module<a class="headerlink" href="#module-aijack.collaborative.fedprox.api" title="Permalink to this headline">#</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="aijack.collaborative.fedprox.api.FedProxAPI">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">aijack.collaborative.fedprox.api.</span></span><span class="sig-name descname"><span class="pre">FedProxAPI</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mu</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.01</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/collaborative/fedprox/api.html#FedProxAPI"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.collaborative.fedprox.api.FedProxAPI" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="aijack.collaborative.fedavg.html#aijack.collaborative.fedavg.api.FedAVGAPI" title="aijack.collaborative.fedavg.api.FedAVGAPI"><code class="xref py py-class docutils literal notranslate"><span class="pre">aijack.collaborative.fedavg.api.FedAVGAPI</span></code></a></p>
+<p>Implementation of FedProx (<a class="reference external" href="https://arxiv.org/abs/1812.06127">https://arxiv.org/abs/1812.06127</a>)</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="aijack.collaborative.fedprox.api.FedProxAPI.local_train">
+<span class="sig-name descname"><span class="pre">local_train</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">i</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/collaborative/fedprox/api.html#FedProxAPI.local_train"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.collaborative.fedprox.api.FedProxAPI.local_train" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="aijack.collaborative.fedprox.api.FedProxAPI.run">
+<span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/collaborative/fedprox/api.html#FedProxAPI.run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.collaborative.fedprox.api.FedProxAPI.run" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="aijack.collaborative.fedprox.api.MPIFedProxAPI">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">aijack.collaborative.fedprox.api.</span></span><span class="sig-name descname"><span class="pre">MPIFedProxAPI</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mu</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.01</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/collaborative/fedprox/api.html#MPIFedProxAPI"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.collaborative.fedprox.api.MPIFedProxAPI" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="aijack.collaborative.fedavg.html#aijack.collaborative.fedavg.api.MPIFedAVGAPI" title="aijack.collaborative.fedavg.api.MPIFedAVGAPI"><code class="xref py py-class docutils literal notranslate"><span class="pre">aijack.collaborative.fedavg.api.MPIFedAVGAPI</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="aijack.collaborative.fedprox.api.MPIFedProxAPI.local_train">
+<span class="sig-name descname"><span class="pre">local_train</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">com_cnt</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/collaborative/fedprox/api.html#MPIFedProxAPI.local_train"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.collaborative.fedprox.api.MPIFedProxAPI.local_train" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
 </section>
-<section id="aijack-collaborative-fedprox-client-module">
-<h2><span class="section-number">3.1.7.3. </span>aijack.collaborative.fedprox.client module<a class="headerlink" href="#aijack-collaborative-fedprox-client-module" title="Permalink to this headline">#</a></h2>
+<section id="module-aijack.collaborative.fedprox.client">
+<span id="aijack-collaborative-fedprox-client-module"></span><h2><span class="section-number">3.1.7.3. </span>aijack.collaborative.fedprox.client module<a class="headerlink" href="#module-aijack.collaborative.fedprox.client" title="Permalink to this headline">#</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="aijack.collaborative.fedprox.client.FedProxClient">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">aijack.collaborative.fedprox.client.</span></span><span class="sig-name descname"><span class="pre">FedProxClient</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">send_gradient</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">optimizer_type_for_global_grad</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'sgd'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">server_side_update</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">optimizer_kwargs_for_global_grad</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'cpu'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/collaborative/fedprox/client.html#FedProxClient"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.collaborative.fedprox.client.FedProxClient" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="aijack.collaborative.fedavg.html#aijack.collaborative.fedavg.client.FedAVGClient" title="aijack.collaborative.fedavg.client.FedAVGClient"><code class="xref py py-class docutils literal notranslate"><span class="pre">aijack.collaborative.fedavg.client.FedAVGClient</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="aijack.collaborative.fedprox.client.FedProxClient.local_train">
+<span class="sig-name descname"><span class="pre">local_train</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">server_parameters</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">local_epoch</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">criterion</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trainloader</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">optimizer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">communication_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/collaborative/fedprox/client.html#FedProxClient.local_train"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.collaborative.fedprox.client.FedProxClient.local_train" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
 </section>
-<section id="module-contents">
-<h2><span class="section-number">3.1.7.4. </span>Module contents<a class="headerlink" href="#module-contents" title="Permalink to this headline">#</a></h2>
+<section id="module-aijack.collaborative.fedprox">
+<span id="module-contents"></span><h2><span class="section-number">3.1.7.4. </span>Module contents<a class="headerlink" href="#module-aijack.collaborative.fedprox" title="Permalink to this headline">#</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="aijack.collaborative.fedprox.FedProxAPI">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">aijack.collaborative.fedprox.</span></span><span class="sig-name descname"><span class="pre">FedProxAPI</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mu</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.01</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/collaborative/fedprox/api.html#FedProxAPI"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.collaborative.fedprox.FedProxAPI" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="aijack.collaborative.fedavg.html#aijack.collaborative.fedavg.api.FedAVGAPI" title="aijack.collaborative.fedavg.api.FedAVGAPI"><code class="xref py py-class docutils literal notranslate"><span class="pre">aijack.collaborative.fedavg.api.FedAVGAPI</span></code></a></p>
+<p>Implementation of FedProx (<a class="reference external" href="https://arxiv.org/abs/1812.06127">https://arxiv.org/abs/1812.06127</a>)</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="aijack.collaborative.fedprox.FedProxAPI.local_train">
+<span class="sig-name descname"><span class="pre">local_train</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">i</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/collaborative/fedprox/api.html#FedProxAPI.local_train"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.collaborative.fedprox.FedProxAPI.local_train" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="aijack.collaborative.fedprox.FedProxAPI.run">
+<span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/collaborative/fedprox/api.html#FedProxAPI.run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.collaborative.fedprox.FedProxAPI.run" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="aijack.collaborative.fedprox.MPIFedProxAPI">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">aijack.collaborative.fedprox.</span></span><span class="sig-name descname"><span class="pre">MPIFedProxAPI</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mu</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.01</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/collaborative/fedprox/api.html#MPIFedProxAPI"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.collaborative.fedprox.MPIFedProxAPI" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="aijack.collaborative.fedavg.html#aijack.collaborative.fedavg.api.MPIFedAVGAPI" title="aijack.collaborative.fedavg.api.MPIFedAVGAPI"><code class="xref py py-class docutils literal notranslate"><span class="pre">aijack.collaborative.fedavg.api.MPIFedAVGAPI</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="aijack.collaborative.fedprox.MPIFedProxAPI.local_train">
+<span class="sig-name descname"><span class="pre">local_train</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">com_cnt</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/collaborative/fedprox/api.html#MPIFedProxAPI.local_train"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.collaborative.fedprox.MPIFedProxAPI.local_train" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
 </section>
 </section>
 
@@ -491,9 +558,9 @@ document.write(`
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#submodules">3.1.7.1. Submodules</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#aijack-collaborative-fedprox-api-module">3.1.7.2. aijack.collaborative.fedprox.api module</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#aijack-collaborative-fedprox-client-module">3.1.7.3. aijack.collaborative.fedprox.client module</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-contents">3.1.7.4. Module contents</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aijack.collaborative.fedprox.api">3.1.7.2. aijack.collaborative.fedprox.api module</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aijack.collaborative.fedprox.client">3.1.7.3. aijack.collaborative.fedprox.client module</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aijack.collaborative.fedprox">3.1.7.4. Module contents</a></li>
 </ul>
   </nav></div>
 

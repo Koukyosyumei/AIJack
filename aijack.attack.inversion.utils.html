@@ -33,7 +33,7 @@
     <link rel="stylesheet" href="_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="_static/style.css" />
-    <link rel="stylesheet" type="text/css" href="_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+    <link rel="stylesheet" type="text/css" href="_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css" />
     <link rel="stylesheet" href="_static/style.css" type="text/css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
@@ -412,11 +412,11 @@ document.write(`
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#submodules">1.1.4.1.1.1. Submodules</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#aijack-attack-inversion-utils-datarepextractor-module">1.1.4.1.1.2. aijack.attack.inversion.utils.datarepextractor module</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#aijack-attack-inversion-utils-distance-module">1.1.4.1.1.3. aijack.attack.inversion.utils.distance module</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#aijack-attack-inversion-utils-regularization-module">1.1.4.1.1.4. aijack.attack.inversion.utils.regularization module</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#aijack-attack-inversion-utils-utils-module">1.1.4.1.1.5. aijack.attack.inversion.utils.utils module</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-contents">1.1.4.1.1.6. Module contents</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aijack.attack.inversion.utils.datarepextractor">1.1.4.1.1.2. aijack.attack.inversion.utils.datarepextractor module</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aijack.attack.inversion.utils.distance">1.1.4.1.1.3. aijack.attack.inversion.utils.distance module</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aijack.attack.inversion.utils.regularization">1.1.4.1.1.4. aijack.attack.inversion.utils.regularization module</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aijack.attack.inversion.utils.utils">1.1.4.1.1.5. aijack.attack.inversion.utils.utils module</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aijack.attack.inversion.utils">1.1.4.1.1.6. Module contents</a></li>
 </ul>
             </nav>
         </div>
@@ -433,20 +433,66 @@ document.write(`
 <section id="submodules">
 <h2><span class="section-number">1.1.4.1.1.1. </span>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">#</a></h2>
 </section>
-<section id="aijack-attack-inversion-utils-datarepextractor-module">
-<h2><span class="section-number">1.1.4.1.1.2. </span>aijack.attack.inversion.utils.datarepextractor module<a class="headerlink" href="#aijack-attack-inversion-utils-datarepextractor-module" title="Permalink to this headline">#</a></h2>
+<section id="module-aijack.attack.inversion.utils.datarepextractor">
+<span id="aijack-attack-inversion-utils-datarepextractor-module"></span><h2><span class="section-number">1.1.4.1.1.2. </span>aijack.attack.inversion.utils.datarepextractor module<a class="headerlink" href="#module-aijack.attack.inversion.utils.datarepextractor" title="Permalink to this headline">#</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="aijack.attack.inversion.utils.datarepextractor.DataRepExtractor">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">aijack.attack.inversion.utils.datarepextractor.</span></span><span class="sig-name descname"><span class="pre">DataRepExtractor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">net</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_fc_layers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bias</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/attack/inversion/utils/datarepextractor.html#DataRepExtractor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.attack.inversion.utils.datarepextractor.DataRepExtractor" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="aijack.attack.inversion.utils.datarepextractor.DataRepExtractor.extract_datarep">
+<span class="sig-name descname"><span class="pre">extract_datarep</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dldw</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/attack/inversion/utils/datarepextractor.html#DataRepExtractor.extract_datarep"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.attack.inversion.utils.datarepextractor.DataRepExtractor.extract_datarep" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="aijack.attack.inversion.utils.datarepextractor.DataRepExtractor.get_dldw">
+<span class="sig-name descname"><span class="pre">get_dldw</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">loss</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/attack/inversion/utils/datarepextractor.html#DataRepExtractor.get_dldw"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.attack.inversion.utils.datarepextractor.DataRepExtractor.get_dldw" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
 </section>
-<section id="aijack-attack-inversion-utils-distance-module">
-<h2><span class="section-number">1.1.4.1.1.3. </span>aijack.attack.inversion.utils.distance module<a class="headerlink" href="#aijack-attack-inversion-utils-distance-module" title="Permalink to this headline">#</a></h2>
+<section id="module-aijack.attack.inversion.utils.distance">
+<span id="aijack-attack-inversion-utils-distance-module"></span><h2><span class="section-number">1.1.4.1.1.3. </span>aijack.attack.inversion.utils.distance module<a class="headerlink" href="#module-aijack.attack.inversion.utils.distance" title="Permalink to this headline">#</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="aijack.attack.inversion.utils.distance.cossim">
+<span class="sig-prename descclassname"><span class="pre">aijack.attack.inversion.utils.distance.</span></span><span class="sig-name descname"><span class="pre">cossim</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fake_gradients</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">received_gradients</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gradient_ignore_pos</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/attack/inversion/utils/distance.html#cossim"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.attack.inversion.utils.distance.cossim" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="aijack.attack.inversion.utils.distance.l2">
+<span class="sig-prename descclassname"><span class="pre">aijack.attack.inversion.utils.distance.</span></span><span class="sig-name descname"><span class="pre">l2</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fake_gradients</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">received_gradients</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gradient_ignore_pos</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/attack/inversion/utils/distance.html#l2"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.attack.inversion.utils.distance.l2" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
 </section>
-<section id="aijack-attack-inversion-utils-regularization-module">
-<h2><span class="section-number">1.1.4.1.1.4. </span>aijack.attack.inversion.utils.regularization module<a class="headerlink" href="#aijack-attack-inversion-utils-regularization-module" title="Permalink to this headline">#</a></h2>
+<section id="module-aijack.attack.inversion.utils.regularization">
+<span id="aijack-attack-inversion-utils-regularization-module"></span><h2><span class="section-number">1.1.4.1.1.4. </span>aijack.attack.inversion.utils.regularization module<a class="headerlink" href="#module-aijack.attack.inversion.utils.regularization" title="Permalink to this headline">#</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="aijack.attack.inversion.utils.regularization.bn_regularizer">
+<span class="sig-prename descclassname"><span class="pre">aijack.attack.inversion.utils.regularization.</span></span><span class="sig-name descname"><span class="pre">bn_regularizer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">feature_maps</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bn_layers</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/attack/inversion/utils/regularization.html#bn_regularizer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.attack.inversion.utils.regularization.bn_regularizer" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="aijack.attack.inversion.utils.regularization.group_consistency">
+<span class="sig-prename descclassname"><span class="pre">aijack.attack.inversion.utils.regularization.</span></span><span class="sig-name descname"><span class="pre">group_consistency</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">group_x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/attack/inversion/utils/regularization.html#group_consistency"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.attack.inversion.utils.regularization.group_consistency" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="aijack.attack.inversion.utils.regularization.label_matching">
+<span class="sig-prename descclassname"><span class="pre">aijack.attack.inversion.utils.regularization.</span></span><span class="sig-name descname"><span class="pre">label_matching</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pred</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/attack/inversion/utils/regularization.html#label_matching"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.attack.inversion.utils.regularization.label_matching" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="aijack.attack.inversion.utils.regularization.total_variance">
+<span class="sig-prename descclassname"><span class="pre">aijack.attack.inversion.utils.regularization.</span></span><span class="sig-name descname"><span class="pre">total_variance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/attack/inversion/utils/regularization.html#total_variance"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.attack.inversion.utils.regularization.total_variance" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
 </section>
-<section id="aijack-attack-inversion-utils-utils-module">
-<h2><span class="section-number">1.1.4.1.1.5. </span>aijack.attack.inversion.utils.utils module<a class="headerlink" href="#aijack-attack-inversion-utils-utils-module" title="Permalink to this headline">#</a></h2>
+<section id="module-aijack.attack.inversion.utils.utils">
+<span id="aijack-attack-inversion-utils-utils-module"></span><h2><span class="section-number">1.1.4.1.1.5. </span>aijack.attack.inversion.utils.utils module<a class="headerlink" href="#module-aijack.attack.inversion.utils.utils" title="Permalink to this headline">#</a></h2>
 </section>
-<section id="module-contents">
-<h2><span class="section-number">1.1.4.1.1.6. </span>Module contents<a class="headerlink" href="#module-contents" title="Permalink to this headline">#</a></h2>
+<section id="module-aijack.attack.inversion.utils">
+<span id="module-contents"></span><h2><span class="section-number">1.1.4.1.1.6. </span>Module contents<a class="headerlink" href="#module-aijack.attack.inversion.utils" title="Permalink to this headline">#</a></h2>
 </section>
 </section>
 
@@ -499,11 +545,11 @@ document.write(`
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#submodules">1.1.4.1.1.1. Submodules</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#aijack-attack-inversion-utils-datarepextractor-module">1.1.4.1.1.2. aijack.attack.inversion.utils.datarepextractor module</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#aijack-attack-inversion-utils-distance-module">1.1.4.1.1.3. aijack.attack.inversion.utils.distance module</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#aijack-attack-inversion-utils-regularization-module">1.1.4.1.1.4. aijack.attack.inversion.utils.regularization module</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#aijack-attack-inversion-utils-utils-module">1.1.4.1.1.5. aijack.attack.inversion.utils.utils module</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-contents">1.1.4.1.1.6. Module contents</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aijack.attack.inversion.utils.datarepextractor">1.1.4.1.1.2. aijack.attack.inversion.utils.datarepextractor module</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aijack.attack.inversion.utils.distance">1.1.4.1.1.3. aijack.attack.inversion.utils.distance module</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aijack.attack.inversion.utils.regularization">1.1.4.1.1.4. aijack.attack.inversion.utils.regularization module</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aijack.attack.inversion.utils.utils">1.1.4.1.1.5. aijack.attack.inversion.utils.utils module</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aijack.attack.inversion.utils">1.1.4.1.1.6. Module contents</a></li>
 </ul>
   </nav></div>
 
