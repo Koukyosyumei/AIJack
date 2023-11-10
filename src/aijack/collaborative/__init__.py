@@ -21,5 +21,6 @@ from .fedmd import (  # noqa: F401
     MPIFedMDClientManager,
     MPIFedMDServerManager,
 )
+from .moon import MOONClient  # noqa :F401
 from .optimizer import AdamFLOptimizer, SGDFLOptimizer  # noqa: F401
 from .splitnn import SplitNNAPI, SplitNNClient  # noqa: F401
