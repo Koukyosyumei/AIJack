@@ -1,6 +1,6 @@
 # AIValut
 
-AIValut is a DBMS that allows you to debug your ML models. We implement the core engine and parser of DBMS from scratch with reference to [bogoDB](https://github.com/ad-sho-loko/bogoDB) and [db_tutorial](https://github.com/cstack/db_tutorial). 
+AIValut is a DBMS that allows you to debug your ML models. We implement the core engine and parser of DBMS from scratch with reference to [bogoDB](https://github.com/ad-sho-loko/bogoDB) and [db_tutorial](https://github.com/cstack/db_tutorial). AIValut currently supports [Rain](https://arxiv.org/abs/2004.05722) as the debugging method.
 
 ## Install
 
