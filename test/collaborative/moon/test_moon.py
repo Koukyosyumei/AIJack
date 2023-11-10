@@ -9,7 +9,6 @@ def test_fedkd():
     torch.manual_seed(0)
 
     lr = 0.01
-    epochs = 2
     client_num = 2
 
     class Net(nn.Module):
