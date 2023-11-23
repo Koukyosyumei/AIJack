@@ -192,10 +192,6 @@ You can also find more examples in our tutorials and documentation.
 
 -----------------------------------------------------------------------
 
-# Contact
-
-welcome2aijack[@]gmail.com
-
 # Citation
 
 ```
@@ -207,3 +203,15 @@ url = {https://github.com/Koukyosyumei/AIJack},
 year = {2023}
 }
 ```
+# Related Publications
+
+Below you can find a list of papers and books that either use or extend AIJack.
+
+- Song, Junzhe, and Dmitry Namiot. "A Survey of the Implementations of Model Inversion Attacks." International Conference on Distributed Computer and Communication Networks. Cham: Springer Nature Switzerland, 2022.
+- Kapoor, Amita, and Sharmistha Chatterjee. Platform and Model Design for Responsible AI: Design and build resilient, private, fair, and transparent machine learning models. Packt Publishing Ltd, 2023.
+- Mi, Yuxi, et al. "Flexible Differentially Private Vertical Federated Learning with Adaptive Feature Embeddings." arXiv preprint arXiv:2308.02362 (2023).
+- Mohammadi, Mohammadreza, et al. "Privacy-preserving Federated Learning System for Fatigue Detection." 2023 IEEE International Conference on Cyber Security and Resilience (CSR). IEEE, 2023.
+
+# Contact
+
+welcome2aijack[@]gmail.com
