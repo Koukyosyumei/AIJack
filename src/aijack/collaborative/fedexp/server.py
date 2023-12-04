@@ -29,12 +29,13 @@ class FedEXPServer(FedAVGServer):
                     + self.aggregated_gradients[gradient_id]
                 )
                 grad_norms.append(
-                    torch.sqrt(sum([torch.sum(g * g) for g in gradients[gradient_id]]))
+                    sum([torch.linalg.norm(g) ** 2 for g in gradients[gradient_id]])
                 )
 
-        agg_grad_norm = torch.sqrt(
-            sum([torch.sum(g * g) for g in self.aggregated_gradients])
+        agg_grad_norm = sum(
+            [torch.linalg.norm(g) ** 2 for g in self.aggregated_gradients]
         )
+
         lr = max(1, sum([g / (2 * M * (agg_grad_norm + self.eps)) for g in grad_norms]))
 
         self.optimizer.step(self.aggregated_gradients)
