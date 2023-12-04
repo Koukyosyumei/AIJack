@@ -8,7 +8,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>aijack.defense.paillier.torch_wrapper &#8212; AIJack  documentation</title>
+    <title>aijack.collaborative.fedexp.server &#8212; AIJack  documentation</title>
   
   
   
@@ -46,7 +46,7 @@
     <script src="../../../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
     <script src="../../../../_static/design-tabs.js"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/aijack/defense/paillier/torch_wrapper';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/aijack/collaborative/fedexp/server';</script>
     <link rel="shortcut icon" href="../../../../_static/logo_square.png"/>
     <link rel="index" title="Index" href="../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../search.html" />
@@ -364,140 +364,49 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article" role="main">
                   
-  <h1>Source code for aijack.defense.paillier.torch_wrapper</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">functools</span>
+  <h1>Source code for aijack.collaborative.fedexp.server</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">torch</span>
 
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">torch</span>
-
-<span class="n">HANDLED_FUNCTIONS</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="kn">from</span> <span class="nn">..fedavg</span> <span class="kn">import</span> <span class="n">FedAVGServer</span>
 
 
-<div class="viewcode-block" id="implements"><a class="viewcode-back" href="../../../../aijack.defense.paillier.html#aijack.defense.paillier.torch_wrapper.implements">[docs]</a><span class="k">def</span> <span class="nf">implements</span><span class="p">(</span><span class="n">torch_function</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Registers a torch function override for PaillierTensor&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="FedEXPServer"><a class="viewcode-back" href="../../../../aijack.collaborative.fedexp.html#aijack.collaborative.fedexp.server.FedEXPServer">[docs]</a><span class="k">class</span> <span class="nc">FedEXPServer</span><span class="p">(</span><span class="n">FedAVGServer</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Implementation of &#39;Jhunjhunwala, Divyansh, Shiqiang Wang, and Gauri Joshi. &quot;FedExP: Speeding up Federated Averaging Via Extrapolation.&quot; arXiv preprint arXiv:2301.09604 (2023).&#39;&quot;&quot;&quot;</span>
 
-    <span class="nd">@functools</span><span class="o">.</span><span class="n">wraps</span><span class="p">(</span><span class="n">torch_function</span><span class="p">)</span>
-    <span class="k">def</span> <span class="nf">decorator</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
-        <span class="n">HANDLED_FUNCTIONS</span><span class="p">[</span><span class="n">torch_function</span><span class="p">]</span> <span class="o">=</span> <span class="n">func</span>
-        <span class="k">return</span> <span class="n">func</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">eps</span><span class="o">=</span><span class="mf">1e-5</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">FedEXPServer</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">eps</span> <span class="o">=</span> <span class="n">eps</span>
 
-    <span class="k">return</span> <span class="n">decorator</span></div>
+<div class="viewcode-block" id="FedEXPServer.update"><a class="viewcode-back" href="../../../../aijack.collaborative.fedexp.html#aijack.collaborative.fedexp.server.FedEXPServer.update">[docs]</a>    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">update_from_gradients</span><span class="p">()</span></div>
 
+<div class="viewcode-block" id="FedEXPServer.update_from_gradients"><a class="viewcode-back" href="../../../../aijack.collaborative.fedexp.html#aijack.collaborative.fedexp.server.FedEXPServer.update_from_gradients">[docs]</a>    <span class="k">def</span> <span class="nf">update_from_gradients</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">aggregated_gradients</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">torch</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">params</span><span class="p">)</span> <span class="k">for</span> <span class="n">params</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">server_model</span><span class="o">.</span><span class="n">parameters</span><span class="p">()</span>
+        <span class="p">]</span>
+        <span class="n">grad_norms</span> <span class="o">=</span> <span class="p">[]</span>
 
-<div class="viewcode-block" id="PaillierTensor"><a class="viewcode-back" href="../../../../aijack.defense.paillier.html#aijack.defense.paillier.torch_wrapper.PaillierTensor">[docs]</a><span class="k">class</span> <span class="nc">PaillierTensor</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;torch.Tensor-like object for Paillier Encryption&quot;&quot;&quot;</span>
+        <span class="n">M</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">uploaded_gradients</span><span class="p">)</span>
+        <span class="n">len_gradients</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">aggregated_gradients</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">paillier_array</span><span class="p">):</span>
-        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">paillier_array</span><span class="p">)</span> <span class="o">==</span> <span class="nb">list</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_paillier_np_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">paillier_array</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="nb">type</span><span class="p">(</span><span class="n">paillier_array</span><span class="p">)</span> <span class="o">==</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_paillier_np_array</span> <span class="o">=</span> <span class="n">paillier_array</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">paillier_array</span><span class="p">)</span><span class="si">}</span><span class="s2"> is not supported.&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">gradients</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">uploaded_gradients</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">gradient_id</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">len_gradients</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">aggregated_gradients</span><span class="p">[</span><span class="n">gradient_id</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="n">gradients</span><span class="p">[</span><span class="n">gradient_id</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="n">M</span><span class="p">)</span>
+                    <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">aggregated_gradients</span><span class="p">[</span><span class="n">gradient_id</span><span class="p">]</span>
+                <span class="p">)</span>
+                <span class="n">grad_norms</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                    <span class="nb">sum</span><span class="p">([</span><span class="n">torch</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">g</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="k">for</span> <span class="n">g</span> <span class="ow">in</span> <span class="n">gradients</span><span class="p">[</span><span class="n">gradient_id</span><span class="p">]])</span>
+                <span class="p">)</span>
 
-    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="s2">&quot;PaillierTensor&quot;</span>
+        <span class="n">agg_grad_norm</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span>
+            <span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">g</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="k">for</span> <span class="n">g</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">aggregated_gradients</span><span class="p">]</span>
+        <span class="p">)</span>
 
-<div class="viewcode-block" id="PaillierTensor.decrypt"><a class="viewcode-back" href="../../../../aijack.defense.paillier.html#aijack.defense.paillier.torch_wrapper.PaillierTensor.decrypt">[docs]</a>    <span class="k">def</span> <span class="nf">decrypt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sk</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="s2">&quot;cpu&quot;</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">(</span>
-            <span class="n">np</span><span class="o">.</span><span class="n">vectorize</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">sk</span><span class="o">.</span><span class="n">decrypt2float</span><span class="p">(</span><span class="n">x</span><span class="p">))(</span><span class="bp">self</span><span class="o">.</span><span class="n">_paillier_np_array</span><span class="p">)</span>
-        <span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="PaillierTensor.tensor"><a class="viewcode-back" href="../../../../aijack.defense.paillier.html#aijack.defense.paillier.torch_wrapper.PaillierTensor.tensor">[docs]</a>    <span class="k">def</span> <span class="nf">tensor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sk</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">sk</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">decypt</span><span class="p">(</span><span class="n">sk</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_paillier_np_array</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="PaillierTensor.numpy"><a class="viewcode-back" href="../../../../aijack.defense.paillier.html#aijack.defense.paillier.torch_wrapper.PaillierTensor.numpy">[docs]</a>    <span class="k">def</span> <span class="nf">numpy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_paillier_np_array</span></div>
-
-<div class="viewcode-block" id="PaillierTensor.detach"><a class="viewcode-back" href="../../../../aijack.defense.paillier.html#aijack.defense.paillier.torch_wrapper.PaillierTensor.detach">[docs]</a>    <span class="k">def</span> <span class="nf">detach</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span></div>
-
-<div class="viewcode-block" id="PaillierTensor.cpu"><a class="viewcode-back" href="../../../../aijack.defense.paillier.html#aijack.defense.paillier.torch_wrapper.PaillierTensor.cpu">[docs]</a>    <span class="k">def</span> <span class="nf">cpu</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span></div>
-
-    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">__torch_function__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">func</span><span class="p">,</span> <span class="n">types</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(),</span> <span class="n">kwargs</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">kwargs</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">kwargs</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="k">if</span> <span class="n">func</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">HANDLED_FUNCTIONS</span> <span class="ow">or</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">(</span>
-            <span class="nb">issubclass</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">PaillierTensor</span><span class="p">))</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">types</span>
-        <span class="p">):</span>
-            <span class="k">return</span> <span class="bp">NotImplemented</span>
-        <span class="k">return</span> <span class="n">HANDLED_FUNCTIONS</span><span class="p">[</span><span class="n">func</span><span class="p">](</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-
-<div class="viewcode-block" id="PaillierTensor.add"><a class="viewcode-back" href="../../../../aijack.defense.paillier.html#aijack.defense.paillier.torch_wrapper.PaillierTensor.add">[docs]</a>    <span class="nd">@implements</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">add</span><span class="p">)</span>
-    <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
-        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">other</span><span class="p">)</span> <span class="ow">in</span> <span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
-            <span class="k">return</span> <span class="n">PaillierTensor</span><span class="p">(</span><span class="nb">input</span><span class="o">.</span><span class="n">_paillier_np_array</span> <span class="o">+</span> <span class="n">other</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="nb">type</span><span class="p">(</span><span class="n">other</span><span class="p">)</span> <span class="ow">in</span> <span class="p">[</span>
-            <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
-            <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">parameter</span><span class="o">.</span><span class="n">Parameter</span><span class="p">,</span>
-            <span class="n">PaillierTensor</span><span class="p">,</span>
-        <span class="p">]:</span>
-            <span class="k">return</span> <span class="n">PaillierTensor</span><span class="p">(</span>
-                <span class="nb">input</span><span class="o">.</span><span class="n">_paillier_np_array</span> <span class="o">+</span> <span class="n">other</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
-            <span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">other</span><span class="p">)</span><span class="si">}</span><span class="s2"> is not supported.&quot;</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="PaillierTensor.sub"><a class="viewcode-back" href="../../../../aijack.defense.paillier.html#aijack.defense.paillier.torch_wrapper.PaillierTensor.sub">[docs]</a>    <span class="nd">@implements</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">sub</span><span class="p">)</span>
-    <span class="k">def</span> <span class="nf">sub</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
-        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">other</span><span class="p">)</span> <span class="ow">in</span> <span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
-            <span class="k">return</span> <span class="n">PaillierTensor</span><span class="p">(</span><span class="nb">input</span><span class="o">.</span><span class="n">_paillier_np_array</span> <span class="o">+</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">other</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="nb">type</span><span class="p">(</span><span class="n">other</span><span class="p">)</span> <span class="ow">in</span> <span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">PaillierTensor</span><span class="p">]:</span>
-            <span class="k">return</span> <span class="n">PaillierTensor</span><span class="p">(</span>
-                <span class="nb">input</span><span class="o">.</span><span class="n">_paillier_np_array</span> <span class="o">+</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">other</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
-            <span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">other</span><span class="p">)</span><span class="si">}</span><span class="s2"> is not supported.&quot;</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="PaillierTensor.mul"><a class="viewcode-back" href="../../../../aijack.defense.paillier.html#aijack.defense.paillier.torch_wrapper.PaillierTensor.mul">[docs]</a>    <span class="nd">@implements</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">mul</span><span class="p">)</span>
-    <span class="k">def</span> <span class="nf">mul</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
-        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">other</span><span class="p">)</span> <span class="ow">in</span> <span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
-            <span class="k">return</span> <span class="n">PaillierTensor</span><span class="p">(</span><span class="nb">input</span><span class="o">.</span><span class="n">_paillier_np_array</span> <span class="o">*</span> <span class="n">other</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="nb">type</span><span class="p">(</span><span class="n">other</span><span class="p">)</span> <span class="ow">in</span> <span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">PaillierTensor</span><span class="p">]:</span>
-            <span class="k">return</span> <span class="n">PaillierTensor</span><span class="p">(</span>
-                <span class="nb">input</span><span class="o">.</span><span class="n">_paillier_np_array</span> <span class="o">*</span> <span class="n">other</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
-            <span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">other</span><span class="p">)</span><span class="si">}</span><span class="s2"> is not supported.&quot;</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="PaillierTensor.matmul"><a class="viewcode-back" href="../../../../aijack.defense.paillier.html#aijack.defense.paillier.torch_wrapper.PaillierTensor.matmul">[docs]</a>    <span class="nd">@implements</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">matmul</span><span class="p">)</span>
-    <span class="k">def</span> <span class="nf">matmul</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">PaillierTensor</span><span class="p">(</span>
-            <span class="n">np</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">_paillier_np_array</span><span class="p">,</span> <span class="n">other</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">())</span>
-        <span class="p">)</span></div>
-
-<div class="viewcode-block" id="PaillierTensor.linear"><a class="viewcode-back" href="../../../../aijack.defense.paillier.html#aijack.defense.paillier.torch_wrapper.PaillierTensor.linear">[docs]</a>    <span class="nd">@implements</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">functional</span><span class="o">.</span><span class="n">linear</span><span class="p">)</span>
-    <span class="k">def</span> <span class="nf">linear</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">bias</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">w</span><span class="o">.</span><span class="n">T</span><span class="p">)</span> <span class="o">+</span> <span class="n">bias</span></div>
-
-    <span class="k">def</span> <span class="fm">__add__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">)</span>
-
-    <span class="k">def</span> <span class="fm">__iadd__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
-        <span class="bp">self</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">)</span>
-
-    <span class="k">def</span> <span class="fm">__radd__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__add__</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
-
-    <span class="k">def</span> <span class="fm">__sub__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">)</span>
-
-    <span class="k">def</span> <span class="fm">__isub__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
-        <span class="bp">self</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">)</span>
-
-    <span class="k">def</span> <span class="fm">__rsub__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__sub__</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
-
-    <span class="k">def</span> <span class="fm">__mul__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">mul</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">)</span>
-
-    <span class="k">def</span> <span class="fm">__rmul__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__mul__</span><span class="p">(</span><span class="n">other</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">optimizer</span><span class="o">.</span><span class="n">lr</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span>
+            <span class="mi">1</span><span class="p">,</span> <span class="nb">sum</span><span class="p">([</span><span class="n">g</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">M</span> <span class="o">*</span> <span class="p">(</span><span class="n">agg_grad_norm</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">eps</span><span class="p">))</span> <span class="k">for</span> <span class="n">g</span> <span class="ow">in</span> <span class="n">grad_norms</span><span class="p">])</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">aggregated_gradients</span><span class="p">)</span></div></div>
 </pre></div>
 
                 </article>

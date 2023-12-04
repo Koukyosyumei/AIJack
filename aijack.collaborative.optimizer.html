@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>3.1.8. aijack.collaborative.optimizer package &#8212; AIJack  documentation</title>
+    <title>3.1.10. aijack.collaborative.optimizer package &#8212; AIJack  documentation</title>
   
   
   
@@ -51,8 +51,8 @@
     <link rel="shortcut icon" href="_static/logo_square.png"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="3.1.9. aijack.collaborative.splitnn package" href="aijack.collaborative.splitnn.html" />
-    <link rel="prev" title="3.1.7. aijack.collaborative.fedprox package" href="aijack.collaborative.fedprox.html" />
+    <link rel="next" title="3.1.11. aijack.collaborative.splitnn package" href="aijack.collaborative.splitnn.html" />
+    <link rel="prev" title="3.1.9. aijack.collaborative.moon package" href="aijack.collaborative.moon.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   </head>
@@ -236,13 +236,15 @@
 <li class="toctree-l2"><a class="reference internal" href="aijack.collaborative.core.html">3.1.1. aijack.collaborative.core package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="aijack.collaborative.dsfl.html">3.1.2. aijack.collaborative.dsfl package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="aijack.collaborative.fedavg.html">3.1.3. aijack.collaborative.fedavg package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="aijack.collaborative.fedgems.html">3.1.4. aijack.collaborative.fedgems package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="aijack.collaborative.fedkd.html">3.1.5. aijack.collaborative.fedkd package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="aijack.collaborative.fedmd.html">3.1.6. aijack.collaborative.fedmd package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="aijack.collaborative.fedprox.html">3.1.7. aijack.collaborative.fedprox package</a></li>
-<li class="toctree-l2 current active"><a class="current reference internal" href="#">3.1.8. aijack.collaborative.optimizer package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="aijack.collaborative.splitnn.html">3.1.9. aijack.collaborative.splitnn package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="aijack.collaborative.tree.html">3.1.10. aijack.collaborative.tree package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="aijack.collaborative.fedexp.html">3.1.4. aijack.collaborative.fedexp package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="aijack.collaborative.fedgems.html">3.1.5. aijack.collaborative.fedgems package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="aijack.collaborative.fedkd.html">3.1.6. aijack.collaborative.fedkd package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="aijack.collaborative.fedmd.html">3.1.7. aijack.collaborative.fedmd package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="aijack.collaborative.fedprox.html">3.1.8. aijack.collaborative.fedprox package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="aijack.collaborative.moon.html">3.1.9. aijack.collaborative.moon package</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">3.1.10. aijack.collaborative.optimizer package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="aijack.collaborative.splitnn.html">3.1.11. aijack.collaborative.splitnn package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="aijack.collaborative.tree.html">3.1.12. aijack.collaborative.tree package</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="aijack.utils.html">4. aijack.utils package</a></li>
@@ -411,11 +413,11 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#submodules">3.1.8.1. Submodules</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aijack.collaborative.optimizer.adam">3.1.8.2. aijack.collaborative.optimizer.adam module</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aijack.collaborative.optimizer.base">3.1.8.3. aijack.collaborative.optimizer.base module</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aijack.collaborative.optimizer.sgd">3.1.8.4. aijack.collaborative.optimizer.sgd module</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aijack.collaborative.optimizer">3.1.8.5. Module contents</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#submodules">3.1.10.1. Submodules</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aijack.collaborative.optimizer.adam">3.1.10.2. aijack.collaborative.optimizer.adam module</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aijack.collaborative.optimizer.base">3.1.10.3. aijack.collaborative.optimizer.base module</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aijack.collaborative.optimizer.sgd">3.1.10.4. aijack.collaborative.optimizer.sgd module</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aijack.collaborative.optimizer">3.1.10.5. Module contents</a></li>
 </ul>
             </nav>
         </div>
@@ -428,12 +430,12 @@ document.write(`
                 <article class="bd-article" role="main">
                   
   <section id="aijack-collaborative-optimizer-package">
-<h1><span class="section-number">3.1.8. </span>aijack.collaborative.optimizer package<a class="headerlink" href="#aijack-collaborative-optimizer-package" title="Permalink to this headline">#</a></h1>
+<h1><span class="section-number">3.1.10. </span>aijack.collaborative.optimizer package<a class="headerlink" href="#aijack-collaborative-optimizer-package" title="Permalink to this headline">#</a></h1>
 <section id="submodules">
-<h2><span class="section-number">3.1.8.1. </span>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">3.1.10.1. </span>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">#</a></h2>
 </section>
 <section id="module-aijack.collaborative.optimizer.adam">
-<span id="aijack-collaborative-optimizer-adam-module"></span><h2><span class="section-number">3.1.8.2. </span>aijack.collaborative.optimizer.adam module<a class="headerlink" href="#module-aijack.collaborative.optimizer.adam" title="Permalink to this headline">#</a></h2>
+<span id="aijack-collaborative-optimizer-adam-module"></span><h2><span class="section-number">3.1.10.2. </span>aijack.collaborative.optimizer.adam module<a class="headerlink" href="#module-aijack.collaborative.optimizer.adam" title="Permalink to this headline">#</a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="aijack.collaborative.optimizer.adam.AdamFLOptimizer">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">aijack.collaborative.optimizer.adam.</span></span><span class="sig-name descname"><span class="pre">AdamFLOptimizer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parameters</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.01</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight_decay</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">beta1</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.9</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">beta2</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.999</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epsilon</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-08</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/collaborative/optimizer/adam.html#AdamFLOptimizer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.collaborative.optimizer.adam.AdamFLOptimizer" title="Permalink to this definition">#</a></dt>
@@ -466,7 +468,7 @@ document.write(`
 
 </section>
 <section id="module-aijack.collaborative.optimizer.base">
-<span id="aijack-collaborative-optimizer-base-module"></span><h2><span class="section-number">3.1.8.3. </span>aijack.collaborative.optimizer.base module<a class="headerlink" href="#module-aijack.collaborative.optimizer.base" title="Permalink to this headline">#</a></h2>
+<span id="aijack-collaborative-optimizer-base-module"></span><h2><span class="section-number">3.1.10.3. </span>aijack.collaborative.optimizer.base module<a class="headerlink" href="#module-aijack.collaborative.optimizer.base" title="Permalink to this headline">#</a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="aijack.collaborative.optimizer.base.BaseFLOptimizer">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">aijack.collaborative.optimizer.base.</span></span><span class="sig-name descname"><span class="pre">BaseFLOptimizer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parameters</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.01</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight_decay</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0001</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/collaborative/optimizer/base.html#BaseFLOptimizer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.collaborative.optimizer.base.BaseFLOptimizer" title="Permalink to this definition">#</a></dt>
@@ -496,7 +498,7 @@ document.write(`
 
 </section>
 <section id="module-aijack.collaborative.optimizer.sgd">
-<span id="aijack-collaborative-optimizer-sgd-module"></span><h2><span class="section-number">3.1.8.4. </span>aijack.collaborative.optimizer.sgd module<a class="headerlink" href="#module-aijack.collaborative.optimizer.sgd" title="Permalink to this headline">#</a></h2>
+<span id="aijack-collaborative-optimizer-sgd-module"></span><h2><span class="section-number">3.1.10.4. </span>aijack.collaborative.optimizer.sgd module<a class="headerlink" href="#module-aijack.collaborative.optimizer.sgd" title="Permalink to this headline">#</a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="aijack.collaborative.optimizer.sgd.SGDFLOptimizer">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">aijack.collaborative.optimizer.sgd.</span></span><span class="sig-name descname"><span class="pre">SGDFLOptimizer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parameters</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.01</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight_decay</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/collaborative/optimizer/sgd.html#SGDFLOptimizer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.collaborative.optimizer.sgd.SGDFLOptimizer" title="Permalink to this definition">#</a></dt>
@@ -526,7 +528,7 @@ document.write(`
 
 </section>
 <section id="module-aijack.collaborative.optimizer">
-<span id="module-contents"></span><h2><span class="section-number">3.1.8.5. </span>Module contents<a class="headerlink" href="#module-aijack.collaborative.optimizer" title="Permalink to this headline">#</a></h2>
+<span id="module-contents"></span><h2><span class="section-number">3.1.10.5. </span>Module contents<a class="headerlink" href="#module-aijack.collaborative.optimizer" title="Permalink to this headline">#</a></h2>
 <p>Implementation of basic collaborative optimizers for neural network</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="aijack.collaborative.optimizer.AdamFLOptimizer">
@@ -601,12 +603,12 @@ document.write(`
     <div class="footer-article-item"><!-- Previous / next buttons -->
 <div class="prev-next-area">
     <a class="left-prev"
-       href="aijack.collaborative.fedprox.html"
+       href="aijack.collaborative.moon.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title"><span class="section-number">3.1.7. </span>aijack.collaborative.fedprox package</p>
+        <p class="prev-next-title"><span class="section-number">3.1.9. </span>aijack.collaborative.moon package</p>
       </div>
     </a>
     <a class="right-next"
@@ -614,7 +616,7 @@ document.write(`
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title"><span class="section-number">3.1.9. </span>aijack.collaborative.splitnn package</p>
+        <p class="prev-next-title"><span class="section-number">3.1.11. </span>aijack.collaborative.splitnn package</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -636,11 +638,11 @@ document.write(`
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#submodules">3.1.8.1. Submodules</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aijack.collaborative.optimizer.adam">3.1.8.2. aijack.collaborative.optimizer.adam module</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aijack.collaborative.optimizer.base">3.1.8.3. aijack.collaborative.optimizer.base module</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aijack.collaborative.optimizer.sgd">3.1.8.4. aijack.collaborative.optimizer.sgd module</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aijack.collaborative.optimizer">3.1.8.5. Module contents</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#submodules">3.1.10.1. Submodules</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aijack.collaborative.optimizer.adam">3.1.10.2. aijack.collaborative.optimizer.adam module</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aijack.collaborative.optimizer.base">3.1.10.3. aijack.collaborative.optimizer.base module</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aijack.collaborative.optimizer.sgd">3.1.10.4. aijack.collaborative.optimizer.sgd module</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aijack.collaborative.optimizer">3.1.10.5. Module contents</a></li>
 </ul>
   </nav></div>
 
