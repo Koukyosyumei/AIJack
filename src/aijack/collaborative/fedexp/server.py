@@ -36,5 +36,7 @@ class FedEXPServer(FedAVGServer):
             [torch.linalg.norm(g) ** 2 for g in self.aggregated_gradients]
         )
 
-        self.optimizer.lr = max(1, sum([g / (2 * M * (agg_grad_norm + self.eps)) for g in grad_norms]))
+        self.optimizer.lr = max(
+            1, sum([g / (2 * M * (agg_grad_norm + self.eps)) for g in grad_norms])
+        )
         self.optimizer.step(self.aggregated_gradients)
