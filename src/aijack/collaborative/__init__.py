@@ -11,6 +11,7 @@ from .fedavg import (  # noqa: F401
     MPIFedAVGClientManager,
     MPIFedAVGServerManager,
 )
+from .fedexp import FedEXPServer  # noqa: F401
 from .fedgems import FedGEMSAPI, FedGEMSClient, FedGEMSServer  # noqa: F401
 from .fedkd import FedKDClient  # noqa :F401
 from .fedmd import (  # noqa: F401
