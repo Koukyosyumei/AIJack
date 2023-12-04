@@ -1,10 +1,10 @@
-def test_moon():
+def test_fedexp():
     import torch
     import torch.nn as nn
     import torch.optim as optim
     from torch.utils.data import DataLoader, TensorDataset
 
-    from aijack.collaborative import FedAVGAPI, FedAVGServer, MOONClient
+    from aijack.collaborative import FedAVGAPI, FedAVGClient, FedEXPServer
 
     torch.manual_seed(0)
 
@@ -41,7 +41,7 @@ def test_moon():
     local_dataloaders = [DataLoader(TensorDataset(x, y)) for _ in range(client_num)]
 
     clients = [
-        MOONClient(
+        FedAVGClient(
             Net(),
             user_id=i,
             lr=lr,
@@ -51,7 +51,7 @@ def test_moon():
     local_optimizers = [optim.SGD(client.parameters(), lr=lr) for client in clients]
 
     global_model = Net()
-    server = FedAVGServer(clients, global_model, lr=lr)
+    server = FedEXPServer(clients, global_model, lr=lr)
 
     criterion = nn.CrossEntropyLoss()
 
