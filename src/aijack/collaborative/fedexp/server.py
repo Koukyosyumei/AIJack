@@ -22,7 +22,7 @@ class FedEXPServer(FedAVGServer):
         M = len(self.uploaded_gradients)
         len_gradients = len(self.aggregated_gradients)
 
-        for i, gradients in enumerate(self.uploaded_gradients):
+        for gradients in self.uploaded_gradients:
             for gradient_id in range(len_gradients):
                 self.aggregated_gradients[gradient_id] = (
                     gradients[gradient_id] * (1 / M)
@@ -36,6 +36,5 @@ class FedEXPServer(FedAVGServer):
             [torch.linalg.norm(g) ** 2 for g in self.aggregated_gradients]
         )
 
-        lr = max(1, sum([g / (2 * M * (agg_grad_norm + self.eps)) for g in grad_norms]))
-
+        self.optimizer.lr = max(1, sum([g / (2 * M * (agg_grad_norm + self.eps)) for g in grad_norms]))
         self.optimizer.step(self.aggregated_gradients)
