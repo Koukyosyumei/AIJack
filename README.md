@@ -195,14 +195,16 @@ You can also find more examples in our tutorials and documentation.
 # Citation
 
 ```
-@software{Hideaki_AIJack_2023,
-author = {Hideaki, Takahashi},
-month = jun,
-title = {{AIJack}},
-url = {https://github.com/Koukyosyumei/AIJack},
-year = {2023}
+@misc{Hideaki_AIJack_2023,
+  author = {Hideaki, Takahashi},
+  title = {AIJack},
+  year = {2023},
+  publisher = {GitHub},
+  journal = {GitHub Repository},
+  howpublished = {\url{https://github.com/Koukyosyumei/AIJack}},
 }
 ```
+
 # Related Publications
 
 Below you can find a list of papers and books that either use or extend AIJack.
