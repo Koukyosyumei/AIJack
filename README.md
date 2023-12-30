@@ -209,6 +209,7 @@ You can also find more examples in our tutorials and documentation.
 
 Below you can find a list of papers and books that either use or extend AIJack.
 
+- Huang, Shiyuan, et al. "Video in 10 Bits: Few-Bit VideoQA for Efficiency and Privacy." European Conference on Computer Vision. Cham: Springer Nature Switzerland, 2022.
 - Song, Junzhe, and Dmitry Namiot. "A Survey of the Implementations of Model Inversion Attacks." International Conference on Distributed Computer and Communication Networks. Cham: Springer Nature Switzerland, 2022.
 - Kapoor, Amita, and Sharmistha Chatterjee. Platform and Model Design for Responsible AI: Design and build resilient, private, fair, and transparent machine learning models. Packt Publishing Ltd, 2023.
 - Mi, Yuxi, et al. "Flexible Differentially Private Vertical Federated Learning with Adaptive Feature Embeddings." arXiv preprint arXiv:2308.02362 (2023).
