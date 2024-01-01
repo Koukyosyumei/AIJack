@@ -78,6 +78,15 @@ attacker = Attacker(target_model)
 result = attacker.attack()
 ```
 
+For instance, we can implement Poisoning Attack against SVM implemented with sklearn as follows.
+
+```Python
+from aijack . attack import Poison_attack_sklearn
+
+attacker = Poison_attack_sklearn (clf , X_train , y_train)
+malicious_data , log = attacker.attack(initial_data , 1, X_valid , y_valid)
+```
+
 For distributed learning such as Federated Learning and Split Learning, AIJack offers four basic APIs: `Client`, `Server`, `API`, and `Manager`. `Client` and `Server` represent each client and server within each distributed learning scheme. You can execute training by registering the clients and servers to `API` and running it. `Manager` gives additional abilities such as attack, defense, or parallel computing to `Client`, `Server` or `API` via `attach` method.
 
 ```Python
@@ -182,7 +191,7 @@ You can also find more examples in our tutorials and documentation.
 | Attack        | Backdoor               | [DBA](https://openreview.net/forum?id=rkgyS0VFvr), [Model Replacement](https://proceedings.mlr.press/v108/bagdasaryan20a.html)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
 | Attack        | Free-Rider             | [Delta-Weight](https://arxiv.org/pdf/1911.12560.pdf)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
 | Attack        | Evasion                | [Gradient-Descent Attack](https://arxiv.org/abs/1708.06131), [FGSM](https://arxiv.org/abs/1412.6572), [DIVA](https://arxiv.org/abs/2204.10933)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
-| Attack        | Membership Inference   | [Shaddow Attack](https://arxiv.org/abs/1610.05820)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+| Attack        | Membership Inference   | [Shadow Attack](https://arxiv.org/abs/1610.05820)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
 | Defense       | Homomorphic Encryption | [Paillier](https://link.springer.com/chapter/10.1007/3-540-48910-X_16)                                                                                                                                                                                                                                                                                                                                                                                                                                             |
 | Defense       | Differential Privacy   | [DPSGD](https://arxiv.org/abs/1607.00133), [AdaDPS](https://arxiv.org/pdf/2202.05963.pdf), [DPlis](https://arxiv.org/pdf/2103.01496.pdf)                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
 | Defense       | Anonymization          | [Mondrian](https://ieeexplore.ieee.org/document/1617393)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
@@ -194,14 +203,25 @@ You can also find more examples in our tutorials and documentation.
 
 # Citation
 
+If you use AIJack for your research, please cite the repo and our arXiv paper.
+
 ```
-@misc{Hideaki_AIJack_2023,
-  author = {Hideaki, Takahashi},
-  title = {AIJack},
-  year = {2023},
-  publisher = {GitHub},
-  journal = {GitHub Repository},
-  howpublished = {\url{https://github.com/Koukyosyumei/AIJack}},
+@misc{repotakahashi2023aijack,
+      author = {Hideaki, Takahashi},
+      title = {AIJack},
+      year = {2023},
+      publisher = {GitHub},
+      journal = {GitHub Repository},
+      howpublished = {\url{https://github.com/Koukyosyumei/AIJack}},
+}
+
+@misc{takahashi2023aijack,
+      title={AIJack: Security and Privacy Risk Simulator for Machine Learning}, 
+      author={Hideaki Takahashi},
+      year={2023},
+      eprint={2312.17667},
+      archivePrefix={arXiv},
+      primaryClass={cs.LG}
 }
 ```
 
