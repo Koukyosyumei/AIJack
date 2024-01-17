@@ -21,7 +21,7 @@
 <h1 align="center">
 
   <br>
-  <img src="docs/source/_static/logo_wide_png.png" width=1000>
+  <img src="docs/source/_static/logo_wide_png.png" alt="" width=1000>
   <br>
   <br>
 
@@ -76,6 +76,15 @@ For standard machine learning algorithms, AIJack allows you to simulate attacks 
 
 attacker = Attacker(target_model)
 result = attacker.attack()
+```
+
+For instance, we can implement Poisoning Attack against SVM implemented with sklearn as follows.
+
+```Python
+from aijack . attack import Poison_attack_sklearn
+
+attacker = Poison_attack_sklearn (clf , X_train , y_train)
+malicious_data , log = attacker.attack(initial_data , 1, X_valid , y_valid)
 ```
 
 For distributed learning such as Federated Learning and Split Learning, AIJack offers four basic APIs: `Client`, `Server`, `API`, and `Manager`. `Client` and `Server` represent each client and server within each distributed learning scheme. You can execute training by registering the clients and servers to `API` and running it. `Manager` gives additional abilities such as attack, defense, or parallel computing to `Client`, `Server` or `API` via `attach` method.
@@ -182,8 +191,8 @@ You can also find more examples in our tutorials and documentation.
 | Attack        | Backdoor               | [DBA](https://openreview.net/forum?id=rkgyS0VFvr), [Model Replacement](https://proceedings.mlr.press/v108/bagdasaryan20a.html)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
 | Attack        | Free-Rider             | [Delta-Weight](https://arxiv.org/pdf/1911.12560.pdf)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
 | Attack        | Evasion                | [Gradient-Descent Attack](https://arxiv.org/abs/1708.06131), [FGSM](https://arxiv.org/abs/1412.6572), [DIVA](https://arxiv.org/abs/2204.10933)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
-| Attack        | Membership Inference   | [Shaddow Attack](https://arxiv.org/abs/1610.05820)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
-| Defense       | Homomorphic Encryption | [Paiilier](https://link.springer.com/chapter/10.1007/3-540-48910-X_16)                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+| Attack        | Membership Inference   | [Shadow Attack](https://arxiv.org/abs/1610.05820)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+| Defense       | Homomorphic Encryption | [Paillier](https://link.springer.com/chapter/10.1007/3-540-48910-X_16)                                                                                                                                                                                                                                                                                                                                                                                                                                             |
 | Defense       | Differential Privacy   | [DPSGD](https://arxiv.org/abs/1607.00133), [AdaDPS](https://arxiv.org/pdf/2202.05963.pdf), [DPlis](https://arxiv.org/pdf/2103.01496.pdf)                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
 | Defense       | Anonymization          | [Mondrian](https://ieeexplore.ieee.org/document/1617393)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
 | Defense       | Robust Training   | [PixelDP](https://arxiv.org/abs/1802.03471v4), [Cost-Aware Robust Tree Ensemble](https://arxiv.org/abs/1912.01149) |
@@ -194,19 +203,33 @@ You can also find more examples in our tutorials and documentation.
 
 # Citation
 
+If you use AIJack for your research, please cite the repo and our arXiv paper.
+
 ```
-@software{Hideaki_AIJack_2023,
-author = {Hideaki, Takahashi},
-month = jun,
-title = {{AIJack}},
-url = {https://github.com/Koukyosyumei/AIJack},
-year = {2023}
+@misc{repotakahashi2023aijack,
+      author = {Hideaki, Takahashi},
+      title = {AIJack},
+      year = {2023},
+      publisher = {GitHub},
+      journal = {GitHub Repository},
+      howpublished = {\url{https://github.com/Koukyosyumei/AIJack}},
+}
+
+@misc{takahashi2023aijack,
+      title={AIJack: Security and Privacy Risk Simulator for Machine Learning}, 
+      author={Hideaki Takahashi},
+      year={2023},
+      eprint={2312.17667},
+      archivePrefix={arXiv},
+      primaryClass={cs.LG}
 }
 ```
+
 # Related Publications
 
 Below you can find a list of papers and books that either use or extend AIJack.
 
+- Huang, Shiyuan, et al. "Video in 10 Bits: Few-Bit VideoQA for Efficiency and Privacy." European Conference on Computer Vision. Cham: Springer Nature Switzerland, 2022.
 - Song, Junzhe, and Dmitry Namiot. "A Survey of the Implementations of Model Inversion Attacks." International Conference on Distributed Computer and Communication Networks. Cham: Springer Nature Switzerland, 2022.
 - Kapoor, Amita, and Sharmistha Chatterjee. Platform and Model Design for Responsible AI: Design and build resilient, private, fair, and transparent machine learning models. Packt Publishing Ltd, 2023.
 - Mi, Yuxi, et al. "Flexible Differentially Private Vertical Federated Learning with Adaptive Feature Embeddings." arXiv preprint arXiv:2308.02362 (2023).
