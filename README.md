@@ -83,7 +83,7 @@ For instance, we can implement Poisoning Attack against SVM implemented with skl
 ```Python
 from aijack . attack import Poison_attack_sklearn
 
-attacker = Poison_attack_sklearn (clf , X_train , y_train)
+attacker = Poison_attack_sklearn(clf , X_train , y_train)
 malicious_data , log = attacker.attack(initial_data , 1, X_valid , y_valid)
 ```
 
