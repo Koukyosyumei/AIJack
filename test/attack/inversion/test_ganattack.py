@@ -35,7 +35,7 @@ def test_ganattack():
                 nn.ReLU(True),
                 # state size. (ngf*2) x 16 x 16
                 nn.ConvTranspose2d(ngf * 1, 1, 4, 2, 1, bias=False),
-                nn.Tanh()
+                nn.Tanh(),
                 # state size. (nc) x 64 x 64
             )
 

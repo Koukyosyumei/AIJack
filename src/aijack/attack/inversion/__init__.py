@@ -1,6 +1,7 @@
 """Subpackage for model inversion attack, which reconstructs the private data from
 the trained machine learning models.
 """
+
 from .gan_attack import GANAttackClientManager, attach_ganattack_to_client  # noqa: F401
 from .generator_attack import Generator_Attack  # noqa: F401
 from .gradientinversion import GradientInversion_Attack  # noqa: F401
