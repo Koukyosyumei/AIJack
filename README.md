@@ -234,6 +234,8 @@ Below you can find a list of papers and books that either use or extend AIJack.
 - Kapoor, Amita, and Sharmistha Chatterjee. Platform and Model Design for Responsible AI: Design and build resilient, private, fair, and transparent machine learning models. Packt Publishing Ltd, 2023.
 - Mi, Yuxi, et al. "Flexible Differentially Private Vertical Federated Learning with Adaptive Feature Embeddings." arXiv preprint arXiv:2308.02362 (2023).
 - Mohammadi, Mohammadreza, et al. "Privacy-preserving Federated Learning System for Fatigue Detection." 2023 IEEE International Conference on Cyber Security and Resilience (CSR). IEEE, 2023.
+- Huang, Shiyuan. A General Framework for Model Adaptation to Meet Practical Constraints in Computer Vision. Diss. Columbia University, 2024.
+- Liu, Can, Jin Wang, and Dongyang Yu. "RAF-GI: Towards Robust, Accurate and Fast-Convergent Gradient Inversion Attack in Federated Learning." arXiv preprint arXiv:2403.08383 (2024).
 
 # Contact
 
