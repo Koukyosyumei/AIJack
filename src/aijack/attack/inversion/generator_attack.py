@@ -27,7 +27,7 @@ class Generator_Attack(BaseAttacker):
             target_model if type(target_model) == list else [target_model]
         )
 
-    def culc_loss(self, dataloader, x_pos=0, y_pos=1, arbitrary_y=False):
+    def calc_loss(self, dataloader, x_pos=0, y_pos=1, arbitrary_y=False):
         running_loss = 0
         for data in dataloader:
             x = data[x_pos]

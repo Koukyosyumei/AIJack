@@ -59,7 +59,7 @@ def attach_soteria_to_client(
                 mask[:, i] = 1
                 feature.backward(
                     mask, retain_graph=True
-                )  # culc the derivative of feature_2 @ df_dtarget
+                )  # calc the derivative of feature_2 @ df_dtarget
                 dfri_dx = input_data.grad.data
                 r_dfr_dx_norm[:, i] = feature[:, i] / torch.norm(
                     dfri_dx.view(dfri_dx.shape[0], -1), dim=1
