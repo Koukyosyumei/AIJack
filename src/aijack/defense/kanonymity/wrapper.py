@@ -1,5 +1,4 @@
 import pandas as pd
-
 from aijack_cpp_core import DataFrame as AnoDataFrame
 from aijack_cpp_core import Mondrian as MondrianCore
 
