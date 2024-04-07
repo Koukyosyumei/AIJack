@@ -5,14 +5,14 @@ from aijack_cpp_core import (
     _greedy_search_frac,
     _ternary_search,
     _ternary_search_int,
-    culc_tightupperbound_lowerbound_of_rdp_with_theorem6and8_of_zhu_2019,
-    culc_upperbound_of_rdp_with_Sampled_Gaussian_Mechanism,
+    calc_tightupperbound_lowerbound_of_rdp_with_theorem6and8_of_zhu_2019,
+    calc_upperbound_of_rdp_with_Sampled_Gaussian_Mechanism,
     eps_gaussian,
     eps_laplace,
 )
 
 from .rdp import (
-    culc_upperbound_of_rdp_with_Sampled_Gaussian_Mechanism as culc_upperbound_of_rdp_with_Sampled_Gaussian_Mechanism_py,
+    calc_upperbound_of_rdp_with_Sampled_Gaussian_Mechanism as calc_upperbound_of_rdp_with_Sampled_Gaussian_Mechanism_py,
 )
 
 
@@ -33,7 +33,7 @@ class BaseMomentAccountant:
         self.max_iterations = max_iterations
 
         self.steps_info = []
-        self._culc_bound_of_rdp = None
+        self.calc_bound_of_rdp = None
 
         if search == "ternary":
             self.search = _ternary_search
@@ -46,7 +46,7 @@ class BaseMomentAccountant:
 
         self._cache = {}
 
-    def _culc_upperbound_of_rdp_onestep(self, alpha, noise_params, sampling_rate):
+    def calc_upperbound_of_rdp_onestep(self, alpha, noise_params, sampling_rate):
         key = hash(
             f"{alpha}_{list(noise_params.keys())[0]}_{list(noise_params.values())[0]}_{sampling_rate}"
         )
@@ -56,7 +56,7 @@ class BaseMomentAccountant:
             elif sampling_rate == 1:
                 result = self.eps_func(alpha, noise_params)
             else:
-                result = self._culc_bound_of_rdp(
+                result = self.calc_bound_of_rdp(
                     alpha, noise_params, sampling_rate, self.eps_func
                 )
             self._cache[key] = result
@@ -64,10 +64,10 @@ class BaseMomentAccountant:
         else:
             return self._cache[key]
 
-    def _culc_upperbound_of_rdp(self, lam, steps_info):
+    def _calc_upperbound_of_rdp(self, lam, steps_info):
         rdp = 0.0
         for noise_params, sampling_rate, num_steps in steps_info:
-            rdp += num_steps * self._culc_upperbound_of_rdp_onestep(
+            rdp += num_steps * self.calc_upperbound_of_rdp_onestep(
                 lam, noise_params, sampling_rate
             )
         return rdp
@@ -135,7 +135,7 @@ class BaseMomentAccountant:
     def get_delta(self, epsilon):
         optimal_lam = self.search(
             lambda order: (order - 1)
-            * (self._culc_upperbound_of_rdp(order - 1, self.steps_info) - epsilon),
+            * (self._calc_upperbound_of_rdp(order - 1, self.steps_info) - epsilon),
             self.order_min,
             self.order_max,
             self.orders,
@@ -145,7 +145,7 @@ class BaseMomentAccountant:
 
         min_delta = np.exp(
             (optimal_lam - 1)
-            * (self._culc_upperbound_of_rdp(optimal_lam - 1, self.steps_info) - epsilon)
+            * (self._calc_upperbound_of_rdp(optimal_lam - 1, self.steps_info) - epsilon)
         )
 
         return min_delta
@@ -155,7 +155,7 @@ class BaseMomentAccountant:
 
         def estimate_eps(order):
             return (
-                self._culc_upperbound_of_rdp(order, self.steps_info)
+                self._calc_upperbound_of_rdp(order, self.steps_info)
                 - (np.log(order) + np.log(delta)) / (order - 1)
                 + np.log((order - 1) / order)
             )
@@ -208,14 +208,14 @@ class GeneralMomentAccountant(BaseMomentAccountant):
 
     def _set_upperbound_func(self, backend, bound_type):
         if backend == "cpp" and bound_type == "rdp_upperbound_closedformula":
-            self._culc_bound_of_rdp = (
-                culc_upperbound_of_rdp_with_Sampled_Gaussian_Mechanism
+            self.calc_bound_of_rdp = (
+                calc_upperbound_of_rdp_with_Sampled_Gaussian_Mechanism
             )
         elif backend == "python" and bound_type == "rdp_upperbound_closedformula":
-            self._culc_bound_of_rdp = (
-                culc_upperbound_of_rdp_with_Sampled_Gaussian_Mechanism_py
+            self.calc_bound_of_rdp = (
+                calc_upperbound_of_rdp_with_Sampled_Gaussian_Mechanism_py
             )
         elif backend == "cpp" and bound_type == "rdp_tight_upperbound":
-            self._culc_bound_of_rdp = (
-                culc_tightupperbound_lowerbound_of_rdp_with_theorem6and8_of_zhu_2019
+            self.calc_bound_of_rdp = (
+                calc_tightupperbound_lowerbound_of_rdp_with_theorem6and8_of_zhu_2019
             )

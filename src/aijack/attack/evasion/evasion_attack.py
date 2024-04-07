@@ -148,7 +148,7 @@ class Evasion_attack_sklearn(BaseAttacker):
         return True
 
     def _get_delta_p(self, xm):
-        """Culculates deviation of the estimated density p(xm−1 |yc = −1)
+        """Calculates deviation of the estimated density p(xm−1 |yc = −1)
 
         Args:
             xm (np.array) : an adversarial example
@@ -167,7 +167,7 @@ class Evasion_attack_sklearn(BaseAttacker):
             return delta_p
 
     def _get_grad_f(self, xm, norm="l1"):
-        """Culculates deviation of objective function F
+        """Calculates deviation of objective function F
 
         Args:
             xm (np.array) : an adversarial example

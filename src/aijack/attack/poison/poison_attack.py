@@ -63,7 +63,7 @@ class Poison_attack_sklearn(BaseAttacker):
         return True
 
     def _delta_q(self, xi, xc, yi, yc):
-        """Culculate deviation of q
+        """Calculate deviation of q
            Q = yy.T * K denotes the label - annotated version of K,
            and α denotes the SVM’s dual variables corresponding
            to each training point.

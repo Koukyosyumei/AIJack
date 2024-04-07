@@ -41,7 +41,7 @@ class FedGEMSClient(BaseClient):
             self, local_epoch, criterion, trainloader, optimizer
         )
 
-    def culc_loss_on_public_dataset(self, idx, y_pred, y):
+    def calc_loss_on_public_dataset(self, idx, y_pred, y):
         y_pred_server = self.predicted_values_of_server[idx]
         base_loss = self.epsilon * self.base_loss_func(y_pred, y.to(torch.int64))
         kl_loss = (1 - self.epsilon) * self.kldiv_loss_func(

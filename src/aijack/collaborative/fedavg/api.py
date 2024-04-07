@@ -54,15 +54,20 @@ class FedAVGAPI(BaseFedAPI):
             for dataset_size in local_dataset_sizes
         ]
 
+        self.logging = {}
+
     def local_train(self, i):
+        self.logging[i] = {}
+
         for client_idx in range(self.client_num):
-            self.clients[client_idx].local_train(
+            loss_log = self.clients[client_idx].local_train(
                 self.local_epoch,
                 self.criterion,
                 self.local_dataloaders[client_idx],
                 self.local_optimizers[client_idx],
                 communication_id=i,
             )
+            self.logging[i][client_idx] = loss_log
 
     def run(self):
         self.server.force_send_model_state_dict = True
@@ -106,13 +111,16 @@ class MPIFedAVGAPI(BaseFedAPI):
         self.custom_action = custom_action
         self.device = device
 
+        self.logging = []
+
     def run(self):
         self.party.mpi_initialize()
         self.comm.Barrier()
 
         for i in range(self.num_communication):
             if not self.is_server:
-                self.local_train(i)
+                loss_logging = self.local_train(i)
+                self.logging.append(loss_logging)
             self.party.action()
 
             self.custom_action(self)
@@ -123,10 +131,11 @@ class MPIFedAVGAPI(BaseFedAPI):
         for param in self.party.model.parameters():
             self.party.prev_parameters.append(copy.deepcopy(param))
 
-        self.party.local_train(
+        loss_logging = self.party.local_train(
             self.local_epoch,
             self.criterion,
             self.local_dataloader,
             self.local_optimizer,
             communication_id=com_cnt,
         )
+        return loss_logging

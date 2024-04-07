@@ -59,7 +59,7 @@ def attach_soteria_to_client(
                 mask[:, i] = 1
                 feature.backward(
                     mask, retain_graph=True
-                )  # culc the derivative of feature_2 @ df_dtarget
+                )  # calc the derivative of feature_2 @ df_dtarget
                 dfri_dx = input_data.grad.data
                 r_dfr_dx_norm[:, i] = feature[:, i] / torch.norm(
                     dfri_dx.view(dfri_dx.shape[0], -1), dim=1
@@ -95,7 +95,9 @@ def attach_soteria_to_client(
         def local_train(
             self, local_epoch, criterion, trainloader, optimizer, communication_id=0
         ):
-            for i in range(local_epoch):
+            loss_log = []
+
+            for _ in range(local_epoch):
                 running_loss = 0.0
                 running_data_num = 0
                 for _, data in enumerate(trainloader, 0):
@@ -116,10 +118,9 @@ def attach_soteria_to_client(
                     running_loss += loss.item()
                     running_data_num += inputs.shape[0]
 
-                print(
-                    f"communication {communication_id}, epoch {i}: client-{self.user_id+1}",
-                    running_loss / running_data_num,
-                )
+                loss_log.append(running_loss / running_data_num)
+
+            return loss_log
 
     return SoteriaClientWrapper
 
