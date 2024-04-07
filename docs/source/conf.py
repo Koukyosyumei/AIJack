@@ -81,4 +81,4 @@ html_css_files = [
     "style.css",
 ]
 
-jupyter_execute_notebooks = "off"
+nb_execution_mode = "off"

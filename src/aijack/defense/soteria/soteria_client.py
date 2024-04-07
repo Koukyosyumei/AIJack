@@ -10,6 +10,20 @@ def attach_soteria_to_client(
     epsilon=0.2,
     target_layer_name=None,
 ):
+    """
+    Attaches the Soteria wrapper to the client class.
+
+    Args:
+        cls: The client class to which Soteria will be attached.
+        input_layer (str): Name of the input layer.
+        perturbed_layer (str): Name of the perturbed layer.
+        epsilon (float, optional): Privacy budget epsilon. Defaults to 0.2.
+        target_layer_name (str, optional): Name of the target layer. Defaults to None.
+
+    Returns:
+        class: Client class with Soteria wrapper attached.
+    """
+
     class SoteriaClientWrapper(cls):
         """Implementation of https://arxiv.org/pdf/2012.06043.pdf"""
 

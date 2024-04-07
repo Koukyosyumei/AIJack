@@ -1,4 +1,14 @@
 def l2(fake_gradients, received_gradients, gradient_ignore_pos):
+    """Computes the L2 distance between fake and received gradients.
+
+    Args:
+        fake_gradients (list of torch.Tensor): List of fake gradients.
+        received_gradients (list of torch.Tensor): List of received gradients.
+        gradient_ignore_pos (list of int): Positions to ignore while computing distance.
+
+    Returns:
+        float: The L2 distance.
+    """
     distance = 0
     for i, (f_g, c_g) in enumerate(zip(fake_gradients, received_gradients)):
         if i not in gradient_ignore_pos:
@@ -7,6 +17,16 @@ def l2(fake_gradients, received_gradients, gradient_ignore_pos):
 
 
 def cossim(fake_gradients, received_gradients, gradient_ignore_pos):
+    """Computes the cosine similarity distance between fake and received gradients.
+
+    Args:
+        fake_gradients (list of torch.Tensor): List of fake gradients.
+        received_gradients (list of torch.Tensor): List of received gradients.
+        gradient_ignore_pos (list of int): Positions to ignore while computing distance.
+
+    Returns:
+        float: The cosine similarity distance.
+    """
     distance = 0
     pnorm_0 = 0
     pnorm_1 = 0

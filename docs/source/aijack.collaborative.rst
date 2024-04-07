@@ -10,10 +10,12 @@ Subpackages
    aijack.collaborative.core
    aijack.collaborative.dsfl
    aijack.collaborative.fedavg
+   aijack.collaborative.fedexp
    aijack.collaborative.fedgems
    aijack.collaborative.fedkd
    aijack.collaborative.fedmd
    aijack.collaborative.fedprox
+   aijack.collaborative.moon
    aijack.collaborative.optimizer
    aijack.collaborative.splitnn
    aijack.collaborative.tree

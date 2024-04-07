@@ -7,6 +7,18 @@ from ...manager import BaseManager
 def attach_normattack_to_splitnn(
     cls, attack_criterion, target_client_index=0, device="cpu"
 ):
+    """Attaches a normalization attack to a SplitNN model.
+
+    Args:
+        cls: The SplitNN model class.
+        attack_criterion: The criterion for the attack.
+        target_client_index (int, optional): Index of the target client. Defaults to 0.
+        device (str, optional): Device for computation. Defaults to "cpu".
+
+    Returns:
+        class: A wrapper class with attached normalization attack.
+    """
+
     class NormAttackSplitNNWrapper(cls):
         def __init__(self, *args, **kwargs):
             super(NormAttackSplitNNWrapper, self).__init__(*args, **kwargs)
