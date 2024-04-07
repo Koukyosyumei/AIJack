@@ -73,6 +73,7 @@ class BaseMomentAccountant:
         Returns:
             float: Upper bound of RDP for one step.
         """
+
         key = hash(
             f"{alpha}_{list(noise_params.keys())[0]}_{list(noise_params.values())[0]}_{sampling_rate}"
         )
@@ -101,6 +102,7 @@ class BaseMomentAccountant:
         Returns:
             float: Upper bound of RDP.
         """
+
         rdp = 0.0
         for noise_params, sampling_rate, num_steps in steps_info:
             rdp += num_steps * self.calc_upperbound_of_rdp_onestep(
