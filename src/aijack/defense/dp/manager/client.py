@@ -5,6 +5,17 @@ from ....manager import BaseManager
 
 
 def attach_dpsgd_to_client(cls, privacy_manager, sigma):
+    """
+    Attaches DPSGD (Differentially Private Stochastic Gradient Descent) functionality to the client class.
+
+    Args:
+        cls: Client class to which DPSGD functionality will be attached.
+        privacy_manager: Privacy manager object providing DPSGD functionality.
+        sigma (float): Noise multiplier for privacy.
+
+    Returns:
+        tuple: Tuple containing the DPSGDClientWrapper class and the privacy optimizer wrapper.
+    """
     dpoptimizer_wrapper, lot_loader, batch_loader = privacy_manager.privatize(sigma)
 
     class DPSGDClientWrapper(cls):
@@ -40,5 +51,18 @@ def attach_dpsgd_to_client(cls, privacy_manager, sigma):
 
 
 class DPSGDClientManager(BaseManager):
+    """
+    Manager class for attaching DPSGD to clients.
+    """
+
     def attach(self, cls):
+        """
+        Attaches DPSGD to the client class.
+
+        Args:
+            cls: Client class.
+
+        Returns:
+            DPSGDClientWrapper: Wrapped client class with DPSGD functionality.
+        """
         return attach_dpsgd_to_client(cls, *self.args, **self.kwargs)

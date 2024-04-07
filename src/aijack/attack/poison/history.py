@@ -2,6 +2,16 @@ from ...manager import BaseManager
 
 
 def attach_history_attack_to_client(cls, lam):
+    """Attaches a history attack to a client.
+
+    Args:
+        cls: The client class.
+        lam (float): The lambda parameter for the attack.
+
+    Returns:
+        class: A wrapper class with attached history attack.
+    """
+
     class HistoryAttackClientWrapper(cls):
         """Implementation of history attack proposed in https://arxiv.org/pdf/2203.08669.pdf"""
 

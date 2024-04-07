@@ -9,6 +9,12 @@ from .dpoptimizer import (
 
 
 def _update_side_info_rmsprop(opt):
+    """
+    Update side information for RMSprop optimizer.
+
+    Args:
+        opt: Optimizer instance.
+    """
     for group in opt.param_groups:
         for param, si in zip(group["params"], group["side_information"]):
             if param.requires_grad:
@@ -16,6 +22,12 @@ def _update_side_info_rmsprop(opt):
 
 
 def _apply_side_infor_rmsprop(opt):
+    """
+    Apply side information for RMSprop optimizer.
+
+    Args:
+        opt: Optimizer instance.
+    """
     for group in opt.param_groups:
         for param, si in zip(group["params"], group["side_information"]):
             if param.requires_grad:
@@ -23,6 +35,12 @@ def _apply_side_infor_rmsprop(opt):
 
 
 def _update_side_info_adam(opt):
+    """
+    Update side information for Adam optimizer.
+
+    Args:
+        opt: Optimizer instance.
+    """
     for group in opt.param_groups:
         for param, si, pm in zip(
             group["params"], group["side_information"], group["potential_momentum"]
@@ -33,6 +51,12 @@ def _update_side_info_adam(opt):
 
 
 def _apply_side_infor_adam(opt):
+    """
+    Apply side information for Adam optimizer.
+
+    Args:
+        opt: Optimizer instance.
+    """
     for group in opt.param_groups:
         for param, si, pm in zip(
             group["params"], group["side_information"], group["potential_momentum"]
@@ -42,6 +66,12 @@ def _apply_side_infor_adam(opt):
 
 
 def _precondition_grads_with_side_info(opt):
+    """
+    Precondition gradients with side information.
+
+    Args:
+        opt: Optimizer instance.
+    """
     if opt.mode == "rmsprop":
         _apply_side_infor_rmsprop(opt)
     elif opt.mode == "adam":
@@ -60,6 +90,25 @@ def attach_adadps(
     beta=0.9,
     eps_to_avoid_nan=1e-8,
 ):
+    """
+    Attach the AdaDPS optimizer to the given class.
+
+    Args:
+        cls: Class to which AdaDPS optimizer will be attached.
+        accountant: Privacy accountant.
+        l2_norm_clip (float): L2 norm clip value.
+        noise_multiplier (float): Noise multiplier value.
+        lot_size (int): Lot size.
+        batch_size (int): Batch size.
+        dataset_size (int): Size of the dataset.
+        mode (str, optional): Mode of optimization. Defaults to "rmsprop".
+        beta (float, optional): Beta value. Defaults to 0.9.
+        eps_to_avoid_nan (float, optional): Epsilon value to avoid NaN. Defaults to 1e-8.
+
+    Returns:
+        class: Class with AdaDPS optimizer attached.
+    """
+
     class AdaDPSWrapper(cls):
         """Implementation of AdaDPS proposed in
         `Private Adaptive Optimization with Side information`
