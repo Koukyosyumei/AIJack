@@ -407,16 +407,6 @@ document.write(`
 <span class="sd">    Raises:</span>
 <span class="sd">        ValueError: if given distance is not supported.</span>
 
-<span class="sd">    Examples:</span>
-<span class="sd">        &gt;&gt;&gt;X_minus_1 = X_train[np.where(y_train == &quot;3&quot;)]</span>
-<span class="sd">        &gt;&gt;&gt;attacker = Attack_sklearn(target_model = target_model,</span>
-<span class="sd">                                    X_minus_1 = X_minus_1,</span>
-<span class="sd">                                    dmax =  (5000 / 255) * 2.5,</span>
-<span class="sd">                                    max_iter = 300,</span>
-<span class="sd">                                    gamma = 1 / (X_train.shape[1] *</span>
-<span class="sd">                                                np.var(X_train)),</span>
-<span class="sd">                                    lam = 10, t = 0.5, h = 10)</span>
-<span class="sd">        &gt;&gt;&gt;xm, log = attacker.attack(x0)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>

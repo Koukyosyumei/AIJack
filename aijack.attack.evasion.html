@@ -714,20 +714,6 @@ and initial one</p></li>
 <dd class="field-odd"><p><strong>ValueError</strong> – if given distance is not supported.</p>
 </dd>
 </dl>
-<p class="rubric">Examples</p>
-<p>&gt;&gt;&gt;X_minus_1 = X_train[np.where(y_train == “3”)]
-&gt;&gt;&gt;attacker = Attack_sklearn(target_model = target_model,</p>
-<blockquote>
-<div><p>X_minus_1 = X_minus_1,
-dmax =  (5000 / 255) * 2.5,
-max_iter = 300,
-gamma = 1 / (X_train.shape[1] *</p>
-<blockquote>
-<div><p>np.var(X_train)),</p>
-</div></blockquote>
-<p>lam = 10, t = 0.5, h = 10)</p>
-</div></blockquote>
-<p>&gt;&gt;&gt;xm, log = attacker.attack(x0)</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="aijack.attack.evasion.evasion_attack.Evasion_attack_sklearn.attack">
 <span class="sig-name descname"><span class="pre">attack</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/attack/evasion/evasion_attack.html#Evasion_attack_sklearn.attack"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.attack.evasion.evasion_attack.Evasion_attack_sklearn.attack" title="Permalink to this definition">#</a></dt>
@@ -1145,20 +1131,6 @@ and initial one</p></li>
 <dd class="field-odd"><p><strong>ValueError</strong> – if given distance is not supported.</p>
 </dd>
 </dl>
-<p class="rubric">Examples</p>
-<p>&gt;&gt;&gt;X_minus_1 = X_train[np.where(y_train == “3”)]
-&gt;&gt;&gt;attacker = Attack_sklearn(target_model = target_model,</p>
-<blockquote>
-<div><p>X_minus_1 = X_minus_1,
-dmax =  (5000 / 255) * 2.5,
-max_iter = 300,
-gamma = 1 / (X_train.shape[1] *</p>
-<blockquote>
-<div><p>np.var(X_train)),</p>
-</div></blockquote>
-<p>lam = 10, t = 0.5, h = 10)</p>
-</div></blockquote>
-<p>&gt;&gt;&gt;xm, log = attacker.attack(x0)</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="aijack.attack.evasion.Evasion_attack_sklearn.attack">
 <span class="sig-name descname"><span class="pre">attack</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/attack/evasion/evasion_attack.html#Evasion_attack_sklearn.attack"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.attack.evasion.Evasion_attack_sklearn.attack" title="Permalink to this definition">#</a></dt>
