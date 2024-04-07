@@ -414,15 +414,15 @@ document.write(`
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#submodules">2.1.3.1.1.1. Submodules</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#aijack-defense-dp-manager-accountant-module">2.1.3.1.1.2. aijack.defense.dp.manager.accountant module</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#aijack-defense-dp-manager-adadps-module">2.1.3.1.1.3. aijack.defense.dp.manager.adadps module</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#aijack-defense-dp-manager-client-module">2.1.3.1.1.4. aijack.defense.dp.manager.client module</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#aijack-defense-dp-manager-dataloader-module">2.1.3.1.1.5. aijack.defense.dp.manager.dataloader module</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#aijack-defense-dp-manager-dp-manager-module">2.1.3.1.1.6. aijack.defense.dp.manager.dp_manager module</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#aijack-defense-dp-manager-dpoptimizer-module">2.1.3.1.1.7. aijack.defense.dp.manager.dpoptimizer module</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#aijack-defense-dp-manager-rdp-module">2.1.3.1.1.8. aijack.defense.dp.manager.rdp module</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#aijack-defense-dp-manager-utils-module">2.1.3.1.1.9. aijack.defense.dp.manager.utils module</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-contents">2.1.3.1.1.10. Module contents</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aijack.defense.dp.manager.accountant">2.1.3.1.1.2. aijack.defense.dp.manager.accountant module</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aijack.defense.dp.manager.adadps">2.1.3.1.1.3. aijack.defense.dp.manager.adadps module</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aijack.defense.dp.manager.client">2.1.3.1.1.4. aijack.defense.dp.manager.client module</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aijack.defense.dp.manager.dataloader">2.1.3.1.1.5. aijack.defense.dp.manager.dataloader module</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aijack.defense.dp.manager.dp_manager">2.1.3.1.1.6. aijack.defense.dp.manager.dp_manager module</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aijack.defense.dp.manager.dpoptimizer">2.1.3.1.1.7. aijack.defense.dp.manager.dpoptimizer module</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aijack.defense.dp.manager.rdp">2.1.3.1.1.8. aijack.defense.dp.manager.rdp module</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aijack.defense.dp.manager.utils">2.1.3.1.1.9. aijack.defense.dp.manager.utils module</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aijack.defense.dp.manager">2.1.3.1.1.10. Module contents</a></li>
 </ul>
             </nav>
         </div>
@@ -439,32 +439,434 @@ document.write(`
 <section id="submodules">
 <h2><span class="section-number">2.1.3.1.1.1. </span>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">#</a></h2>
 </section>
-<section id="aijack-defense-dp-manager-accountant-module">
-<h2><span class="section-number">2.1.3.1.1.2. </span>aijack.defense.dp.manager.accountant module<a class="headerlink" href="#aijack-defense-dp-manager-accountant-module" title="Permalink to this headline">#</a></h2>
+<section id="module-aijack.defense.dp.manager.accountant">
+<span id="aijack-defense-dp-manager-accountant-module"></span><h2><span class="section-number">2.1.3.1.1.2. </span>aijack.defense.dp.manager.accountant module<a class="headerlink" href="#module-aijack.defense.dp.manager.accountant" title="Permalink to this headline">#</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="aijack.defense.dp.manager.accountant.BaseMomentAccountant">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">aijack.defense.dp.manager.accountant.</span></span><span class="sig-name descname"><span class="pre">BaseMomentAccountant</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">search</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'ternary'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">64</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">precision</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">orders</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_iterations</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10000</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/defense/dp/manager/accountant.html#BaseMomentAccountant"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.defense.dp.manager.accountant.BaseMomentAccountant" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Base class for computing the privacy budget using the Moments Accountant technique.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="aijack.defense.dp.manager.accountant.BaseMomentAccountant.add_step_info">
+<span class="sig-name descname"><span class="pre">add_step_info</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">noise_params</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sampling_rate</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_steps</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/defense/dp/manager/accountant.html#BaseMomentAccountant.add_step_info"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.defense.dp.manager.accountant.BaseMomentAccountant.add_step_info" title="Permalink to this definition">#</a></dt>
+<dd><p>Add step information.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>noise_params</strong> (<em>dict</em>) – Parameters of the noise distribution.</p></li>
+<li><p><strong>sampling_rate</strong> (<em>float</em>) – Sampling rate.</p></li>
+<li><p><strong>num_steps</strong> (<em>int</em>) – Number of steps.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="aijack.defense.dp.manager.accountant.BaseMomentAccountant.calc_upperbound_of_rdp_onestep">
+<span class="sig-name descname"><span class="pre">calc_upperbound_of_rdp_onestep</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">alpha</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">noise_params</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sampling_rate</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/defense/dp/manager/accountant.html#BaseMomentAccountant.calc_upperbound_of_rdp_onestep"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.defense.dp.manager.accountant.BaseMomentAccountant.calc_upperbound_of_rdp_onestep" title="Permalink to this definition">#</a></dt>
+<dd><p>Calculate the upper bound of Renyi Differential Privacy (RDP) for one step.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>alpha</strong> (<em>float</em>) – Privacy parameter alpha.</p></li>
+<li><p><strong>noise_params</strong> (<em>dict</em>) – Parameters of the noise distribution.</p></li>
+<li><p><strong>sampling_rate</strong> (<em>float</em>) – Sampling rate.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Upper bound of RDP for one step.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="aijack.defense.dp.manager.accountant.BaseMomentAccountant.get_delta">
+<span class="sig-name descname"><span class="pre">get_delta</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">epsilon</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/defense/dp/manager/accountant.html#BaseMomentAccountant.get_delta"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.defense.dp.manager.accountant.BaseMomentAccountant.get_delta" title="Permalink to this definition">#</a></dt>
+<dd><p>Get delta.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>epsilon</strong> (<em>float</em>) – Epsilon value.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Delta value.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="aijack.defense.dp.manager.accountant.BaseMomentAccountant.get_epsilon">
+<span class="sig-name descname"><span class="pre">get_epsilon</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">delta</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/defense/dp/manager/accountant.html#BaseMomentAccountant.get_epsilon"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.defense.dp.manager.accountant.BaseMomentAccountant.get_epsilon" title="Permalink to this definition">#</a></dt>
+<dd><p>Get epsilon.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>delta</strong> (<em>float</em>) – Delta value.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Epsilon value.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="aijack.defense.dp.manager.accountant.BaseMomentAccountant.get_noise_multiplier">
+<span class="sig-name descname"><span class="pre">get_noise_multiplier</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">noise_multiplier_key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_epsilon</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_delta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sampling_rate</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_iterations</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">noise_multiplier_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">noise_multiplier_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">noise_multiplier_precision</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.01</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/defense/dp/manager/accountant.html#BaseMomentAccountant.get_noise_multiplier"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.defense.dp.manager.accountant.BaseMomentAccountant.get_noise_multiplier" title="Permalink to this definition">#</a></dt>
+<dd><p>Get noise multiplier.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>noise_multiplier_key</strong> (<em>str</em>) – Key for noise multiplier.</p></li>
+<li><p><strong>target_epsilon</strong> (<em>float</em>) – Target epsilon.</p></li>
+<li><p><strong>target_delta</strong> (<em>float</em>) – Target delta.</p></li>
+<li><p><strong>sampling_rate</strong> (<em>float</em>) – Sampling rate.</p></li>
+<li><p><strong>num_iterations</strong> (<em>int</em>) – Number of iterations.</p></li>
+<li><p><strong>noise_multiplier_min</strong> (<em>float</em><em>, </em><em>optional</em>) – Minimum noise multiplier. Defaults to 0.</p></li>
+<li><p><strong>noise_multiplier_max</strong> (<em>float</em><em>, </em><em>optional</em>) – Maximum noise multiplier. Defaults to 10.</p></li>
+<li><p><strong>noise_multiplier_precision</strong> (<em>float</em><em>, </em><em>optional</em>) – Precision of noise multiplier. Defaults to 0.01.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Noise multiplier.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="aijack.defense.dp.manager.accountant.BaseMomentAccountant.reset_step_info">
+<span class="sig-name descname"><span class="pre">reset_step_info</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/defense/dp/manager/accountant.html#BaseMomentAccountant.reset_step_info"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.defense.dp.manager.accountant.BaseMomentAccountant.reset_step_info" title="Permalink to this definition">#</a></dt>
+<dd><p>Reset step information.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="aijack.defense.dp.manager.accountant.BaseMomentAccountant.step">
+<span class="sig-name descname"><span class="pre">step</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">noise_params</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sampling_rate</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_steps</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/defense/dp/manager/accountant.html#BaseMomentAccountant.step"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.defense.dp.manager.accountant.BaseMomentAccountant.step" title="Permalink to this definition">#</a></dt>
+<dd><p>Decorator to add step information to a function.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>noise_params</strong> (<em>dict</em>) – Parameters of the noise distribution.</p></li>
+<li><p><strong>sampling_rate</strong> (<em>float</em>) – Sampling rate.</p></li>
+<li><p><strong>num_steps</strong> (<em>int</em>) – Number of steps.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Decorated function.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>function</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="aijack.defense.dp.manager.accountant.GeneralMomentAccountant">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">aijack.defense.dp.manager.accountant.</span></span><span class="sig-name descname"><span class="pre">GeneralMomentAccountant</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'SGM'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">search</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'ternary'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">64</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">precision</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">orders</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">noise_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Gaussian'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bound_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'rdp_upperbound_closedformula'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_iterations</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">backend</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'cpp'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/defense/dp/manager/accountant.html#GeneralMomentAccountant"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.defense.dp.manager.accountant.GeneralMomentAccountant" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#aijack.defense.dp.manager.accountant.BaseMomentAccountant" title="aijack.defense.dp.manager.accountant.BaseMomentAccountant"><code class="xref py py-class docutils literal notranslate"><span class="pre">aijack.defense.dp.manager.accountant.BaseMomentAccountant</span></code></a></p>
+<p>Generalized class for computing the privacy budget using the Moments Accountant technique.</p>
+</dd></dl>
+
 </section>
-<section id="aijack-defense-dp-manager-adadps-module">
-<h2><span class="section-number">2.1.3.1.1.3. </span>aijack.defense.dp.manager.adadps module<a class="headerlink" href="#aijack-defense-dp-manager-adadps-module" title="Permalink to this headline">#</a></h2>
+<section id="module-aijack.defense.dp.manager.adadps">
+<span id="aijack-defense-dp-manager-adadps-module"></span><h2><span class="section-number">2.1.3.1.1.3. </span>aijack.defense.dp.manager.adadps module<a class="headerlink" href="#module-aijack.defense.dp.manager.adadps" title="Permalink to this headline">#</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="aijack.defense.dp.manager.adadps.attach_adadps">
+<span class="sig-prename descclassname"><span class="pre">aijack.defense.dp.manager.adadps.</span></span><span class="sig-name descname"><span class="pre">attach_adadps</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cls</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">accountant</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">l2_norm_clip</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">noise_multiplier</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lot_size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataset_size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'rmsprop'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">beta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.9</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eps_to_avoid_nan</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-08</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/defense/dp/manager/adadps.html#attach_adadps"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.defense.dp.manager.adadps.attach_adadps" title="Permalink to this definition">#</a></dt>
+<dd><p>Attach the AdaDPS optimizer to the given class.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>cls</strong> – Class to which AdaDPS optimizer will be attached.</p></li>
+<li><p><strong>accountant</strong> – Privacy accountant.</p></li>
+<li><p><strong>l2_norm_clip</strong> (<em>float</em>) – L2 norm clip value.</p></li>
+<li><p><strong>noise_multiplier</strong> (<em>float</em>) – Noise multiplier value.</p></li>
+<li><p><strong>lot_size</strong> (<em>int</em>) – Lot size.</p></li>
+<li><p><strong>batch_size</strong> (<em>int</em>) – Batch size.</p></li>
+<li><p><strong>dataset_size</strong> (<em>int</em>) – Size of the dataset.</p></li>
+<li><p><strong>mode</strong> (<em>str</em><em>, </em><em>optional</em>) – Mode of optimization. Defaults to “rmsprop”.</p></li>
+<li><p><strong>beta</strong> (<em>float</em><em>, </em><em>optional</em>) – Beta value. Defaults to 0.9.</p></li>
+<li><p><strong>eps_to_avoid_nan</strong> (<em>float</em><em>, </em><em>optional</em>) – Epsilon value to avoid NaN. Defaults to 1e-8.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Class with AdaDPS optimizer attached.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>class</p>
+</dd>
+</dl>
+</dd></dl>
+
 </section>
-<section id="aijack-defense-dp-manager-client-module">
-<h2><span class="section-number">2.1.3.1.1.4. </span>aijack.defense.dp.manager.client module<a class="headerlink" href="#aijack-defense-dp-manager-client-module" title="Permalink to this headline">#</a></h2>
+<section id="module-aijack.defense.dp.manager.client">
+<span id="aijack-defense-dp-manager-client-module"></span><h2><span class="section-number">2.1.3.1.1.4. </span>aijack.defense.dp.manager.client module<a class="headerlink" href="#module-aijack.defense.dp.manager.client" title="Permalink to this headline">#</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="aijack.defense.dp.manager.client.DPSGDClientManager">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">aijack.defense.dp.manager.client.</span></span><span class="sig-name descname"><span class="pre">DPSGDClientManager</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/defense/dp/manager/client.html#DPSGDClientManager"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.defense.dp.manager.client.DPSGDClientManager" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="aijack.manager.html#aijack.manager.base.BaseManager" title="aijack.manager.base.BaseManager"><code class="xref py py-class docutils literal notranslate"><span class="pre">aijack.manager.base.BaseManager</span></code></a></p>
+<p>Manager class for attaching DPSGD to clients.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="aijack.defense.dp.manager.client.DPSGDClientManager.attach">
+<span class="sig-name descname"><span class="pre">attach</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cls</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/defense/dp/manager/client.html#DPSGDClientManager.attach"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.defense.dp.manager.client.DPSGDClientManager.attach" title="Permalink to this definition">#</a></dt>
+<dd><p>Attaches DPSGD to the client class.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>cls</strong> – Client class.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Wrapped client class with DPSGD functionality.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>DPSGDClientWrapper</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="aijack.defense.dp.manager.client.attach_dpsgd_to_client">
+<span class="sig-prename descclassname"><span class="pre">aijack.defense.dp.manager.client.</span></span><span class="sig-name descname"><span class="pre">attach_dpsgd_to_client</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cls</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">privacy_manager</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/defense/dp/manager/client.html#attach_dpsgd_to_client"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.defense.dp.manager.client.attach_dpsgd_to_client" title="Permalink to this definition">#</a></dt>
+<dd><p>Attaches DPSGD (Differentially Private Stochastic Gradient Descent) functionality to the client class.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>cls</strong> – Client class to which DPSGD functionality will be attached.</p></li>
+<li><p><strong>privacy_manager</strong> – Privacy manager object providing DPSGD functionality.</p></li>
+<li><p><strong>sigma</strong> (<em>float</em>) – Noise multiplier for privacy.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Tuple containing the DPSGDClientWrapper class and the privacy optimizer wrapper.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
 </section>
-<section id="aijack-defense-dp-manager-dataloader-module">
-<h2><span class="section-number">2.1.3.1.1.5. </span>aijack.defense.dp.manager.dataloader module<a class="headerlink" href="#aijack-defense-dp-manager-dataloader-module" title="Permalink to this headline">#</a></h2>
+<section id="module-aijack.defense.dp.manager.dataloader">
+<span id="aijack-defense-dp-manager-dataloader-module"></span><h2><span class="section-number">2.1.3.1.1.5. </span>aijack.defense.dp.manager.dataloader module<a class="headerlink" href="#module-aijack.defense.dp.manager.dataloader" title="Permalink to this headline">#</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="aijack.defense.dp.manager.dataloader.DPWrapperLotDataIterator">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">aijack.defense.dp.manager.dataloader.</span></span><span class="sig-name descname"><span class="pre">DPWrapperLotDataIterator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">original_iterator</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dp_optimizer</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/defense/dp/manager/dataloader.html#DPWrapperLotDataIterator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.defense.dp.manager.dataloader.DPWrapperLotDataIterator" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="aijack.defense.dp.manager.dataloader.LotDataLoader">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">aijack.defense.dp.manager.dataloader.</span></span><span class="sig-name descname"><span class="pre">LotDataLoader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dp_optimizer</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/defense/dp/manager/dataloader.html#LotDataLoader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.defense.dp.manager.dataloader.LotDataLoader" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">torch.utils.data.dataloader.DataLoader</span></code></p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="aijack.defense.dp.manager.dataloader.PoissonSampler">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">aijack.defense.dp.manager.dataloader.</span></span><span class="sig-name descname"><span class="pre">PoissonSampler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataset</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lot_size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">iterations</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/defense/dp/manager/dataloader.html#PoissonSampler"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.defense.dp.manager.dataloader.PoissonSampler" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+</dd></dl>
+
 </section>
-<section id="aijack-defense-dp-manager-dp-manager-module">
-<h2><span class="section-number">2.1.3.1.1.6. </span>aijack.defense.dp.manager.dp_manager module<a class="headerlink" href="#aijack-defense-dp-manager-dp-manager-module" title="Permalink to this headline">#</a></h2>
+<section id="module-aijack.defense.dp.manager.dp_manager">
+<span id="aijack-defense-dp-manager-dp-manager-module"></span><h2><span class="section-number">2.1.3.1.1.6. </span>aijack.defense.dp.manager.dp_manager module<a class="headerlink" href="#module-aijack.defense.dp.manager.dp_manager" title="Permalink to this headline">#</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="aijack.defense.dp.manager.dp_manager.AdaDPSManager">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">aijack.defense.dp.manager.dp_manager.</span></span><span class="sig-name descname"><span class="pre">AdaDPSManager</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">accountant</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">optimizer_cls</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">l2_norm_clip</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataset</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lot_size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">iterations</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'rmsprop'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">beta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.9</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eps_to_avoid_nan</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-08</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/defense/dp/manager/dp_manager.html#AdaDPSManager"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.defense.dp.manager.dp_manager.AdaDPSManager" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Manager class for privatizing AdaDPS (Adaptive Differentially Private Stochastic Gradient Descent) optimization.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>accountant</strong> – Privacy accountant providing privacy guarantees.</p></li>
+<li><p><strong>optimizer_cls</strong> – Class of the optimizer to be privatized.</p></li>
+<li><p><strong>l2_norm_clip</strong> (<em>float</em>) – L2 norm clip parameter for gradient clipping.</p></li>
+<li><p><strong>dataset</strong> – Dataset used for training.</p></li>
+<li><p><strong>lot_size</strong> (<em>int</em>) – Size of the lot (local update).</p></li>
+<li><p><strong>batch_size</strong> (<em>int</em>) – Size of the batch used for training.</p></li>
+<li><p><strong>iterations</strong> (<em>int</em>) – Number of iterations.</p></li>
+<li><p><strong>mode</strong> (<em>str</em><em>, </em><em>optional</em>) – Mode of optimization (rmsprop or adam). Defaults to “rmsprop”.</p></li>
+<li><p><strong>beta</strong> (<em>float</em><em>, </em><em>optional</em>) – Beta parameter for optimization. Defaults to 0.9.</p></li>
+<li><p><strong>eps_to_avoid_nan</strong> (<em>float</em><em>, </em><em>optional</em>) – Epsilon parameter to avoid NaN during optimization. Defaults to 1e-8.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="aijack.defense.dp.manager.dp_manager.AdaDPSManager.privatize">
+<span class="sig-name descname"><span class="pre">privatize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">noise_multiplier</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/defense/dp/manager/dp_manager.html#AdaDPSManager.privatize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.defense.dp.manager.dp_manager.AdaDPSManager.privatize" title="Permalink to this definition">#</a></dt>
+<dd><p>Privatizes the optimizer.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>noise_multiplier</strong> (<em>float</em>) – Noise multiplier for privacy.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Tuple containing the privatized optimizer class, lot loader function, and batch loader function.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="aijack.defense.dp.manager.dp_manager.DPSGDManager">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">aijack.defense.dp.manager.dp_manager.</span></span><span class="sig-name descname"><span class="pre">DPSGDManager</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">accountant</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">optimizer_cls</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">l2_norm_clip</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataset</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lot_size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">iterations</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">smoothing</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">smoothing_radius</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/defense/dp/manager/dp_manager.html#DPSGDManager"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.defense.dp.manager.dp_manager.DPSGDManager" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Manager class for privatizing DPSGD (Differentially Private Stochastic Gradient Descent) optimization.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>accountant</strong> – Privacy accountant providing privacy guarantees.</p></li>
+<li><p><strong>optimizer_cls</strong> – Class of the optimizer to be privatized.</p></li>
+<li><p><strong>l2_norm_clip</strong> (<em>float</em>) – L2 norm clip parameter for gradient clipping.</p></li>
+<li><p><strong>dataset</strong> – Dataset used for training.</p></li>
+<li><p><strong>lot_size</strong> (<em>int</em>) – Size of the lot (local update).</p></li>
+<li><p><strong>batch_size</strong> (<em>int</em>) – Size of the batch used for training.</p></li>
+<li><p><strong>iterations</strong> (<em>int</em>) – Number of iterations.</p></li>
+<li><p><strong>smoothing</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to enable smoothing. Defaults to False.</p></li>
+<li><p><strong>smoothing_radius</strong> (<em>float</em><em>, </em><em>optional</em>) – Smoothing radius. Defaults to 10.0.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="aijack.defense.dp.manager.dp_manager.DPSGDManager.privatize">
+<span class="sig-name descname"><span class="pre">privatize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">noise_multiplier</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/defense/dp/manager/dp_manager.html#DPSGDManager.privatize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.defense.dp.manager.dp_manager.DPSGDManager.privatize" title="Permalink to this definition">#</a></dt>
+<dd><p>Privatizes the optimizer.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>noise_multiplier</strong> (<em>float</em>) – Noise multiplier for privacy.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Tuple containing the privatized optimizer class, lot loader function, and batch loader function.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
 </section>
-<section id="aijack-defense-dp-manager-dpoptimizer-module">
-<h2><span class="section-number">2.1.3.1.1.7. </span>aijack.defense.dp.manager.dpoptimizer module<a class="headerlink" href="#aijack-defense-dp-manager-dpoptimizer-module" title="Permalink to this headline">#</a></h2>
+<section id="module-aijack.defense.dp.manager.dpoptimizer">
+<span id="aijack-defense-dp-manager-dpoptimizer-module"></span><h2><span class="section-number">2.1.3.1.1.7. </span>aijack.defense.dp.manager.dpoptimizer module<a class="headerlink" href="#module-aijack.defense.dp.manager.dpoptimizer" title="Permalink to this headline">#</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="aijack.defense.dp.manager.dpoptimizer.attach_dpoptimizer">
+<span class="sig-prename descclassname"><span class="pre">aijack.defense.dp.manager.dpoptimizer.</span></span><span class="sig-name descname"><span class="pre">attach_dpoptimizer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cls</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">accountant</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">l2_norm_clip</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">noise_multiplier</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lot_size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataset_size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">smoothing</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">smoothing_radius</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/defense/dp/manager/dpoptimizer.html#attach_dpoptimizer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.defense.dp.manager.dpoptimizer.attach_dpoptimizer" title="Permalink to this definition">#</a></dt>
+<dd><p>Wraps the given optimizer class in DPOptimizerWrapper.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>accountant</strong> (<a class="reference internal" href="#aijack.defense.dp.manager.accountant.BaseMomentAccountant" title="aijack.defense.dp.manager.accountant.BaseMomentAccountant"><em>BaseMomentAccountant</em></a>) – moment accountant</p></li>
+<li><p><strong>l2_norm_clip</strong> (<em>float</em>) – upper bound of l2-norm</p></li>
+<li><p><strong>noise_multiplier</strong> (<em>float</em>) – scale for added noise</p></li>
+<li><p><strong>lot_size</strong> (<em>int</em>) – sampled lot size</p></li>
+<li><p><strong>batch_size</strong> (<em>int</em>) – batch size</p></li>
+<li><p><strong>dataset_size</strong> (<em>int</em>) – total number of samples in the dataset</p></li>
+<li><p><strong>smoothing</strong> (<em>bool</em>) – if true, apply smoothing proposed in <cite>Wang, Wenxiao,
+et al. ``Dplis: Boosting utility of differentially
+private deep learning via randomized smoothing.`</cite>
+arXiv preprint arXiv:2103.01496 (2021).`
+(default=False)</p></li>
+<li><p><strong>smoothing_radius</strong> (<em>float</em>) – radius of smoothing (default=10.0)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>ValueError</strong> – if noise_multiplier &lt; 0.0</p></li>
+<li><p><strong>ValueError</strong> – if l2_norm_clip &lt; 0</p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>wrapped DPOptimizerWrapper</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>cls</p>
+</dd>
+</dl>
+</dd></dl>
+
 </section>
-<section id="aijack-defense-dp-manager-rdp-module">
-<h2><span class="section-number">2.1.3.1.1.8. </span>aijack.defense.dp.manager.rdp module<a class="headerlink" href="#aijack-defense-dp-manager-rdp-module" title="Permalink to this headline">#</a></h2>
+<section id="module-aijack.defense.dp.manager.rdp">
+<span id="aijack-defense-dp-manager-rdp-module"></span><h2><span class="section-number">2.1.3.1.1.8. </span>aijack.defense.dp.manager.rdp module<a class="headerlink" href="#module-aijack.defense.dp.manager.rdp" title="Permalink to this headline">#</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="aijack.defense.dp.manager.rdp.calc_first_term_of_general_upper_bound_of_rdp">
+<span class="sig-prename descclassname"><span class="pre">aijack.defense.dp.manager.rdp.</span></span><span class="sig-name descname"><span class="pre">calc_first_term_of_general_upper_bound_of_rdp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">alpha</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sampling_rate</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/defense/dp/manager/rdp.html#calc_first_term_of_general_upper_bound_of_rdp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.defense.dp.manager.rdp.calc_first_term_of_general_upper_bound_of_rdp" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="aijack.defense.dp.manager.rdp.calc_general_upperbound_of_rdp_with_theorem5_of_zhu_2019">
+<span class="sig-prename descclassname"><span class="pre">aijack.defense.dp.manager.rdp.</span></span><span class="sig-name descname"><span class="pre">calc_general_upperbound_of_rdp_with_theorem5_of_zhu_2019</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">alpha</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">params</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sampling_rate</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">_eps</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/defense/dp/manager/rdp.html#calc_general_upperbound_of_rdp_with_theorem5_of_zhu_2019"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.defense.dp.manager.rdp.calc_general_upperbound_of_rdp_with_theorem5_of_zhu_2019" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="aijack.defense.dp.manager.rdp.calc_tightupperbound_lowerbound_of_rdp_with_theorem6and8_of_zhu_2019">
+<span class="sig-prename descclassname"><span class="pre">aijack.defense.dp.manager.rdp.</span></span><span class="sig-name descname"><span class="pre">calc_tightupperbound_lowerbound_of_rdp_with_theorem6and8_of_zhu_2019</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">alpha</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">params</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sampling_rate</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">_eps</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/defense/dp/manager/rdp.html#calc_tightupperbound_lowerbound_of_rdp_with_theorem6and8_of_zhu_2019"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.defense.dp.manager.rdp.calc_tightupperbound_lowerbound_of_rdp_with_theorem6and8_of_zhu_2019" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="aijack.defense.dp.manager.rdp.calc_tightupperbound_lowerbound_of_rdp_with_theorem6and8_of_zhu_2019_with_tau_estimation">
+<span class="sig-prename descclassname"><span class="pre">aijack.defense.dp.manager.rdp.</span></span><span class="sig-name descname"><span class="pre">calc_tightupperbound_lowerbound_of_rdp_with_theorem6and8_of_zhu_2019_with_tau_estimation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">alpha</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">params</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sampling_rate</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">_eps</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tau</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/defense/dp/manager/rdp.html#calc_tightupperbound_lowerbound_of_rdp_with_theorem6and8_of_zhu_2019_with_tau_estimation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.defense.dp.manager.rdp.calc_tightupperbound_lowerbound_of_rdp_with_theorem6and8_of_zhu_2019_with_tau_estimation" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="aijack.defense.dp.manager.rdp.calc_upperbound_of_rdp_with_Sampled_Gaussian_Mechanism">
+<span class="sig-prename descclassname"><span class="pre">aijack.defense.dp.manager.rdp.</span></span><span class="sig-name descname"><span class="pre">calc_upperbound_of_rdp_with_Sampled_Gaussian_Mechanism</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">alpha</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">params</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sampling_rate</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">_eps</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/defense/dp/manager/rdp.html#calc_upperbound_of_rdp_with_Sampled_Gaussian_Mechanism"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.defense.dp.manager.rdp.calc_upperbound_of_rdp_with_Sampled_Gaussian_Mechanism" title="Permalink to this definition">#</a></dt>
+<dd><p>Compute log(A_alpha) for any positive finite alpha.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="aijack.defense.dp.manager.rdp.calc_upperbound_of_rdp_with_Sampled_Gaussian_Mechanism_float">
+<span class="sig-prename descclassname"><span class="pre">aijack.defense.dp.manager.rdp.</span></span><span class="sig-name descname"><span class="pre">calc_upperbound_of_rdp_with_Sampled_Gaussian_Mechanism_float</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">alpha</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">params</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sampling_rate</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/defense/dp/manager/rdp.html#calc_upperbound_of_rdp_with_Sampled_Gaussian_Mechanism_float"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.defense.dp.manager.rdp.calc_upperbound_of_rdp_with_Sampled_Gaussian_Mechanism_float" title="Permalink to this definition">#</a></dt>
+<dd><p>Compute log(A_alpha) for fractional alpha. 0 &lt; q &lt; 1.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="aijack.defense.dp.manager.rdp.calc_upperbound_of_rdp_with_Sampled_Gaussian_Mechanism_int">
+<span class="sig-prename descclassname"><span class="pre">aijack.defense.dp.manager.rdp.</span></span><span class="sig-name descname"><span class="pre">calc_upperbound_of_rdp_with_Sampled_Gaussian_Mechanism_int</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">alpha</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">params</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sampling_rate</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/defense/dp/manager/rdp.html#calc_upperbound_of_rdp_with_Sampled_Gaussian_Mechanism_int"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.defense.dp.manager.rdp.calc_upperbound_of_rdp_with_Sampled_Gaussian_Mechanism_int" title="Permalink to this definition">#</a></dt>
+<dd><p>Renyi Differential Privacy of the Sampled Gaussian Mechanism
+3.3 Numerically Stable Computatio</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="aijack.defense.dp.manager.rdp.calc_upperbound_of_rdp_with_theorem27_of_wang_2019">
+<span class="sig-prename descclassname"><span class="pre">aijack.defense.dp.manager.rdp.</span></span><span class="sig-name descname"><span class="pre">calc_upperbound_of_rdp_with_theorem27_of_wang_2019</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">alpha</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">params</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sampling_rate</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">_eps</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/defense/dp/manager/rdp.html#calc_upperbound_of_rdp_with_theorem27_of_wang_2019"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.defense.dp.manager.rdp.calc_upperbound_of_rdp_with_theorem27_of_wang_2019" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="aijack.defense.dp.manager.rdp.eps_gaussian">
+<span class="sig-prename descclassname"><span class="pre">aijack.defense.dp.manager.rdp.</span></span><span class="sig-name descname"><span class="pre">eps_gaussian</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">alpha</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">params</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/defense/dp/manager/rdp.html#eps_gaussian"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.defense.dp.manager.rdp.eps_gaussian" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="aijack.defense.dp.manager.rdp.eps_laplace">
+<span class="sig-prename descclassname"><span class="pre">aijack.defense.dp.manager.rdp.</span></span><span class="sig-name descname"><span class="pre">eps_laplace</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">alpha</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">params</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/defense/dp/manager/rdp.html#eps_laplace"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.defense.dp.manager.rdp.eps_laplace" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="aijack.defense.dp.manager.rdp.eps_randresp">
+<span class="sig-prename descclassname"><span class="pre">aijack.defense.dp.manager.rdp.</span></span><span class="sig-name descname"><span class="pre">eps_randresp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">alpha</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">params</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/defense/dp/manager/rdp.html#eps_randresp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.defense.dp.manager.rdp.eps_randresp" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
 </section>
-<section id="aijack-defense-dp-manager-utils-module">
-<h2><span class="section-number">2.1.3.1.1.9. </span>aijack.defense.dp.manager.utils module<a class="headerlink" href="#aijack-defense-dp-manager-utils-module" title="Permalink to this headline">#</a></h2>
+<section id="module-aijack.defense.dp.manager.utils">
+<span id="aijack-defense-dp-manager-utils-module"></span><h2><span class="section-number">2.1.3.1.1.9. </span>aijack.defense.dp.manager.utils module<a class="headerlink" href="#module-aijack.defense.dp.manager.utils" title="Permalink to this headline">#</a></h2>
 </section>
-<section id="module-contents">
-<h2><span class="section-number">2.1.3.1.1.10. </span>Module contents<a class="headerlink" href="#module-contents" title="Permalink to this headline">#</a></h2>
+<section id="module-aijack.defense.dp.manager">
+<span id="module-contents"></span><h2><span class="section-number">2.1.3.1.1.10. </span>Module contents<a class="headerlink" href="#module-aijack.defense.dp.manager" title="Permalink to this headline">#</a></h2>
 </section>
 </section>
 
@@ -517,15 +919,15 @@ document.write(`
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#submodules">2.1.3.1.1.1. Submodules</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#aijack-defense-dp-manager-accountant-module">2.1.3.1.1.2. aijack.defense.dp.manager.accountant module</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#aijack-defense-dp-manager-adadps-module">2.1.3.1.1.3. aijack.defense.dp.manager.adadps module</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#aijack-defense-dp-manager-client-module">2.1.3.1.1.4. aijack.defense.dp.manager.client module</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#aijack-defense-dp-manager-dataloader-module">2.1.3.1.1.5. aijack.defense.dp.manager.dataloader module</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#aijack-defense-dp-manager-dp-manager-module">2.1.3.1.1.6. aijack.defense.dp.manager.dp_manager module</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#aijack-defense-dp-manager-dpoptimizer-module">2.1.3.1.1.7. aijack.defense.dp.manager.dpoptimizer module</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#aijack-defense-dp-manager-rdp-module">2.1.3.1.1.8. aijack.defense.dp.manager.rdp module</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#aijack-defense-dp-manager-utils-module">2.1.3.1.1.9. aijack.defense.dp.manager.utils module</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-contents">2.1.3.1.1.10. Module contents</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aijack.defense.dp.manager.accountant">2.1.3.1.1.2. aijack.defense.dp.manager.accountant module</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aijack.defense.dp.manager.adadps">2.1.3.1.1.3. aijack.defense.dp.manager.adadps module</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aijack.defense.dp.manager.client">2.1.3.1.1.4. aijack.defense.dp.manager.client module</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aijack.defense.dp.manager.dataloader">2.1.3.1.1.5. aijack.defense.dp.manager.dataloader module</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aijack.defense.dp.manager.dp_manager">2.1.3.1.1.6. aijack.defense.dp.manager.dp_manager module</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aijack.defense.dp.manager.dpoptimizer">2.1.3.1.1.7. aijack.defense.dp.manager.dpoptimizer module</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aijack.defense.dp.manager.rdp">2.1.3.1.1.8. aijack.defense.dp.manager.rdp module</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aijack.defense.dp.manager.utils">2.1.3.1.1.9. aijack.defense.dp.manager.utils module</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aijack.defense.dp.manager">2.1.3.1.1.10. Module contents</a></li>
 </ul>
   </nav></div>
 

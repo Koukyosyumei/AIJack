@@ -414,8 +414,8 @@ document.write(`
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#submodules">2.1.8.1. Submodules</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#aijack-defense-soteria-soteria-client-module">2.1.8.2. aijack.defense.soteria.soteria_client module</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-contents">2.1.8.3. Module contents</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aijack.defense.soteria.soteria_client">2.1.8.2. aijack.defense.soteria.soteria_client module</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aijack.defense.soteria">2.1.8.3. Module contents</a></li>
 </ul>
             </nav>
         </div>
@@ -432,11 +432,45 @@ document.write(`
 <section id="submodules">
 <h2><span class="section-number">2.1.8.1. </span>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">#</a></h2>
 </section>
-<section id="aijack-defense-soteria-soteria-client-module">
-<h2><span class="section-number">2.1.8.2. </span>aijack.defense.soteria.soteria_client module<a class="headerlink" href="#aijack-defense-soteria-soteria-client-module" title="Permalink to this headline">#</a></h2>
+<section id="module-aijack.defense.soteria.soteria_client">
+<span id="aijack-defense-soteria-soteria-client-module"></span><h2><span class="section-number">2.1.8.2. </span>aijack.defense.soteria.soteria_client module<a class="headerlink" href="#module-aijack.defense.soteria.soteria_client" title="Permalink to this headline">#</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="aijack.defense.soteria.soteria_client.SoteriaClientManager">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">aijack.defense.soteria.soteria_client.</span></span><span class="sig-name descname"><span class="pre">SoteriaClientManager</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/defense/soteria/soteria_client.html#SoteriaClientManager"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.defense.soteria.soteria_client.SoteriaClientManager" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="aijack.manager.html#aijack.manager.base.BaseManager" title="aijack.manager.base.BaseManager"><code class="xref py py-class docutils literal notranslate"><span class="pre">aijack.manager.base.BaseManager</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="aijack.defense.soteria.soteria_client.SoteriaClientManager.attach">
+<span class="sig-name descname"><span class="pre">attach</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cls</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/defense/soteria/soteria_client.html#SoteriaClientManager.attach"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.defense.soteria.soteria_client.SoteriaClientManager.attach" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="aijack.defense.soteria.soteria_client.attach_soteria_to_client">
+<span class="sig-prename descclassname"><span class="pre">aijack.defense.soteria.soteria_client.</span></span><span class="sig-name descname"><span class="pre">attach_soteria_to_client</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cls</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_layer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">perturbed_layer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epsilon</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_layer_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/defense/soteria/soteria_client.html#attach_soteria_to_client"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.defense.soteria.soteria_client.attach_soteria_to_client" title="Permalink to this definition">#</a></dt>
+<dd><p>Attaches the Soteria wrapper to the client class.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>cls</strong> – The client class to which Soteria will be attached.</p></li>
+<li><p><strong>input_layer</strong> (<em>str</em>) – Name of the input layer.</p></li>
+<li><p><strong>perturbed_layer</strong> (<em>str</em>) – Name of the perturbed layer.</p></li>
+<li><p><strong>epsilon</strong> (<em>float</em><em>, </em><em>optional</em>) – Privacy budget epsilon. Defaults to 0.2.</p></li>
+<li><p><strong>target_layer_name</strong> (<em>str</em><em>, </em><em>optional</em>) – Name of the target layer. Defaults to None.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Client class with Soteria wrapper attached.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>class</p>
+</dd>
+</dl>
+</dd></dl>
+
 </section>
-<section id="module-contents">
-<h2><span class="section-number">2.1.8.3. </span>Module contents<a class="headerlink" href="#module-contents" title="Permalink to this headline">#</a></h2>
+<section id="module-aijack.defense.soteria">
+<span id="module-contents"></span><h2><span class="section-number">2.1.8.3. </span>Module contents<a class="headerlink" href="#module-aijack.defense.soteria" title="Permalink to this headline">#</a></h2>
 </section>
 </section>
 
@@ -489,8 +523,8 @@ document.write(`
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#submodules">2.1.8.1. Submodules</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#aijack-defense-soteria-soteria-client-module">2.1.8.2. aijack.defense.soteria.soteria_client module</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-contents">2.1.8.3. Module contents</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aijack.defense.soteria.soteria_client">2.1.8.2. aijack.defense.soteria.soteria_client module</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aijack.defense.soteria">2.1.8.3. Module contents</a></li>
 </ul>
   </nav></div>
 

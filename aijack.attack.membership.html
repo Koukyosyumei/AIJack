@@ -414,9 +414,9 @@ document.write(`
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#submodules">1.1.6.1. Submodules</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#aijack-attack-membership-membership-inference-module">1.1.6.2. aijack.attack.membership.membership_inference module</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#aijack-attack-membership-utils-module">1.1.6.3. aijack.attack.membership.utils module</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-contents">1.1.6.4. Module contents</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aijack.attack.membership.membership_inference">1.1.6.2. aijack.attack.membership.membership_inference module</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aijack.attack.membership.utils">1.1.6.3. aijack.attack.membership.utils module</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aijack.attack.membership">1.1.6.4. Module contents</a></li>
 </ul>
             </nav>
         </div>
@@ -433,14 +433,296 @@ document.write(`
 <section id="submodules">
 <h2><span class="section-number">1.1.6.1. </span>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">#</a></h2>
 </section>
-<section id="aijack-attack-membership-membership-inference-module">
-<h2><span class="section-number">1.1.6.2. </span>aijack.attack.membership.membership_inference module<a class="headerlink" href="#aijack-attack-membership-membership-inference-module" title="Permalink to this headline">#</a></h2>
+<section id="module-aijack.attack.membership.membership_inference">
+<span id="aijack-attack-membership-membership-inference-module"></span><h2><span class="section-number">1.1.6.2. </span>aijack.attack.membership.membership_inference module<a class="headerlink" href="#module-aijack.attack.membership.membership_inference" title="Permalink to this headline">#</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="aijack.attack.membership.membership_inference.ShadowMembershipInferenceAttack">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">aijack.attack.membership.membership_inference.</span></span><span class="sig-name descname"><span class="pre">ShadowMembershipInferenceAttack</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target_model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shadow_models</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attack_models</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/attack/membership/membership_inference.html#ShadowMembershipInferenceAttack"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.attack.membership.membership_inference.ShadowMembershipInferenceAttack" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="aijack.attack.html#aijack.attack.base_attack.BaseAttacker" title="aijack.attack.base_attack.BaseAttacker"><code class="xref py py-class docutils literal notranslate"><span class="pre">aijack.attack.base_attack.BaseAttacker</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="aijack.attack.membership.membership_inference.ShadowMembershipInferenceAttack.attack">
+<span class="sig-name descname"><span class="pre">attack</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">proba</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/attack/membership/membership_inference.html#ShadowMembershipInferenceAttack.attack"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.attack.membership.membership_inference.ShadowMembershipInferenceAttack.attack" title="Permalink to this definition">#</a></dt>
+<dd><p>Attack victim model</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> – target datasets which the attacker wants to classify</p></li>
+<li><p><strong>y</strong> – target labels which the attacker wants to classify</p></li>
+<li><p><strong>proba</strong> – the format of the output</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="aijack.attack.membership.membership_inference.ShadowMembershipInferenceAttack.fit">
+<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/attack/membership/membership_inference.html#ShadowMembershipInferenceAttack.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.attack.membership.membership_inference.ShadowMembershipInferenceAttack.fit" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="aijack.attack.membership.membership_inference.ShadowMembershipInferenceAttack.predict">
+<span class="sig-name descname"><span class="pre">predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pred</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/attack/membership/membership_inference.html#ShadowMembershipInferenceAttack.predict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.attack.membership.membership_inference.ShadowMembershipInferenceAttack.predict" title="Permalink to this definition">#</a></dt>
+<dd><p>Predict whether the given prediction came from training data or not</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pred</strong> (<em>torch.Tensor</em>) – predicted probabilities on the data</p></li>
+<li><p><strong>label</strong> (<em>torch.Tensor</em>) – true label of the data which y_pred_prob
+is predicted on</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>predicted binaru labels</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="aijack.attack.membership.membership_inference.ShadowMembershipInferenceAttack.predict_proba">
+<span class="sig-name descname"><span class="pre">predict_proba</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pred</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/attack/membership/membership_inference.html#ShadowMembershipInferenceAttack.predict_proba"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.attack.membership.membership_inference.ShadowMembershipInferenceAttack.predict_proba" title="Permalink to this definition">#</a></dt>
+<dd><dl class="simple">
+<dt>get probabilities of whether the given prediction came from</dt><dd><p>training data or not</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pred</strong> (<em>torch.Tensor</em>) – predicted probabilities on the data</p></li>
+<li><p><strong>label</strong> (<em>torch.Tensor</em>) – true label of the data which y_pred_prob
+is predicted on</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>predicted probabilities</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="aijack.attack.membership.membership_inference.ShadowMembershipInferenceAttack.train_attacker">
+<span class="sig-name descname"><span class="pre">train_attacker</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/attack/membership/membership_inference.html#ShadowMembershipInferenceAttack.train_attacker"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.attack.membership.membership_inference.ShadowMembershipInferenceAttack.train_attacker" title="Permalink to this definition">#</a></dt>
+<dd><p>Train attacker models</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="aijack.attack.membership.membership_inference.ShadowMembershipInferenceAttack.train_shadow">
+<span class="sig-name descname"><span class="pre">train_shadow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/attack/membership/membership_inference.html#ShadowMembershipInferenceAttack.train_shadow"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.attack.membership.membership_inference.ShadowMembershipInferenceAttack.train_shadow" title="Permalink to this definition">#</a></dt>
+<dd><p>train shadow models</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>X</strong> (<em>np.array</em>) – training data for shadow models</p></li>
+<li><p><strong>y</strong> (<em>np.array</em>) – training label for shadow models</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
 </section>
-<section id="aijack-attack-membership-utils-module">
-<h2><span class="section-number">1.1.6.3. </span>aijack.attack.membership.utils module<a class="headerlink" href="#aijack-attack-membership-utils-module" title="Permalink to this headline">#</a></h2>
+<section id="module-aijack.attack.membership.utils">
+<span id="aijack-attack-membership-utils-module"></span><h2><span class="section-number">1.1.6.3. </span>aijack.attack.membership.utils module<a class="headerlink" href="#module-aijack.attack.membership.utils" title="Permalink to this headline">#</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="aijack.attack.membership.utils.AttackerModel">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">aijack.attack.membership.utils.</span></span><span class="sig-name descname"><span class="pre">AttackerModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">models</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/attack/membership/utils.html#AttackerModel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.attack.membership.utils.AttackerModel" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="aijack.attack.membership.utils.AttackerModel.fit">
+<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">shadow_result</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/attack/membership/utils.html#AttackerModel.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.attack.membership.utils.AttackerModel.fit" title="Permalink to this definition">#</a></dt>
+<dd><p>train an attacl model with the result of shadow models</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>shadow_result</strong> (<em>dict</em>) – key is each class
+value is (shadow_data, shadow_label)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="aijack.attack.membership.utils.AttackerModel.predict">
+<span class="sig-name descname"><span class="pre">predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_pred_prob</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_labels</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/attack/membership/utils.html#AttackerModel.predict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.attack.membership.utils.AttackerModel.predict" title="Permalink to this definition">#</a></dt>
+<dd><p>predict whether the given prediction came from training data or not</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>y_pred_prob</strong> (<em>torch.Tensor</em>) – predicted probabilities on the data</p></li>
+<li><p><strong>y_labels</strong> (<em>torch.Tensor</em>) – true label of the data which y_pred_prob
+is predicted on</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>result of attack</dt><dd><p>each element should be one or zero</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>in_out_pred (np.array)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="aijack.attack.membership.utils.AttackerModel.predict_proba">
+<span class="sig-name descname"><span class="pre">predict_proba</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_pred_prob</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_labels</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/attack/membership/utils.html#AttackerModel.predict_proba"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.attack.membership.utils.AttackerModel.predict_proba" title="Permalink to this definition">#</a></dt>
+<dd><dl class="simple">
+<dt>get probabilities of whether the given prediction came from</dt><dd><p>training data or not</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>y_pred_prob</strong> (<em>torch.Tensor</em>) – predicted probabilities on the data</p></li>
+<li><p><strong>y_labels</strong> (<em>torch.Tensor</em>) – true label of the data which y_pred_prob
+is predicted on</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>result of attack</dt><dd><p>each element expresses the possibility</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>in_out_pred (np.array)</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="aijack.attack.membership.utils.ShadowModels">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">aijack.attack.membership.utils.</span></span><span class="sig-name descname"><span class="pre">ShadowModels</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">models</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/attack/membership/utils.html#ShadowModels"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.attack.membership.utils.ShadowModels" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="simple">
+<dt>Train shadow models for membership inference</dt><dd><p>reference <a class="reference external" href="https://arxiv.org/abs/1610.05820">https://arxiv.org/abs/1610.05820</a></p>
+</dd>
+<dt>Args</dt><dd><p>models : torch models for shadow</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="aijack.attack.membership.utils.ShadowModels.fit_transform">
+<span class="sig-name descname"><span class="pre">fit_transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/attack/membership/utils.html#ShadowModels.fit_transform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.attack.membership.utils.ShadowModels.fit_transform" title="Permalink to this definition">#</a></dt>
+<dd><dl class="simple">
+<dt>Trains shadow models and get prediction of shadow models</dt><dd><p>and membership label of each prediction for each class</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>X</strong> (<em>np.array</em>) – target data</p></li>
+<li><p><strong>y</strong> (<em>np.array</em>) – target label</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>key is each class</dt><dd><p>value is (shadow_data, shadow_label)</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>result_dict (dict)</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
 </section>
-<section id="module-contents">
-<h2><span class="section-number">1.1.6.4. </span>Module contents<a class="headerlink" href="#module-contents" title="Permalink to this headline">#</a></h2>
+<section id="module-aijack.attack.membership">
+<span id="module-contents"></span><h2><span class="section-number">1.1.6.4. </span>Module contents<a class="headerlink" href="#module-aijack.attack.membership" title="Permalink to this headline">#</a></h2>
+<p>Subpackage for membership inference attack, which reveals the confidential information
+about whether the target data is in the training dataset or not.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="aijack.attack.membership.ShadowMembershipInferenceAttack">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">aijack.attack.membership.</span></span><span class="sig-name descname"><span class="pre">ShadowMembershipInferenceAttack</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target_model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shadow_models</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attack_models</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/attack/membership/membership_inference.html#ShadowMembershipInferenceAttack"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.attack.membership.ShadowMembershipInferenceAttack" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="aijack.attack.html#aijack.attack.base_attack.BaseAttacker" title="aijack.attack.base_attack.BaseAttacker"><code class="xref py py-class docutils literal notranslate"><span class="pre">aijack.attack.base_attack.BaseAttacker</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="aijack.attack.membership.ShadowMembershipInferenceAttack.attack">
+<span class="sig-name descname"><span class="pre">attack</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">proba</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/attack/membership/membership_inference.html#ShadowMembershipInferenceAttack.attack"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.attack.membership.ShadowMembershipInferenceAttack.attack" title="Permalink to this definition">#</a></dt>
+<dd><p>Attack victim model</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> – target datasets which the attacker wants to classify</p></li>
+<li><p><strong>y</strong> – target labels which the attacker wants to classify</p></li>
+<li><p><strong>proba</strong> – the format of the output</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="aijack.attack.membership.ShadowMembershipInferenceAttack.fit">
+<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/attack/membership/membership_inference.html#ShadowMembershipInferenceAttack.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.attack.membership.ShadowMembershipInferenceAttack.fit" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="aijack.attack.membership.ShadowMembershipInferenceAttack.predict">
+<span class="sig-name descname"><span class="pre">predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pred</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/attack/membership/membership_inference.html#ShadowMembershipInferenceAttack.predict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.attack.membership.ShadowMembershipInferenceAttack.predict" title="Permalink to this definition">#</a></dt>
+<dd><p>Predict whether the given prediction came from training data or not</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pred</strong> (<em>torch.Tensor</em>) – predicted probabilities on the data</p></li>
+<li><p><strong>label</strong> (<em>torch.Tensor</em>) – true label of the data which y_pred_prob
+is predicted on</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>predicted binaru labels</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="aijack.attack.membership.ShadowMembershipInferenceAttack.predict_proba">
+<span class="sig-name descname"><span class="pre">predict_proba</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pred</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/attack/membership/membership_inference.html#ShadowMembershipInferenceAttack.predict_proba"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.attack.membership.ShadowMembershipInferenceAttack.predict_proba" title="Permalink to this definition">#</a></dt>
+<dd><dl class="simple">
+<dt>get probabilities of whether the given prediction came from</dt><dd><p>training data or not</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pred</strong> (<em>torch.Tensor</em>) – predicted probabilities on the data</p></li>
+<li><p><strong>label</strong> (<em>torch.Tensor</em>) – true label of the data which y_pred_prob
+is predicted on</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>predicted probabilities</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="aijack.attack.membership.ShadowMembershipInferenceAttack.train_attacker">
+<span class="sig-name descname"><span class="pre">train_attacker</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/attack/membership/membership_inference.html#ShadowMembershipInferenceAttack.train_attacker"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.attack.membership.ShadowMembershipInferenceAttack.train_attacker" title="Permalink to this definition">#</a></dt>
+<dd><p>Train attacker models</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="aijack.attack.membership.ShadowMembershipInferenceAttack.train_shadow">
+<span class="sig-name descname"><span class="pre">train_shadow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/attack/membership/membership_inference.html#ShadowMembershipInferenceAttack.train_shadow"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.attack.membership.ShadowMembershipInferenceAttack.train_shadow" title="Permalink to this definition">#</a></dt>
+<dd><p>train shadow models</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>X</strong> (<em>np.array</em>) – training data for shadow models</p></li>
+<li><p><strong>y</strong> (<em>np.array</em>) – training label for shadow models</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
 </section>
 </section>
 
@@ -493,9 +775,9 @@ document.write(`
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#submodules">1.1.6.1. Submodules</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#aijack-attack-membership-membership-inference-module">1.1.6.2. aijack.attack.membership.membership_inference module</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#aijack-attack-membership-utils-module">1.1.6.3. aijack.attack.membership.utils module</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-contents">1.1.6.4. Module contents</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aijack.attack.membership.membership_inference">1.1.6.2. aijack.attack.membership.membership_inference module</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aijack.attack.membership.utils">1.1.6.3. aijack.attack.membership.utils module</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aijack.attack.membership">1.1.6.4. Module contents</a></li>
 </ul>
   </nav></div>
 

@@ -414,9 +414,9 @@ document.write(`
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#submodules">2.1.6.1. Submodules</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#aijack-defense-mid-loss-module">2.1.6.2. aijack.defense.mid.loss module</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#aijack-defense-mid-nn-module">2.1.6.3. aijack.defense.mid.nn module</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-contents">2.1.6.4. Module contents</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aijack.defense.mid.loss">2.1.6.2. aijack.defense.mid.loss module</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aijack.defense.mid.nn">2.1.6.3. aijack.defense.mid.nn module</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aijack.defense.mid">2.1.6.4. Module contents</a></li>
 </ul>
             </nav>
         </div>
@@ -433,14 +433,141 @@ document.write(`
 <section id="submodules">
 <h2><span class="section-number">2.1.6.1. </span>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">#</a></h2>
 </section>
-<section id="aijack-defense-mid-loss-module">
-<h2><span class="section-number">2.1.6.2. </span>aijack.defense.mid.loss module<a class="headerlink" href="#aijack-defense-mid-loss-module" title="Permalink to this headline">#</a></h2>
+<section id="module-aijack.defense.mid.loss">
+<span id="aijack-defense-mid-loss-module"></span><h2><span class="section-number">2.1.6.2. </span>aijack.defense.mid.loss module<a class="headerlink" href="#module-aijack.defense.mid.loss" title="Permalink to this headline">#</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="aijack.defense.mid.loss.KL_between_normals">
+<span class="sig-prename descclassname"><span class="pre">aijack.defense.mid.loss.</span></span><span class="sig-name descname"><span class="pre">KL_between_normals</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mu_q</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma_q</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mu_p</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma_p</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/defense/mid/loss.html#KL_between_normals"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.defense.mid.loss.KL_between_normals" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="aijack.defense.mid.loss.mib_loss">
+<span class="sig-prename descclassname"><span class="pre">aijack.defense.mid.loss.</span></span><span class="sig-name descname"><span class="pre">mib_loss</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sampled_y_pred</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p_z_given_x_mu</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p_z_given_x_sigma</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">approximated_z_mean</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">approximated_z_sigma</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">beta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.001</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/defense/mid/loss.html#mib_loss"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.defense.mid.loss.mib_loss" title="Permalink to this definition">#</a></dt>
+<dd><p>Implementation of MID loss for NN proposed in <a class="reference external" href="https://arxiv.org/abs/2009.05241">https://arxiv.org/abs/2009.05241</a></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>y</strong> (<em>torch.Tensor</em>) – ground-truth label</p></li>
+<li><p><strong>sampled_y_pred</strong> (<em>torch.Tensor</em>) – prdicted output</p></li>
+<li><p><strong>p_z_given_x_mu</strong> (<em>torch.Tensor</em>) – mean of z|x</p></li>
+<li><p><strong>p_z_given_x_sigma</strong> (<em>torch.Tensor</em>) – standard deviation of z|x</p></li>
+<li><p><strong>approximated_z_mean</strong> (<em>torch.Tensor</em>) – approximated mean of z</p></li>
+<li><p><strong>approximated_z_sigma</strong> (<em>torch.Tensor</em>) – approximated standard deviation of z</p></li>
+<li><p><strong>beta</strong> (<em>float</em><em>, </em><em>optional</em>) – _description_. weight of I(Z|X) to 1e-3.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>loss values, bound of I(Z|Y) and bound of I(Z|X)</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float, torch.Tensor, float</p>
+</dd>
+</dl>
+</dd></dl>
+
 </section>
-<section id="aijack-defense-mid-nn-module">
-<h2><span class="section-number">2.1.6.3. </span>aijack.defense.mid.nn module<a class="headerlink" href="#aijack-defense-mid-nn-module" title="Permalink to this headline">#</a></h2>
+<section id="module-aijack.defense.mid.nn">
+<span id="aijack-defense-mid-nn-module"></span><h2><span class="section-number">2.1.6.3. </span>aijack.defense.mid.nn module<a class="headerlink" href="#module-aijack.defense.mid.nn" title="Permalink to this headline">#</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="aijack.defense.mid.nn.VIB">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">aijack.defense.mid.nn.</span></span><span class="sig-name descname"><span class="pre">VIB</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">encoder</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">decoder</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dim_z</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">256</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_samples</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">beta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.001</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/defense/mid/nn.html#VIB"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.defense.mid.nn.VIB" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">torch.nn.modules.module.Module</span></code></p>
+<p>Variational Information Bottleneck (VIB) module.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>encoder</strong> (<em>torch.nn.Module</em>) – Encoder module.</p></li>
+<li><p><strong>decoder</strong> (<em>torch.nn.Module</em>) – Decoder module.</p></li>
+<li><p><strong>dim_z</strong> (<em>int</em><em>, </em><em>optional</em>) – Dimension of latent variable z. Defaults to 256.</p></li>
+<li><p><strong>num_samples</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of samples. Defaults to 10.</p></li>
+<li><p><strong>beta</strong> (<em>float</em><em>, </em><em>optional</em>) – Beta value. Defaults to 1e-3.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="aijack.defense.mid.nn.VIB.forward">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/defense/mid/nn.html#VIB.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.defense.mid.nn.VIB.forward" title="Permalink to this definition">#</a></dt>
+<dd><p>Forward pass of the VIB module.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>x</strong> (<em>torch.Tensor</em>) – Input tensor.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Output tensor.
+dict: Dictionary containing sampled outputs and parameters.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>torch.Tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="aijack.defense.mid.nn.VIB.get_params_of_p_z_given_x">
+<span class="sig-name descname"><span class="pre">get_params_of_p_z_given_x</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/defense/mid/nn.html#VIB.get_params_of_p_z_given_x"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.defense.mid.nn.VIB.get_params_of_p_z_given_x" title="Permalink to this definition">#</a></dt>
+<dd><p>Compute parameters of p(z|x).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>x</strong> (<em>torch.Tensor</em>) – Input tensor.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Tuple containing mean and standard deviation of p(z|x).</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If the output dimension of encoder is not 2 * dim_z.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="aijack.defense.mid.nn.VIB.loss">
+<span class="sig-name descname"><span class="pre">loss</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">result_dict</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/defense/mid/nn.html#VIB.loss"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.defense.mid.nn.VIB.loss" title="Permalink to this definition">#</a></dt>
+<dd><p>Compute loss.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>y</strong> (<em>torch.Tensor</em>) – Target tensor.</p></li>
+<li><p><strong>result_dict</strong> (<em>dict</em>) – Dictionary containing sampled outputs and parameters.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Loss value.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>torch.Tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="aijack.defense.mid.nn.VIB.sampling_from_encoder">
+<span class="sig-name descname"><span class="pre">sampling_from_encoder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mu</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/defense/mid/nn.html#VIB.sampling_from_encoder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.defense.mid.nn.VIB.sampling_from_encoder" title="Permalink to this definition">#</a></dt>
+<dd><p>Sample from encoder distribution.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mu</strong> (<em>torch.Tensor</em>) – Mean of the distribution.</p></li>
+<li><p><strong>sigma</strong> (<em>torch.Tensor</em>) – Standard deviation of the distribution.</p></li>
+<li><p><strong>batch_size</strong> (<em>int</em>) – Batch size.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Sampled tensor from encoder distribution.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>torch.Tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
 </section>
-<section id="module-contents">
-<h2><span class="section-number">2.1.6.4. </span>Module contents<a class="headerlink" href="#module-contents" title="Permalink to this headline">#</a></h2>
+<section id="module-aijack.defense.mid">
+<span id="module-contents"></span><h2><span class="section-number">2.1.6.4. </span>Module contents<a class="headerlink" href="#module-aijack.defense.mid" title="Permalink to this headline">#</a></h2>
 </section>
 </section>
 
@@ -493,9 +620,9 @@ document.write(`
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#submodules">2.1.6.1. Submodules</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#aijack-defense-mid-loss-module">2.1.6.2. aijack.defense.mid.loss module</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#aijack-defense-mid-nn-module">2.1.6.3. aijack.defense.mid.nn module</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-contents">2.1.6.4. Module contents</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aijack.defense.mid.loss">2.1.6.2. aijack.defense.mid.loss module</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aijack.defense.mid.nn">2.1.6.3. aijack.defense.mid.nn module</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aijack.defense.mid">2.1.6.4. Module contents</a></li>
 </ul>
   </nav></div>
 

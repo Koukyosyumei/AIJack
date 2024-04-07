@@ -414,9 +414,9 @@ document.write(`
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#submodules">2.1.2.1.1.1. Submodules</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#aijack-defense-debugging-assertions-assertions-module">2.1.2.1.1.2. aijack.defense.debugging.assertions.assertions module</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#aijack-defense-debugging-assertions-utils-module">2.1.2.1.1.3. aijack.defense.debugging.assertions.utils module</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-contents">2.1.2.1.1.4. Module contents</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aijack.defense.debugging.assertions.assertions">2.1.2.1.1.2. aijack.defense.debugging.assertions.assertions module</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aijack.defense.debugging.assertions.utils">2.1.2.1.1.3. aijack.defense.debugging.assertions.utils module</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aijack.defense.debugging.assertions">2.1.2.1.1.4. Module contents</a></li>
 </ul>
             </nav>
         </div>
@@ -433,14 +433,159 @@ document.write(`
 <section id="submodules">
 <h2><span class="section-number">2.1.2.1.1.1. </span>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">#</a></h2>
 </section>
-<section id="aijack-defense-debugging-assertions-assertions-module">
-<h2><span class="section-number">2.1.2.1.1.2. </span>aijack.defense.debugging.assertions.assertions module<a class="headerlink" href="#aijack-defense-debugging-assertions-assertions-module" title="Permalink to this headline">#</a></h2>
+<section id="module-aijack.defense.debugging.assertions.assertions">
+<span id="aijack-defense-debugging-assertions-assertions-module"></span><h2><span class="section-number">2.1.2.1.1.2. </span>aijack.defense.debugging.assertions.assertions module<a class="headerlink" href="#module-aijack.defense.debugging.assertions.assertions" title="Permalink to this headline">#</a></h2>
+<dl class="py exception">
+<dt class="sig sig-object py" id="aijack.defense.debugging.assertions.assertions.FlickerException">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">aijack.defense.debugging.assertions.assertions.</span></span><span class="sig-name descname"><span class="pre">FlickerException</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/defense/debugging/assertions/assertions.html#FlickerException"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.defense.debugging.assertions.assertions.FlickerException" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+<p>Custom exception class for flickering detection.</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="aijack.defense.debugging.assertions.assertions.MultiBoxAssertionError">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">aijack.defense.debugging.assertions.assertions.</span></span><span class="sig-name descname"><span class="pre">MultiBoxAssertionError</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/defense/debugging/assertions/assertions.html#MultiBoxAssertionError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.defense.debugging.assertions.assertions.MultiBoxAssertionError" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">AssertionError</span></code></p>
+<p>Custom assertion error class for multi-box assertions</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="aijack.defense.debugging.assertions.assertions.assert_multibox">
+<span class="sig-prename descclassname"><span class="pre">aijack.defense.debugging.assertions.assertions.</span></span><span class="sig-name descname"><span class="pre">assert_multibox</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">boxes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">counter_threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/defense/debugging/assertions/assertions.html#assert_multibox"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.defense.debugging.assertions.assertions.assert_multibox" title="Permalink to this definition">#</a></dt>
+<dd><p>Assert the multi-box condition for a list of boxes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>boxes</strong> (<em>list</em>) – A list of boxes. The format of each box is a tuple or list with the format of (x_min, y_min, x_max, y_max)</p></li>
+<li><p><strong>counter_threshold</strong> (<em>int</em><em>, </em><em>optional</em>) – The minimum number of overlaps required for each box. Defaults to 2.</p></li>
+<li><p><strong>eps</strong> (<em>float</em><em>, </em><em>optional</em>) – The epsilon value for nearly_contains function. Defaults to 0.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><a class="reference internal" href="#aijack.defense.debugging.assertions.assertions.MultiBoxAssertionError" title="aijack.defense.debugging.assertions.assertions.MultiBoxAssertionError"><strong>MultiBoxAssertionError</strong></a> – If any box overlaps with more than counter_threshold other boxes.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="aijack.defense.debugging.assertions.assertions.except_flicker">
+<span class="sig-prename descclassname"><span class="pre">aijack.defense.debugging.assertions.assertions.</span></span><span class="sig-name descname"><span class="pre">except_flicker</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frames</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">boxes_of_frames</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cur_frame_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-</span> <span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">window_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">similarity_threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">35</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_range</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">255</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/defense/debugging/assertions/assertions.html#except_flicker"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.defense.debugging.assertions.assertions.except_flicker" title="Permalink to this definition">#</a></dt>
+<dd><p>Check for flickering between the current frame and previous frames.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>frames</strong> (<em>list</em>) – A list of frames.</p></li>
+<li><p><strong>boxes_of_frames</strong> (<em>list</em>) – A list of boxes for each frame.</p></li>
+<li><p><strong>cur_frame_id</strong> (<em>int</em><em>, </em><em>optional</em>) – The index of the current frame. Defaults to -1.</p></li>
+<li><p><strong>window_size</strong> (<em>int</em><em>, </em><em>optional</em>) – The number of previous frames to consider. Defaults to 10.</p></li>
+<li><p><strong>similarity_threshold</strong> (<em>float</em><em>, </em><em>optional</em>) – The similarity threshold for matching boxes. Defaults to 35.</p></li>
+<li><p><strong>data_range</strong> (<em>int</em><em>, </em><em>optional</em>) – The data range of the images. Defaults to 255.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><a class="reference internal" href="#aijack.defense.debugging.assertions.assertions.FlickerException" title="aijack.defense.debugging.assertions.assertions.FlickerException"><strong>FlickerException</strong></a> – If flickering is detected between the current frame and a previous frame.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="aijack.defense.debugging.assertions.assertions.get_simillar_boxes">
+<span class="sig-prename descclassname"><span class="pre">aijack.defense.debugging.assertions.assertions.</span></span><span class="sig-name descname"><span class="pre">get_simillar_boxes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frame_1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frame_2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">boxes_1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">boxes_2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">similarity_threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">35</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_range</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">255</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-08</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/defense/debugging/assertions/assertions.html#get_simillar_boxes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.defense.debugging.assertions.assertions.get_simillar_boxes" title="Permalink to this definition">#</a></dt>
+<dd><p>Get similar boxes between two frames based on the peak signal-to-noise ratio (PSNR).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>frame_1</strong> (<em>numpy.ndarray</em>) – The first frame.</p></li>
+<li><p><strong>frame_2</strong> (<em>numpy.ndarray</em>) – The second frame.</p></li>
+<li><p><strong>boxes_1</strong> (<em>list</em>) – A list of boxes in frame_1.</p></li>
+<li><p><strong>boxes_2</strong> (<em>list</em>) – A list of boxes in frame_2.</p></li>
+<li><p><strong>similarity_threshold</strong> (<em>float</em><em>, </em><em>optional</em>) – The similarity threshold for matching boxes. Defaults to 35.</p></li>
+<li><p><strong>data_range</strong> (<em>int</em><em>, </em><em>optional</em>) – The data range of the images. Defaults to 255.</p></li>
+<li><p><strong>eps</strong> (<em>float</em><em>, </em><em>optional</em>) – A small value to avoid division by zero. Defaults to 1e-8.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A list of similar boxes.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="aijack.defense.debugging.assertions.assertions.nearly_contains">
+<span class="sig-prename descclassname"><span class="pre">aijack.defense.debugging.assertions.assertions.</span></span><span class="sig-name descname"><span class="pre">nearly_contains</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">box_1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">box_2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eps</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/defense/debugging/assertions/assertions.html#nearly_contains"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.defense.debugging.assertions.assertions.nearly_contains" title="Permalink to this definition">#</a></dt>
+<dd><p>Check if box_1 nearly contains box_2 with a given epsilon value.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>box_1</strong> (<em>tuple</em><em>|</em><em>list</em>) – The coordinates of the first box in the format (x_min, y_min, x_max, y_max).</p></li>
+<li><p><strong>box_2</strong> (<em>tuple</em><em>|</em><em>list</em>) – The coordinates of the second box in the format (x_min, y_min, x_max, y_max).</p></li>
+<li><p><strong>eps</strong> (<em>float</em>) – The epsilon value.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>True if box_1 nearly contains box_2, False otherwise.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="aijack.defense.debugging.assertions.assertions.psnr">
+<span class="sig-prename descclassname"><span class="pre">aijack.defense.debugging.assertions.assertions.</span></span><span class="sig-name descname"><span class="pre">psnr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">img_1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">img_2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_range</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">255</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-08</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/defense/debugging/assertions/assertions.html#psnr"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.defense.debugging.assertions.assertions.psnr" title="Permalink to this definition">#</a></dt>
+<dd><p>Calculate the peak signal-to-noise ratio (PSNR) between two images.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>img_1</strong> (<em>numpy.ndarray</em>) – The first image.</p></li>
+<li><p><strong>img_2</strong> (<em>numpy.ndarray</em>) – The second image.</p></li>
+<li><p><strong>data_range</strong> (<em>int</em><em>, </em><em>optional</em>) – The data range of the images. Defaults to 255.</p></li>
+<li><p><strong>eps</strong> (<em>float</em><em>, </em><em>optional</em>) – A small value to avoid division by zero. Defaults to 1e-8.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The PSNR value.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
 </section>
-<section id="aijack-defense-debugging-assertions-utils-module">
-<h2><span class="section-number">2.1.2.1.1.3. </span>aijack.defense.debugging.assertions.utils module<a class="headerlink" href="#aijack-defense-debugging-assertions-utils-module" title="Permalink to this headline">#</a></h2>
+<section id="module-aijack.defense.debugging.assertions.utils">
+<span id="aijack-defense-debugging-assertions-utils-module"></span><h2><span class="section-number">2.1.2.1.1.3. </span>aijack.defense.debugging.assertions.utils module<a class="headerlink" href="#module-aijack.defense.debugging.assertions.utils" title="Permalink to this headline">#</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="aijack.defense.debugging.assertions.utils.Hungarian">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">aijack.defense.debugging.assertions.utils.</span></span><span class="sig-name descname"><span class="pre">Hungarian</span></span><a class="reference internal" href="_modules/aijack/defense/debugging/assertions/utils.html#Hungarian"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.defense.debugging.assertions.utils.Hungarian" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Hungarian algorithm implementation for solving the assignment problem.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="aijack.defense.debugging.assertions.utils.Hungarian.compute">
+<span class="sig-name descname"><span class="pre">compute</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mat</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/defense/debugging/assertions/utils.html#Hungarian.compute"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.defense.debugging.assertions.utils.Hungarian.compute" title="Permalink to this definition">#</a></dt>
+<dd><p>Computes the optimal assignment using the Hungarian algorithm.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>mat</strong> (<em>numpy.ndarray</em>) – The input matrix.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The list of optimal assignments.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
 </section>
-<section id="module-contents">
-<h2><span class="section-number">2.1.2.1.1.4. </span>Module contents<a class="headerlink" href="#module-contents" title="Permalink to this headline">#</a></h2>
+<section id="module-aijack.defense.debugging.assertions">
+<span id="module-contents"></span><h2><span class="section-number">2.1.2.1.1.4. </span>Module contents<a class="headerlink" href="#module-aijack.defense.debugging.assertions" title="Permalink to this headline">#</a></h2>
 </section>
 </section>
 
@@ -493,9 +638,9 @@ document.write(`
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#submodules">2.1.2.1.1.1. Submodules</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#aijack-defense-debugging-assertions-assertions-module">2.1.2.1.1.2. aijack.defense.debugging.assertions.assertions module</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#aijack-defense-debugging-assertions-utils-module">2.1.2.1.1.3. aijack.defense.debugging.assertions.utils module</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-contents">2.1.2.1.1.4. Module contents</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aijack.defense.debugging.assertions.assertions">2.1.2.1.1.2. aijack.defense.debugging.assertions.assertions module</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aijack.defense.debugging.assertions.utils">2.1.2.1.1.3. aijack.defense.debugging.assertions.utils module</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aijack.defense.debugging.assertions">2.1.2.1.1.4. Module contents</a></li>
 </ul>
   </nav></div>
 

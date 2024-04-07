@@ -414,8 +414,8 @@ document.write(`
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#submodules">3.1.9.1. Submodules</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#aijack-collaborative-moon-client-module">3.1.9.2. aijack.collaborative.moon.client module</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-contents">3.1.9.3. Module contents</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aijack.collaborative.moon.client">3.1.9.2. aijack.collaborative.moon.client module</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aijack.collaborative.moon">3.1.9.3. Module contents</a></li>
 </ul>
             </nav>
         </div>
@@ -432,11 +432,59 @@ document.write(`
 <section id="submodules">
 <h2><span class="section-number">3.1.9.1. </span>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">#</a></h2>
 </section>
-<section id="aijack-collaborative-moon-client-module">
-<h2><span class="section-number">3.1.9.2. </span>aijack.collaborative.moon.client module<a class="headerlink" href="#aijack-collaborative-moon-client-module" title="Permalink to this headline">#</a></h2>
+<section id="module-aijack.collaborative.moon.client">
+<span id="aijack-collaborative-moon-client-module"></span><h2><span class="section-number">3.1.9.2. </span>aijack.collaborative.moon.client module<a class="headerlink" href="#module-aijack.collaborative.moon.client" title="Permalink to this headline">#</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="aijack.collaborative.moon.client.MOONClient">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">aijack.collaborative.moon.client.</span></span><span class="sig-name descname"><span class="pre">MOONClient</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mu</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tau</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/collaborative/moon/client.html#MOONClient"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.collaborative.moon.client.MOONClient" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="aijack.collaborative.fedavg.html#aijack.collaborative.fedavg.client.FedAVGClient" title="aijack.collaborative.fedavg.client.FedAVGClient"><code class="xref py py-class docutils literal notranslate"><span class="pre">aijack.collaborative.fedavg.client.FedAVGClient</span></code></a></p>
+<p>Client of MOON for single process simulation
+(Li, Qinbin, Bingsheng He, and Dawn Song. “Model-contrastive
+federated learning.” Proceedings of the IEEE/CVF conference
+on computer vision and pattern recognition. 2021.)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>model</strong> (<em>torch.nn.Module</em>) – local model</p></li>
+<li><p><strong>mu</strong> (<em>float</em>) – weight of model-contrastive loss</p></li>
+<li><p><strong>tau</strong> (<em>float</em>) – tempreature within model-contrastive loss</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="aijack.collaborative.moon.client.MOONClient.local_train">
+<span class="sig-name descname"><span class="pre">local_train</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">local_epoch</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">criterion</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trainloader</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">optimizer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">communication_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/collaborative/moon/client.html#MOONClient.local_train"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.collaborative.moon.client.MOONClient.local_train" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
 </section>
-<section id="module-contents">
-<h2><span class="section-number">3.1.9.3. </span>Module contents<a class="headerlink" href="#module-contents" title="Permalink to this headline">#</a></h2>
+<section id="module-aijack.collaborative.moon">
+<span id="module-contents"></span><h2><span class="section-number">3.1.9.3. </span>Module contents<a class="headerlink" href="#module-aijack.collaborative.moon" title="Permalink to this headline">#</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="aijack.collaborative.moon.MOONClient">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">aijack.collaborative.moon.</span></span><span class="sig-name descname"><span class="pre">MOONClient</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mu</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tau</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/collaborative/moon/client.html#MOONClient"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.collaborative.moon.MOONClient" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="aijack.collaborative.fedavg.html#aijack.collaborative.fedavg.client.FedAVGClient" title="aijack.collaborative.fedavg.client.FedAVGClient"><code class="xref py py-class docutils literal notranslate"><span class="pre">aijack.collaborative.fedavg.client.FedAVGClient</span></code></a></p>
+<p>Client of MOON for single process simulation
+(Li, Qinbin, Bingsheng He, and Dawn Song. “Model-contrastive
+federated learning.” Proceedings of the IEEE/CVF conference
+on computer vision and pattern recognition. 2021.)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>model</strong> (<em>torch.nn.Module</em>) – local model</p></li>
+<li><p><strong>mu</strong> (<em>float</em>) – weight of model-contrastive loss</p></li>
+<li><p><strong>tau</strong> (<em>float</em>) – tempreature within model-contrastive loss</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="aijack.collaborative.moon.MOONClient.local_train">
+<span class="sig-name descname"><span class="pre">local_train</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">local_epoch</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">criterion</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trainloader</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">optimizer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">communication_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/collaborative/moon/client.html#MOONClient.local_train"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.collaborative.moon.MOONClient.local_train" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
 </section>
 </section>
 
@@ -489,8 +537,8 @@ document.write(`
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#submodules">3.1.9.1. Submodules</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#aijack-collaborative-moon-client-module">3.1.9.2. aijack.collaborative.moon.client module</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-contents">3.1.9.3. Module contents</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aijack.collaborative.moon.client">3.1.9.2. aijack.collaborative.moon.client module</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aijack.collaborative.moon">3.1.9.3. Module contents</a></li>
 </ul>
   </nav></div>
 

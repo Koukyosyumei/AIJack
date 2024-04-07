@@ -414,10 +414,10 @@ document.write(`
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#submodules">1.1.2.1. Submodules</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#aijack-attack-evasion-diva-module">1.1.2.2. aijack.attack.evasion.diva module</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#aijack-attack-evasion-evasion-attack-module">1.1.2.3. aijack.attack.evasion.evasion_attack module</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#aijack-attack-evasion-fgsm-module">1.1.2.4. aijack.attack.evasion.fgsm module</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-contents">1.1.2.5. Module contents</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aijack.attack.evasion.diva">1.1.2.2. aijack.attack.evasion.diva module</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aijack.attack.evasion.evasion_attack">1.1.2.3. aijack.attack.evasion.evasion_attack module</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aijack.attack.evasion.fgsm">1.1.2.4. aijack.attack.evasion.fgsm module</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aijack.attack.evasion">1.1.2.5. Module contents</a></li>
 </ul>
             </nav>
         </div>
@@ -434,17 +434,865 @@ document.write(`
 <section id="submodules">
 <h2><span class="section-number">1.1.2.1. </span>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">#</a></h2>
 </section>
-<section id="aijack-attack-evasion-diva-module">
-<h2><span class="section-number">1.1.2.2. </span>aijack.attack.evasion.diva module<a class="headerlink" href="#aijack-attack-evasion-diva-module" title="Permalink to this headline">#</a></h2>
+<section id="module-aijack.attack.evasion.diva">
+<span id="aijack-attack-evasion-diva-module"></span><h2><span class="section-number">1.1.2.2. </span>aijack.attack.evasion.diva module<a class="headerlink" href="#module-aijack.attack.evasion.diva" title="Permalink to this headline">#</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="aijack.attack.evasion.diva.DIVAWhiteBoxAttacker">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">aijack.attack.evasion.diva.</span></span><span class="sig-name descname"><span class="pre">DIVAWhiteBoxAttacker</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target_model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_model_on_edge</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">c</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_itr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lam</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.01</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'cpu'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/attack/evasion/diva.html#DIVAWhiteBoxAttacker"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.attack.evasion.diva.DIVAWhiteBoxAttacker" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="aijack.attack.html#aijack.attack.base_attack.BaseAttacker" title="aijack.attack.base_attack.BaseAttacker"><code class="xref py py-class docutils literal notranslate"><span class="pre">aijack.attack.base_attack.BaseAttacker</span></code></a></p>
+<p>Class implementing the DIVA white-box attack.</p>
+<p>This class provides functionality to perform the DIVA white-box attack on a target model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>target_model</strong> (<em>torch.nn.Module</em>) – The target model to be attacked.</p></li>
+<li><p><strong>target_model_on_edge</strong> (<em>torch.nn.Module</em>) – The target model deployed on the edge.</p></li>
+<li><p><strong>c</strong> (<em>float</em><em>, </em><em>optional</em>) – The trade-off parameter between origin and edge predictions. Defaults to 1.0.</p></li>
+<li><p><strong>num_itr</strong> (<em>int</em><em>, </em><em>optional</em>) – The number of iterations for the attack. Defaults to 1000.</p></li>
+<li><p><strong>eps</strong> (<em>float</em><em>, </em><em>optional</em>) – The maximum perturbation allowed. Defaults to 0.1.</p></li>
+<li><p><strong>lam</strong> (<em>float</em><em>, </em><em>optional</em>) – The step size for gradient updates. Defaults to 0.01.</p></li>
+<li><p><strong>device</strong> (<em>str</em><em>, </em><em>optional</em>) – The device to perform computation on. Defaults to “cpu”.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="aijack.attack.evasion.diva.DIVAWhiteBoxAttacker.target_model">
+<span class="sig-name descname"><span class="pre">target_model</span></span><a class="headerlink" href="#aijack.attack.evasion.diva.DIVAWhiteBoxAttacker.target_model" title="Permalink to this definition">#</a></dt>
+<dd><p>The target model to be attacked.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>torch.nn.Module</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="aijack.attack.evasion.diva.DIVAWhiteBoxAttacker.target_model_on_edge">
+<span class="sig-name descname"><span class="pre">target_model_on_edge</span></span><a class="headerlink" href="#aijack.attack.evasion.diva.DIVAWhiteBoxAttacker.target_model_on_edge" title="Permalink to this definition">#</a></dt>
+<dd><p>The target model deployed on the edge.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>torch.nn.Module</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="aijack.attack.evasion.diva.DIVAWhiteBoxAttacker.c">
+<span class="sig-name descname"><span class="pre">c</span></span><a class="headerlink" href="#aijack.attack.evasion.diva.DIVAWhiteBoxAttacker.c" title="Permalink to this definition">#</a></dt>
+<dd><p>The trade-off parameter between origin and edge predictions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="aijack.attack.evasion.diva.DIVAWhiteBoxAttacker.num_itr">
+<span class="sig-name descname"><span class="pre">num_itr</span></span><a class="headerlink" href="#aijack.attack.evasion.diva.DIVAWhiteBoxAttacker.num_itr" title="Permalink to this definition">#</a></dt>
+<dd><p>The number of iterations for the attack.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="aijack.attack.evasion.diva.DIVAWhiteBoxAttacker.eps">
+<span class="sig-name descname"><span class="pre">eps</span></span><a class="headerlink" href="#aijack.attack.evasion.diva.DIVAWhiteBoxAttacker.eps" title="Permalink to this definition">#</a></dt>
+<dd><p>The maximum perturbation allowed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="aijack.attack.evasion.diva.DIVAWhiteBoxAttacker.lam">
+<span class="sig-name descname"><span class="pre">lam</span></span><a class="headerlink" href="#aijack.attack.evasion.diva.DIVAWhiteBoxAttacker.lam" title="Permalink to this definition">#</a></dt>
+<dd><p>The step size for gradient updates.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="aijack.attack.evasion.diva.DIVAWhiteBoxAttacker.device">
+<span class="sig-name descname"><span class="pre">device</span></span><a class="headerlink" href="#aijack.attack.evasion.diva.DIVAWhiteBoxAttacker.device" title="Permalink to this definition">#</a></dt>
+<dd><p>The device to perform computation on.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="aijack.attack.evasion.diva.DIVAWhiteBoxAttacker.attack">
+<span class="sig-name descname"><span class="pre">attack</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/attack/evasion/diva.html#DIVAWhiteBoxAttacker.attack"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.attack.evasion.diva.DIVAWhiteBoxAttacker.attack" title="Permalink to this definition">#</a></dt>
+<dd><p>Performs the DIVA white-box attack on input data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>data</strong> (<em>tuple</em>) – A tuple containing input data and corresponding labels.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A tuple containing the adversarial examples and attack logs.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
 </section>
-<section id="aijack-attack-evasion-evasion-attack-module">
-<h2><span class="section-number">1.1.2.3. </span>aijack.attack.evasion.evasion_attack module<a class="headerlink" href="#aijack-attack-evasion-evasion-attack-module" title="Permalink to this headline">#</a></h2>
+<section id="module-aijack.attack.evasion.evasion_attack">
+<span id="aijack-attack-evasion-evasion-attack-module"></span><h2><span class="section-number">1.1.2.3. </span>aijack.attack.evasion.evasion_attack module<a class="headerlink" href="#module-aijack.attack.evasion.evasion_attack" title="Permalink to this headline">#</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="aijack.attack.evasion.evasion_attack.Evasion_attack_sklearn">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">aijack.attack.evasion.evasion_attack.</span></span><span class="sig-name descname"><span class="pre">Evasion_attack_sklearn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target_model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">X_minus_1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dmax</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_iter</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lam</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">h</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">distance</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'L1'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kde_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'L1'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/attack/evasion/evasion_attack.html#Evasion_attack_sklearn"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.attack.evasion.evasion_attack.Evasion_attack_sklearn" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="aijack.attack.html#aijack.attack.base_attack.BaseAttacker" title="aijack.attack.base_attack.BaseAttacker"><code class="xref py py-class docutils literal notranslate"><span class="pre">aijack.attack.base_attack.BaseAttacker</span></code></a></p>
+<p>Creates an adversarial example against sklearn objects based on <a class="reference external" href="https://arxiv.org/abs/1708.06131">https://arxiv.org/abs/1708.06131</a></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>target_model</strong> (<em>sklearn</em>) – sklearn classifier</p></li>
+<li><p><strong>X_minus_1</strong> (<em>numpy.array</em>) – datasets that contains
+only the class you want to misclasssify</p></li>
+<li><p><strong>dmax</strong> (<em>float</em>) – max distance between the adversarial example
+and initial one</p></li>
+<li><p><strong>max_iter</strong> (<em>int</em>) – maxium number of iterations</p></li>
+<li><p><strong>gamma</strong> (<em>float</em>) – parameter gamma of svm (used for only svm)</p></li>
+<li><p><strong>lam</strong> (<em>float</em>) – trade - off parameter</p></li>
+<li><p><strong>t</strong> (<em>float</em>) – step_size</p></li>
+<li><p><strong>h</strong> (<em>float</em>) – a badwidtch paramter for a KDE</p></li>
+<li><p><strong>distance</strong> (<em>str</em>) – type of distance such as L2 or L1</p></li>
+<li><p><strong>kde_type</strong> (<em>str</em>) – type of kernel density estimator</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="aijack.attack.evasion.evasion_attack.Evasion_attack_sklearn.target_model">
+<span class="sig-name descname"><span class="pre">target_model</span></span><a class="headerlink" href="#aijack.attack.evasion.evasion_attack.Evasion_attack_sklearn.target_model" title="Permalink to this definition">#</a></dt>
+<dd><p>sklearn classifier</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>sklearn</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="aijack.attack.evasion.evasion_attack.Evasion_attack_sklearn.X_minus_1">
+<span class="sig-name descname"><span class="pre">X_minus_1</span></span><a class="headerlink" href="#aijack.attack.evasion.evasion_attack.Evasion_attack_sklearn.X_minus_1" title="Permalink to this definition">#</a></dt>
+<dd><p>datasets that contains only the class you want to misclasssify</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>numpy.array</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="aijack.attack.evasion.evasion_attack.Evasion_attack_sklearn.dmax">
+<span class="sig-name descname"><span class="pre">dmax</span></span><a class="headerlink" href="#aijack.attack.evasion.evasion_attack.Evasion_attack_sklearn.dmax" title="Permalink to this definition">#</a></dt>
+<dd><p>max distance between the adversarial example and initial one</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="aijack.attack.evasion.evasion_attack.Evasion_attack_sklearn.max_iter">
+<span class="sig-name descname"><span class="pre">max_iter</span></span><a class="headerlink" href="#aijack.attack.evasion.evasion_attack.Evasion_attack_sklearn.max_iter" title="Permalink to this definition">#</a></dt>
+<dd><p>maxium number of iterations</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="aijack.attack.evasion.evasion_attack.Evasion_attack_sklearn.gamma">
+<span class="sig-name descname"><span class="pre">gamma</span></span><a class="headerlink" href="#aijack.attack.evasion.evasion_attack.Evasion_attack_sklearn.gamma" title="Permalink to this definition">#</a></dt>
+<dd><p>parameter gamma of svm (used for only svm)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="aijack.attack.evasion.evasion_attack.Evasion_attack_sklearn.lam">
+<span class="sig-name descname"><span class="pre">lam</span></span><a class="headerlink" href="#aijack.attack.evasion.evasion_attack.Evasion_attack_sklearn.lam" title="Permalink to this definition">#</a></dt>
+<dd><p>trade - off parameter</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="aijack.attack.evasion.evasion_attack.Evasion_attack_sklearn.t">
+<span class="sig-name descname"><span class="pre">t</span></span><a class="headerlink" href="#aijack.attack.evasion.evasion_attack.Evasion_attack_sklearn.t" title="Permalink to this definition">#</a></dt>
+<dd><p>step_size</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="aijack.attack.evasion.evasion_attack.Evasion_attack_sklearn.h">
+<span class="sig-name descname"><span class="pre">h</span></span><a class="headerlink" href="#aijack.attack.evasion.evasion_attack.Evasion_attack_sklearn.h" title="Permalink to this definition">#</a></dt>
+<dd><p>a badwidtch paramter for a KDE</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="aijack.attack.evasion.evasion_attack.Evasion_attack_sklearn.distance">
+<span class="sig-name descname"><span class="pre">distance</span></span><a class="headerlink" href="#aijack.attack.evasion.evasion_attack.Evasion_attack_sklearn.distance" title="Permalink to this definition">#</a></dt>
+<dd><p>type of distance such as L2 or L1</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="aijack.attack.evasion.evasion_attack.Evasion_attack_sklearn.kde_type">
+<span class="sig-name descname"><span class="pre">kde_type</span></span><a class="headerlink" href="#aijack.attack.evasion.evasion_attack.Evasion_attack_sklearn.kde_type" title="Permalink to this definition">#</a></dt>
+<dd><p>type of kernel density estimator</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="aijack.attack.evasion.evasion_attack.Evasion_attack_sklearn.n_minus_1">
+<span class="sig-name descname"><span class="pre">n_minus_1</span></span><a class="headerlink" href="#aijack.attack.evasion.evasion_attack.Evasion_attack_sklearn.n_minus_1" title="Permalink to this definition">#</a></dt>
+<dd><p>number of rows of X_minus_1</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="aijack.attack.evasion.evasion_attack.Evasion_attack_sklearn.delta_g">
+<span class="sig-name descname"><span class="pre">delta_g</span></span><a class="headerlink" href="#aijack.attack.evasion.evasion_attack.Evasion_attack_sklearn.delta_g" title="Permalink to this definition">#</a></dt>
+<dd><p>deviation of he discriminant function of a surrogate classifier f learnt on D</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>func</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="field-list simple">
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><strong>ValueError</strong> – if given distance is not supported.</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<p>&gt;&gt;&gt;X_minus_1 = X_train[np.where(y_train == “3”)]
+&gt;&gt;&gt;attacker = Attack_sklearn(target_model = target_model,</p>
+<blockquote>
+<div><p>X_minus_1 = X_minus_1,
+dmax =  (5000 / 255) * 2.5,
+max_iter = 300,
+gamma = 1 / (X_train.shape[1] *</p>
+<blockquote>
+<div><p>np.var(X_train)),</p>
+</div></blockquote>
+<p>lam = 10, t = 0.5, h = 10)</p>
+</div></blockquote>
+<p>&gt;&gt;&gt;xm, log = attacker.attack(x0)</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="aijack.attack.evasion.evasion_attack.Evasion_attack_sklearn.attack">
+<span class="sig-name descname"><span class="pre">attack</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/attack/evasion/evasion_attack.html#Evasion_attack_sklearn.attack"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.attack.evasion.evasion_attack.Evasion_attack_sklearn.attack" title="Permalink to this definition">#</a></dt>
+<dd><p>Executes evasion attack</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>x0</strong> (<em>np.array</em>) – initial data point</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><p>created adversarial example
+g_list (list) : lof of decision function (only for svm)</p>
+<blockquote>
+<div><p>(need future improvement)</p>
+</div></blockquote>
+</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>xm (np.array)</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
 </section>
-<section id="aijack-attack-evasion-fgsm-module">
-<h2><span class="section-number">1.1.2.4. </span>aijack.attack.evasion.fgsm module<a class="headerlink" href="#aijack-attack-evasion-fgsm-module" title="Permalink to this headline">#</a></h2>
+<section id="module-aijack.attack.evasion.fgsm">
+<span id="aijack-attack-evasion-fgsm-module"></span><h2><span class="section-number">1.1.2.4. </span>aijack.attack.evasion.fgsm module<a class="headerlink" href="#module-aijack.attack.evasion.fgsm" title="Permalink to this headline">#</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="aijack.attack.evasion.fgsm.FGSMAttacker">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">aijack.attack.evasion.fgsm.</span></span><span class="sig-name descname"><span class="pre">FGSMAttacker</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target_model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">criterion</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grad_lower_bound</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-</span> <span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grad_upper_bound</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_lower_bound</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-</span> <span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_upper_bound</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/attack/evasion/fgsm.html#FGSMAttacker"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.attack.evasion.fgsm.FGSMAttacker" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="aijack.attack.html#aijack.attack.base_attack.BaseAttacker" title="aijack.attack.base_attack.BaseAttacker"><code class="xref py py-class docutils literal notranslate"><span class="pre">aijack.attack.base_attack.BaseAttacker</span></code></a></p>
+<p>Class implementing the Fast Gradient Sign Method (FGSM) attack.</p>
+<p>This class provides functionality to perform the FGSM attack on a target model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>target_model</strong> (<em>torch.nn.Module</em>) – The target model to be attacked.</p></li>
+<li><p><strong>criterion</strong> – The criterion to compute the loss.</p></li>
+<li><p><strong>eps</strong> (<em>float</em><em>, </em><em>optional</em>) – The epsilon value for the FGSM attack. Defaults to 0.3.</p></li>
+<li><p><strong>grad_lower_bound</strong> (<em>float</em><em>, </em><em>optional</em>) – The lower bound for the gradient. Defaults to -0.1.</p></li>
+<li><p><strong>grad_upper_bound</strong> (<em>float</em><em>, </em><em>optional</em>) – The upper bound for the gradient. Defaults to 0.1.</p></li>
+<li><p><strong>output_lower_bound</strong> (<em>float</em><em>, </em><em>optional</em>) – The lower bound for the output values. Defaults to -1.0.</p></li>
+<li><p><strong>output_upper_bound</strong> (<em>float</em><em>, </em><em>optional</em>) – The upper bound for the output values. Defaults to 1.0.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="aijack.attack.evasion.fgsm.FGSMAttacker.target_model">
+<span class="sig-name descname"><span class="pre">target_model</span></span><a class="headerlink" href="#aijack.attack.evasion.fgsm.FGSMAttacker.target_model" title="Permalink to this definition">#</a></dt>
+<dd><p>The target model to be attacked.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>torch.nn.Module</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="aijack.attack.evasion.fgsm.FGSMAttacker.criterion">
+<span class="sig-name descname"><span class="pre">criterion</span></span><a class="headerlink" href="#aijack.attack.evasion.fgsm.FGSMAttacker.criterion" title="Permalink to this definition">#</a></dt>
+<dd><p>The criterion to compute the loss.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="aijack.attack.evasion.fgsm.FGSMAttacker.eps">
+<span class="sig-name descname"><span class="pre">eps</span></span><a class="headerlink" href="#aijack.attack.evasion.fgsm.FGSMAttacker.eps" title="Permalink to this definition">#</a></dt>
+<dd><p>The epsilon value for the FGSM attack.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="aijack.attack.evasion.fgsm.FGSMAttacker.grad_lower_bound">
+<span class="sig-name descname"><span class="pre">grad_lower_bound</span></span><a class="headerlink" href="#aijack.attack.evasion.fgsm.FGSMAttacker.grad_lower_bound" title="Permalink to this definition">#</a></dt>
+<dd><p>The lower bound for the gradient.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="aijack.attack.evasion.fgsm.FGSMAttacker.grad_upper_bound">
+<span class="sig-name descname"><span class="pre">grad_upper_bound</span></span><a class="headerlink" href="#aijack.attack.evasion.fgsm.FGSMAttacker.grad_upper_bound" title="Permalink to this definition">#</a></dt>
+<dd><p>The upper bound for the gradient.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="aijack.attack.evasion.fgsm.FGSMAttacker.output_lower_bound">
+<span class="sig-name descname"><span class="pre">output_lower_bound</span></span><a class="headerlink" href="#aijack.attack.evasion.fgsm.FGSMAttacker.output_lower_bound" title="Permalink to this definition">#</a></dt>
+<dd><p>The lower bound for the output values.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="aijack.attack.evasion.fgsm.FGSMAttacker.output_upper_bound">
+<span class="sig-name descname"><span class="pre">output_upper_bound</span></span><a class="headerlink" href="#aijack.attack.evasion.fgsm.FGSMAttacker.output_upper_bound" title="Permalink to this definition">#</a></dt>
+<dd><p>The upper bound for the output values.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="aijack.attack.evasion.fgsm.FGSMAttacker.attack">
+<span class="sig-name descname"><span class="pre">attack</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/attack/evasion/fgsm.html#FGSMAttacker.attack"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.attack.evasion.fgsm.FGSMAttacker.attack" title="Permalink to this definition">#</a></dt>
+<dd><p>Performs the FGSM attack on input seed data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>data</strong> (<em>tuple</em>) – A tuple containing input seed data and corresponding labels.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The perturbed input data.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>torch.Tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
 </section>
-<section id="module-contents">
-<h2><span class="section-number">1.1.2.5. </span>Module contents<a class="headerlink" href="#module-contents" title="Permalink to this headline">#</a></h2>
+<section id="module-aijack.attack.evasion">
+<span id="module-contents"></span><h2><span class="section-number">1.1.2.5. </span>Module contents<a class="headerlink" href="#module-aijack.attack.evasion" title="Permalink to this headline">#</a></h2>
+<p>Subpackage for evasion attack, which creates a malicious data that the target
+machine learning model cannot correctly classify.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="aijack.attack.evasion.DIVAWhiteBoxAttacker">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">aijack.attack.evasion.</span></span><span class="sig-name descname"><span class="pre">DIVAWhiteBoxAttacker</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target_model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_model_on_edge</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">c</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_itr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lam</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.01</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'cpu'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/attack/evasion/diva.html#DIVAWhiteBoxAttacker"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.attack.evasion.DIVAWhiteBoxAttacker" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="aijack.attack.html#aijack.attack.base_attack.BaseAttacker" title="aijack.attack.base_attack.BaseAttacker"><code class="xref py py-class docutils literal notranslate"><span class="pre">aijack.attack.base_attack.BaseAttacker</span></code></a></p>
+<p>Class implementing the DIVA white-box attack.</p>
+<p>This class provides functionality to perform the DIVA white-box attack on a target model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>target_model</strong> (<em>torch.nn.Module</em>) – The target model to be attacked.</p></li>
+<li><p><strong>target_model_on_edge</strong> (<em>torch.nn.Module</em>) – The target model deployed on the edge.</p></li>
+<li><p><strong>c</strong> (<em>float</em><em>, </em><em>optional</em>) – The trade-off parameter between origin and edge predictions. Defaults to 1.0.</p></li>
+<li><p><strong>num_itr</strong> (<em>int</em><em>, </em><em>optional</em>) – The number of iterations for the attack. Defaults to 1000.</p></li>
+<li><p><strong>eps</strong> (<em>float</em><em>, </em><em>optional</em>) – The maximum perturbation allowed. Defaults to 0.1.</p></li>
+<li><p><strong>lam</strong> (<em>float</em><em>, </em><em>optional</em>) – The step size for gradient updates. Defaults to 0.01.</p></li>
+<li><p><strong>device</strong> (<em>str</em><em>, </em><em>optional</em>) – The device to perform computation on. Defaults to “cpu”.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="aijack.attack.evasion.DIVAWhiteBoxAttacker.target_model">
+<span class="sig-name descname"><span class="pre">target_model</span></span><a class="headerlink" href="#aijack.attack.evasion.DIVAWhiteBoxAttacker.target_model" title="Permalink to this definition">#</a></dt>
+<dd><p>The target model to be attacked.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>torch.nn.Module</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="aijack.attack.evasion.DIVAWhiteBoxAttacker.target_model_on_edge">
+<span class="sig-name descname"><span class="pre">target_model_on_edge</span></span><a class="headerlink" href="#aijack.attack.evasion.DIVAWhiteBoxAttacker.target_model_on_edge" title="Permalink to this definition">#</a></dt>
+<dd><p>The target model deployed on the edge.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>torch.nn.Module</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="aijack.attack.evasion.DIVAWhiteBoxAttacker.c">
+<span class="sig-name descname"><span class="pre">c</span></span><a class="headerlink" href="#aijack.attack.evasion.DIVAWhiteBoxAttacker.c" title="Permalink to this definition">#</a></dt>
+<dd><p>The trade-off parameter between origin and edge predictions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="aijack.attack.evasion.DIVAWhiteBoxAttacker.num_itr">
+<span class="sig-name descname"><span class="pre">num_itr</span></span><a class="headerlink" href="#aijack.attack.evasion.DIVAWhiteBoxAttacker.num_itr" title="Permalink to this definition">#</a></dt>
+<dd><p>The number of iterations for the attack.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="aijack.attack.evasion.DIVAWhiteBoxAttacker.eps">
+<span class="sig-name descname"><span class="pre">eps</span></span><a class="headerlink" href="#aijack.attack.evasion.DIVAWhiteBoxAttacker.eps" title="Permalink to this definition">#</a></dt>
+<dd><p>The maximum perturbation allowed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="aijack.attack.evasion.DIVAWhiteBoxAttacker.lam">
+<span class="sig-name descname"><span class="pre">lam</span></span><a class="headerlink" href="#aijack.attack.evasion.DIVAWhiteBoxAttacker.lam" title="Permalink to this definition">#</a></dt>
+<dd><p>The step size for gradient updates.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="aijack.attack.evasion.DIVAWhiteBoxAttacker.device">
+<span class="sig-name descname"><span class="pre">device</span></span><a class="headerlink" href="#aijack.attack.evasion.DIVAWhiteBoxAttacker.device" title="Permalink to this definition">#</a></dt>
+<dd><p>The device to perform computation on.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="aijack.attack.evasion.DIVAWhiteBoxAttacker.attack">
+<span class="sig-name descname"><span class="pre">attack</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/attack/evasion/diva.html#DIVAWhiteBoxAttacker.attack"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.attack.evasion.DIVAWhiteBoxAttacker.attack" title="Permalink to this definition">#</a></dt>
+<dd><p>Performs the DIVA white-box attack on input data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>data</strong> (<em>tuple</em>) – A tuple containing input data and corresponding labels.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A tuple containing the adversarial examples and attack logs.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="aijack.attack.evasion.Evasion_attack_sklearn">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">aijack.attack.evasion.</span></span><span class="sig-name descname"><span class="pre">Evasion_attack_sklearn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target_model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">X_minus_1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dmax</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_iter</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lam</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">h</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">distance</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'L1'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kde_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'L1'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/attack/evasion/evasion_attack.html#Evasion_attack_sklearn"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.attack.evasion.Evasion_attack_sklearn" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="aijack.attack.html#aijack.attack.base_attack.BaseAttacker" title="aijack.attack.base_attack.BaseAttacker"><code class="xref py py-class docutils literal notranslate"><span class="pre">aijack.attack.base_attack.BaseAttacker</span></code></a></p>
+<p>Creates an adversarial example against sklearn objects based on <a class="reference external" href="https://arxiv.org/abs/1708.06131">https://arxiv.org/abs/1708.06131</a></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>target_model</strong> (<em>sklearn</em>) – sklearn classifier</p></li>
+<li><p><strong>X_minus_1</strong> (<em>numpy.array</em>) – datasets that contains
+only the class you want to misclasssify</p></li>
+<li><p><strong>dmax</strong> (<em>float</em>) – max distance between the adversarial example
+and initial one</p></li>
+<li><p><strong>max_iter</strong> (<em>int</em>) – maxium number of iterations</p></li>
+<li><p><strong>gamma</strong> (<em>float</em>) – parameter gamma of svm (used for only svm)</p></li>
+<li><p><strong>lam</strong> (<em>float</em>) – trade - off parameter</p></li>
+<li><p><strong>t</strong> (<em>float</em>) – step_size</p></li>
+<li><p><strong>h</strong> (<em>float</em>) – a badwidtch paramter for a KDE</p></li>
+<li><p><strong>distance</strong> (<em>str</em>) – type of distance such as L2 or L1</p></li>
+<li><p><strong>kde_type</strong> (<em>str</em>) – type of kernel density estimator</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="aijack.attack.evasion.Evasion_attack_sklearn.target_model">
+<span class="sig-name descname"><span class="pre">target_model</span></span><a class="headerlink" href="#aijack.attack.evasion.Evasion_attack_sklearn.target_model" title="Permalink to this definition">#</a></dt>
+<dd><p>sklearn classifier</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>sklearn</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="aijack.attack.evasion.Evasion_attack_sklearn.X_minus_1">
+<span class="sig-name descname"><span class="pre">X_minus_1</span></span><a class="headerlink" href="#aijack.attack.evasion.Evasion_attack_sklearn.X_minus_1" title="Permalink to this definition">#</a></dt>
+<dd><p>datasets that contains only the class you want to misclasssify</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>numpy.array</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="aijack.attack.evasion.Evasion_attack_sklearn.dmax">
+<span class="sig-name descname"><span class="pre">dmax</span></span><a class="headerlink" href="#aijack.attack.evasion.Evasion_attack_sklearn.dmax" title="Permalink to this definition">#</a></dt>
+<dd><p>max distance between the adversarial example and initial one</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="aijack.attack.evasion.Evasion_attack_sklearn.max_iter">
+<span class="sig-name descname"><span class="pre">max_iter</span></span><a class="headerlink" href="#aijack.attack.evasion.Evasion_attack_sklearn.max_iter" title="Permalink to this definition">#</a></dt>
+<dd><p>maxium number of iterations</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="aijack.attack.evasion.Evasion_attack_sklearn.gamma">
+<span class="sig-name descname"><span class="pre">gamma</span></span><a class="headerlink" href="#aijack.attack.evasion.Evasion_attack_sklearn.gamma" title="Permalink to this definition">#</a></dt>
+<dd><p>parameter gamma of svm (used for only svm)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="aijack.attack.evasion.Evasion_attack_sklearn.lam">
+<span class="sig-name descname"><span class="pre">lam</span></span><a class="headerlink" href="#aijack.attack.evasion.Evasion_attack_sklearn.lam" title="Permalink to this definition">#</a></dt>
+<dd><p>trade - off parameter</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="aijack.attack.evasion.Evasion_attack_sklearn.t">
+<span class="sig-name descname"><span class="pre">t</span></span><a class="headerlink" href="#aijack.attack.evasion.Evasion_attack_sklearn.t" title="Permalink to this definition">#</a></dt>
+<dd><p>step_size</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="aijack.attack.evasion.Evasion_attack_sklearn.h">
+<span class="sig-name descname"><span class="pre">h</span></span><a class="headerlink" href="#aijack.attack.evasion.Evasion_attack_sklearn.h" title="Permalink to this definition">#</a></dt>
+<dd><p>a badwidtch paramter for a KDE</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="aijack.attack.evasion.Evasion_attack_sklearn.distance">
+<span class="sig-name descname"><span class="pre">distance</span></span><a class="headerlink" href="#aijack.attack.evasion.Evasion_attack_sklearn.distance" title="Permalink to this definition">#</a></dt>
+<dd><p>type of distance such as L2 or L1</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="aijack.attack.evasion.Evasion_attack_sklearn.kde_type">
+<span class="sig-name descname"><span class="pre">kde_type</span></span><a class="headerlink" href="#aijack.attack.evasion.Evasion_attack_sklearn.kde_type" title="Permalink to this definition">#</a></dt>
+<dd><p>type of kernel density estimator</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="aijack.attack.evasion.Evasion_attack_sklearn.n_minus_1">
+<span class="sig-name descname"><span class="pre">n_minus_1</span></span><a class="headerlink" href="#aijack.attack.evasion.Evasion_attack_sklearn.n_minus_1" title="Permalink to this definition">#</a></dt>
+<dd><p>number of rows of X_minus_1</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="aijack.attack.evasion.Evasion_attack_sklearn.delta_g">
+<span class="sig-name descname"><span class="pre">delta_g</span></span><a class="headerlink" href="#aijack.attack.evasion.Evasion_attack_sklearn.delta_g" title="Permalink to this definition">#</a></dt>
+<dd><p>deviation of he discriminant function of a surrogate classifier f learnt on D</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>func</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="field-list simple">
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><strong>ValueError</strong> – if given distance is not supported.</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<p>&gt;&gt;&gt;X_minus_1 = X_train[np.where(y_train == “3”)]
+&gt;&gt;&gt;attacker = Attack_sklearn(target_model = target_model,</p>
+<blockquote>
+<div><p>X_minus_1 = X_minus_1,
+dmax =  (5000 / 255) * 2.5,
+max_iter = 300,
+gamma = 1 / (X_train.shape[1] *</p>
+<blockquote>
+<div><p>np.var(X_train)),</p>
+</div></blockquote>
+<p>lam = 10, t = 0.5, h = 10)</p>
+</div></blockquote>
+<p>&gt;&gt;&gt;xm, log = attacker.attack(x0)</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="aijack.attack.evasion.Evasion_attack_sklearn.attack">
+<span class="sig-name descname"><span class="pre">attack</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/attack/evasion/evasion_attack.html#Evasion_attack_sklearn.attack"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.attack.evasion.Evasion_attack_sklearn.attack" title="Permalink to this definition">#</a></dt>
+<dd><p>Executes evasion attack</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>x0</strong> (<em>np.array</em>) – initial data point</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><p>created adversarial example
+g_list (list) : lof of decision function (only for svm)</p>
+<blockquote>
+<div><p>(need future improvement)</p>
+</div></blockquote>
+</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>xm (np.array)</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="aijack.attack.evasion.FGSMAttacker">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">aijack.attack.evasion.</span></span><span class="sig-name descname"><span class="pre">FGSMAttacker</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target_model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">criterion</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grad_lower_bound</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-</span> <span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grad_upper_bound</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_lower_bound</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-</span> <span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_upper_bound</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/attack/evasion/fgsm.html#FGSMAttacker"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.attack.evasion.FGSMAttacker" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="aijack.attack.html#aijack.attack.base_attack.BaseAttacker" title="aijack.attack.base_attack.BaseAttacker"><code class="xref py py-class docutils literal notranslate"><span class="pre">aijack.attack.base_attack.BaseAttacker</span></code></a></p>
+<p>Class implementing the Fast Gradient Sign Method (FGSM) attack.</p>
+<p>This class provides functionality to perform the FGSM attack on a target model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>target_model</strong> (<em>torch.nn.Module</em>) – The target model to be attacked.</p></li>
+<li><p><strong>criterion</strong> – The criterion to compute the loss.</p></li>
+<li><p><strong>eps</strong> (<em>float</em><em>, </em><em>optional</em>) – The epsilon value for the FGSM attack. Defaults to 0.3.</p></li>
+<li><p><strong>grad_lower_bound</strong> (<em>float</em><em>, </em><em>optional</em>) – The lower bound for the gradient. Defaults to -0.1.</p></li>
+<li><p><strong>grad_upper_bound</strong> (<em>float</em><em>, </em><em>optional</em>) – The upper bound for the gradient. Defaults to 0.1.</p></li>
+<li><p><strong>output_lower_bound</strong> (<em>float</em><em>, </em><em>optional</em>) – The lower bound for the output values. Defaults to -1.0.</p></li>
+<li><p><strong>output_upper_bound</strong> (<em>float</em><em>, </em><em>optional</em>) – The upper bound for the output values. Defaults to 1.0.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="aijack.attack.evasion.FGSMAttacker.target_model">
+<span class="sig-name descname"><span class="pre">target_model</span></span><a class="headerlink" href="#aijack.attack.evasion.FGSMAttacker.target_model" title="Permalink to this definition">#</a></dt>
+<dd><p>The target model to be attacked.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>torch.nn.Module</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="aijack.attack.evasion.FGSMAttacker.criterion">
+<span class="sig-name descname"><span class="pre">criterion</span></span><a class="headerlink" href="#aijack.attack.evasion.FGSMAttacker.criterion" title="Permalink to this definition">#</a></dt>
+<dd><p>The criterion to compute the loss.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="aijack.attack.evasion.FGSMAttacker.eps">
+<span class="sig-name descname"><span class="pre">eps</span></span><a class="headerlink" href="#aijack.attack.evasion.FGSMAttacker.eps" title="Permalink to this definition">#</a></dt>
+<dd><p>The epsilon value for the FGSM attack.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="aijack.attack.evasion.FGSMAttacker.grad_lower_bound">
+<span class="sig-name descname"><span class="pre">grad_lower_bound</span></span><a class="headerlink" href="#aijack.attack.evasion.FGSMAttacker.grad_lower_bound" title="Permalink to this definition">#</a></dt>
+<dd><p>The lower bound for the gradient.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="aijack.attack.evasion.FGSMAttacker.grad_upper_bound">
+<span class="sig-name descname"><span class="pre">grad_upper_bound</span></span><a class="headerlink" href="#aijack.attack.evasion.FGSMAttacker.grad_upper_bound" title="Permalink to this definition">#</a></dt>
+<dd><p>The upper bound for the gradient.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="aijack.attack.evasion.FGSMAttacker.output_lower_bound">
+<span class="sig-name descname"><span class="pre">output_lower_bound</span></span><a class="headerlink" href="#aijack.attack.evasion.FGSMAttacker.output_lower_bound" title="Permalink to this definition">#</a></dt>
+<dd><p>The lower bound for the output values.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="aijack.attack.evasion.FGSMAttacker.output_upper_bound">
+<span class="sig-name descname"><span class="pre">output_upper_bound</span></span><a class="headerlink" href="#aijack.attack.evasion.FGSMAttacker.output_upper_bound" title="Permalink to this definition">#</a></dt>
+<dd><p>The upper bound for the output values.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="aijack.attack.evasion.FGSMAttacker.attack">
+<span class="sig-name descname"><span class="pre">attack</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/attack/evasion/fgsm.html#FGSMAttacker.attack"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.attack.evasion.FGSMAttacker.attack" title="Permalink to this definition">#</a></dt>
+<dd><p>Performs the FGSM attack on input seed data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>data</strong> (<em>tuple</em>) – A tuple containing input seed data and corresponding labels.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The perturbed input data.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>torch.Tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
 </section>
 </section>
 
@@ -497,10 +1345,10 @@ document.write(`
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#submodules">1.1.2.1. Submodules</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#aijack-attack-evasion-diva-module">1.1.2.2. aijack.attack.evasion.diva module</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#aijack-attack-evasion-evasion-attack-module">1.1.2.3. aijack.attack.evasion.evasion_attack module</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#aijack-attack-evasion-fgsm-module">1.1.2.4. aijack.attack.evasion.fgsm module</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-contents">1.1.2.5. Module contents</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aijack.attack.evasion.diva">1.1.2.2. aijack.attack.evasion.diva module</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aijack.attack.evasion.evasion_attack">1.1.2.3. aijack.attack.evasion.evasion_attack module</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aijack.attack.evasion.fgsm">1.1.2.4. aijack.attack.evasion.fgsm module</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aijack.attack.evasion">1.1.2.5. Module contents</a></li>
 </ul>
   </nav></div>
 

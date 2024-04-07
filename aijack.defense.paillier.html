@@ -414,9 +414,9 @@ document.write(`
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#submodules">2.1.7.1. Submodules</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#aijack-defense-paillier-fed-wrapper-module">2.1.7.2. aijack.defense.paillier.fed_wrapper module</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#aijack-defense-paillier-torch-wrapper-module">2.1.7.3. aijack.defense.paillier.torch_wrapper module</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-contents">2.1.7.4. Module contents</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aijack.defense.paillier.fed_wrapper">2.1.7.2. aijack.defense.paillier.fed_wrapper module</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aijack.defense.paillier.torch_wrapper">2.1.7.3. aijack.defense.paillier.torch_wrapper module</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aijack.defense.paillier">2.1.7.4. Module contents</a></li>
 </ul>
             </nav>
         </div>
@@ -433,14 +433,104 @@ document.write(`
 <section id="submodules">
 <h2><span class="section-number">2.1.7.1. </span>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">#</a></h2>
 </section>
-<section id="aijack-defense-paillier-fed-wrapper-module">
-<h2><span class="section-number">2.1.7.2. </span>aijack.defense.paillier.fed_wrapper module<a class="headerlink" href="#aijack-defense-paillier-fed-wrapper-module" title="Permalink to this headline">#</a></h2>
+<section id="module-aijack.defense.paillier.fed_wrapper">
+<span id="aijack-defense-paillier-fed-wrapper-module"></span><h2><span class="section-number">2.1.7.2. </span>aijack.defense.paillier.fed_wrapper module<a class="headerlink" href="#module-aijack.defense.paillier.fed_wrapper" title="Permalink to this headline">#</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="aijack.defense.paillier.fed_wrapper.PaillierGradientClientManager">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">aijack.defense.paillier.fed_wrapper.</span></span><span class="sig-name descname"><span class="pre">PaillierGradientClientManager</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/defense/paillier/fed_wrapper.html#PaillierGradientClientManager"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.defense.paillier.fed_wrapper.PaillierGradientClientManager" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="aijack.manager.html#aijack.manager.base.BaseManager" title="aijack.manager.base.BaseManager"><code class="xref py py-class docutils literal notranslate"><span class="pre">aijack.manager.base.BaseManager</span></code></a></p>
+<p>Client Manager for secure aggregation with Paillier Encryption</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="aijack.defense.paillier.fed_wrapper.PaillierGradientClientManager.attach">
+<span class="sig-name descname"><span class="pre">attach</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cls</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/defense/paillier/fed_wrapper.html#PaillierGradientClientManager.attach"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.defense.paillier.fed_wrapper.PaillierGradientClientManager.attach" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="aijack.defense.paillier.fed_wrapper.attach_paillier_to_client_for_encrypted_grad">
+<span class="sig-prename descclassname"><span class="pre">aijack.defense.paillier.fed_wrapper.</span></span><span class="sig-name descname"><span class="pre">attach_paillier_to_client_for_encrypted_grad</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cls</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pk</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sk</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/defense/paillier/fed_wrapper.html#attach_paillier_to_client_for_encrypted_grad"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.defense.paillier.fed_wrapper.attach_paillier_to_client_for_encrypted_grad" title="Permalink to this definition">#</a></dt>
+<dd><p>Makes the client class communicate the encrypted gradients with paillier encryption scheme.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>cls</strong> – client class</p></li>
+<li><p><strong>pk</strong> – public key</p></li>
+<li><p><strong>sk</strong> – secret key</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
 </section>
-<section id="aijack-defense-paillier-torch-wrapper-module">
-<h2><span class="section-number">2.1.7.3. </span>aijack.defense.paillier.torch_wrapper module<a class="headerlink" href="#aijack-defense-paillier-torch-wrapper-module" title="Permalink to this headline">#</a></h2>
+<section id="module-aijack.defense.paillier.torch_wrapper">
+<span id="aijack-defense-paillier-torch-wrapper-module"></span><h2><span class="section-number">2.1.7.3. </span>aijack.defense.paillier.torch_wrapper module<a class="headerlink" href="#module-aijack.defense.paillier.torch_wrapper" title="Permalink to this headline">#</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="aijack.defense.paillier.torch_wrapper.PaillierTensor">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">aijack.defense.paillier.torch_wrapper.</span></span><span class="sig-name descname"><span class="pre">PaillierTensor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">paillier_array</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/defense/paillier/torch_wrapper.html#PaillierTensor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.defense.paillier.torch_wrapper.PaillierTensor" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>torch.Tensor-like object for Paillier Encryption</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="aijack.defense.paillier.torch_wrapper.PaillierTensor.add">
+<span class="sig-name descname"><span class="pre">add</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/defense/paillier/torch_wrapper.html#PaillierTensor.add"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.defense.paillier.torch_wrapper.PaillierTensor.add" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="aijack.defense.paillier.torch_wrapper.PaillierTensor.cpu">
+<span class="sig-name descname"><span class="pre">cpu</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/defense/paillier/torch_wrapper.html#PaillierTensor.cpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.defense.paillier.torch_wrapper.PaillierTensor.cpu" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="aijack.defense.paillier.torch_wrapper.PaillierTensor.decrypt">
+<span class="sig-name descname"><span class="pre">decrypt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sk</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'cpu'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/defense/paillier/torch_wrapper.html#PaillierTensor.decrypt"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.defense.paillier.torch_wrapper.PaillierTensor.decrypt" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="aijack.defense.paillier.torch_wrapper.PaillierTensor.detach">
+<span class="sig-name descname"><span class="pre">detach</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/defense/paillier/torch_wrapper.html#PaillierTensor.detach"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.defense.paillier.torch_wrapper.PaillierTensor.detach" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="aijack.defense.paillier.torch_wrapper.PaillierTensor.linear">
+<span class="sig-name descname"><span class="pre">linear</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">w</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bias</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/defense/paillier/torch_wrapper.html#PaillierTensor.linear"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.defense.paillier.torch_wrapper.PaillierTensor.linear" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="aijack.defense.paillier.torch_wrapper.PaillierTensor.matmul">
+<span class="sig-name descname"><span class="pre">matmul</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/defense/paillier/torch_wrapper.html#PaillierTensor.matmul"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.defense.paillier.torch_wrapper.PaillierTensor.matmul" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="aijack.defense.paillier.torch_wrapper.PaillierTensor.mul">
+<span class="sig-name descname"><span class="pre">mul</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/defense/paillier/torch_wrapper.html#PaillierTensor.mul"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.defense.paillier.torch_wrapper.PaillierTensor.mul" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="aijack.defense.paillier.torch_wrapper.PaillierTensor.numpy">
+<span class="sig-name descname"><span class="pre">numpy</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/defense/paillier/torch_wrapper.html#PaillierTensor.numpy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.defense.paillier.torch_wrapper.PaillierTensor.numpy" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="aijack.defense.paillier.torch_wrapper.PaillierTensor.sub">
+<span class="sig-name descname"><span class="pre">sub</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/defense/paillier/torch_wrapper.html#PaillierTensor.sub"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.defense.paillier.torch_wrapper.PaillierTensor.sub" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="aijack.defense.paillier.torch_wrapper.PaillierTensor.tensor">
+<span class="sig-name descname"><span class="pre">tensor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sk</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/defense/paillier/torch_wrapper.html#PaillierTensor.tensor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.defense.paillier.torch_wrapper.PaillierTensor.tensor" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="aijack.defense.paillier.torch_wrapper.implements">
+<span class="sig-prename descclassname"><span class="pre">aijack.defense.paillier.torch_wrapper.</span></span><span class="sig-name descname"><span class="pre">implements</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">torch_function</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/defense/paillier/torch_wrapper.html#implements"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.defense.paillier.torch_wrapper.implements" title="Permalink to this definition">#</a></dt>
+<dd><p>Registers a torch function override for PaillierTensor</p>
+</dd></dl>
+
 </section>
-<section id="module-contents">
-<h2><span class="section-number">2.1.7.4. </span>Module contents<a class="headerlink" href="#module-contents" title="Permalink to this headline">#</a></h2>
+<section id="module-aijack.defense.paillier">
+<span id="module-contents"></span><h2><span class="section-number">2.1.7.4. </span>Module contents<a class="headerlink" href="#module-aijack.defense.paillier" title="Permalink to this headline">#</a></h2>
 </section>
 </section>
 
@@ -493,9 +583,9 @@ document.write(`
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#submodules">2.1.7.1. Submodules</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#aijack-defense-paillier-fed-wrapper-module">2.1.7.2. aijack.defense.paillier.fed_wrapper module</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#aijack-defense-paillier-torch-wrapper-module">2.1.7.3. aijack.defense.paillier.torch_wrapper module</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-contents">2.1.7.4. Module contents</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aijack.defense.paillier.fed_wrapper">2.1.7.2. aijack.defense.paillier.fed_wrapper module</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aijack.defense.paillier.torch_wrapper">2.1.7.3. aijack.defense.paillier.torch_wrapper module</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aijack.defense.paillier">2.1.7.4. Module contents</a></li>
 </ul>
   </nav></div>
 

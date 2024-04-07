@@ -414,8 +414,8 @@ document.write(`
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#submodules">2.1.1.1. Submodules</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#aijack-defense-crobustness-pixeldp-module">2.1.1.2. aijack.defense.crobustness.pixeldp module</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-contents">2.1.1.3. Module contents</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aijack.defense.crobustness.pixeldp">2.1.1.2. aijack.defense.crobustness.pixeldp module</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aijack.defense.crobustness">2.1.1.3. Module contents</a></li>
 </ul>
             </nav>
         </div>
@@ -432,11 +432,189 @@ document.write(`
 <section id="submodules">
 <h2><span class="section-number">2.1.1.1. </span>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">#</a></h2>
 </section>
-<section id="aijack-defense-crobustness-pixeldp-module">
-<h2><span class="section-number">2.1.1.2. </span>aijack.defense.crobustness.pixeldp module<a class="headerlink" href="#aijack-defense-crobustness-pixeldp-module" title="Permalink to this headline">#</a></h2>
+<section id="module-aijack.defense.crobustness.pixeldp">
+<span id="aijack-defense-crobustness-pixeldp-module"></span><h2><span class="section-number">2.1.1.2. </span>aijack.defense.crobustness.pixeldp module<a class="headerlink" href="#module-aijack.defense.crobustness.pixeldp" title="Permalink to this headline">#</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="aijack.defense.crobustness.pixeldp.PixelDP">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">aijack.defense.crobustness.pixeldp.</span></span><span class="sig-name descname"><span class="pre">PixelDP</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_classes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">L</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eps</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_population_mc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size_mc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">32</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'laplace'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sensitivity</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/defense/crobustness/pixeldp.html#PixelDP"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.defense.crobustness.pixeldp.PixelDP" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">torch.nn.modules.module.Module</span></code></p>
+<p>Implementation of Lecuyer, Mathias, et al. ‘Certified robustness to
+adversarial examples with differential privacy.’ 2019 IEEE symposium
+on security and privacy (SP). IEEE, 2019.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="aijack.defense.crobustness.pixeldp.PixelDP.certify">
+<span class="sig-name descname"><span class="pre">certify</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">counts</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/defense/crobustness/pixeldp.html#PixelDP.certify"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.defense.crobustness.pixeldp.PixelDP.certify" title="Permalink to this definition">#</a></dt>
+<dd><p>Certify the robustness of the model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>counts</strong> (<em>torch.Tensor</em>) – Count of predictions.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Certified robustness size.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="aijack.defense.crobustness.pixeldp.PixelDP.forward">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/defense/crobustness/pixeldp.html#PixelDP.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.defense.crobustness.pixeldp.PixelDP.forward" title="Permalink to this definition">#</a></dt>
+<dd><p>Defines the computation performed at every call.</p>
+<p>Should be overridden by all subclasses.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Although the recipe for forward pass needs to be defined within
+this function, one should call the <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code> instance afterwards
+instead of this since the former takes care of running the
+registered hooks while the latter silently ignores them.</p>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="aijack.defense.crobustness.pixeldp.PixelDP.forward_eval">
+<span class="sig-name descname"><span class="pre">forward_eval</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/defense/crobustness/pixeldp.html#PixelDP.forward_eval"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.defense.crobustness.pixeldp.PixelDP.forward_eval" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="aijack.defense.crobustness.pixeldp.PixelDP.forward_train">
+<span class="sig-name descname"><span class="pre">forward_train</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/defense/crobustness/pixeldp.html#PixelDP.forward_train"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.defense.crobustness.pixeldp.PixelDP.forward_train" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="aijack.defense.crobustness.pixeldp.PixelDP.sample_noise">
+<span class="sig-name descname"><span class="pre">sample_noise</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/defense/crobustness/pixeldp.html#PixelDP.sample_noise"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.defense.crobustness.pixeldp.PixelDP.sample_noise" title="Permalink to this definition">#</a></dt>
+<dd><p>Sample noise for the given input.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>x</strong> (<em>torch.Tensor</em>) – Input tensor.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Sampled noise.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>torch.Tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="aijack.defense.crobustness.pixeldp.clopper_pearson_interval">
+<span class="sig-prename descclassname"><span class="pre">aijack.defense.crobustness.pixeldp.</span></span><span class="sig-name descname"><span class="pre">clopper_pearson_interval</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">num_success</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_total</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/defense/crobustness/pixeldp.html#clopper_pearson_interval"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.defense.crobustness.pixeldp.clopper_pearson_interval" title="Permalink to this definition">#</a></dt>
+<dd><p>Calculate the Clopper-Pearson confidence interval.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>num_success</strong> (<em>int</em>) – Number of successes.</p></li>
+<li><p><strong>num_total</strong> (<em>int</em>) – Total number of trials.</p></li>
+<li><p><strong>alpha</strong> (<em>float</em>) – Significance level.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Lower and upper bounds of the confidence interval.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="aijack.defense.crobustness.pixeldp.gaus_delta_term">
+<span class="sig-prename descclassname"><span class="pre">aijack.defense.crobustness.pixeldp.</span></span><span class="sig-name descname"><span class="pre">gaus_delta_term</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">delta</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/defense/crobustness/pixeldp.html#gaus_delta_term"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.defense.crobustness.pixeldp.gaus_delta_term" title="Permalink to this definition">#</a></dt>
+<dd><p>Calculate the Gaussian delta term.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>delta</strong> (<em>float</em>) – Delta value.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Gaussian delta term.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="aijack.defense.crobustness.pixeldp.get_certified_robustness_size_argmax">
+<span class="sig-prename descclassname"><span class="pre">aijack.defense.crobustness.pixeldp.</span></span><span class="sig-name descname"><span class="pre">get_certified_robustness_size_argmax</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">counts</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">L</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eps</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'gaussian'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/defense/crobustness/pixeldp.html#get_certified_robustness_size_argmax"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.defense.crobustness.pixeldp.get_certified_robustness_size_argmax" title="Permalink to this definition">#</a></dt>
+<dd><p>Calculate the maximum certified robustness size.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>counts</strong> (<em>torch.Tensor</em>) – Count of predictions.</p></li>
+<li><p><strong>eta</strong> (<em>float</em>) – Eta value.</p></li>
+<li><p><strong>L</strong> (<em>float</em>) – Sensitivity parameter.</p></li>
+<li><p><strong>eps</strong> (<em>float</em>) – Epsilon value.</p></li>
+<li><p><strong>delta</strong> (<em>float</em>) – Delta value.</p></li>
+<li><p><strong>mode</strong> (<em>str</em><em>, </em><em>optional</em>) – Mode of calculation. Defaults to “gaussian”.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Maximum certified robustness size.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="aijack.defense.crobustness.pixeldp.get_maximum_L_gaussian">
+<span class="sig-prename descclassname"><span class="pre">aijack.defense.crobustness.pixeldp.</span></span><span class="sig-name descname"><span class="pre">get_maximum_L_gaussian</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">p_max_lb</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p_sec_ub</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attack_size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dp_epsilon</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dp_delta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delta_range</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eps_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eps_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tolerance</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.001</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/defense/crobustness/pixeldp.html#get_maximum_L_gaussian"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.defense.crobustness.pixeldp.get_maximum_L_gaussian" title="Permalink to this definition">#</a></dt>
+<dd><p>Calculate the maximum L value for Gaussian mechanism.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>p_max_lb</strong> (<em>float</em>) – Lower bound of the maximum probability.</p></li>
+<li><p><strong>p_sec_ub</strong> (<em>float</em>) – Upper bound of the second maximum probability.</p></li>
+<li><p><strong>attack_size</strong> (<em>float</em>) – Size of the attack.</p></li>
+<li><p><strong>dp_epsilon</strong> (<em>float</em>) – Epsilon value for differential privacy.</p></li>
+<li><p><strong>dp_delta</strong> (<em>float</em>) – Delta value for differential privacy.</p></li>
+<li><p><strong>delta_range</strong> (<em>list</em><em>, </em><em>optional</em>) – Range of delta values. Defaults to None.</p></li>
+<li><p><strong>eps_min</strong> (<em>float</em><em>, </em><em>optional</em>) – Minimum epsilon value. Defaults to 0.0.</p></li>
+<li><p><strong>eps_max</strong> (<em>float</em><em>, </em><em>optional</em>) – Maximum epsilon value. Defaults to 1.0.</p></li>
+<li><p><strong>tolerance</strong> (<em>float</em><em>, </em><em>optional</em>) – Tolerance for epsilon search. Defaults to 0.001.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Maximum L value.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="aijack.defense.crobustness.pixeldp.get_maximum_L_laplace">
+<span class="sig-prename descclassname"><span class="pre">aijack.defense.crobustness.pixeldp.</span></span><span class="sig-name descname"><span class="pre">get_maximum_L_laplace</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lower_bound</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">upper_bound</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">L</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dp_eps</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/defense/crobustness/pixeldp.html#get_maximum_L_laplace"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.defense.crobustness.pixeldp.get_maximum_L_laplace" title="Permalink to this definition">#</a></dt>
+<dd><p>Calculate the maximum L value for Laplace mechanism.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>lower_bound</strong> (<em>float</em>) – Lower bound of the confidence interval.</p></li>
+<li><p><strong>upper_bound</strong> (<em>float</em>) – Upper bound of the confidence interval.</p></li>
+<li><p><strong>L</strong> (<em>float</em>) – Sensitivity parameter.</p></li>
+<li><p><strong>dp_eps</strong> (<em>float</em>) – Epsilon value for differential privacy.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Maximum L value.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
 </section>
-<section id="module-contents">
-<h2><span class="section-number">2.1.1.3. </span>Module contents<a class="headerlink" href="#module-contents" title="Permalink to this headline">#</a></h2>
+<section id="module-aijack.defense.crobustness">
+<span id="module-contents"></span><h2><span class="section-number">2.1.1.3. </span>Module contents<a class="headerlink" href="#module-aijack.defense.crobustness" title="Permalink to this headline">#</a></h2>
 </section>
 </section>
 
@@ -489,8 +667,8 @@ document.write(`
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#submodules">2.1.1.1. Submodules</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#aijack-defense-crobustness-pixeldp-module">2.1.1.2. aijack.defense.crobustness.pixeldp module</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-contents">2.1.1.3. Module contents</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aijack.defense.crobustness.pixeldp">2.1.1.2. aijack.defense.crobustness.pixeldp module</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aijack.defense.crobustness">2.1.1.3. Module contents</a></li>
 </ul>
   </nav></div>
 
