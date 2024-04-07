@@ -29,7 +29,7 @@
 
 # What is AIJack?
 
-AIJack is an easy-to-use open-source simulation tool for testing the security of your AI system against hijackers. It provides advanced security techniques like *Differential Privacy*, *Homomorphic Encryption*, *K-anonymity* and *Federated Learning* to guarantee protection for your AI. With AIJack, you can test and simulate defenses against various attacks such as *Poisoning*, *Model Inversion*, *Backdoor*, and *Free-Rider*. We support more than 30 state-of-the-art methods. For more information, check our [documentation](https://koukyosyumei.github.io/AIJack/) and start securing your AI today with AIJack.
+AIJack is an easy-to-use open-source simulation tool for testing the security of your AI system against hijackers. It provides advanced security techniques like *Differential Privacy*, *Homomorphic Encryption*, *K-anonymity* and *Federated Learning* to guarantee protection for your AI. With AIJack, you can test and simulate defenses against various attacks such as *Poisoning*, *Model Inversion*, *Backdoor*, and *Free-Rider*. We support more than 30 state-of-the-art methods. For more information, check our [paper](https://arxiv.org/abs/2312.17667) and [documentation](https://koukyosyumei.github.io/AIJack/) and start securing your AI today with AIJack.
 
 # Installation
 
@@ -236,6 +236,10 @@ Below you can find a list of papers and books that either use or extend AIJack.
 - Mohammadi, Mohammadreza, et al. "Privacy-preserving Federated Learning System for Fatigue Detection." 2023 IEEE International Conference on Cyber Security and Resilience (CSR). IEEE, 2023.
 - Huang, Shiyuan. A General Framework for Model Adaptation to Meet Practical Constraints in Computer Vision. Diss. Columbia University, 2024.
 - Liu, Can, Jin Wang, and Dongyang Yu. "RAF-GI: Towards Robust, Accurate and Fast-Convergent Gradient Inversion Attack in Federated Learning." arXiv preprint arXiv:2403.08383 (2024).
+
+# Contribution
+
+AIJack welcomes contributions of any kind. If you'd like to address a bug or propose a new feature, please refer to [our guide](docs/source/contribution.rst).
 
 # Contact
 
