@@ -235,13 +235,15 @@
 <li class="toctree-l2"><a class="reference internal" href="aijack.collaborative.core.html">3.1.1. aijack.collaborative.core package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="aijack.collaborative.dsfl.html">3.1.2. aijack.collaborative.dsfl package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="aijack.collaborative.fedavg.html">3.1.3. aijack.collaborative.fedavg package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="aijack.collaborative.fedgems.html">3.1.4. aijack.collaborative.fedgems package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="aijack.collaborative.fedkd.html">3.1.5. aijack.collaborative.fedkd package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="aijack.collaborative.fedmd.html">3.1.6. aijack.collaborative.fedmd package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="aijack.collaborative.fedprox.html">3.1.7. aijack.collaborative.fedprox package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="aijack.collaborative.optimizer.html">3.1.8. aijack.collaborative.optimizer package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="aijack.collaborative.splitnn.html">3.1.9. aijack.collaborative.splitnn package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="aijack.collaborative.tree.html">3.1.10. aijack.collaborative.tree package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="aijack.collaborative.fedexp.html">3.1.4. aijack.collaborative.fedexp package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="aijack.collaborative.fedgems.html">3.1.5. aijack.collaborative.fedgems package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="aijack.collaborative.fedkd.html">3.1.6. aijack.collaborative.fedkd package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="aijack.collaborative.fedmd.html">3.1.7. aijack.collaborative.fedmd package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="aijack.collaborative.fedprox.html">3.1.8. aijack.collaborative.fedprox package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="aijack.collaborative.moon.html">3.1.9. aijack.collaborative.moon package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="aijack.collaborative.optimizer.html">3.1.10. aijack.collaborative.optimizer package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="aijack.collaborative.splitnn.html">3.1.11. aijack.collaborative.splitnn package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="aijack.collaborative.tree.html">3.1.12. aijack.collaborative.tree package</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="aijack.utils.html">4. aijack.utils package</a></li>
@@ -387,7 +389,9 @@ document.write(`
   </button>
 `);
 </script>
-
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
 </div></div>
       
     </div>
@@ -403,6 +407,35 @@ document.write(`
     <div id="print-main-content">
         <div id="jb-print-toc">
             
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#getting-started">1.1. Getting Started</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fork-the-repository">1.1.1. Fork the Repository</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#clone-your-fork">1.1.2. Clone Your Fork</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#set-up-a-development-environment">1.2. Set Up a Development Environment</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#coding-style-and-formatting">1.3. Coding Style and Formatting</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#google-style-docstrings">1.3.1. Google-Style Docstrings</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#black-code-formatter">1.3.2. Black Code Formatter</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#isort-import-organizer">1.3.3. Isort Import Organizer</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#making-changes">1.4. Making Changes</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#create-a-branch">1.4.1. Create a Branch</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#implement-your-changes">1.4.2. Implement Your Changes</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#test-your-changes">1.4.3. Test Your Changes</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#commit-your-changes">1.4.4. Commit Your Changes</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#push-your-changes-to-your-fork">1.4.5. Push Your Changes to Your Fork</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#submitting-a-pull-request">1.4.6. Submitting a Pull Request</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#additional-tips">1.5. Additional Tips</a></li>
+</ul>
+            </nav>
         </div>
     </div>
 </div>
@@ -414,6 +447,147 @@ document.write(`
                   
   <section id="contribution-guide">
 <span id="contribution"></span><h1><span class="section-number">1. </span>Contribution Guide<a class="headerlink" href="#contribution-guide" title="Permalink to this headline">#</a></h1>
+<p>Welcome to AIJack’s Contribution Guide!</p>
+<p>We’re thrilled you’re interested in contributing to AIJack. This guide outlines the process for submitting code changes and ensuring they adhere to our project’s style and formatting conventions.</p>
+<section id="getting-started">
+<h2><span class="section-number">1.1. </span>Getting Started<a class="headerlink" href="#getting-started" title="Permalink to this headline">#</a></h2>
+<section id="fork-the-repository">
+<h3><span class="section-number">1.1.1. </span>Fork the Repository<a class="headerlink" href="#fork-the-repository" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li><p>Head over to the AIJack repository on GitHub (<a class="github reference external" href="https://github.com/Koukyosyumei/AIJack">Koukyosyumei/AIJack</a>).</p></li>
+<li><p>Click the “Fork” button to create your own copy of the repository.</p></li>
+</ul>
+</section>
+<section id="clone-your-fork">
+<h3><span class="section-number">1.1.2. </span>Clone Your Fork<a class="headerlink" href="#clone-your-fork" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li><p>Open your terminal and navigate to your desired local directory.</p></li>
+<li><p>Use the git clone command to clone your forked repository:</p></li>
+</ul>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/&lt;your-username&gt;/AIJack.git
+<span class="c1"># Replace &lt;your-username&gt; with your GitHub username and &lt;project-name&gt; with the actual project name.</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="set-up-a-development-environment">
+<h2><span class="section-number">1.2. </span>Set Up a Development Environment<a class="headerlink" href="#set-up-a-development-environment" title="Permalink to this headline">#</a></h2>
+<ul class="simple">
+<li><p>Build and install AIJack from source code</p></li>
+</ul>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>AIJack
+
+<span class="c1"># install the dependencies</span>
+apt<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span>libboost-all-dev
+pip<span class="w"> </span>install<span class="w"> </span>-U<span class="w"> </span>pip
+pip<span class="w"> </span>install<span class="w"> </span><span class="s2">&quot;pybind11[global]&quot;</span>
+
+<span class="c1"># install the editable version</span>
+pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span>.
+</pre></div>
+</div>
+</section>
+<section id="coding-style-and-formatting">
+<h2><span class="section-number">1.3. </span>Coding Style and Formatting<a class="headerlink" href="#coding-style-and-formatting" title="Permalink to this headline">#</a></h2>
+<section id="google-style-docstrings">
+<h3><span class="section-number">1.3.1. </span>Google-Style Docstrings<a class="headerlink" href="#google-style-docstrings" title="Permalink to this headline">#</a></h3>
+<p>We use Google-style docstrings to provide clear and consistent documentation for functions, classes, and modules.
+Refer to the Google Python Style Guide (<a class="github reference external" href="https://github.com/google/styleguide/blob/gh-pages/pyguide.md">google/styleguide</a>) for detailed formatting instructions.</p>
+</section>
+<section id="black-code-formatter">
+<h3><span class="section-number">1.3.2. </span>Black Code Formatter<a class="headerlink" href="#black-code-formatter" title="Permalink to this headline">#</a></h3>
+<p>We utilize Black, a popular code formatter, to maintain consistent code style throughout the project.</p>
+<p>Ensure Black is installed (pip install black) in your virtual environment.</p>
+<p>To format your code before committing, run:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>black<span class="w"> </span>.
+</pre></div>
+</div>
+</section>
+<section id="isort-import-organizer">
+<h3><span class="section-number">1.3.3. </span>Isort Import Organizer<a class="headerlink" href="#isort-import-organizer" title="Permalink to this headline">#</a></h3>
+<p>isort helps organize imports in a consistent manner.</p>
+<p>Install isort (pip install isort) in your virtual environment.</p>
+<p>To organize imports, run:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>isort<span class="w"> </span>.
+</pre></div>
+</div>
+</section>
+</section>
+<section id="making-changes">
+<h2><span class="section-number">1.4. </span>Making Changes<a class="headerlink" href="#making-changes" title="Permalink to this headline">#</a></h2>
+<section id="create-a-branch">
+<h3><span class="section-number">1.4.1. </span>Create a Branch<a class="headerlink" href="#create-a-branch" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li><p>Use git checkout -b &lt;branch-name&gt; to create a new branch for your changes. Replace &lt;branch-name&gt; with a descriptive name (e.g., fix-issue-123).</p></li>
+</ul>
+</section>
+<section id="implement-your-changes">
+<h3><span class="section-number">1.4.2. </span>Implement Your Changes<a class="headerlink" href="#implement-your-changes" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li><p>Make your code modifications in the appropriate files.</p></li>
+<li><p>Adhere to the coding style and formatting conventions outlined above.</p></li>
+</ul>
+</section>
+<section id="test-your-changes">
+<h3><span class="section-number">1.4.3. </span>Test Your Changes<a class="headerlink" href="#test-your-changes" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li><p>Write unit tests (if applicable) to verify your code’s functionality and prevent regressions.</p></li>
+<li><p>Run existing tests with pytest to ensure they still pass after your modifications.</p></li>
+</ul>
+</section>
+<section id="commit-your-changes">
+<h3><span class="section-number">1.4.4. </span>Commit Your Changes<a class="headerlink" href="#commit-your-changes" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li><p>Stage your changes using</p></li>
+</ul>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>add<span class="w"> </span>&lt;file1&gt;<span class="w"> </span>&lt;file2&gt;....
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Commit your staged changes with a descriptive message using</p></li>
+</ul>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;&lt;commit message&gt;&quot;</span>.
+</pre></div>
+</div>
+</section>
+<section id="push-your-changes-to-your-fork">
+<h3><span class="section-number">1.4.5. </span>Push Your Changes to Your Fork<a class="headerlink" href="#push-your-changes-to-your-fork" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li><p>Push your branch to your forked repository on GitHub:</p></li>
+</ul>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>push<span class="w"> </span>origin<span class="w"> </span>&lt;branch-name&gt;
+</pre></div>
+</div>
+</section>
+<section id="submitting-a-pull-request">
+<h3><span class="section-number">1.4.6. </span>Submitting a Pull Request<a class="headerlink" href="#submitting-a-pull-request" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li><p>Navigate to Your Fork on GitHub:</p></li>
+<li><p>Go to your GitHub repository.</p></li>
+<li><p>Create a Pull Request:</p>
+<ul>
+<li><p>Click on the “Pull requests” tab.</p></li>
+<li><p>Click on “New pull request” and select the branch containing your changes.</p></li>
+<li><p>Provide a clear and concise title and description for your pull request.</p></li>
+<li><p>Click on “Create pull request” to submit it for review.</p></li>
+<li><p>Code Review and Merging</p></li>
+</ul>
+</li>
+</ul>
+<p>Project maintainers will review your pull request and provide feedback.
+Address any comments or suggestions raised during the review process.
+Once your pull request is approved, it will be merged into the main project repository.</p>
+</section>
+</section>
+<section id="additional-tips">
+<h2><span class="section-number">1.5. </span>Additional Tips<a class="headerlink" href="#additional-tips" title="Permalink to this headline">#</a></h2>
+<ul class="simple">
+<li><p>Consider running black . and isort . before committing your changes to ensure consistent formatting.</p></li>
+<li><p>Provide clear and concise commit messages that describe the purpose of your changes.</p></li>
+<li><p>If you’re unsure about anything, feel free to ask for help! You can create an issue on the project’s GitHub repository.</p></li>
+</ul>
+<p>Thank you for your contribution to AIJack!</p>
+</section>
 </section>
 
 
@@ -446,6 +620,41 @@ document.write(`
             </div>
             
             
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#getting-started">1.1. Getting Started</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fork-the-repository">1.1.1. Fork the Repository</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#clone-your-fork">1.1.2. Clone Your Fork</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#set-up-a-development-environment">1.2. Set Up a Development Environment</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#coding-style-and-formatting">1.3. Coding Style and Formatting</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#google-style-docstrings">1.3.1. Google-Style Docstrings</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#black-code-formatter">1.3.2. Black Code Formatter</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#isort-import-organizer">1.3.3. Isort Import Organizer</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#making-changes">1.4. Making Changes</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#create-a-branch">1.4.1. Create a Branch</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#implement-your-changes">1.4.2. Implement Your Changes</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#test-your-changes">1.4.3. Test Your Changes</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#commit-your-changes">1.4.4. Commit Your Changes</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#push-your-changes-to-your-fork">1.4.5. Push Your Changes to Your Fork</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#submitting-a-pull-request">1.4.6. Submitting a Pull Request</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#additional-tips">1.5. Additional Tips</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
               
             
           </div>

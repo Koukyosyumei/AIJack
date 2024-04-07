@@ -414,9 +414,9 @@ document.write(`
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#submodules">3.1.11.1. Submodules</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aijack.collaborative.splitnn.api">3.1.11.2. aijack.collaborative.splitnn.api module</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aijack.collaborative.splitnn.client">3.1.11.3. aijack.collaborative.splitnn.client module</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aijack.collaborative.splitnn">3.1.11.4. Module contents</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#aijack-collaborative-splitnn-api-module">3.1.11.2. aijack.collaborative.splitnn.api module</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#aijack-collaborative-splitnn-client-module">3.1.11.3. aijack.collaborative.splitnn.client module</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-contents">3.1.11.4. Module contents</a></li>
 </ul>
             </nav>
         </div>
@@ -433,206 +433,14 @@ document.write(`
 <section id="submodules">
 <h2><span class="section-number">3.1.11.1. </span>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">#</a></h2>
 </section>
-<section id="module-aijack.collaborative.splitnn.api">
-<span id="aijack-collaborative-splitnn-api-module"></span><h2><span class="section-number">3.1.11.2. </span>aijack.collaborative.splitnn.api module<a class="headerlink" href="#module-aijack.collaborative.splitnn.api" title="Permalink to this headline">#</a></h2>
-<dl class="py class">
-<dt class="sig sig-object py" id="aijack.collaborative.splitnn.api.SplitNNAPI">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">aijack.collaborative.splitnn.api.</span></span><span class="sig-name descname"><span class="pre">SplitNNAPI</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">clients</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">optimizers</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataloader</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">criterion</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_epoch</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/collaborative/splitnn/api.html#SplitNNAPI"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.collaborative.splitnn.api.SplitNNAPI" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="aijack.collaborative.core.html#aijack.collaborative.core.api.BaseFedAPI" title="aijack.collaborative.core.api.BaseFedAPI"><code class="xref py py-class docutils literal notranslate"><span class="pre">aijack.collaborative.core.api.BaseFedAPI</span></code></a></p>
-<dl class="py method">
-<dt class="sig sig-object py" id="aijack.collaborative.splitnn.api.SplitNNAPI.backward">
-<span class="sig-name descname"><span class="pre">backward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">loss</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/collaborative/splitnn/api.html#SplitNNAPI.backward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.collaborative.splitnn.api.SplitNNAPI.backward" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="aijack.collaborative.splitnn.api.SplitNNAPI.backward_gradient">
-<span class="sig-name descname"><span class="pre">backward_gradient</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">grads_outputs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/collaborative/splitnn/api.html#SplitNNAPI.backward_gradient"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.collaborative.splitnn.api.SplitNNAPI.backward_gradient" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="aijack.collaborative.splitnn.api.SplitNNAPI.eval">
-<span class="sig-name descname"><span class="pre">eval</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/collaborative/splitnn/api.html#SplitNNAPI.eval"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.collaborative.splitnn.api.SplitNNAPI.eval" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="aijack.collaborative.splitnn.api.SplitNNAPI.forward">
-<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/collaborative/splitnn/api.html#SplitNNAPI.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.collaborative.splitnn.api.SplitNNAPI.forward" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="aijack.collaborative.splitnn.api.SplitNNAPI.local_train">
-<span class="sig-name descname"><span class="pre">local_train</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/collaborative/splitnn/api.html#SplitNNAPI.local_train"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.collaborative.splitnn.api.SplitNNAPI.local_train" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="aijack.collaborative.splitnn.api.SplitNNAPI.run">
-<span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/collaborative/splitnn/api.html#SplitNNAPI.run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.collaborative.splitnn.api.SplitNNAPI.run" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="aijack.collaborative.splitnn.api.SplitNNAPI.step">
-<span class="sig-name descname"><span class="pre">step</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/collaborative/splitnn/api.html#SplitNNAPI.step"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.collaborative.splitnn.api.SplitNNAPI.step" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="aijack.collaborative.splitnn.api.SplitNNAPI.train">
-<span class="sig-name descname"><span class="pre">train</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/collaborative/splitnn/api.html#SplitNNAPI.train"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.collaborative.splitnn.api.SplitNNAPI.train" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="aijack.collaborative.splitnn.api.SplitNNAPI.zero_grad">
-<span class="sig-name descname"><span class="pre">zero_grad</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/collaborative/splitnn/api.html#SplitNNAPI.zero_grad"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.collaborative.splitnn.api.SplitNNAPI.zero_grad" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
+<section id="aijack-collaborative-splitnn-api-module">
+<h2><span class="section-number">3.1.11.2. </span>aijack.collaborative.splitnn.api module<a class="headerlink" href="#aijack-collaborative-splitnn-api-module" title="Permalink to this headline">#</a></h2>
 </section>
-<section id="module-aijack.collaborative.splitnn.client">
-<span id="aijack-collaborative-splitnn-client-module"></span><h2><span class="section-number">3.1.11.3. </span>aijack.collaborative.splitnn.client module<a class="headerlink" href="#module-aijack.collaborative.splitnn.client" title="Permalink to this headline">#</a></h2>
-<dl class="py class">
-<dt class="sig sig-object py" id="aijack.collaborative.splitnn.client.SplitNNClient">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">aijack.collaborative.splitnn.client.</span></span><span class="sig-name descname"><span class="pre">SplitNNClient</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/collaborative/splitnn/client.html#SplitNNClient"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.collaborative.splitnn.client.SplitNNClient" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="aijack.collaborative.core.html#aijack.collaborative.core.client.BaseClient" title="aijack.collaborative.core.client.BaseClient"><code class="xref py py-class docutils literal notranslate"><span class="pre">aijack.collaborative.core.client.BaseClient</span></code></a></p>
-<dl class="py method">
-<dt class="sig sig-object py" id="aijack.collaborative.splitnn.client.SplitNNClient.distribute">
-<span class="sig-name descname"><span class="pre">distribute</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/collaborative/splitnn/client.html#SplitNNClient.distribute"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.collaborative.splitnn.client.SplitNNClient.distribute" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="aijack.collaborative.splitnn.client.SplitNNClient.download">
-<span class="sig-name descname"><span class="pre">download</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">grad_from_next_client</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/collaborative/splitnn/client.html#SplitNNClient.download"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.collaborative.splitnn.client.SplitNNClient.download" title="Permalink to this definition">#</a></dt>
-<dd><p>Download the global model from the server.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="aijack.collaborative.splitnn.client.SplitNNClient.forward">
-<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prev_intermediate</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/collaborative/splitnn/client.html#SplitNNClient.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.collaborative.splitnn.client.SplitNNClient.forward" title="Permalink to this definition">#</a></dt>
-<dd><p>Send intermidiate tensor to the server</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>x</strong> (<em>torch.Tensor</em>) – the input data</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p><dl class="simple">
-<dt>the output of client-side</dt><dd><p>model which the client sent
-to the server</p>
-</dd>
-</dl>
-</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>intermidiate_to_next_client (torch.Tensor)</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="aijack.collaborative.splitnn.client.SplitNNClient.upload">
-<span class="sig-name descname"><span class="pre">upload</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/collaborative/splitnn/client.html#SplitNNClient.upload"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.collaborative.splitnn.client.SplitNNClient.upload" title="Permalink to this definition">#</a></dt>
-<dd><p>Upload the locally learned informatino to the server.</p>
-</dd></dl>
-
-</dd></dl>
-
+<section id="aijack-collaborative-splitnn-client-module">
+<h2><span class="section-number">3.1.11.3. </span>aijack.collaborative.splitnn.client module<a class="headerlink" href="#aijack-collaborative-splitnn-client-module" title="Permalink to this headline">#</a></h2>
 </section>
-<section id="module-aijack.collaborative.splitnn">
-<span id="module-contents"></span><h2><span class="section-number">3.1.11.4. </span>Module contents<a class="headerlink" href="#module-aijack.collaborative.splitnn" title="Permalink to this headline">#</a></h2>
-<dl class="py class">
-<dt class="sig sig-object py" id="aijack.collaborative.splitnn.SplitNNAPI">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">aijack.collaborative.splitnn.</span></span><span class="sig-name descname"><span class="pre">SplitNNAPI</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">clients</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">optimizers</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataloader</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">criterion</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_epoch</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/collaborative/splitnn/api.html#SplitNNAPI"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.collaborative.splitnn.SplitNNAPI" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="aijack.collaborative.core.html#aijack.collaborative.core.api.BaseFedAPI" title="aijack.collaborative.core.api.BaseFedAPI"><code class="xref py py-class docutils literal notranslate"><span class="pre">aijack.collaborative.core.api.BaseFedAPI</span></code></a></p>
-<dl class="py method">
-<dt class="sig sig-object py" id="aijack.collaborative.splitnn.SplitNNAPI.backward">
-<span class="sig-name descname"><span class="pre">backward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">loss</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/collaborative/splitnn/api.html#SplitNNAPI.backward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.collaborative.splitnn.SplitNNAPI.backward" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="aijack.collaborative.splitnn.SplitNNAPI.backward_gradient">
-<span class="sig-name descname"><span class="pre">backward_gradient</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">grads_outputs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/collaborative/splitnn/api.html#SplitNNAPI.backward_gradient"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.collaborative.splitnn.SplitNNAPI.backward_gradient" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="aijack.collaborative.splitnn.SplitNNAPI.eval">
-<span class="sig-name descname"><span class="pre">eval</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/collaborative/splitnn/api.html#SplitNNAPI.eval"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.collaborative.splitnn.SplitNNAPI.eval" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="aijack.collaborative.splitnn.SplitNNAPI.forward">
-<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/collaborative/splitnn/api.html#SplitNNAPI.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.collaborative.splitnn.SplitNNAPI.forward" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="aijack.collaborative.splitnn.SplitNNAPI.local_train">
-<span class="sig-name descname"><span class="pre">local_train</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/collaborative/splitnn/api.html#SplitNNAPI.local_train"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.collaborative.splitnn.SplitNNAPI.local_train" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="aijack.collaborative.splitnn.SplitNNAPI.run">
-<span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/collaborative/splitnn/api.html#SplitNNAPI.run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.collaborative.splitnn.SplitNNAPI.run" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="aijack.collaborative.splitnn.SplitNNAPI.step">
-<span class="sig-name descname"><span class="pre">step</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/collaborative/splitnn/api.html#SplitNNAPI.step"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.collaborative.splitnn.SplitNNAPI.step" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="aijack.collaborative.splitnn.SplitNNAPI.train">
-<span class="sig-name descname"><span class="pre">train</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/collaborative/splitnn/api.html#SplitNNAPI.train"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.collaborative.splitnn.SplitNNAPI.train" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="aijack.collaborative.splitnn.SplitNNAPI.zero_grad">
-<span class="sig-name descname"><span class="pre">zero_grad</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/collaborative/splitnn/api.html#SplitNNAPI.zero_grad"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.collaborative.splitnn.SplitNNAPI.zero_grad" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="aijack.collaborative.splitnn.SplitNNClient">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">aijack.collaborative.splitnn.</span></span><span class="sig-name descname"><span class="pre">SplitNNClient</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/collaborative/splitnn/client.html#SplitNNClient"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.collaborative.splitnn.SplitNNClient" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="aijack.collaborative.core.html#aijack.collaborative.core.client.BaseClient" title="aijack.collaborative.core.client.BaseClient"><code class="xref py py-class docutils literal notranslate"><span class="pre">aijack.collaborative.core.client.BaseClient</span></code></a></p>
-<dl class="py method">
-<dt class="sig sig-object py" id="aijack.collaborative.splitnn.SplitNNClient.distribute">
-<span class="sig-name descname"><span class="pre">distribute</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/collaborative/splitnn/client.html#SplitNNClient.distribute"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.collaborative.splitnn.SplitNNClient.distribute" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="aijack.collaborative.splitnn.SplitNNClient.download">
-<span class="sig-name descname"><span class="pre">download</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">grad_from_next_client</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/collaborative/splitnn/client.html#SplitNNClient.download"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.collaborative.splitnn.SplitNNClient.download" title="Permalink to this definition">#</a></dt>
-<dd><p>Download the global model from the server.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="aijack.collaborative.splitnn.SplitNNClient.forward">
-<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prev_intermediate</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/collaborative/splitnn/client.html#SplitNNClient.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.collaborative.splitnn.SplitNNClient.forward" title="Permalink to this definition">#</a></dt>
-<dd><p>Send intermidiate tensor to the server</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>x</strong> (<em>torch.Tensor</em>) – the input data</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p><dl class="simple">
-<dt>the output of client-side</dt><dd><p>model which the client sent
-to the server</p>
-</dd>
-</dl>
-</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>intermidiate_to_next_client (torch.Tensor)</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="aijack.collaborative.splitnn.SplitNNClient.upload">
-<span class="sig-name descname"><span class="pre">upload</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/collaborative/splitnn/client.html#SplitNNClient.upload"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.collaborative.splitnn.SplitNNClient.upload" title="Permalink to this definition">#</a></dt>
-<dd><p>Upload the locally learned informatino to the server.</p>
-</dd></dl>
-
-</dd></dl>
-
+<section id="module-contents">
+<h2><span class="section-number">3.1.11.4. </span>Module contents<a class="headerlink" href="#module-contents" title="Permalink to this headline">#</a></h2>
 </section>
 </section>
 
@@ -685,9 +493,9 @@ to the server</p>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#submodules">3.1.11.1. Submodules</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aijack.collaborative.splitnn.api">3.1.11.2. aijack.collaborative.splitnn.api module</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aijack.collaborative.splitnn.client">3.1.11.3. aijack.collaborative.splitnn.client module</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aijack.collaborative.splitnn">3.1.11.4. Module contents</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#aijack-collaborative-splitnn-api-module">3.1.11.2. aijack.collaborative.splitnn.api module</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#aijack-collaborative-splitnn-client-module">3.1.11.3. aijack.collaborative.splitnn.client module</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-contents">3.1.11.4. Module contents</a></li>
 </ul>
   </nav></div>
 

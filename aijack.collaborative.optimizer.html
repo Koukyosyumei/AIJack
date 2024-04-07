@@ -414,10 +414,10 @@ document.write(`
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#submodules">3.1.10.1. Submodules</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aijack.collaborative.optimizer.adam">3.1.10.2. aijack.collaborative.optimizer.adam module</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aijack.collaborative.optimizer.base">3.1.10.3. aijack.collaborative.optimizer.base module</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aijack.collaborative.optimizer.sgd">3.1.10.4. aijack.collaborative.optimizer.sgd module</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aijack.collaborative.optimizer">3.1.10.5. Module contents</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#aijack-collaborative-optimizer-adam-module">3.1.10.2. aijack.collaborative.optimizer.adam module</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#aijack-collaborative-optimizer-base-module">3.1.10.3. aijack.collaborative.optimizer.base module</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#aijack-collaborative-optimizer-sgd-module">3.1.10.4. aijack.collaborative.optimizer.sgd module</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-contents">3.1.10.5. Module contents</a></li>
 </ul>
             </nav>
         </div>
@@ -434,159 +434,17 @@ document.write(`
 <section id="submodules">
 <h2><span class="section-number">3.1.10.1. </span>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">#</a></h2>
 </section>
-<section id="module-aijack.collaborative.optimizer.adam">
-<span id="aijack-collaborative-optimizer-adam-module"></span><h2><span class="section-number">3.1.10.2. </span>aijack.collaborative.optimizer.adam module<a class="headerlink" href="#module-aijack.collaborative.optimizer.adam" title="Permalink to this headline">#</a></h2>
-<dl class="py class">
-<dt class="sig sig-object py" id="aijack.collaborative.optimizer.adam.AdamFLOptimizer">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">aijack.collaborative.optimizer.adam.</span></span><span class="sig-name descname"><span class="pre">AdamFLOptimizer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parameters</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.01</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight_decay</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">beta1</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.9</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">beta2</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.999</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epsilon</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-08</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/collaborative/optimizer/adam.html#AdamFLOptimizer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.collaborative.optimizer.adam.AdamFLOptimizer" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#aijack.collaborative.optimizer.base.BaseFLOptimizer" title="aijack.collaborative.optimizer.base.BaseFLOptimizer"><code class="xref py py-class docutils literal notranslate"><span class="pre">aijack.collaborative.optimizer.base.BaseFLOptimizer</span></code></a></p>
-<p>Implementation of Adam to update the global model of Federated Learning.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>parameters</strong> (<em>List</em><em>[</em><em>torch.nn.Parameter</em><em>]</em>) – parameters of the model</p></li>
-<li><p><strong>lr</strong> (<em>float</em><em>, </em><em>optional</em>) – learning rate. Defaults to 0.01.</p></li>
-<li><p><strong>weight_decay</strong> (<em>float</em><em>, </em><em>optional</em>) – coefficient of weight decay. Defaults to 0.0001.</p></li>
-<li><p><strong>beta1</strong> (<em>float</em><em>, </em><em>optional</em>) – 1st-order exponential decay. Defaults to 0.9.</p></li>
-<li><p><strong>beta2</strong> (<em>float</em><em>, </em><em>optional</em>) – 2nd-order exponential decay. Defaults to 0.999.</p></li>
-<li><p><strong>epsilon</strong> (<em>float</em><em>, </em><em>optional</em>) – a small value to prevent zero-devision. Defaults to 1e-8.</p></li>
-</ul>
-</dd>
-</dl>
-<dl class="py method">
-<dt class="sig sig-object py" id="aijack.collaborative.optimizer.adam.AdamFLOptimizer.step">
-<span class="sig-name descname"><span class="pre">step</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">grads</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/collaborative/optimizer/adam.html#AdamFLOptimizer.step"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.collaborative.optimizer.adam.AdamFLOptimizer.step" title="Permalink to this definition">#</a></dt>
-<dd><p>Update the parameters with the give gradient</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>grads</strong> (<em>List</em><em>[</em><em>torch.Tensor</em><em>]</em>) – list of gradients</p>
-</dd>
-</dl>
-</dd></dl>
-
-</dd></dl>
-
+<section id="aijack-collaborative-optimizer-adam-module">
+<h2><span class="section-number">3.1.10.2. </span>aijack.collaborative.optimizer.adam module<a class="headerlink" href="#aijack-collaborative-optimizer-adam-module" title="Permalink to this headline">#</a></h2>
 </section>
-<section id="module-aijack.collaborative.optimizer.base">
-<span id="aijack-collaborative-optimizer-base-module"></span><h2><span class="section-number">3.1.10.3. </span>aijack.collaborative.optimizer.base module<a class="headerlink" href="#module-aijack.collaborative.optimizer.base" title="Permalink to this headline">#</a></h2>
-<dl class="py class">
-<dt class="sig sig-object py" id="aijack.collaborative.optimizer.base.BaseFLOptimizer">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">aijack.collaborative.optimizer.base.</span></span><span class="sig-name descname"><span class="pre">BaseFLOptimizer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parameters</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.01</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight_decay</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0001</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/collaborative/optimizer/base.html#BaseFLOptimizer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.collaborative.optimizer.base.BaseFLOptimizer" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Basic class for optimizers of the server in Federated Learning.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>parameters</strong> (<em>List</em><em>[</em><em>torch.nn.Parameter</em><em>]</em>) – parameters of the model</p></li>
-<li><p><strong>lr</strong> (<em>float</em><em>, </em><em>optional</em>) – learning rate. Defaults to 0.01.</p></li>
-<li><p><strong>weight_decay</strong> (<em>float</em><em>, </em><em>optional</em>) – coefficient of weight decay. Defaults to 0.0001.</p></li>
-</ul>
-</dd>
-</dl>
-<dl class="py method">
-<dt class="sig sig-object py" id="aijack.collaborative.optimizer.base.BaseFLOptimizer.step">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">step</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">grads</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/collaborative/optimizer/base.html#BaseFLOptimizer.step"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.collaborative.optimizer.base.BaseFLOptimizer.step" title="Permalink to this definition">#</a></dt>
-<dd><p>Update the parameters with the give gradient</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>grads</strong> (<em>List</em><em>[</em><em>torch.Tensor</em><em>]</em>) – list of gradients</p>
-</dd>
-</dl>
-</dd></dl>
-
-</dd></dl>
-
+<section id="aijack-collaborative-optimizer-base-module">
+<h2><span class="section-number">3.1.10.3. </span>aijack.collaborative.optimizer.base module<a class="headerlink" href="#aijack-collaborative-optimizer-base-module" title="Permalink to this headline">#</a></h2>
 </section>
-<section id="module-aijack.collaborative.optimizer.sgd">
-<span id="aijack-collaborative-optimizer-sgd-module"></span><h2><span class="section-number">3.1.10.4. </span>aijack.collaborative.optimizer.sgd module<a class="headerlink" href="#module-aijack.collaborative.optimizer.sgd" title="Permalink to this headline">#</a></h2>
-<dl class="py class">
-<dt class="sig sig-object py" id="aijack.collaborative.optimizer.sgd.SGDFLOptimizer">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">aijack.collaborative.optimizer.sgd.</span></span><span class="sig-name descname"><span class="pre">SGDFLOptimizer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parameters</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.01</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight_decay</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/collaborative/optimizer/sgd.html#SGDFLOptimizer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.collaborative.optimizer.sgd.SGDFLOptimizer" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#aijack.collaborative.optimizer.base.BaseFLOptimizer" title="aijack.collaborative.optimizer.base.BaseFLOptimizer"><code class="xref py py-class docutils literal notranslate"><span class="pre">aijack.collaborative.optimizer.base.BaseFLOptimizer</span></code></a></p>
-<p>Implementation of SGD to update the global model of Federated Learning.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>parameters</strong> (<em>List</em><em>[</em><em>torch.nn.Parameter</em><em>]</em>) – parameters of the model</p></li>
-<li><p><strong>lr</strong> (<em>float</em><em>, </em><em>optional</em>) – learning rate. Defaults to 0.01.</p></li>
-<li><p><strong>weight_decay</strong> (<em>float</em><em>, </em><em>optional</em>) – coefficient of weight decay. Defaults to 0.0001.</p></li>
-</ul>
-</dd>
-</dl>
-<dl class="py method">
-<dt class="sig sig-object py" id="aijack.collaborative.optimizer.sgd.SGDFLOptimizer.step">
-<span class="sig-name descname"><span class="pre">step</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">grads</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/collaborative/optimizer/sgd.html#SGDFLOptimizer.step"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.collaborative.optimizer.sgd.SGDFLOptimizer.step" title="Permalink to this definition">#</a></dt>
-<dd><p>Update the parameters with the give gradient</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>grads</strong> (<em>List</em><em>[</em><em>torch.Tensor</em><em>]</em>) – list of gradients</p>
-</dd>
-</dl>
-</dd></dl>
-
-</dd></dl>
-
+<section id="aijack-collaborative-optimizer-sgd-module">
+<h2><span class="section-number">3.1.10.4. </span>aijack.collaborative.optimizer.sgd module<a class="headerlink" href="#aijack-collaborative-optimizer-sgd-module" title="Permalink to this headline">#</a></h2>
 </section>
-<section id="module-aijack.collaborative.optimizer">
-<span id="module-contents"></span><h2><span class="section-number">3.1.10.5. </span>Module contents<a class="headerlink" href="#module-aijack.collaborative.optimizer" title="Permalink to this headline">#</a></h2>
-<p>Implementation of basic collaborative optimizers for neural network</p>
-<dl class="py class">
-<dt class="sig sig-object py" id="aijack.collaborative.optimizer.AdamFLOptimizer">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">aijack.collaborative.optimizer.</span></span><span class="sig-name descname"><span class="pre">AdamFLOptimizer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parameters</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.01</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight_decay</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">beta1</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.9</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">beta2</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.999</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epsilon</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-08</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/collaborative/optimizer/adam.html#AdamFLOptimizer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.collaborative.optimizer.AdamFLOptimizer" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#aijack.collaborative.optimizer.base.BaseFLOptimizer" title="aijack.collaborative.optimizer.base.BaseFLOptimizer"><code class="xref py py-class docutils literal notranslate"><span class="pre">aijack.collaborative.optimizer.base.BaseFLOptimizer</span></code></a></p>
-<p>Implementation of Adam to update the global model of Federated Learning.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>parameters</strong> (<em>List</em><em>[</em><em>torch.nn.Parameter</em><em>]</em>) – parameters of the model</p></li>
-<li><p><strong>lr</strong> (<em>float</em><em>, </em><em>optional</em>) – learning rate. Defaults to 0.01.</p></li>
-<li><p><strong>weight_decay</strong> (<em>float</em><em>, </em><em>optional</em>) – coefficient of weight decay. Defaults to 0.0001.</p></li>
-<li><p><strong>beta1</strong> (<em>float</em><em>, </em><em>optional</em>) – 1st-order exponential decay. Defaults to 0.9.</p></li>
-<li><p><strong>beta2</strong> (<em>float</em><em>, </em><em>optional</em>) – 2nd-order exponential decay. Defaults to 0.999.</p></li>
-<li><p><strong>epsilon</strong> (<em>float</em><em>, </em><em>optional</em>) – a small value to prevent zero-devision. Defaults to 1e-8.</p></li>
-</ul>
-</dd>
-</dl>
-<dl class="py method">
-<dt class="sig sig-object py" id="aijack.collaborative.optimizer.AdamFLOptimizer.step">
-<span class="sig-name descname"><span class="pre">step</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">grads</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/collaborative/optimizer/adam.html#AdamFLOptimizer.step"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.collaborative.optimizer.AdamFLOptimizer.step" title="Permalink to this definition">#</a></dt>
-<dd><p>Update the parameters with the give gradient</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>grads</strong> (<em>List</em><em>[</em><em>torch.Tensor</em><em>]</em>) – list of gradients</p>
-</dd>
-</dl>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="aijack.collaborative.optimizer.SGDFLOptimizer">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">aijack.collaborative.optimizer.</span></span><span class="sig-name descname"><span class="pre">SGDFLOptimizer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parameters</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.01</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight_decay</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/collaborative/optimizer/sgd.html#SGDFLOptimizer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.collaborative.optimizer.SGDFLOptimizer" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#aijack.collaborative.optimizer.base.BaseFLOptimizer" title="aijack.collaborative.optimizer.base.BaseFLOptimizer"><code class="xref py py-class docutils literal notranslate"><span class="pre">aijack.collaborative.optimizer.base.BaseFLOptimizer</span></code></a></p>
-<p>Implementation of SGD to update the global model of Federated Learning.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>parameters</strong> (<em>List</em><em>[</em><em>torch.nn.Parameter</em><em>]</em>) – parameters of the model</p></li>
-<li><p><strong>lr</strong> (<em>float</em><em>, </em><em>optional</em>) – learning rate. Defaults to 0.01.</p></li>
-<li><p><strong>weight_decay</strong> (<em>float</em><em>, </em><em>optional</em>) – coefficient of weight decay. Defaults to 0.0001.</p></li>
-</ul>
-</dd>
-</dl>
-<dl class="py method">
-<dt class="sig sig-object py" id="aijack.collaborative.optimizer.SGDFLOptimizer.step">
-<span class="sig-name descname"><span class="pre">step</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">grads</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aijack/collaborative/optimizer/sgd.html#SGDFLOptimizer.step"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aijack.collaborative.optimizer.SGDFLOptimizer.step" title="Permalink to this definition">#</a></dt>
-<dd><p>Update the parameters with the give gradient</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>grads</strong> (<em>List</em><em>[</em><em>torch.Tensor</em><em>]</em>) – list of gradients</p>
-</dd>
-</dl>
-</dd></dl>
-
-</dd></dl>
-
+<section id="module-contents">
+<h2><span class="section-number">3.1.10.5. </span>Module contents<a class="headerlink" href="#module-contents" title="Permalink to this headline">#</a></h2>
 </section>
 </section>
 
@@ -639,10 +497,10 @@ document.write(`
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#submodules">3.1.10.1. Submodules</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aijack.collaborative.optimizer.adam">3.1.10.2. aijack.collaborative.optimizer.adam module</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aijack.collaborative.optimizer.base">3.1.10.3. aijack.collaborative.optimizer.base module</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aijack.collaborative.optimizer.sgd">3.1.10.4. aijack.collaborative.optimizer.sgd module</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aijack.collaborative.optimizer">3.1.10.5. Module contents</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#aijack-collaborative-optimizer-adam-module">3.1.10.2. aijack.collaborative.optimizer.adam module</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#aijack-collaborative-optimizer-base-module">3.1.10.3. aijack.collaborative.optimizer.base module</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#aijack-collaborative-optimizer-sgd-module">3.1.10.4. aijack.collaborative.optimizer.sgd module</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-contents">3.1.10.5. Module contents</a></li>
 </ul>
   </nav></div>
 
