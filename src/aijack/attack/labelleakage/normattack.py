@@ -7,6 +7,18 @@ from ...manager import BaseManager
 def attach_normattack_to_splitnn(
     cls, attack_criterion, target_client_index=0, device="cpu"
 ):
+    """Attaches a normalization attack to a SplitNN model.
+
+    Args:
+        cls: The SplitNN model class.
+        attack_criterion: The criterion for the attack.
+        target_client_index (int, optional): Index of the target client. Defaults to 0.
+        device (str, optional): Device for computation. Defaults to "cpu".
+
+    Returns:
+        class: A wrapper class with attached normalization attack.
+    """
+
     class NormAttackSplitNNWrapper(cls):
         def __init__(self, *args, **kwargs):
             super(NormAttackSplitNNWrapper, self).__init__(*args, **kwargs)
@@ -19,14 +31,14 @@ def attach_normattack_to_splitnn(
             return self.clients[self.target_client_index].grad_from_next_client
 
         def attack(self, dataloader):
-            """Culculate leak_auc on the given SplitNN model
+            """Calculates leak_auc on the given SplitNN model
             reference: https://arxiv.org/abs/2102.08504
             Args:
                 dataloader (torch dataloader): dataloader for evaluation
                 criterion: loss function for training
                 device: cpu or GPU
             Returns:
-                score: culculated leak auc
+                score: leak auc
             """
             epoch_labels = []
             epoch_g_norm = []

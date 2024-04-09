@@ -94,7 +94,7 @@ class GradientInversion_Attack(BaseAttacker):
             x_shape: the input shape of target_model.
             y_shape: the output shape of target_model.
             optimize_label: If true, only optimize images (the label will be automatically estimated).
-            gradient_ignore_pos: a list of positions whihc will be ignored during the culculation of
+            gradient_ignore_pos: a list of positions whihc will be ignored during the calculation of
                                  the distance between gradients
             pos_of_final_fc_layer: position of gradients corresponding to the final FC layer
                                    within the gradients received from the client.
@@ -175,7 +175,7 @@ class GradientInversion_Attack(BaseAttacker):
         """Assigns a function to self.distancefunc according to distancename
 
         Args:
-            distancename: name of the function to culculat the distance between the gradients.
+            distancename: name of the function to calculat the distance between the gradients.
                           currently support 'l2' or 'cossim'.
 
         Raises:
@@ -225,10 +225,10 @@ class GradientInversion_Attack(BaseAttacker):
 
         return hook
 
-    def _culc_regularization_term(
+    def _calc_regularization_term(
         self, fake_x, fake_pred, fake_label, group_fake_x, received_gradients
     ):
-        """Culculates the regularization term
+        """calculates the regularization term
 
         Args:
             fake_x: reconstructed images
@@ -238,7 +238,7 @@ class GradientInversion_Attack(BaseAttacker):
             received_gradients: gradients received from the client
 
         Returns:
-            culculated regularization term
+            calculated regularization term
         """
         reg_term = 0
         if self.tv_reg_coef != 0:
@@ -295,7 +295,7 @@ class GradientInversion_Attack(BaseAttacker):
             distance = self.distancefunc(
                 fake_gradients, received_gradients, self.gradient_ignore_pos
             )
-            distance += self._culc_regularization_term(
+            distance += self._calc_regularization_term(
                 fake_x,
                 fake_pred,
                 fake_label,
@@ -343,7 +343,7 @@ class GradientInversion_Attack(BaseAttacker):
             a tuple of the best reconstructed images and corresponding labels
 
         Raises:
-            OverflowError: If the culculated distance become Nan
+            OverflowError: If the calculated distance become Nan
         """
         fake_x, fake_label, optimizer = _setup_attack(
             self.x_shape,
@@ -376,7 +376,7 @@ class GradientInversion_Attack(BaseAttacker):
                     fake_x[:] = fake_x.clamp(self.clamp_range[0], self.clamp_range[1])
 
             # if torch.sum(torch.isnan(distance)).item():
-            #    raise OverflowError("stop because the culculated distance is Nan")
+            #    raise OverflowError("stop because the calculated distance is Nan")
 
             if best_distance > distance:
                 best_fake_x = fake_x.detach().clone()

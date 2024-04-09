@@ -4,6 +4,18 @@ from ...manager import BaseManager
 
 
 def attach_mapf_to_client(cls, lam, base_model_parameters=None):
+    """Attaches a MAPF attack to a client.
+
+    Args:
+        cls: The client class.
+        lam (float): The lambda parameter for the attack.
+        base_model_parameters (list, optional): Base model parameters for parameter flipping.
+            If None, random parameters will be generated. Defaults to None.
+
+    Returns:
+        class: A wrapper class with attached MAPF attack.
+    """
+
     class MAPFClientWrapper(cls):
         """Implementation of MAPF proposed in https://arxiv.org/pdf/2203.08669.pdf"""
 

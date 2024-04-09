@@ -46,21 +46,21 @@ def eps_randresp(alpha, params):
     )
 
 
-def culc_upperbound_of_rdp_with_Sampled_Gaussian_Mechanism(
+def calc_upperbound_of_rdp_with_Sampled_Gaussian_Mechanism(
     alpha, params, sampling_rate, _eps
 ):
     """Compute log(A_alpha) for any positive finite alpha."""
     if float(alpha).is_integer():
-        return culc_upperbound_of_rdp_with_Sampled_Gaussian_Mechanism_int(
+        return calc_upperbound_of_rdp_with_Sampled_Gaussian_Mechanism_int(
             int(alpha), params, sampling_rate
         )
     else:
-        return culc_upperbound_of_rdp_with_Sampled_Gaussian_Mechanism_float(
+        return calc_upperbound_of_rdp_with_Sampled_Gaussian_Mechanism_float(
             alpha, params, sampling_rate
         )
 
 
-def culc_upperbound_of_rdp_with_Sampled_Gaussian_Mechanism_int(
+def calc_upperbound_of_rdp_with_Sampled_Gaussian_Mechanism_int(
     alpha, params, sampling_rate
 ):
     """Renyi Differential Privacy of the Sampled Gaussian Mechanism
@@ -81,7 +81,7 @@ def culc_upperbound_of_rdp_with_Sampled_Gaussian_Mechanism_int(
     return float(log_a) / (alpha - 1)
 
 
-def culc_upperbound_of_rdp_with_Sampled_Gaussian_Mechanism_float(
+def calc_upperbound_of_rdp_with_Sampled_Gaussian_Mechanism_float(
     alpha, params, sampling_rate
 ):
     """Compute log(A_alpha) for fractional alpha. 0 < q < 1."""
@@ -120,7 +120,7 @@ def culc_upperbound_of_rdp_with_Sampled_Gaussian_Mechanism_float(
     return _log_add(log_a0, log_a1) / (alpha - 1)
 
 
-def culc_upperbound_of_rdp_with_theorem27_of_wang_2019(
+def calc_upperbound_of_rdp_with_theorem27_of_wang_2019(
     alpha, params, sampling_rate, _eps
 ):
     def B(el):
@@ -176,19 +176,19 @@ def culc_upperbound_of_rdp_with_theorem27_of_wang_2019(
     return (1 / (alpha - 1)) * logsumexp(terms, b=signs)
 
 
-def culc_first_term_of_general_upper_bound_of_rdp(alpha, sampling_rate):
+def calc_first_term_of_general_upper_bound_of_rdp(alpha, sampling_rate):
     return ((alpha - 1) * np.log(1 - sampling_rate)) + np.log(
         alpha * sampling_rate - sampling_rate + 1
     )
 
 
-def culc_general_upperbound_of_rdp_with_theorem5_of_zhu_2019(
+def calc_general_upperbound_of_rdp_with_theorem5_of_zhu_2019(
     alpha, params, sampling_rate, _eps
 ):
     terms = []
     signs = []
 
-    first = culc_first_term_of_general_upper_bound_of_rdp(alpha, sampling_rate)
+    first = calc_first_term_of_general_upper_bound_of_rdp(alpha, sampling_rate)
     terms.append(first)
     signs.append(1)
 
@@ -213,13 +213,13 @@ def culc_general_upperbound_of_rdp_with_theorem5_of_zhu_2019(
     return (1 / (alpha - 1)) * logsumexp(terms, b=signs)
 
 
-def culc_tightupperbound_lowerbound_of_rdp_with_theorem6and8_of_zhu_2019(
+def calc_tightupperbound_lowerbound_of_rdp_with_theorem6and8_of_zhu_2019(
     alpha, params, sampling_rate, _eps
 ):
     terms = []
     signs = []
 
-    first = culc_first_term_of_general_upper_bound_of_rdp(alpha, sampling_rate)
+    first = calc_first_term_of_general_upper_bound_of_rdp(alpha, sampling_rate)
     terms.append(first)
     signs.append(1)
 
@@ -234,7 +234,7 @@ def culc_tightupperbound_lowerbound_of_rdp_with_theorem6and8_of_zhu_2019(
     return (1 / (alpha - 1)) * logsumexp(terms, b=signs)
 
 
-def culc_tightupperbound_lowerbound_of_rdp_with_theorem6and8_of_zhu_2019_with_tau_estimation(
+def calc_tightupperbound_lowerbound_of_rdp_with_theorem6and8_of_zhu_2019_with_tau_estimation(
     alpha, params, sampling_rate, _eps, tau=10
 ):
     terms = []

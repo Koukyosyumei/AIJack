@@ -7,8 +7,7 @@ from ..base_attack import BaseAttacker
 
 
 class Evasion_attack_sklearn(BaseAttacker):
-    """Creates an adversarial example against sklearn objects
-        reference https://arxiv.org/abs/1708.06131
+    """Creates an adversarial example against sklearn objects based on https://arxiv.org/abs/1708.06131
 
     Args:
         target_model (sklearn): sklearn classifier
@@ -26,10 +25,8 @@ class Evasion_attack_sklearn(BaseAttacker):
 
     Attributes:
         target_model (sklearn): sklearn classifier
-        X_minus_1 (numpy.array): datasets that contains
-                                only the class you want to misclasssify
-        dmax (float): max distance between the adversarial example
-                        and initial one
+        X_minus_1 (numpy.array): datasets that contains only the class you want to misclasssify
+        dmax (float): max distance between the adversarial example and initial one
         max_iter (int): maxium number of iterations
         gamma (float): parameter gamma of svm (used for only svm)
         lam (float): trade - off parameter
@@ -38,22 +35,11 @@ class Evasion_attack_sklearn(BaseAttacker):
         distance (str): type of distance such as L2 or L1
         kde_type (str): type of kernel density estimator
         n_minus_1 (int): number of rows of X_minus_1
-        delta_g (func): deviation of he discriminant function of a
-                        surrogate classifier f learnt on D
+        delta_g (func): deviation of he discriminant function of a surrogate classifier f learnt on D
 
     Raises:
         ValueError: if given distance is not supported.
 
-    Examples:
-        >>>X_minus_1 = X_train[np.where(y_train == "3")]
-        >>>attacker = Attack_sklearn(target_model = target_model,
-                                    X_minus_1 = X_minus_1,
-                                    dmax =  (5000 / 255) * 2.5,
-                                    max_iter = 300,
-                                    gamma = 1 / (X_train.shape[1] *
-                                                np.var(X_train)),
-                                    lam = 10, t = 0.5, h = 10)
-        >>>xm, log = attacker.attack(x0)
     """
 
     def __init__(
@@ -148,7 +134,7 @@ class Evasion_attack_sklearn(BaseAttacker):
         return True
 
     def _get_delta_p(self, xm):
-        """Culculates deviation of the estimated density p(xm−1 |yc = −1)
+        """Calculates deviation of the estimated density p(xm−1 |yc = −1)
 
         Args:
             xm (np.array) : an adversarial example
@@ -167,7 +153,7 @@ class Evasion_attack_sklearn(BaseAttacker):
             return delta_p
 
     def _get_grad_f(self, xm, norm="l1"):
-        """Culculates deviation of objective function F
+        """Calculates deviation of objective function F
 
         Args:
             xm (np.array) : an adversarial example

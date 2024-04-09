@@ -13,7 +13,9 @@ class FedProxClient(FedAVGClient):
         optimizer,
         communication_id=0,
     ):
-        for i in range(local_epoch):
+        loss_log = []
+
+        for _ in range(local_epoch):
             running_loss = 0.0
             running_data_num = 0
             for _, data in enumerate(trainloader, 0):
@@ -44,7 +46,6 @@ class FedProxClient(FedAVGClient):
                 running_loss += loss.item()
                 running_data_num += inputs.shape[0]
 
-            print(
-                f"communication {communication_id}, epoch {i}: client-{self.user_id+1}",
-                running_loss / running_data_num,
-            )
+            loss_log.append(running_loss / running_data_num)
+
+        return loss_log

@@ -4,6 +4,29 @@ from ..base_attack import BaseAttacker
 
 
 class FGSMAttacker(BaseAttacker):
+    """Class implementing the Fast Gradient Sign Method (FGSM) attack.
+
+    This class provides functionality to perform the FGSM attack on a target model.
+
+    Args:
+        target_model (torch.nn.Module): The target model to be attacked.
+        criterion: The criterion to compute the loss.
+        eps (float, optional): The epsilon value for the FGSM attack. Defaults to 0.3.
+        grad_lower_bound (float, optional): The lower bound for the gradient. Defaults to -0.1.
+        grad_upper_bound (float, optional): The upper bound for the gradient. Defaults to 0.1.
+        output_lower_bound (float, optional): The lower bound for the output values. Defaults to -1.0.
+        output_upper_bound (float, optional): The upper bound for the output values. Defaults to 1.0.
+
+    Attributes:
+        target_model (torch.nn.Module): The target model to be attacked.
+        criterion: The criterion to compute the loss.
+        eps (float): The epsilon value for the FGSM attack.
+        grad_lower_bound (float): The lower bound for the gradient.
+        grad_upper_bound (float): The upper bound for the gradient.
+        output_lower_bound (float): The lower bound for the output values.
+        output_upper_bound (float): The upper bound for the output values.
+    """
+
     def __init__(
         self,
         target_model,
@@ -24,6 +47,14 @@ class FGSMAttacker(BaseAttacker):
         self.output_upper_bound = output_upper_bound
 
     def attack(self, data):
+        """Performs the FGSM attack on input seed data.
+
+        Args:
+            data (tuple): A tuple containing input seed data and corresponding labels.
+
+        Returns:
+            torch.Tensor: The perturbed input data.
+        """
         x, y = data
         x.requires_grad = True
 

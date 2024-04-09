@@ -89,7 +89,7 @@ class FedGEMSAPI(BaseFLKnowledgeDistillationAPI):
 
                 optimizer.zero_grad()
                 y_preds = client(inputs)
-                loss = client.culc_loss_on_public_dataset(idx, y_preds, labels)
+                loss = client.calc_loss_on_public_dataset(idx, y_preds, labels)
                 loss.backward()
                 optimizer.step()
 

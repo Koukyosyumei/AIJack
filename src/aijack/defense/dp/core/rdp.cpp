@@ -69,7 +69,7 @@ double eps_randresp(double alpha, py::dict params)
     return (1 / (alpha - 1)) * logsumexp(terms, signs);
 }
 
-double culc_upperbound_of_rdp_with_Sampled_Gaussian_Mechanism_int(int alpha,
+double calc_upperbound_of_rdp_with_Sampled_Gaussian_Mechanism_int(int alpha,
                                                                   py::dict params,
                                                                   double sampling_rate)
 {
@@ -90,7 +90,7 @@ double culc_upperbound_of_rdp_with_Sampled_Gaussian_Mechanism_int(int alpha,
     return log_a / (alpha - 1);
 }
 
-double culc_upperbound_of_rdp_with_Sampled_Gaussian_Mechanism_frac(double alpha,
+double calc_upperbound_of_rdp_with_Sampled_Gaussian_Mechanism_frac(double alpha,
                                                                    py::dict params,
                                                                    double sampling_rate)
 {
@@ -153,24 +153,24 @@ double culc_upperbound_of_rdp_with_Sampled_Gaussian_Mechanism_frac(double alpha,
     return _log_add(log_a0, log_a1) / (alpha - 1);
 }
 
-double culc_upperbound_of_rdp_with_Sampled_Gaussian_Mechanism(double alpha,
+double calc_upperbound_of_rdp_with_Sampled_Gaussian_Mechanism(double alpha,
                                                               py::dict params,
                                                               double sampling_rate,
                                                               const std::function<double(double, py::dict)> &_eps)
 {
     if (fmod(alpha, 1) == 0.0)
     {
-        return culc_upperbound_of_rdp_with_Sampled_Gaussian_Mechanism_int(
+        return calc_upperbound_of_rdp_with_Sampled_Gaussian_Mechanism_int(
             (int)alpha, params, sampling_rate);
     }
     else
     {
-        return culc_upperbound_of_rdp_with_Sampled_Gaussian_Mechanism_frac(
+        return calc_upperbound_of_rdp_with_Sampled_Gaussian_Mechanism_frac(
             alpha, params, sampling_rate);
     }
 }
 
-double culc_tightupperbound_lowerbound_of_rdp_with_theorem6and8_of_zhu_2019(int alpha,
+double calc_tightupperbound_lowerbound_of_rdp_with_theorem6and8_of_zhu_2019(int alpha,
                                                                             py::dict params,
                                                                             double sampling_rate,
                                                                             const std::function<double(double, py::dict)> &_eps)
