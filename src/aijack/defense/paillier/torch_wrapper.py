@@ -21,9 +21,9 @@ class PaillierTensor(object):
     """torch.Tensor-like object for Paillier Encryption"""
 
     def __init__(self, paillier_array):
-        if isinstance(paillier_array, list) == list:
+        if isinstance(paillier_array, list) == True:
             self._paillier_np_array = np.array(paillier_array)
-        elif isinstance(paillier_array, np.ndarray) == np.ndarray:
+        elif isinstance(paillier_array, np.ndarray) == True:
             self._paillier_np_array = paillier_array
         else:
             raise TypeError(f"{type(paillier_array)} is not supported.")
