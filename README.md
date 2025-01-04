@@ -203,25 +203,14 @@ You can also find more examples in our tutorials and documentation.
 
 # Citation
 
-If you use AIJack for your research, please cite the repo and our arXiv paper.
+If you use AIJack for your research, please cite our arXiv paper.
 
 ```
-@misc{repotakahashi2023aijack,
-      author = {Hideaki, Takahashi},
-      title = {AIJack},
-      year = {2023},
-      publisher = {GitHub},
-      journal = {GitHub Repository},
-      howpublished = {\url{https://github.com/Koukyosyumei/AIJack}},
-}
-
-@misc{takahashi2023aijack,
-      title={AIJack: Security and Privacy Risk Simulator for Machine Learning}, 
-      author={Hideaki Takahashi},
-      year={2023},
-      eprint={2312.17667},
-      archivePrefix={arXiv},
-      primaryClass={cs.LG}
+@article{takahashi2023aijack,
+  title={AIJack: Security and Privacy Risk Simulator for Machine Learning},
+  author={Takahashi, Hideaki},
+  journal={arXiv preprint arXiv:2312.17667},
+  year={2023}
 }
 ```
 
