@@ -1,4 +1,4 @@
-FROM python:3.13.0a2-slim
+FROM python:3.13.0b1-slim
 
 RUN apt-get update
 RUN apt install -y libboost-all-dev
