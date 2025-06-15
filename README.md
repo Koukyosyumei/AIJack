@@ -10,7 +10,7 @@
 <img src="https://badgen.net/github/stars/Koukyosyumei/AIjack?color=green">
 <img src="https://badgen.net/github/forks/Koukyosyumei/AIjack">
 <img src="https://badgen.net/github/watchers/Koukyosyumei/AIjack">
-<img src="https://img.shields.io/github/commit-activity/m/Koukyosyumei/AIJack">
+<img src="https://static.pepy.tech/badge/aijack">
 <img src="https://img.shields.io/github/languages/code-size/Koukyosyumei/AIJack">
 <img src="https://app.codacy.com/project/badge/Grade/529a33e6523e4bf2a79c26e815a070f4"/>
 <img src="https://img.shields.io/github/license/Koukyosyumei/AIJack">
