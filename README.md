@@ -227,6 +227,7 @@ Below you can find a list of papers and books that either use or extend AIJack.
 - Liu, Can, Jin Wang, and Dongyang Yu. "RAF-GI: Towards Robust, Accurate and Fast-Convergent Gradient Inversion Attack in Federated Learning." arXiv preprint arXiv:2403.08383 (2024).
 - Jiang, Shunrong, et al. "DPFedSAM-Meas: Comparison Of Differential Privacy Federated Learning In Medical Image Classification." GLOBECOM 2024-2024 IEEE Global Communications Conference. IEEE, 2024.
 - Baglin, Isaac, Xiatian Zhu, and Simon Hadfield. "FEDLAD: Federated Evaluation of Deep Leakage Attacks and Defenses." arXiv preprint arXiv:2411.03019 (2024).
+- Rathore, Heena, and Henry Griffith. "Enhancing Cybersecurity Education Through Research-Based Role-Playing." 2025 IEEE Integrated STEM Education Conference (ISEC). IEEE, 2025.
 
 # Contribution
 
