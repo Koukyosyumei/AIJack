@@ -230,6 +230,7 @@ Below you can find a list of papers and books that either use or extend AIJack.
 - Mostafa, Tanzim, Mohamed I. Ibrahem, and Mostafa M. Fouda. "Unraveling Model Inversion Attacks: A Survey of Machine Learning Vulnerabilities." 2024 2nd International Conference on Artificial Intelligence, Blockchain, and Internet of Things (AIBThings). IEEE, 2024.
 - Rathore, Heena, and Henry Griffith. "Enhancing Cybersecurity Education Through Research-Based Role-Playing." 2025 IEEE Integrated STEM Education Conference (ISEC). IEEE, 2025.
 - McGaughey, Ryan, Jesus Martinez del Rincon, and Ihsen Alouani. "Stealth by Conformity: Evading Robust Aggregation through Adaptive Poisoning." arXiv preprint arXiv:2509.08746 (2025).
+- Palit, Vedant. "Adaptive Federated Learning Defences via Trust-Aware Deep Q-Networks." arXiv preprint arXiv:2510.01261 (2025).
 
 # Contribution
 
