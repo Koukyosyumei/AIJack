@@ -16,8 +16,6 @@
 <img src="https://img.shields.io/github/license/Koukyosyumei/AIJack">
 </div>
 
-❤️ <i>If you like AIJack, please consider <a href="https://github.com/sponsors/Koukyosyumei">becoming a GitHub Sponsor</a></i> ❤️
-
 <h1 align="center">
 
   <br>
