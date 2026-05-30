@@ -230,6 +230,11 @@ Below you can find a list of papers and books that either use or extend AIJack.
 - McGaughey, Ryan, Jesus Martinez del Rincon, and Ihsen Alouani. "Stealth by Conformity: Evading Robust Aggregation through Adaptive Poisoning." arXiv preprint arXiv:2509.08746 (2025).
 - Palit, Vedant. "Adaptive Federated Learning Defences via Trust-Aware Deep Q-Networks." arXiv preprint arXiv:2510.01261 (2025).
 
+# Honors
+
+- [Best AI Cybersecurity Platforms Shaping 2025](https://aiflowreview.com/best-ai-cybersecurity-platforms-in-2025/) by AIFlowReview
+- [AI Enabled Cybersecurity Tools in 2025](https://www.packetlabs.net/posts/9-ai-enabled-cybersecurity-tools-in-2025/) by PacketLabs
+
 # Contribution
 
 AIJack welcomes contributions of any kind. If you'd like to address a bug or propose a new feature, please refer to [our guide](docs/source/contribution.rst).
